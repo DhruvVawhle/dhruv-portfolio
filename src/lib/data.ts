@@ -141,7 +141,7 @@ export const projects: Project[] = [
         url: "https://github.com/DhruvVawhle/KrishiSaathi",
         icon: "github",
       },
-      { label: "Live Demo", url: "#", icon: "external" },
+      { label: "Live Demo", url: "https://krishisaathi-web.vercel.app/", icon: "external" },
     ],
     copyrightFiled: {
       diaryNumber: "SW-21662/2026-CO",

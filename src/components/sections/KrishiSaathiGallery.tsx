@@ -142,8 +142,8 @@ export default function KrishiSaathiGallery() {
             <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
           </div>
-          <div className="px-3 py-1 rounded-md bg-bg text-[11px] font-mono text-text-secondary border border-border-custom truncate max-w-[200px] sm:max-w-xs text-center">
-            krishisaathi.app/{activeShot.title.toLowerCase().replace(/\s+/g, "-")}
+          <div className="px-3 py-1 rounded-md bg-bg text-[11px] font-mono text-text-secondary border border-border-custom truncate max-w-[220px] sm:max-w-sm text-center">
+            krishisaathi-web.vercel.app/{activeShot.title.toLowerCase().replace(/\s+/g, "-")}
           </div>
           <div className="w-12" />
         </div>
