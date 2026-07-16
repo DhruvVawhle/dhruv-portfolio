@@ -1,4 +1,7 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import Button from "@/components/ui/Button";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 
@@ -38,6 +41,25 @@ const ExternalLinkIcon = () => (
 );
 
 export default function Contact() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(-500);
+  const mouseY = useMotionValue(-500);
+
+  const springX = useSpring(mouseX, { stiffness: 120, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 120, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(-500);
+    mouseY.set(-500);
+  };
+
   return (
     <section id="contact" className="py-[var(--section-padding-y)] bg-bg" aria-label="Contact Section">
       <div className="content-width">
@@ -58,8 +80,25 @@ export default function Contact() {
             </span>
           </div>
 
-          <div className="p-8 sm:p-12 lg:p-16 rounded-3xl bg-bg-surface border border-border-custom shadow-xl">
-            <div className="max-w-3xl">
+          <div
+            ref={containerRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="relative p-8 sm:p-12 lg:p-16 rounded-3xl bg-bg-surface border border-border-custom hover:border-accent/50 shadow-xl overflow-hidden group transition-colors duration-500"
+          >
+            {/* Interactive Background Gradient Driven By Mouse Movement */}
+            <motion.div
+              style={{
+                left: springX,
+                top: springY,
+                translateX: "-50%",
+                translateY: "-50%",
+              }}
+              className="pointer-events-none absolute w-[480px] h-[480px] rounded-full bg-gradient-to-r from-accent/20 via-blue-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.08),transparent_70%)]" />
+
+            <div className="relative z-10 max-w-3xl">
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-medium min-h-[28px]">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -78,28 +117,41 @@ export default function Contact() {
                 Whether you are hiring for your engineering team or looking to discuss full-stack architecture and applied AI systems, I am available for 2027 engineering opportunities.
               </p>
 
-              {/* Authoritative Primary + Secondary Actions */}
+              {/* Authoritative Primary + Secondary Actions with Magnetic CTA Interactions */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  href="mailto:dhruvawhle@gmail.com"
-                  className="shadow-md hover:shadow-lg transition-all duration-200 justify-center"
+                <motion.div
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                  data-cursor-text="CONNECT"
                 >
-                  <MailIcon />
-                  <span>Start a Conversation</span>
-                </Button>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    href="mailto:dhruvawhle@gmail.com"
+                    className="shadow-md hover:shadow-xl hover:shadow-accent/25 transition-all duration-300 justify-center w-full sm:w-auto"
+                  >
+                    <MailIcon />
+                    <span>Start a Conversation</span>
+                  </Button>
+                </motion.div>
 
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  href="/documents/Dhruv_Vawhle_Resume.pdf"
-                  external
-                  aria-label="Open Dhruv Vawhle Resume"
-                  className="justify-center hover:border-accent transition-all duration-200"
+                <motion.div
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <span>📄 View Resume</span>
-                </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    href="/documents/Dhruv_Vawhle_Resume.pdf"
+                    external
+                    aria-label="Open Dhruv Vawhle Resume"
+                    className="justify-center hover:border-accent hover:bg-accent/5 transition-all duration-300 w-full sm:w-auto"
+                  >
+                    <span>📄 View Resume</span>
+                  </Button>
+                </motion.div>
               </div>
 
               {/* Non-Duplicated Social Connect Dock */}
@@ -107,7 +159,9 @@ export default function Contact() {
                 <span className="font-mono text-xs text-text-secondary uppercase tracking-wider">
                   Verified Profiles:
                 </span>
-                <a
+                <motion.a
+                  whileHover={{ y: -2, scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
                   href="https://github.com/DhruvVawhle"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -119,8 +173,10 @@ export default function Contact() {
                   </span>
                   <span>GitHub</span>
                   <ExternalLinkIcon />
-                </a>
-                <a
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -2, scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
                   href="https://linkedin.com/in/dhruv-vawhle-277b2b2b8"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -132,7 +188,7 @@ export default function Contact() {
                   </span>
                   <span>LinkedIn</span>
                   <ExternalLinkIcon />
-                </a>
+                </motion.a>
               </div>
             </div>
           </div>

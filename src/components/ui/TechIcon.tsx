@@ -283,7 +283,7 @@ export default function TechIcon({
   }
 
   // If this icon is dark (e.g. Express, Pandas, Next.js, GitHub, Vercel, Flask, AWS),
-  // place it inside a subtle light translucent circular container so dark lines pop clearly.
+  // place it inside an 8% white glass circular container with thin white border and soft inner shadow.
   if (isDark) {
     const darkWrapperSize =
       size === "lg"
@@ -295,12 +295,19 @@ export default function TechIcon({
     iconContent = (
       <span
         className={cn(
-          "inline-flex items-center justify-center rounded-full bg-[#F8FAFC] shadow-sm flex-shrink-0",
+          "inline-flex items-center justify-center rounded-full bg-white/[0.08] border border-white/20 shadow-[inset_0_1px_4px_rgba(255,255,255,0.15)] flex-shrink-0 backdrop-blur-sm",
           darkWrapperSize
         )}
+        style={{
+          filter: config.type === "devicon" ? "brightness(0) invert(1)" : undefined,
+        }}
         title={name}
       >
-        {iconContent}
+        {config.type === "react-icon" ? (
+          <config.icon className={cn(svgSize, "text-white drop-shadow-sm")} />
+        ) : (
+          iconContent
+        )}
       </span>
     );
   }

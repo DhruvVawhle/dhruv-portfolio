@@ -165,7 +165,10 @@ export default function About() {
              ========================================================= */}
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
             <ScrollReveal>
-              <div className="p-8 sm:p-9 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/30 transition-all duration-300">
+              <div
+                data-cursor-text="PHILOSOPHY"
+                className="p-8 sm:p-9 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.16)] transition-all duration-500"
+              >
                 <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-accent/80 rounded-l-3xl" />
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-border-custom/60">
                   <h3 className="font-display font-bold text-2xl text-text-primary">
@@ -222,16 +225,17 @@ export default function About() {
                 return (
                   <div
                     key={stepItem.step}
-                    className="rounded-2xl bg-bg-surface/80 border border-border-custom overflow-hidden transition-colors"
+                    data-cursor-text="STEP"
+                    className="rounded-2xl bg-bg-surface/80 border border-border-custom hover:border-accent/40 overflow-hidden transition-all duration-300"
                   >
                     <button
                       type="button"
                       onClick={() => setOpenStep(isOpen ? null : stepItem.step)}
                       aria-expanded={isOpen}
-                      className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left focus-visible:outline-2 focus-visible:outline-accent cursor-pointer"
+                      className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left focus-visible:outline-2 focus-visible:outline-accent cursor-pointer group"
                     >
                       <div className="flex items-center gap-3.5">
-                        <div className="w-11 h-11 min-h-[48px] rounded-xl bg-bg border border-border-custom text-accent flex items-center justify-center flex-shrink-0">
+                        <div className="w-11 h-11 min-h-[48px] rounded-xl bg-bg border border-border-custom text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                           {stepItem.icon}
                         </div>
                         <div className="flex items-center gap-2.5">
@@ -294,7 +298,7 @@ export default function About() {
                     transition={{
                       duration: 0.4,
                       delay: shouldReduceMotion ? 0 : i * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
+                      ease: [0.16, 1, 0.3, 1] as const,
                     }}
                     className="relative"
                   >
@@ -303,8 +307,9 @@ export default function About() {
                       tabIndex={0}
                       role="region"
                       aria-label={`Step ${stepItem.step}: ${stepItem.title}`}
+                      data-cursor-text="STEP"
                       className="group p-6 sm:p-7 rounded-2xl bg-bg-surface/70 border border-border-custom/60 
-                        hover:border-accent/40 hover:bg-bg-surface hover:-translate-y-1 hover:shadow-lg 
+                        hover:border-accent/40 hover:bg-bg-surface hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)] 
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-accent 
                         transition-all duration-300 relative overflow-hidden"
                     >
@@ -313,8 +318,8 @@ export default function About() {
 
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-start gap-4 sm:gap-5">
-                          {/* Minimal Line Icon Badge */}
-                          <div className="w-11 h-11 rounded-xl bg-bg border border-border-custom group-hover:border-accent/40 text-accent flex items-center justify-center flex-shrink-0 transition-colors shadow-2xs">
+                          {/* Minimal Line Icon Badge with Scale & Rotation on Hover */}
+                          <div className="w-11 h-11 rounded-xl bg-bg border border-border-custom group-hover:border-accent/50 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-2xs">
                             {stepItem.icon}
                           </div>
 

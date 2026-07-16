@@ -25,6 +25,7 @@ export default function ThemeToggle() {
       className="w-10 h-10 rounded-lg flex items-center justify-center bg-bg-surface border border-border-custom hover:border-accent/40 transition-colors cursor-pointer"
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       id="theme-toggle"
+      data-cursor-text="THEME"
     >
       <AnimatePresence mode="wait" initial={false}>
         {theme === "dark" ? (

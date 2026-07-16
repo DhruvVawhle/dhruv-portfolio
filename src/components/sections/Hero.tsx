@@ -7,9 +7,12 @@ import {
   useMotionValue,
   useSpring,
   useReducedMotion,
+  type Variants,
 } from "motion/react";
 import { hero, socialLinks } from "@/lib/data";
 import Button from "@/components/ui/Button";
+import TiltCard from "@/components/effects/TiltCard";
+import AnimatedBackground from "@/components/effects/AnimatedBackground";
 
 /* ─── Icons & Engineering Graphic Motifs ───────────────────────────── */
 const ShieldIcon = () => (
@@ -60,8 +63,6 @@ const PhoneIcon = () => (
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
   </svg>
 );
-
-
 
 const ArrowRightIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-[2px] transition-transform duration-200">
@@ -136,13 +137,40 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY, shouldReduceMotion]);
 
+  // Staggered Cuberto reveal variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.12,
+        delayChildren: shouldReduceMotion ? 0 : 0.1,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.65,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
+
   return (
     <section
       id="hero"
       className="relative overflow-hidden pt-8 pb-10 sm:pt-16 sm:pb-14 lg:pt-32 lg:pb-28 bg-bg border-b border-border-custom/40"
       aria-label="Portfolio Introduction"
     >
-      {/* ── Architectural 1px Background Grid Pattern (Low Opacity) ── */}
+      {/* ── Architectural Animated Background & Interactive Glow ── */}
+      <AnimatedBackground />
+
+      {/* ── Additional 1px Background Grid Pattern (Low Opacity) ── */}
       <div className="absolute inset-0 pointer-events-none">
         <div
           className="absolute inset-0 opacity-[0.06] dark:opacity-[0.10]"
@@ -167,9 +195,17 @@ export default function Hero() {
         />
       </div>
 
-      <div className="content-width relative z-10">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="content-width relative z-10"
+      >
         {/* ── 1. EDITORIAL CHAPTER METADATA BAR ───────────────────────── */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 sm:pb-5 mb-6 sm:mb-10 border-b border-border-custom/60">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-wrap items-center justify-between gap-4 pb-4 sm:pb-5 mb-6 sm:mb-10 border-b border-border-custom/60"
+        >
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
               01 · PORTFOLIO
@@ -190,7 +226,7 @@ export default function Hero() {
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* =========================================================
             MOBILE / TABLET VIEW (block lg:hidden): Optimized Hierarchy
@@ -198,7 +234,7 @@ export default function Hero() {
            ========================================================= */}
         <div className="block lg:hidden space-y-7 pt-1">
           {/* 1. Identity & Headline */}
-          <div>
+          <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-3.5 font-mono text-[11px] text-text-secondary/60">
               <span>&lt;production_architecture /&gt;</span>
               <span className="w-8 h-[1px] bg-border-custom" />
@@ -210,44 +246,46 @@ export default function Hero() {
               <div className="text-text-primary">PROBLEM</div>
               <div className="text-text-primary">SOLVER</div>
             </div>
-          </div>
+          </motion.div>
 
           {/* 2. Portrait Card immediately inside first screen */}
-          <div className="relative pt-2">
+          <motion.div variants={itemVariants} className="relative pt-2">
             <div className="flex items-center justify-between mb-2.5 px-1 font-mono text-xs text-text-secondary">
               <span>PORTRAIT // ARCHITECTURE</span>
               <span className="text-accent font-semibold">GRASSROOTS SCALE</span>
             </div>
 
-            <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90">
-              <Image
-                src="/images/profile/dhruv-vawhle.jpg"
-                alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
-                fill
-                priority
-                quality={100}
-                sizes="(max-width:768px) 100vw, 50vw"
-                className="object-cover grayscale contrast-110"
-              />
+            <TiltCard maxTilt={6} className="w-full">
+              <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90">
+                <Image
+                  src="/images/profile/dhruv-vawhle.jpg"
+                  alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
+                  fill
+                  priority
+                  quality={100}
+                  sizes="(max-width:768px) 100vw, 50vw"
+                  className="object-cover grayscale contrast-110"
+                />
 
-              <div className="absolute inset-x-3.5 bottom-3.5 p-5 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5">
-                <div>
-                  <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                    Dhruv Vawhle
-                  </h3>
-                  <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
-                    Full-Stack &amp; AI/ML Engineer
-                  </p>
-                </div>
-                <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                  <span>B.Tech IT · Mumbai, India</span>
-                  <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Available for Roles</span>
+                <div className="absolute inset-x-3.5 bottom-3.5 p-5 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5">
+                  <div>
+                    <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
+                      Dhruv Vawhle
+                    </h3>
+                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
+                      Full-Stack &amp; AI/ML Engineer
+                    </p>
+                  </div>
+                  <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
+                    <span>B.Tech IT · Mumbai, India</span>
+                    <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Available for Roles</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
 
             {/* Direct Contact Channels alongside portrait */}
             <div className="mt-3.5 flex items-center justify-between p-3.5 sm:p-4 max-w-[320px] sm:max-w-md mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-sm">
@@ -262,6 +300,7 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
+                    data-cursor-text="SOCIAL"
                     className="w-11 h-11 min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                   >
                     <SocialIcon icon={link.icon} />
@@ -269,10 +308,13 @@ export default function Hero() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* 3. Primary CTA Buttons (Stackable with >=48px height & 16px font) */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-[10px] sm:gap-[12px]">
+          {/* 3. Primary CTA Buttons */}
+          <motion.div
+            variants={itemVariants}
+            className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-[10px] sm:gap-[12px]"
+          >
             <Button
               variant="primary"
               href="#projects"
@@ -290,10 +332,10 @@ export default function Hero() {
             >
               <span>📄 View Resume</span>
             </Button>
-          </div>
+          </motion.div>
 
-          {/* 4. Attribution Title & Mission Description (16px body text) */}
-          <div className="pt-3 border-t border-border-custom/50">
+          {/* 4. Attribution Title & Mission Description */}
+          <motion.div variants={itemVariants} className="pt-3 border-t border-border-custom/50">
             <h2 className="text-lg sm:text-xl font-bold text-text-primary font-display">
               Dhruv Vawhle — Full-Stack &amp; AI/ML Engineer
             </h2>
@@ -302,16 +344,16 @@ export default function Hero() {
               production software backed by real data, real users, and real
               legal ownership.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* =========================================================
-            DESKTOP VIEW (hidden lg:grid): 100% UNCHANGED
+            DESKTOP VIEW (hidden lg:grid): 100% UNCHANGED LAYOUT
            ========================================================= */}
         <div className="hidden lg:grid grid-cols-12 gap-8 items-start">
           {/* LEFT ZONE: Oversized Stacked Editorial Headlines (7 cols) */}
           <div className="lg:col-span-7 flex flex-col justify-between z-10 pt-2 space-y-7 sm:space-y-8">
-            <div>
+            <motion.div variants={itemVariants}>
               {/* Engineering Code Fragment Graphic Overlay */}
               <div className="flex items-center gap-3 mb-5 font-mono text-[11px] text-text-secondary/60">
                 <span>&lt;production_architecture /&gt;</span>
@@ -346,10 +388,13 @@ export default function Hero() {
                   legal ownership.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Action Dock & Telemetry */}
-            <div className="pt-6 border-t border-border-custom/50 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <motion.div
+              variants={itemVariants}
+              className="pt-6 border-t border-border-custom/50 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+            >
               <div className="flex flex-row items-center gap-[16px] w-auto">
                 <Button
                   variant="primary"
@@ -374,11 +419,11 @@ export default function Hero() {
               <div className="hidden xl:block">
                 <ApiFlowMotif />
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* RIGHT ZONE: Architectural Grayscale Portrait Frame (5 cols) */}
-          <div className="lg:col-span-5 relative z-20">
+          <motion.div variants={itemVariants} className="lg:col-span-5 relative z-20">
             {/* Subtle Mouse Parallax Frame wrapper */}
             <motion.div
               style={
@@ -394,42 +439,44 @@ export default function Hero() {
                 <span className="text-accent font-semibold">GRASSROOTS SCALE</span>
               </div>
 
-              {/* Portrait Container with Crisp Engineering Grid Frame */}
-              <div className="relative w-full max-w-[300px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group">
-                <Image
-                  src="/images/profile/dhruv-vawhle.jpg"
-                  alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
-                  fill
-                  priority
-                  quality={100}
-                  sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                  className="object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
-                />
+              {/* Portrait Container wrapped in 3D TiltCard */}
+              <TiltCard maxTilt={7} className="w-full">
+                <div className="relative w-full max-w-[300px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group">
+                  <Image
+                    src="/images/profile/dhruv-vawhle.jpg"
+                    alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
+                    fill
+                    priority
+                    quality={100}
+                    sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+                    className="object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
+                  />
 
-                {/* Top Corner Git Graph Motif Overlay */}
-                <div className="absolute top-4 right-4 p-2.5 rounded-xl bg-bg-surface/80 backdrop-blur-md border border-border-custom/60 hidden sm:block">
-                  <GitGraphMotif />
-                </div>
-
-                {/* Bottom Structured Portrait Hierarchy Inside Card */}
-                <div className="absolute inset-x-4 bottom-4 p-6 sm:p-7 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-3 transition-all duration-300">
-                  <div>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                      Dhruv Vawhle
-                    </h3>
-                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
-                      Full-Stack &amp; AI/ML Engineer
-                    </p>
+                  {/* Top Corner Git Graph Motif Overlay */}
+                  <div className="absolute top-4 right-4 p-2.5 rounded-xl bg-bg-surface/80 backdrop-blur-md border border-border-custom/60 hidden sm:block">
+                    <GitGraphMotif />
                   </div>
-                  <div className="pt-3 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                    <span>B.Tech IT · Mumbai, India</span>
-                    <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Available for Roles</span>
+
+                  {/* Bottom Structured Portrait Hierarchy Inside Card */}
+                  <div className="absolute inset-x-4 bottom-4 p-6 sm:p-7 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-3 transition-all duration-300">
+                    <div>
+                      <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
+                        Dhruv Vawhle
+                      </h3>
+                      <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
+                        Full-Stack &amp; AI/ML Engineer
+                      </p>
+                    </div>
+                    <div className="pt-3 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
+                      <span>B.Tech IT · Mumbai, India</span>
+                      <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Available for Roles</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
 
               {/* Floating Social Bar alongside Portrait Grid */}
               <div className="mt-4 flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-bg-surface border border-border-custom shadow-sm">
@@ -445,6 +492,7 @@ export default function Hero() {
                       rel="noopener noreferrer"
                       aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
                       id={`hero-social-${link.icon}`}
+                      data-cursor-text="SOCIAL"
                       className="w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                     >
                       <SocialIcon icon={link.icon} />
@@ -453,11 +501,14 @@ export default function Hero() {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
 
         {/* ── 3. PRODUCTION CREDIBILITY MATRIX ALONG GRID BASE ────────── */}
-        <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border-custom/60">
+        <motion.div
+          variants={itemVariants}
+          className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border-custom/60"
+        >
           <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
             <span className="font-mono text-xs text-text-secondary uppercase tracking-widest font-semibold">
               Production Credibility &amp; Ownership
@@ -471,9 +522,10 @@ export default function Hero() {
             {hero.trustSignals.map((signal, i) => (
               <div
                 key={signal.label}
-                className="p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-sm transition-all duration-300 flex items-center gap-4 group"
+                data-cursor-text="VERIFIED"
+                className="p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-4 group"
               >
-                <div className="w-11 h-11 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                <div className="w-11 h-11 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                   {trustIcons[i]}
                 </div>
                 <div>
@@ -491,8 +543,8 @@ export default function Hero() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

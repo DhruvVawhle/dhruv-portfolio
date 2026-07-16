@@ -123,9 +123,10 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  {/* Screenshot Preview with Intelligent Crop */}
+                  {/* Screenshot Preview with Intelligent Crop & Gradient Overlay */}
                   <div
                     onClick={() => setSelectedProject(proj)}
+                    data-cursor-text="CASE STUDY"
                     className="group/img relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-md mb-6 cursor-pointer"
                   >
                     <Image
@@ -138,12 +139,12 @@ export default function Projects() {
                       alt={`${proj.title} Preview`}
                       fill
                       sizes="(max-width:768px) 100vw, 50vw"
-                      className={`object-cover transition-transform duration-500 group-hover/img:scale-105 ${
+                      className={`object-cover transition-transform duration-700 ease-out group-hover/img:scale-[1.06] ${
                         isMedtalk ? "object-top" : "object-center"
                       }`}
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">
-                      <span className="px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-all duration-500">
+                      <span className="px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
                         Explore Details
                       </span>
                     </div>
@@ -197,15 +198,18 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  {/* View Full Project Button (>= 48px touch target & text-base font-bold) */}
+                  {/* View Full Project Button */}
                   <div className="pt-4 border-t border-border-custom/60 flex flex-col gap-3.5">
                     <button
                       type="button"
                       onClick={() => setSelectedProject(proj)}
-                      className="w-full min-h-[54px] px-7 py-4 rounded-xl bg-foreground text-background font-mono text-base font-bold shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+                      data-cursor-text="CASE STUDY"
+                      className="group/btn w-full min-h-[54px] px-7 py-4 rounded-xl bg-foreground text-background font-mono text-base font-bold shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
                     >
                       <span>View Full Project Case Study</span>
-                      <ExploreArrowIcon />
+                      <span className="transform group-hover/btn:translate-x-1.5 transition-transform duration-300">
+                        <ExploreArrowIcon />
+                      </span>
                     </button>
 
                     <div className="flex items-center gap-3">
@@ -215,6 +219,7 @@ export default function Projects() {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          data-cursor-text="LINK"
                           className="flex-1 min-h-[52px] flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-[15px] font-bold transition-colors"
                         >
                           {link.icon === "github" && <GithubIcon />}
@@ -263,6 +268,7 @@ export default function Projects() {
                 <div className="lg:col-span-5">
                   <div
                     onClick={() => setSelectedProject(flagship)}
+                    data-cursor-text="CASE STUDY"
                     className="group/img relative aspect-[16/11] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-xl cursor-pointer"
                   >
                     <Image
@@ -270,12 +276,12 @@ export default function Projects() {
                       alt={`${flagship.title} Hero Preview`}
                       fill
                       sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                      className="object-cover group-hover/img:scale-[1.03] transition-transform duration-700"
+                      className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-[1.06]"
                     />
 
-                    {/* Hover Prompt */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform group-hover/img:scale-[1.03] transition-transform">
+                    {/* Hover Prompt with Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-500 flex items-center justify-center">
+                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
                         <span>Explore Architecture</span>
                         <ExploreArrowIcon />
                       </span>
@@ -357,11 +363,12 @@ export default function Projects() {
                     <button
                       type="button"
                       onClick={() => setSelectedProject(flagship)}
+                      data-cursor-text="CASE STUDY"
                       aria-label={`Explore ${flagship.title} Platform Architecture and Technical Details`}
                       className="group/btn inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-foreground text-background hover:opacity-90 font-mono text-[15px] sm:text-base font-bold min-h-[52px] sm:min-h-[54px] shadow-md transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-[#111318]"
                     >
                       <span>Explore Platform</span>
-                      <span className="transform group-hover/btn:translate-x-1.5 transition-transform duration-300">
+                      <span className="transform group-hover/btn:translate-x-2 transition-transform duration-300">
                         <ExploreArrowIcon />
                       </span>
                     </button>
@@ -372,6 +379,7 @@ export default function Projects() {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-cursor-text="LINK"
                         className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-sm sm:text-[15px] font-bold min-h-[52px] sm:min-h-[54px] transition-colors"
                       >
                         {link.icon === "github" && <GithubIcon />}
@@ -412,7 +420,6 @@ export default function Projects() {
         {/* ── ALTERNATING LAYOUT SHOWCASE: MEDTALK & SECONDARY PROJECTS ── */}
         <div className="space-y-20 lg:space-y-28">
           {secondaryProjects.map((project, index) => {
-            // Alternate layout: even indices (0 -> MedTalk) have Content Left / Image Right!
             const isContentLeft = index % 2 === 0;
 
             return (
@@ -434,7 +441,7 @@ export default function Projects() {
 
                   {/* Alternating Grid: Content Left (7 cols) / Image Right (5 cols) for MedTalk */}
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
-                    {/* Content Column (7 cols on left for MedTalk) */}
+                    {/* Content Column */}
                     <div
                       className={`lg:col-span-7 flex flex-col justify-between ${
                         isContentLeft ? "lg:order-1" : "lg:order-2"
@@ -484,11 +491,12 @@ export default function Projects() {
                         <button
                           type="button"
                           onClick={() => setSelectedProject(project)}
+                          data-cursor-text="CASE STUDY"
                           aria-label={`Explore ${project.title} Technical Overview and Features`}
                           className="group/btn inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-foreground text-background hover:opacity-90 font-mono text-[15px] sm:text-base font-bold min-h-[52px] sm:min-h-[54px] shadow-md transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-[#111318]"
                         >
                           <span>Explore AI Assistant</span>
-                          <span className="transform group-hover/btn:translate-x-1.5 transition-transform duration-300">
+                          <span className="transform group-hover/btn:translate-x-2 transition-transform duration-300">
                             <ExploreArrowIcon />
                           </span>
                         </button>
@@ -499,6 +507,7 @@ export default function Projects() {
                             href={link.url}
                             target="_blank"
                             rel="noopener noreferrer"
+                            data-cursor-text="LINK"
                             className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-sm sm:text-[15px] font-bold min-h-[52px] sm:min-h-[54px] transition-colors"
                           >
                             {link.icon === "github" && <GithubIcon />}
@@ -509,7 +518,7 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Image Column (5 cols on right for MedTalk) */}
+                    {/* Image Column */}
                     <div
                       className={`lg:col-span-5 ${
                         isContentLeft ? "lg:order-2" : "lg:order-1"
@@ -517,6 +526,7 @@ export default function Projects() {
                     >
                       <div
                         onClick={() => setSelectedProject(project)}
+                        data-cursor-text="CASE STUDY"
                         className="group/thumb relative aspect-[16/11] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-xl cursor-pointer"
                       >
                         <Image
@@ -529,10 +539,10 @@ export default function Projects() {
                           alt={`${project.title} Preview`}
                           fill
                           sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                          className="object-cover group-hover/thumb:scale-[1.03] transition-transform duration-700"
+                          className="object-cover transition-transform duration-700 ease-out group-hover/thumb:scale-[1.06]"
                         />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform group-hover/thumb:scale-[1.03] transition-transform">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/thumb:translate-y-0 transition-transform duration-500">
                             <span>Explore AI Assistant</span>
                             <ExploreArrowIcon />
                           </span>

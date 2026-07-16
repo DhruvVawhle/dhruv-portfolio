@@ -243,12 +243,12 @@ export default function CaseStudyModal({
             className="fixed inset-0 bg-black/80 backdrop-blur-md"
           />
 
-          {/* Modal Drawer / Container */}
+          {/* Modal Drawer / Container with Mask Reveal and Scaling Transition */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 20 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.93, y: 30, clipPath: "inset(8% 8% 8% 8% round 32px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0% round 24px)" }}
+            exit={{ opacity: 0, scale: 0.95, y: 20, clipPath: "inset(5% 5% 5% 5% round 32px)" }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
             className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#111318] border border-border-custom text-white shadow-2xl z-10 scrollbar-thin"
             onClick={(e) => e.stopPropagation()}
           >
@@ -292,10 +292,14 @@ export default function CaseStudyModal({
               </button>
             </div>
 
-            {/* Modal Content Body */}
+            {/* Modal Content Body with Sequential Section Animations */}
             <div className="p-6 sm:p-8 lg:p-12 space-y-12">
               {/* ── HERO BANNER ─────────────────────────────────────────── */}
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+              >
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
                   <h2
                     id="case-study-title"
@@ -318,10 +322,16 @@ export default function CaseStudyModal({
                 >
                   {project.subtitle}
                 </p>
-              </div>
+              </motion.div>
 
               {/* ── 1. THE PROBLEM vs 2. THE SOLUTION STORYTELLING GRID ── */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+              <motion.div
+                initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] as const }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
+              >
                 <div className="p-6 sm:p-7 rounded-2xl bg-white/[0.03] border border-white/10">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="w-2 h-2 rounded-full bg-red-400" />
@@ -349,21 +359,33 @@ export default function CaseStudyModal({
                     {project.approach}
                   </p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* ── 3. INTERACTIVE PRODUCT SHOWCASE GALLERY ──────────────── */}
               {slides.length > 0 && (
-                <div className="pt-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
+                  className="pt-2"
+                >
                   <ProductShowcaseGallery
                     slides={slides}
                     displayMode={displayMode}
                     accentName={theme.name}
                   />
-                </div>
+                </motion.div>
               )}
 
               {/* ── 4. ENGINEERING ARCHITECTURE & TECH STACK ────────────── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-4 border-t border-white/10">
+              <motion.div
+                initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] as const }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-4 border-t border-white/10"
+              >
                 <div className="lg:col-span-7 space-y-4">
                   <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest">
                     04 · ENGINEERING ARCHITECTURE
@@ -390,10 +412,16 @@ export default function CaseStudyModal({
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* ── 5. PRODUCTION RESULTS & METRICS ────────────────────── */}
-              <div className="pt-4 border-t border-white/10">
+              <motion.div
+                initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+                className="pt-4 border-t border-white/10"
+              >
                 <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">
                   05 · PRODUCTION RESULTS &amp; OUTCOMES
                 </h3>
@@ -432,22 +460,34 @@ export default function CaseStudyModal({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
 
               {/* ── 6. KEY LEARNINGS & REFLECTIONS ────────────────────── */}
               {learnings && (
-                <div className="p-6 sm:p-8 rounded-2xl bg-white/[0.03] border border-white/10">
+                <motion.div
+                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
+                  className="p-6 sm:p-8 rounded-2xl bg-white/[0.03] border border-white/10"
+                >
                   <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
                     06 · ARCHITECTURAL LEARNINGS &amp; REFLECTIONS
                   </h3>
                   <p className="text-sm sm:text-base text-gray-300 leading-relaxed italic">
                     &ldquo;{learnings}&rdquo;
                   </p>
-                </div>
+                </motion.div>
               )}
 
               {/* ── FOOTER ACTION LINKS ───────────────────────────────── */}
-              <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] as const }}
+                className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4"
+              >
                 <div className="flex flex-wrap items-center gap-3">
                   {project.links.map((link) => (
                     <a
@@ -475,7 +515,7 @@ export default function CaseStudyModal({
                 >
                   Close Technical Deep Dive
                 </button>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

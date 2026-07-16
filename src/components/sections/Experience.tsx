@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import { experiences } from "@/lib/data";
 import ScrollReveal from "@/components/effects/ScrollReveal";
@@ -67,23 +68,37 @@ export default function Experience() {
           </div>
         </ScrollReveal>
 
-        {/* ── 2. EDITORIAL VERTICAL TIMELINE ───────────────────────── */}
+        {/* ── 2. EDITORIAL VERTICAL TIMELINE WITH ANIMATED GROWTH ───────── */}
         <div className="relative pl-8 sm:pl-12 md:pl-16 max-w-4xl mx-auto">
-          {/* 2px Vertical Timeline Track */}
-          <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-gradient-to-b from-accent via-border-custom to-border-custom/20" />
+          {/* Static background track */}
+          <div className="absolute left-0 top-3 bottom-3 w-0.5 bg-border-custom/30" />
+          {/* Animated growing track */}
+          <motion.div
+            initial={{ height: 0 }}
+            whileInView={{ height: "100%" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as const }}
+            className="absolute left-0 top-3 w-0.5 bg-gradient-to-b from-accent via-accent/80 to-border-custom/20 origin-top"
+          />
 
           {experiences.map((exp, i) => (
             <ScrollReveal
               key={exp.id}
-              delay={i * 0.12}
+              delay={i * 0.15}
               className={i !== experiences.length - 1 ? "mb-12 sm:mb-16" : ""}
             >
-              <div className="relative group">
-                {/* Crisp Timeline Ring Node Dot centered over 2px track */}
-                <div className="absolute -left-8 sm:-left-12 md:-left-16 top-8 -translate-x-[7px] w-4 h-4 rounded-full bg-accent ring-4 ring-bg-surface shadow-[0_0_12px_rgba(59,130,246,0.6)] group-hover:scale-110 group-hover:ring-accent/30 transition-all duration-300 z-10" />
+              <div className="relative group" data-cursor-text="ROLE">
+                {/* Illuminating Ring Node Dot centered over track */}
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25, delay: i * 0.15 + 0.2 }}
+                  className="absolute -left-8 sm:-left-12 md:-left-16 top-8 -translate-x-[7px] w-4 h-4 rounded-full bg-accent ring-4 ring-bg-surface shadow-[0_0_15px_rgba(59,130,246,0.8)] group-hover:scale-125 group-hover:ring-accent/40 transition-all duration-300 z-10"
+                />
 
                 {/* Content Card with Subtle Hover Lift */}
-                <div className="bg-bg-surface/80 border border-border-custom group-hover:border-accent/40 rounded-3xl p-6 sm:p-8 shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <div className="bg-bg-surface/80 border border-border-custom group-hover:border-accent/40 rounded-3xl p-6 sm:p-8 shadow-sm group-hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border-custom/60">
                     <div className="flex items-center gap-4">
                       <CompanyLogoTile company={exp.company} />
@@ -142,9 +157,10 @@ export default function Experience() {
 
                         {/* 3. Certificate Preview & Action Container */}
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-5 pt-1">
-                          {/* Certificate Preview (Second Strongest Visual Element) */}
+                          {/* Certificate Preview */}
                           <div
                             onClick={() => openCertificate(exp.certificate!.image)}
+                            data-cursor-text="VIEW CERT"
                             className="group/cert relative w-full sm:w-56 md:w-64 aspect-[16/11] rounded-xl overflow-hidden border border-border-custom bg-bg/80 cursor-pointer transition-all duration-300 hover:border-neutral-400 dark:hover:border-neutral-500 hover:shadow-md flex-shrink-0"
                           >
                             <Image
@@ -170,6 +186,7 @@ export default function Experience() {
                           <div className="flex flex-col sm:items-end justify-center">
                             <button
                               onClick={() => openCertificate(exp.certificate!.image)}
+                              data-cursor-text="VIEW CERT"
                               className="group/btn inline-flex items-center justify-center gap-2 h-9 px-4 rounded-full text-[13px] font-semibold text-text-primary bg-bg-surface hover:bg-bg-surface-hover border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-xs hover:shadow-sm transition-all duration-200 cursor-pointer w-full sm:w-auto whitespace-nowrap"
                             >
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-secondary">

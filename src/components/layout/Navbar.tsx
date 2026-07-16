@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { navLinks } from "@/lib/data";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
@@ -10,6 +10,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [scrollProgress, setScrollProgress] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
 
   const isManualNavRef = useRef(false);
   const manualNavTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -152,8 +153,8 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-bg/80 backdrop-blur-2xl border-b border-border-custom shadow-md"
-            : "bg-transparent"
+            ? "bg-bg/85 backdrop-blur-2xl border-b border-border-custom shadow-[0_4px_30px_rgba(0,0,0,0.15)] py-0.5"
+            : "bg-transparent py-2"
         }`}
       >
         {/* Top Edge Scroll Progress Bar */}
@@ -180,7 +181,7 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-1 p-1 rounded-full bg-bg-surface/60 border border-border-custom/60 backdrop-blur-md">
+          <div className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-bg-surface/70 border border-border-custom/80 backdrop-blur-md shadow-xs">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
               return (
@@ -188,6 +189,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => handleNavClick(link.href)}
+                  data-cursor-text="NAV"
                   className={`text-xs font-mono px-4 py-1.5 rounded-full transition-colors duration-200 relative z-10 ${
                     isActive
                       ? "text-background font-bold"
@@ -198,11 +200,15 @@ export default function Navbar() {
                     <motion.span
                       layoutId="navbar-active-pill"
                       className="absolute inset-0 bg-foreground rounded-full shadow-sm -z-10"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
+                      transition={
+                        shouldReduceMotion
+                          ? { duration: 0 }
+                          : {
+                              type: "spring",
+                              stiffness: 420,
+                              damping: 28,
+                            }
+                      }
                     />
                   )}
                   {link.label}

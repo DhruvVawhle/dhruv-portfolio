@@ -62,6 +62,9 @@ export const metadata: Metadata = {
   },
 };
 
+import CubertoCursor from "@/components/effects/CubertoCursor";
+import LoadingSequence from "@/components/effects/LoadingSequence";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -76,6 +79,8 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-bg text-text-primary font-body antialiased">
         <ThemeInitializer />
+        <LoadingSequence />
+        <CubertoCursor />
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>

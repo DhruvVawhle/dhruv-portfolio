@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { type ButtonHTMLAttributes, forwardRef } from "react";
+import React, { type ButtonHTMLAttributes, forwardRef, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost";
@@ -7,6 +10,14 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   external?: boolean;
   download?: boolean | string;
+  magnetic?: boolean;
+  ripple?: boolean;
+}
+
+interface RippleItem {
+  id: number;
+  x: number;
+  y: number;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -18,12 +29,76 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       href,
       external,
       children,
+      magnetic = true,
+      ripple = true,
+      onClick,
       ...props
     },
     ref
   ) => {
+    const internalRef = useRef<HTMLButtonElement | HTMLAnchorElement | null>(null);
+    const shouldReduceMotion = useReducedMotion();
+    const [ripples, setRipples] = useState<RippleItem[]>([]);
+
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const springConfig = { stiffness: 220, damping: 20, mass: 0.1 };
+    const springX = useSpring(x, springConfig);
+    const springY = useSpring(y, springConfig);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+      if (!magnetic || shouldReduceMotion || !internalRef.current) return;
+      const rect = (internalRef.current as HTMLElement).getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distanceX = (e.clientX - centerX) * 0.22;
+      const distanceY = (e.clientY - centerY) * 0.22;
+
+      x.set(distanceX);
+      y.set(distanceY);
+    };
+
+    const handleMouseLeave = () => {
+      if (!magnetic) return;
+      x.set(0);
+      y.set(0);
+    };
+
+    const handleClick = (e: React.MouseEvent<any>) => {
+      if (ripple && internalRef.current) {
+        const rect = (internalRef.current as HTMLElement).getBoundingClientRect();
+        const rippleX = e.clientX - rect.left;
+        const rippleY = e.clientY - rect.top;
+        const newRipple: RippleItem = {
+          id: Date.now(),
+          x: rippleX,
+          y: rippleY,
+        };
+
+        setRipples((prev) => [...prev, newRipple]);
+
+        setTimeout(() => {
+          setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+        }, 600);
+      }
+
+      if (onClick) {
+        onClick(e);
+      }
+    };
+
+    const setRefs = (element: any) => {
+      internalRef.current = element;
+      if (typeof ref === "function") {
+        ref(element);
+      } else if (ref) {
+        (ref as any).current = element;
+      }
+    };
+
     const baseStyles =
-      "inline-flex items-center justify-center gap-2 font-medium rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 cursor-pointer select-none active:scale-[0.98]";
+      "relative inline-flex items-center justify-center gap-2 font-medium rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 cursor-pointer select-none overflow-hidden active:scale-[0.98] z-10";
 
     const variants = {
       primary:
@@ -42,24 +117,63 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const classes = cn(baseStyles, variants[variant], sizes[size], className);
 
+    const renderedRipples = ripple ? (
+      ripples.map((r) => (
+        <span
+          key={r.id}
+          className="absolute rounded-full pointer-events-none bg-white/35 animate-ripple z-0"
+          style={{
+            left: r.x,
+            top: r.y,
+            width: "12px",
+            height: "12px",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      ))
+    ) : null;
+
     if (href) {
       return (
-        <a
+        <motion.a
+          ref={setRefs as any}
           href={href}
           className={classes}
           target={external ? "_blank" : undefined}
           rel={external ? "noopener noreferrer" : undefined}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
+          style={{
+            x: shouldReduceMotion ? 0 : springX,
+            y: shouldReduceMotion ? 0 : springY,
+          }}
+          data-cursor-text="LINK"
           {...(props as any)}
         >
-          {children}
-        </a>
+          <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+          {renderedRipples}
+        </motion.a>
       );
     }
 
     return (
-      <button ref={ref} className={classes} {...props}>
-        {children}
-      </button>
+      <motion.button
+        ref={setRefs as any}
+        className={classes}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+        style={{
+          x: shouldReduceMotion ? 0 : springX,
+          y: shouldReduceMotion ? 0 : springY,
+        }}
+        data-cursor-text={variant === "primary" ? "CLICK" : undefined}
+        {...(props as any)}
+      >
+        <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
+        {renderedRipples}
+      </motion.button>
     );
   }
 );
