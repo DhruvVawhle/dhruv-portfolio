@@ -167,7 +167,6 @@ interface TechDetailInfo {
   category: string;
   categoryColor: string;
   role: string;
-  experience: string;
   projectsList: string[];
   useCases: string[];
   architecture: string;
@@ -179,7 +178,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Frontend Framework",
     categoryColor: "#3B82F6",
     role: "Client-Side UI Architect & State Engineer",
-    experience: "5+ Years",
     projectsList: ["KrishiSaathi AI Platform", "MedTalk Clinical Chatbot", "Portfolio Architecture"],
     useCases: ["UI Architecture", "Reactive Reconciliation", "Component Design", "State Management"],
     architecture:
@@ -195,7 +193,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Full-Stack Framework",
     categoryColor: "#3B82F6",
     role: "SSR Architecture & App Router Engineer",
-    experience: "4+ Years",
     projectsList: ["Portfolio Architecture", "KrishiSaathi Core API", "Enterprise Web Apps"],
     useCases: ["React Server Components (RSC)", "App Router Navigation", "API Route Gateway", "Static & Dynamic Caching"],
     architecture:
@@ -211,7 +208,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Type System & Language",
     categoryColor: "#3B82F6",
     role: "Domain Modeling & Type Contracts Engineer",
-    experience: "4+ Years",
     projectsList: ["Portfolio Site & Applications", "KrishiSaathi Core API", "All Production Microservices"],
     useCases: ["End-to-End Type Safety", "API Payload Contracts", "Generics & Unions", "Zero Runtime Casting"],
     architecture:
@@ -227,7 +223,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Design System & Styling",
     categoryColor: "#3B82F6",
     role: "Tokenized UI & Responsive Design Engineer",
-    experience: "4+ Years",
     projectsList: ["Portfolio Design System", "KrishiSaathi Responsive UI", "Mobile Dashboards"],
     useCases: ["Custom Design Tokens", "Glassmorphic Surfaces", "Responsive Breakpoints", "Zero Layout Shift"],
     architecture:
@@ -243,7 +238,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Backend Runtime",
     categoryColor: "#10B981",
     role: "Asynchronous Event-Driven Backend Engineer",
-    experience: "4+ Years",
     projectsList: ["KrishiSaathi Backend", "Edith AI Orchestrator", "Distributed Microservices"],
     useCases: ["Non-Blocking I/O Streams", "Concurrent API Requests", "Cluster Processing", "Background Task Dispatch"],
     architecture:
@@ -259,7 +253,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "API Gateway & Middleware",
     categoryColor: "#10B981",
     role: "HTTP API Gateway & Middleware Architect",
-    experience: "4+ Years",
     projectsList: ["KrishiSaathi Microservices", "Order & Inventory Routes", "Payment Gateway Integration"],
     useCases: ["Middleware Chain of Responsibility", "CORS & Security Policies", "Rate Limiting", "JSON Error Serialization"],
     architecture:
@@ -275,7 +268,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "AI & Data Engineering",
     categoryColor: "#A855F7",
     role: "Machine Learning & Predictive Pipeline Engineer",
-    experience: "3+ Years",
     projectsList: ["KrishiSaathi ML Engine", "MedTalk AI Backend", "Automated Data Scrapers"],
     useCases: ["Ensemble Regression Models", "Vector Embeddings & RAG", "FastAPI & Flask Endpoints", "Vectorized Numpy ETL"],
     architecture:
@@ -291,7 +283,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Service Architecture",
     categoryColor: "#10B981",
     role: "HTTP Service Contract & Webhook Engineer",
-    experience: "5+ Years",
     projectsList: ["All Distributed Portfolio Systems", "Payment Webhook Endpoints", "External AI Gateway"],
     useCases: ["Structured HTTP Contracts", "Webhook Callbacks", "Idempotent Operations", "Contract Validation"],
     architecture:
@@ -307,7 +298,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Applied Generative AI",
     categoryColor: "#A855F7",
     role: "Multimodal AI Orchestrator & Prompt Engineer",
-    experience: "2+ Years",
     projectsList: ["Edith Assistant Orchestrator", "Automated Portfolio Insights", "MedTalk Clinical Reasoning"],
     useCases: ["Multimodal NLU & Reasoning", "Structured JSON Outputs", "Multi-Step Tool Calling", "Context Caching"],
     architecture:
@@ -323,7 +313,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Applied AI Pipeline",
     categoryColor: "#A855F7",
     role: "Retrieval-Augmented Generation Architect",
-    experience: "2+ Years",
     projectsList: ["MedTalk Clinical Knowledge Engine", "Document Query Retrieval Systems"],
     useCases: ["High-Dimensional Embeddings", "Semantic Vector Search", "Chunking Strategies", "Hallucination Mitigation"],
     architecture:
@@ -339,7 +328,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Data Science & ETL",
     categoryColor: "#A855F7",
     role: "Tabular Data & Pipeline Engineer",
-    experience: "3+ Years",
     projectsList: ["Historical Mandi Crop Data Processing", "Market Trend Ingestion Scripts"],
     useCases: ["Structured Tabular ETL", "Missing Value Imputation", "Time-Series Rolling Averages", "High-Speed CSV/Parquet Sync"],
     architecture:
@@ -355,7 +343,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Visual Analytics",
     categoryColor: "#A855F7",
     role: "Exploratory Statistical Charting Engineer",
-    experience: "3+ Years",
     projectsList: ["Agricultural Market Trend Reports", "Crop Price Prediction Visualizations"],
     useCases: ["Time-Series Trend Charts", "Regression Error Distributions", "Exploratory Data Analysis", "Report Generation"],
     architecture:
@@ -371,7 +358,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Cloud Infrastructure",
     categoryColor: "#F97316",
     role: "Cloud Infrastructure Deployment Specialist",
-    experience: "3+ Years",
     projectsList: ["High-Availability Cloud Deployments", "Asset Storage CDN", "Serverless Trigger Pipelines"],
     useCases: ["EC2 Virtual Compute", "S3 Asset Storage & CDN", "Lambda Asynchronous Triggers", "IAM Security Policies"],
     architecture:
@@ -387,7 +373,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Managed Cloud AI",
     categoryColor: "#F97316",
     role: "Google Cloud Certified AI Specialist",
-    experience: "3+ Years",
     projectsList: ["Google Cloud Certified AI Security", "Vertex AI Endpoint Integration", "BigQuery Analytics"],
     useCases: ["Vertex AI Endpoints", "BigQuery SQL Analytics", "Cloud Functions Processing", "IAM & Service Account Security"],
     architecture:
@@ -403,7 +388,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "DevOps & Containers",
     categoryColor: "#F97316",
     role: "Containerized Environment & CI/CD Architect",
-    experience: "3+ Years",
     projectsList: ["Backend Microservice Orchestration", "Reproducible Staging & Prod Builds", "Isolated Local Dev Engine"],
     useCases: ["Multi-Stage Dockerfile Builds", "Docker Compose Orchestration", "Environment Parity", "Fast Cold Starts"],
     architecture:
@@ -419,7 +403,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Serverless Cloud Platform",
     categoryColor: "#F97316",
     role: "Real-Time Cloud Synchronization Engineer",
-    experience: "4+ Years",
     projectsList: ["KrishiSaathi Real-time Order Updates", "Secure User Authentication", "Live Notification Engine"],
     useCases: ["Real-Time Document Sync", "Serverless Authentication", "Live Webhook Subscriptions", "Firestore Indexes"],
     architecture:
@@ -435,7 +418,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "NoSQL Database",
     categoryColor: "#059669",
     role: "Distributed Document Store Architect",
-    experience: "4+ Years",
     projectsList: ["KrishiSaathi Core Transactional Logs", "Geospatial Mandi Indexing", "User Inventory Storage"],
     useCases: ["Multi-Stage Aggregations", "Compound & Geospatial Indexes", "Flexible BSON Schemas", "Mongoose Validation"],
     architecture:
@@ -451,7 +433,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Semantic Vector Storage",
     categoryColor: "#059669",
     role: "High-Dimensional Vector Search Engineer",
-    experience: "2+ Years",
     projectsList: ["MedTalk AI Memory Embeddings", "Semantic Document Retrieval Engine"],
     useCases: ["High-Dimensional Indexing", "Cosine Similarity Queries", "Metadata Filtering", "Real-time Embedding Lookup"],
     architecture:
@@ -467,7 +448,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Relational Database",
     categoryColor: "#059669",
     role: "Normalized Relational Schema Engineer",
-    experience: "4+ Years",
     projectsList: ["Structured Financial Records", "ACID Transactional Logs", "Mandi Catalog Schemas"],
     useCases: ["Normalized 3NF Relational Schemas", "ACID Transaction Integrity", "Complex Joins & Window Functions", "Query Plan Optimization"],
     architecture:
@@ -483,7 +463,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Real-Time Document Store",
     categoryColor: "#059669",
     role: "Low-Latency Cloud Database Specialist",
-    experience: "4+ Years",
     projectsList: ["Real-Time Marketplace Sync", "Live Diagnostic Chat Engine"],
     useCases: ["Low-Latency Cloud Document Store", "Live Client Subscriptions", "Optimistic Concurrency", "Granular Security Rules"],
     architecture:
@@ -499,7 +478,6 @@ const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
     category: "Developer Tools",
     categoryColor: "#EF4444",
     role: "Version Control & CI/CD Gatekeeper",
-    experience: "5+ Years",
     projectsList: ["100% of Personal & Production Repositories", "Automated GitHub Actions CI/CD"],
     useCases: ["Trunk-Based Development & GitFlow", "Semantic Commits", "Pull Request Review Gates", "Branch Protection"],
     architecture:
@@ -519,7 +497,6 @@ const getTechDetail = (name: string): TechDetailInfo => {
     category: "Engineering Ecosystem",
     categoryColor: "#3B82F6",
     role: "Full-Stack System Architect",
-    experience: "3+ Years",
     projectsList: ["Core Portfolio Architecture & Applications"],
     useCases: ["System Architecture", "High-Availability Execution", "Performance Optimization"],
     architecture: `Full-stack architecture component powering reliable ${name} execution across the production engineering ecosystem.`,
@@ -855,14 +832,14 @@ export default function Skills() {
                 >
                   {activeDetail.category}
                 </span>
-                <div className="mt-2 pt-1.5 border-t border-white/10 w-full font-mono text-[10px] text-white/80 space-y-0.5">
+                <div className="mt-2 pt-1.5 border-t border-white/10 w-full font-mono text-[10px] text-white/80 space-y-1">
                   <div className="flex justify-between items-center px-1">
-                    <span className="text-white/60">Experience:</span>
-                    <span className="font-bold text-[#3B82F6]">{activeDetail.experience}</span>
+                    <span className="text-white/60">Domain:</span>
+                    <span className="font-bold text-[#3B82F6] truncate max-w-[90px]">{activeDetail.category}</span>
                   </div>
                   <div className="flex justify-between items-center px-1">
-                    <span className="text-white/60">Projects:</span>
-                    <span className="font-semibold text-emerald-400">{activeDetail.projectsList.length} Apps</span>
+                    <span className="text-white/60">Used in:</span>
+                    <span className="font-semibold text-emerald-400">{activeDetail.projectsList.length} {activeDetail.projectsList.length === 1 ? "Project" : "Projects"}</span>
                   </div>
                 </div>
               </motion.div>
@@ -1011,20 +988,12 @@ export default function Skills() {
                 </div>
 
                 {/* Skill Details Breakdown */}
-                <div className="grid grid-cols-2 gap-3 pb-4 border-b border-white/10 font-mono text-xs">
+                <div className="pb-4 border-b border-white/10 font-mono text-xs">
                   <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
                     <span className="text-white/50 text-[10px] uppercase tracking-wider block">
-                      Experience
+                      Primary Engineering Role
                     </span>
-                    <span className="text-white font-bold text-sm block">
-                      {activeDetail.experience}
-                    </span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-white/50 text-[10px] uppercase tracking-wider block">
-                      Primary Role
-                    </span>
-                    <span className="text-[#3B82F6] font-bold text-sm block truncate" title={activeDetail.role}>
+                    <span className="text-[#3B82F6] font-bold text-sm sm:text-base block" title={activeDetail.role}>
                       {activeDetail.role}
                     </span>
                   </div>
