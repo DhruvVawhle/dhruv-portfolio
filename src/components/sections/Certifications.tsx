@@ -171,25 +171,25 @@ export default function Certifications() {
             )}
           </div>
 
-          <div className="relative z-10 mt-auto pt-4 border-t border-border-custom/60 flex items-center justify-between gap-3">
+          <div className="relative z-10 mt-auto pt-4 border-t border-border-custom/60 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3">
             {cert.image ? (
               isPdf ? (
                 <a
                   href={cert.image}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-[42px] px-[18px] rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-[14px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 whitespace-nowrap shadow-xs"
+                  className="inline-flex items-center justify-center h-10 px-3.5 sm:px-4 rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-xs sm:text-[13px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 shadow-xs max-w-full"
                 >
-                  <span>Download PDF →</span>
+                  <span className="truncate">Download PDF →</span>
                 </a>
               ) : (
                 <a
                   href={cert.image}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-[42px] px-[18px] rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-[14px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 cursor-pointer whitespace-nowrap shadow-xs"
+                  className="inline-flex items-center justify-center h-10 px-3.5 sm:px-4 rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-xs sm:text-[13px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 cursor-pointer shadow-xs max-w-full"
                 >
-                  <span>
+                  <span className="truncate">
                     {cert.issuer.includes("Google Cloud")
                       ? "View Completion Badge →"
                       : "View Certificate →"}
@@ -197,13 +197,36 @@ export default function Certifications() {
                 </a>
               )
             ) : (
-              <span className="text-[14px] font-mono text-text-secondary">
+              <span className="text-xs sm:text-[13px] font-mono text-text-secondary">
                 Official Credential
               </span>
             )}
-            <span className="font-mono text-xs text-text-secondary/80 whitespace-nowrap">
-              Credential ID
-            </span>
+            <div className="font-mono text-xs text-text-secondary/90 flex items-center gap-1.5 break-all">
+              {cert.credentialId ? (
+                <>
+                  <span className="text-text-secondary/60">ID:</span>
+                  <span className="font-semibold text-text-primary">{cert.credentialId}</span>
+                </>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-text-secondary/80">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-accent/80 flex-shrink-0"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span>Verified Credential</span>
+                </span>
+              )}
+            </div>
           </div>
         </motion.div>
       </ScrollReveal>
@@ -370,24 +393,47 @@ export default function Certifications() {
                     </a>
                   )}
 
-                  <div className="mt-auto pt-4 border-t border-border-custom/60 flex items-center justify-between gap-3">
+                  <div className="mt-auto pt-4 border-t border-border-custom/60 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-3">
                     {featuredCert.image && (
                       <a
                         href={featuredCert.image}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center h-[42px] px-[18px] rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-[14px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 cursor-pointer whitespace-nowrap shadow-xs"
+                        className="inline-flex items-center justify-center h-10 px-3.5 sm:px-4 rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-xs sm:text-[13px] font-semibold border border-accent/20 hover:border-accent/50 transition-all duration-200 cursor-pointer shadow-xs max-w-full"
                       >
-                        <span>
+                        <span className="truncate">
                           {featuredCert.issuer.includes("Google Cloud")
                             ? "View Completion Badge →"
                             : "View Certificate →"}
                         </span>
                       </a>
                     )}
-                    <span className="font-mono text-xs text-text-secondary/80 whitespace-nowrap">
-                      Credential ID
-                    </span>
+                    <div className="font-mono text-xs text-text-secondary/90 flex items-center gap-1.5 break-all">
+                      {featuredCert.credentialId ? (
+                        <>
+                          <span className="text-text-secondary/60">ID:</span>
+                          <span className="font-semibold text-text-primary">{featuredCert.credentialId}</span>
+                        </>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-text-secondary/80">
+                          <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-accent/80 flex-shrink-0"
+                          >
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                          </svg>
+                          <span>Verified Credential</span>
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

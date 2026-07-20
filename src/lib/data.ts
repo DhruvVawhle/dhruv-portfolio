@@ -42,6 +42,8 @@ export interface Certification {
   title: string;
   issuer: string;
   image?: string;
+  credentialId?: string;
+  verifyUrl?: string;
 }
 
 export interface Hackathon {
