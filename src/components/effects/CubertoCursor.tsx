@@ -85,19 +85,19 @@ export default function CubertoCursor() {
 
       {/* Trailing smooth ring / expanded sphere */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center overflow-hidden"
+        className="fixed top-0 left-0 pointer-events-none z-[99998] -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center overflow-hidden shadow-sm"
         style={{
           x: cursorX,
           y: cursorY,
-          width: isHovered ? (hoverText ? "86px" : "54px") : "28px",
-          height: isHovered ? (hoverText ? "86px" : "54px") : "28px",
+          width: isHovered ? (hoverText ? "76px" : "50px") : "28px",
+          height: isHovered ? (hoverText ? "76px" : "50px") : "28px",
           backgroundColor: isHovered
-            ? "rgba(59, 130, 246, 0.15)"
+            ? (hoverText ? "rgba(59, 130, 246, 0.22)" : "rgba(59, 130, 246, 0.15)")
             : "rgba(59, 130, 246, 0.08)",
           border: isHovered
-            ? "1px solid rgba(59, 130, 246, 0.6)"
+            ? "1.5px solid rgba(59, 130, 246, 0.8)"
             : "1px solid rgba(59, 130, 246, 0.3)",
-          backdropFilter: isHovered ? "blur(4px)" : "none",
+          backdropFilter: isHovered ? "blur(6px)" : "none",
           transition: "width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s, border 0.25s",
         }}
       >
@@ -105,7 +105,7 @@ export default function CubertoCursor() {
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="font-mono text-[10px] uppercase font-bold text-white px-1 text-center leading-tight tracking-wider"
+            className="font-mono text-[10px] uppercase font-bold text-neutral-900 dark:text-white px-1 text-center leading-tight tracking-wider"
           >
             {hoverText}
           </motion.span>

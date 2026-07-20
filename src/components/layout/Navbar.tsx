@@ -189,7 +189,6 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  data-cursor-text="NAV"
                   className={`text-xs font-mono px-4 py-1.5 rounded-full transition-colors duration-200 relative z-10 ${
                     isActive
                       ? "text-background font-bold"

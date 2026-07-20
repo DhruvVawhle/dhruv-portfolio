@@ -300,7 +300,6 @@ export default function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
-                    data-cursor-text="SOCIAL"
                     className="w-11 h-11 min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                   >
                     <SocialIcon icon={link.icon} />
@@ -492,7 +491,6 @@ export default function Hero() {
                       rel="noopener noreferrer"
                       aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
                       id={`hero-social-${link.icon}`}
-                      data-cursor-text="SOCIAL"
                       className="w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                     >
                       <SocialIcon icon={link.icon} />
