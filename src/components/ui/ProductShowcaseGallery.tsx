@@ -349,7 +349,7 @@ export default function ProductShowcaseGallery({
             <button
               key={slide.src + idx}
               onClick={() => goToIndex(idx)}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 idx === activeIdx
                   ? `${accentClasses} shadow-md scale-105`
                   : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent"
