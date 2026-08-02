@@ -4,25 +4,24 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 
 export default function LoadingSequence() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    // Check if loading sequence already ran in this session to prevent annoyance on internal navigation
+    setMounted(true);
     const hasRan = sessionStorage.getItem("dv_portfolio_loaded");
-    if (hasRan || shouldReduceMotion) {
-      setIsLoading(false);
-      return;
+    if (!hasRan && !shouldReduceMotion) {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        sessionStorage.setItem("dv_portfolio_loaded", "true");
+      }, 950);
+      return () => clearTimeout(timer);
     }
-
-    // 800-1200ms loading sequence as requested (approx 950ms)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      sessionStorage.setItem("dv_portfolio_loaded", "true");
-    }, 950);
-
-    return () => clearTimeout(timer);
   }, [shouldReduceMotion]);
+
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>

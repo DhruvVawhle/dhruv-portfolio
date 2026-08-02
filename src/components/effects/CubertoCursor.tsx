@@ -97,7 +97,7 @@ export default function CubertoCursor() {
           border: isHovered
             ? "1.5px solid rgba(59, 130, 246, 0.8)"
             : "1px solid rgba(59, 130, 246, 0.3)",
-          backdropFilter: isHovered ? "blur(6px)" : "none",
+          backdropFilter: "none",
           transition: "width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s, border 0.25s",
         }}
       >

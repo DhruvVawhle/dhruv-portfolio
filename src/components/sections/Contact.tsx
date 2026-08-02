@@ -89,8 +89,10 @@ export default function Contact() {
             {/* Interactive Background Gradient Driven By Mouse Movement */}
             <motion.div
               style={{
-                left: springX,
-                top: springY,
+                x: springX,
+                y: springY,
+                left: 0,
+                top: 0,
                 translateX: "-50%",
                 translateY: "-50%",
               }}

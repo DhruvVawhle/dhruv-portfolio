@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Project } from "@/lib/data";
 import Badge from "@/components/ui/Badge";
@@ -103,7 +103,7 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
       src: "/images/projects/krishisaathi-payment-gateway.png",
       title: "Secure Payment Gateway Integration",
       description:
-        "Seamless digital payment processing ensuring protected transactions between buyers and farmers.",
+        "Seamless digital payment processing ensuring escrow-protected transactions between buyers and farmers.",
       caption: "Payment Gateway — Escrow-protected checkout flow",
     },
     {
@@ -202,16 +202,52 @@ export default function CaseStudyModal({
   isOpen,
   onClose,
 }: CaseStudyModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex="0"]'
+        );
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
     };
+
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
+      // Auto focus the close button or first action
+      setTimeout(() => {
+        if (modalRef.current) {
+          const closeBtn = modalRef.current.querySelector('button[aria-label="Close Technical Deep Dive"]') as HTMLElement;
+          closeBtn?.focus();
+        }
+      }, 50);
     } else {
       document.body.style.overflow = "";
     }
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
@@ -245,6 +281,7 @@ export default function CaseStudyModal({
 
           {/* Modal Drawer / Container with Mask Reveal and Scaling Transition */}
           <motion.div
+            ref={modalRef}
             initial={{ opacity: 0, scale: 0.93, y: 30, clipPath: "inset(8% 8% 8% 8% round 32px)" }}
             animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0% round 24px)" }}
             exit={{ opacity: 0, scale: 0.95, y: 20, clipPath: "inset(5% 5% 5% 5% round 32px)" }}

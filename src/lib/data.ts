@@ -364,7 +364,7 @@ export const certifications: Certification[] = [
   {
     title: "Infosys Springboard – Basics of Python",
     issuer: "Infosys Springboard",
-    image: "/images/certifications/infosys-springboard-python.png",
+    image: "/images/certifications/Infosys Basic of Python.png",
   },
   {
     title: "Edunet – Foundation Course on Green Skills & Artificial Intelligence",

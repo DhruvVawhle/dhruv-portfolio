@@ -49,18 +49,26 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 30);
-      const totalScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const currentScroll = window.scrollY;
-      setScrollProgress(
-        totalScroll > 0
-          ? Math.min(100, Math.max(0, (currentScroll / totalScroll) * 100))
-          : 0
-      );
+    let ticking = false;
 
-      determineActiveSection();
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 30);
+          const totalScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const currentScroll = window.scrollY;
+          setScrollProgress(
+            totalScroll > 0
+              ? Math.min(100, Math.max(0, (currentScroll / totalScroll) * 100))
+              : 0
+          );
+
+          determineActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
