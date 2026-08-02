@@ -101,7 +101,6 @@ export default function EngineeringExecutionCard() {
   const renderSyntax = (lineText: string, idx: number) => {
     if (!lineText) return <span>&nbsp;</span>;
 
-    // keyword syntax
     if (lineText.includes("function")) {
       return (
         <span>
@@ -116,7 +115,6 @@ export default function EngineeringExecutionCard() {
       return <span className="text-[#24292e]">&#125;</span>;
     }
 
-    // method call syntax: "    research(problem);"
     const match = lineText.match(/^(\s+)(\w+)\((\w+)\);$/);
     if (match) {
       const indent = match[1];
@@ -145,151 +143,152 @@ export default function EngineeringExecutionCard() {
   return (
     <div
       ref={containerRef}
-      className="p-6 sm:p-7 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/30 transition-all duration-300 flex flex-col gap-6"
+      className="p-5 sm:p-6 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/30 transition-all duration-300 flex flex-col gap-5"
       aria-label="Engineering Workflow Simulator"
     >
       {/* Brand tag line */}
       <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-accent/80 rounded-l-3xl" />
 
-      {/* Editor & Workflow Split Screen */}
-      <div className="grid grid-cols-1 md:grid-cols-10 lg:grid-cols-4 gap-6 items-stretch">
+      {/* Editor Container (Full Width) */}
+      <div className="rounded-2xl bg-[#F8FAFC] border border-neutral-200 overflow-hidden shadow-sm flex flex-col w-full">
         
-        {/* Editor (75% on Desktop lg / 70% on Tablet md) */}
-        <div className="md:col-span-7 lg:col-span-3 rounded-2xl bg-[#F8FAFC] border border-neutral-200 overflow-hidden shadow-sm flex flex-col min-w-[320px]">
+        {/* Editor Tab Header */}
+        <div className="flex items-center justify-between bg-[#F1F5F9] border-b border-neutral-200 px-4 py-2 select-none">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
+              <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
+              <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
+            </div>
+
+            <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#F8FAFC] rounded-t-xl border-t border-x border-neutral-200 font-mono text-xs text-neutral-600 font-medium">
+              <span>📄</span>
+              <span>solve.ts</span>
+            </div>
+          </div>
           
-          {/* Header Bar */}
-          <div className="flex items-center justify-between bg-[#F1F5F9] border-b border-neutral-200 px-4 py-2 select-none">
-            <div className="flex items-center gap-6">
-              {/* VS Code Window Controls */}
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300" />
-              </div>
-
-              {/* Active Tab */}
-              <div className="flex items-center gap-2 px-3.5 py-1.5 bg-[#F8FAFC] rounded-t-xl border-t border-x border-neutral-200 font-mono text-xs text-neutral-600 font-medium">
-                <span>📄</span>
-                <span>solve.ts</span>
-              </div>
-            </div>
-            
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="p-1.5 rounded-lg border border-neutral-300/80 bg-white hover:bg-neutral-100 text-neutral-500 hover:text-neutral-800 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
-              aria-label="Copy code snippet"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Code Workspace with Line Numbers */}
-          <div className="p-6 font-mono text-xs sm:text-[13px] leading-relaxed relative min-h-[210px] flex flex-col justify-center bg-[#F8FAFC]">
-            <div className="space-y-2 select-none">
-              {typedLines.map((line, idx) => {
-                const isCurrentLine = phase === "typing" ? idx === currentLineIndex : idx === activeExecutionIndex;
-                
-                // Line Highlight (Light Blue)
-                let rowBg = "bg-transparent";
-                if (phase === "executing" && idx === activeExecutionIndex) {
-                  rowBg = "bg-blue-50/90 border-l-2 border-blue-500 -ml-[2px]";
-                } else if (phase === "typing" && idx === currentLineIndex) {
-                  rowBg = "bg-neutral-100/50 rounded";
-                }
-
-                return (
-                  <div key={idx} className={`flex items-center min-h-[24px] transition-colors duration-150 ${rowBg} px-1.5`}>
-                    <span className="text-[11px] text-neutral-400 w-6 inline-block select-none text-right pr-3">
-                      {idx + 1}
-                    </span>
-                    <span className="flex-1 text-[#24292e] font-medium font-mono">
-                      {renderSyntax(line, idx)}
-                    </span>
-                    {phase === "typing" && idx === currentLineIndex && (
-                      <span className="w-1.5 h-4 bg-blue-600 ml-0.5 animate-pulse inline-block" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="p-1.5 rounded-lg border border-neutral-300/80 bg-white hover:bg-neutral-100 text-neutral-500 hover:text-neutral-800 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+            aria-label="Copy code snippet"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+            </svg>
+          </button>
         </div>
 
-        {/* Workflow Panel (25% on Desktop lg / 30% on Tablet md) */}
-        <div className="md:col-span-3 lg:col-span-1 p-6 rounded-2xl bg-bg border border-border-custom flex flex-col justify-between min-h-[210px] min-w-[180px]">
-          <div className="space-y-4">
-            <div className="font-mono text-xs text-text-secondary uppercase tracking-widest border-b border-border-custom/40 pb-2.5 font-bold">
-              Workflow
-            </div>
-            
-            <div className="space-y-3 font-mono text-xs">
-              {TASKS.map((task) => {
-                const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
-                
-                let stateText = "Pending";
-                let stateSymbol = "○";
-                let colorClass = "text-text-secondary/50";
+        {/* Code Workspace */}
+        <div className="p-5 font-mono text-xs sm:text-[13px] leading-relaxed relative min-h-[190px] flex flex-col justify-center bg-[#F8FAFC]">
+          <div className="space-y-1.5 select-none">
+            {typedLines.map((line, idx) => {
+              const isCurrentLine = phase === "typing" ? idx === currentLineIndex : idx === activeExecutionIndex;
+              
+              let rowBg = "bg-transparent";
+              if (phase === "executing" && idx === activeExecutionIndex) {
+                rowBg = "bg-blue-50/90 border-l-2 border-blue-500 -ml-[2px]";
+              } else if (phase === "typing" && idx === currentLineIndex) {
+                rowBg = "bg-neutral-100/50 rounded";
+              }
 
-                if (phase === "executing") {
-                  if (associatedLineIndex === activeExecutionIndex) {
-                    stateSymbol = "⟳";
-                    stateText = "Running";
-                    colorClass = "text-blue-400 font-bold";
-                  } else if (associatedLineIndex < activeExecutionIndex) {
-                    stateSymbol = "✓";
-                    stateText = "Completed";
-                    colorClass = "text-emerald-500 font-semibold";
-                  }
-                } else if (phase === "completed") {
+              return (
+                <div key={idx} className={`flex items-center min-h-[22px] transition-colors duration-150 ${rowBg} px-1.5`}>
+                  <span className="text-[11px] text-neutral-400 w-6 inline-block select-none text-right pr-3">
+                    {idx + 1}
+                  </span>
+                  <span className="flex-1 text-[#24292e] font-medium font-mono">
+                    {renderSyntax(line, idx)}
+                  </span>
+                  {phase === "typing" && idx === currentLineIndex && (
+                    <span className="w-1.5 h-4 bg-blue-600 ml-0.5 animate-pulse inline-block" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Terminal-Inspired Workflow Panel (Downside / Stacked vertically) */}
+      <div className="border-t border-border-custom/50 pt-4 mt-1 flex flex-col gap-4">
+        {/* Terminal Tab Header */}
+        <div className="flex items-center gap-5 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-text-secondary select-none">
+          <span className="hover:text-text-primary cursor-pointer transition-colors">Problems</span>
+          <span className="hover:text-text-primary cursor-pointer transition-colors">Output</span>
+          <span className="hover:text-text-primary cursor-pointer transition-colors">Debug Console</span>
+          <span className="text-accent border-b-2 border-accent pb-2 -mb-[10px] font-bold">Workflow Terminal</span>
+        </div>
+
+        {/* Panel Content Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* Active Tasks Grid */}
+          <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs sm:text-[13px]">
+            {TASKS.map((task) => {
+              const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
+              
+              let stateText = "Pending";
+              let stateSymbol = "○";
+              let colorClass = "text-text-secondary/50";
+
+              if (phase === "executing") {
+                if (associatedLineIndex === activeExecutionIndex) {
+                  stateSymbol = "⟳";
+                  stateText = "Running";
+                  colorClass = "text-blue-400 font-bold";
+                } else if (associatedLineIndex < activeExecutionIndex) {
                   stateSymbol = "✓";
                   stateText = "Completed";
                   colorClass = "text-emerald-500 font-semibold";
                 }
+              } else if (phase === "completed") {
+                stateSymbol = "✓";
+                stateText = "Completed";
+                colorClass = "text-emerald-500 font-semibold";
+              }
 
-                return (
-                  <div key={task} className={`flex items-center justify-between py-0.5 ${colorClass}`}>
-                    <span>{task}</span>
-                    <span className="text-[10px] flex items-center gap-1.5">
-                      <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
-                      <span className="text-[9px] uppercase tracking-wider font-semibold opacity-85">{stateText}</span>
-                    </span>
+              return (
+                <div key={task} className={`flex flex-col p-2.5 rounded-xl bg-white/[0.02] border border-border-custom/40 justify-between gap-1.5 ${colorClass}`}>
+                  <span className="font-semibold uppercase tracking-wider text-[10px] opacity-75">{task}</span>
+                  <div className="flex items-center gap-1.5 text-[10px] sm:text-xs">
+                    <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
+                    <span className="uppercase tracking-widest text-[9px] font-bold opacity-90">{stateText}</span>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Build Completion Stats */}
-          <AnimatePresence>
-            {phase === "completed" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.3 }}
-                className="mt-5 pt-3 border-t border-border-custom/40 font-mono text-[10px] text-text-secondary space-y-1.5"
-              >
-                <div className="flex items-center justify-between text-emerald-400 font-bold">
-                  <span>✓ Build Successful</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Tasks Completed</span>
-                  <span className="text-text-primary font-semibold">6</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Execution Time</span>
-                  <span className="text-text-primary font-semibold">0.42s</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Build Completion stats */}
+          <div className="md:col-span-1 flex flex-col justify-center min-h-[80px]">
+            <AnimatePresence>
+              {phase === "completed" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.25 }}
+                  className="p-3 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 font-mono text-[10px] sm:text-xs text-text-secondary space-y-1.5"
+                >
+                  <div className="text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>✓ Build Successful</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Tasks Done</span>
+                    <span className="text-text-primary font-bold">6/6</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Duration</span>
+                    <span className="text-text-primary font-bold">0.42s</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-
       </div>
+
     </div>
   );
 }
