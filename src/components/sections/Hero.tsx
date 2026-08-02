@@ -153,14 +153,53 @@ function ApiFlowMotif() {
 
 function GitGraphMotif() {
   return (
-    <svg width="110" height="36" viewBox="0 0 110 36" fill="none" className="text-text-secondary opacity-35 dark:opacity-45 select-none pointer-events-none">
+    <svg width="110" height="36" viewBox="0 0 110 36" fill="none" className="text-text-secondary opacity-65 dark:opacity-85 select-none pointer-events-none">
+      {/* Node 1 */}
       <circle cx="14" cy="18" r="4" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="18" y1="18" x2="42" y2="18" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="46" cy="18" r="4" fill="var(--accent)" />
-      <line x1="50" y1="18" x2="74" y2="10" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="78" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="50" y1="18" x2="74" y2="26" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="78" cy="26" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="18" y1="18" x2="52" y2="18" stroke="currentColor" strokeWidth="1.5" />
+      
+      {/* Middle Node (Split Point) */}
+      <circle cx="56" cy="18" r="4" fill="var(--accent)" />
+      
+      {/* Upper Branch */}
+      <path d="M60 18 C 70 18, 70 8, 86 8" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="90" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
+      
+      {/* Lower Branch */}
+      <path d="M60 18 C 70 18, 70 28, 86 28" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="90" cy="28" r="4" stroke="currentColor" strokeWidth="1.5" />
+
+      {/* Upper Branch Animated Signal */}
+      <motion.circle
+        r="2"
+        fill="var(--accent)"
+        animate={{
+          cx: [14, 56, 73, 90],
+          cy: [18, 18, 11, 8],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration: 2.2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Lower Branch Animated Signal */}
+      <motion.circle
+        r="2"
+        fill="var(--accent)"
+        animate={{
+          cx: [14, 56, 73, 90],
+          cy: [18, 18, 25, 28],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration: 2.2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
     </svg>
   );
 }
