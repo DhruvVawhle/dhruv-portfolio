@@ -212,9 +212,9 @@ export default function EngineeringExecutionCard() {
       </div>
 
       {/* Terminal-Inspired Workflow Panel (Downside / Stacked vertically) */}
-      <div className="border-t border-border-custom/50 pt-4 mt-1 flex flex-col gap-4">
+      <div className="border-t border-border-custom/50 pt-5 sm:pt-6 mt-2 flex flex-col gap-5 sm:gap-6">
         {/* Terminal Tab Header */}
-        <div className="flex items-center gap-5 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-text-secondary select-none">
+        <div className="flex items-center gap-6 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-text-secondary select-none overflow-x-auto scrollbar-none whitespace-nowrap">
           <span className="hover:text-text-primary cursor-pointer transition-colors">Problems</span>
           <span className="hover:text-text-primary cursor-pointer transition-colors">Output</span>
           <span className="hover:text-text-primary cursor-pointer transition-colors">Debug Console</span>
@@ -222,15 +222,15 @@ export default function EngineeringExecutionCard() {
         </div>
 
         {/* Panel Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Active Tasks Grid */}
-          <div className="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs sm:text-[13px]">
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs sm:text-[13px]">
             {TASKS.map((task) => {
               const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
               
               let stateText = "Pending";
               let stateSymbol = "○";
-              let colorClass = "text-text-secondary/50";
+              let colorClass = "text-text-secondary/55";
 
               if (phase === "executing") {
                 if (associatedLineIndex === activeExecutionIndex) {
@@ -249,7 +249,7 @@ export default function EngineeringExecutionCard() {
               }
 
               return (
-                <div key={task} className={`flex flex-col p-2.5 rounded-xl bg-white/[0.02] border border-border-custom/40 justify-between gap-1.5 ${colorClass}`}>
+                <div key={task} className={`flex flex-col p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-border-custom/40 justify-between gap-2 ${colorClass}`}>
                   <span className="font-semibold uppercase tracking-wider text-[10px] opacity-75">{task}</span>
                   <div className="flex items-center gap-1.5 text-[10px] sm:text-xs">
                     <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
@@ -261,7 +261,7 @@ export default function EngineeringExecutionCard() {
           </div>
 
           {/* Build Completion stats */}
-          <div className="md:col-span-1 flex flex-col justify-center min-h-[80px]">
+          <div className="lg:col-span-1 flex flex-col justify-center min-h-[90px]">
             <AnimatePresence>
               {phase === "completed" && (
                 <motion.div
@@ -269,7 +269,7 @@ export default function EngineeringExecutionCard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.25 }}
-                  className="p-3 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 font-mono text-[10px] sm:text-xs text-text-secondary space-y-1.5"
+                  className="p-4 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 font-mono text-[10px] sm:text-xs text-text-secondary space-y-2"
                 >
                   <div className="text-emerald-400 font-bold flex items-center gap-1.5">
                     <span>✓ Build Successful</span>
