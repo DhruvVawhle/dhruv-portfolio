@@ -24,6 +24,7 @@ export default function EngineeringExecutionCard() {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [activeExecutionIndex, setActiveExecutionIndex] = useState(-1);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [activeTab, setActiveTab] = useState<"problems" | "output" | "debug" | "workflow">("workflow");
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Check prefers-reduced-motion media query
@@ -216,88 +217,172 @@ export default function EngineeringExecutionCard() {
         
         {/* Terminal Tab Header */}
         <div className="flex items-center gap-5 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-text-secondary select-none overflow-x-auto scrollbar-none whitespace-nowrap">
-          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Problems</span>
-          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Output</span>
-          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Debug Console</span>
-          <span className="text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent pb-2 -mb-[10px] font-bold">Workflow Terminal</span>
+          <button
+            onClick={() => setActiveTab("problems")}
+            className={`hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors pb-2 -mb-[10px] ${
+              activeTab === "problems" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
+            }`}
+          >
+            Problems (0)
+          </button>
+          <button
+            onClick={() => setActiveTab("output")}
+            className={`hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors pb-2 -mb-[10px] ${
+              activeTab === "output" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
+            }`}
+          >
+            Output
+          </button>
+          <button
+            onClick={() => setActiveTab("debug")}
+            className={`hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors pb-2 -mb-[10px] ${
+              activeTab === "debug" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
+            }`}
+          >
+            Debug Console
+          </button>
+          <button
+            onClick={() => setActiveTab("workflow")}
+            className={`hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors pb-2 -mb-[10px] ${
+              activeTab === "workflow" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
+            }`}
+          >
+            Workflow Terminal
+          </button>
         </div>
 
         {/* Panel Content (Stacked layout to prevent sidebar grid overlapping) */}
-        <div className="flex flex-col gap-4">
+        <div className="min-h-[140px] flex flex-col justify-between">
           
-          {/* Tasks Grid: 2 columns on mobile/sidebar, 3 on wider screen sizes */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[10px] sm:text-xs">
-            {TASKS.map((task) => {
-              const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
-              
-              let stateText = "Pending";
-              let stateSymbol = "○";
-              let cardBg = "bg-neutral-50 dark:bg-white/[0.02]";
-              let borderClass = "border-neutral-200 dark:border-border-custom/40";
-              let textClass = "text-neutral-500 dark:text-text-secondary/60";
+          {activeTab === "workflow" && (
+            <div className="flex flex-col gap-4">
+              {/* Tasks Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[10px] sm:text-xs">
+                {TASKS.map((task) => {
+                  const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
+                  
+                  let stateText = "Pending";
+                  let stateSymbol = "○";
+                  let cardBg = "bg-neutral-50 dark:bg-white/[0.02]";
+                  let borderClass = "border-neutral-200 dark:border-border-custom/40";
+                  let textClass = "text-neutral-500 dark:text-text-secondary/60";
 
-              if (phase === "executing") {
-                if (associatedLineIndex === activeExecutionIndex) {
-                  stateSymbol = "⟳";
-                  stateText = "Running";
-                  cardBg = "bg-blue-50 dark:bg-blue-950/20";
-                  borderClass = "border-blue-200 dark:border-blue-500/30";
-                  textClass = "text-blue-600 dark:text-blue-400 font-bold animate-pulse";
-                } else if (associatedLineIndex < activeExecutionIndex) {
-                  stateSymbol = "✓";
-                  stateText = "Done";
-                  cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
-                  borderClass = "border-emerald-200 dark:border-emerald-500/20";
-                  textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
-                }
-              } else if (phase === "completed") {
-                stateSymbol = "✓";
-                stateText = "Done";
-                cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
-                borderClass = "border-emerald-200 dark:border-emerald-500/20";
-                textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
-              }
+                  if (phase === "executing") {
+                    if (associatedLineIndex === activeExecutionIndex) {
+                      stateSymbol = "⟳";
+                      stateText = "Running";
+                      cardBg = "bg-blue-50 dark:bg-blue-950/20";
+                      borderClass = "border-blue-200 dark:border-blue-500/30";
+                      textClass = "text-blue-600 dark:text-blue-400 font-bold animate-pulse";
+                    } else if (associatedLineIndex < activeExecutionIndex) {
+                      stateSymbol = "✓";
+                      stateText = "Done";
+                      cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
+                      borderClass = "border-emerald-200 dark:border-emerald-500/20";
+                      textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
+                    }
+                  } else if (phase === "completed") {
+                    stateSymbol = "✓";
+                    stateText = "Done";
+                    cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
+                    borderClass = "border-emerald-200 dark:border-emerald-500/20";
+                    textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
+                  }
 
-              return (
-                <div key={task} className={`flex flex-col p-3 rounded-xl border justify-between gap-1.5 transition-all duration-300 ${cardBg} ${borderClass} ${textClass}`}>
-                  <span className="font-semibold uppercase tracking-wider text-[9px] opacity-75">{task}</span>
-                  <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px]">
-                    <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
-                    <span className="uppercase tracking-widest text-[8px] font-bold opacity-90">{stateText}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Build Completion Stats (Full Width below Tasks) */}
-          <div className="min-h-[60px]">
-            <AnimatePresence>
-              {phase === "completed" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.25 }}
-                  className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-500/[0.04] border border-emerald-200 dark:border-emerald-500/20 font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-text-secondary space-y-2 shadow-sm"
-                >
-                  <div className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                    <span>✓ Build Successful</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center justify-between border-r border-neutral-200 dark:border-border-custom/40 pr-4">
-                      <span>Tasks Done</span>
-                      <span className="text-neutral-900 dark:text-text-primary font-bold">6/6</span>
+                  return (
+                    <div key={task} className={`flex flex-col p-3 rounded-xl border justify-between gap-1.5 transition-all duration-300 ${cardBg} ${borderClass} ${textClass}`}>
+                      <span className="font-semibold uppercase tracking-wider text-[9px] opacity-75">{task}</span>
+                      <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px]">
+                        <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
+                        <span className="uppercase tracking-widest text-[8px] font-bold opacity-90">{stateText}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>Duration</span>
-                      <span className="text-neutral-900 dark:text-text-primary font-bold">0.42s</span>
-                    </div>
-                  </div>
-                </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Build Completion Stats (Full Width below Tasks) */}
+              <div className="min-h-[60px]">
+                <AnimatePresence>
+                  {phase === "completed" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.25 }}
+                      className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-500/[0.04] border border-emerald-200 dark:border-emerald-500/20 font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-text-secondary space-y-2 shadow-sm"
+                    >
+                      <div className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+                        <span>✓ Build Successful</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between border-r border-neutral-200 dark:border-border-custom/40 pr-4">
+                          <span>Tasks Done</span>
+                          <span className="text-neutral-900 dark:text-text-primary font-bold">6/6</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Duration</span>
+                          <span className="text-neutral-900 dark:text-text-primary font-bold">0.42s</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "problems" && (
+            <div className="font-mono text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 p-2 space-y-1 min-h-[100px] flex items-center justify-center">
+              <span>No problems have been detected in this workspace.</span>
+            </div>
+          )}
+
+          {activeTab === "output" && (
+            <div className="font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-400 p-2.5 rounded-xl bg-neutral-50 dark:bg-white/[0.01] border border-neutral-200 dark:border-border-custom/30 space-y-1.5 select-text min-h-[110px] text-left">
+              <div>[system] Initializing compiler...</div>
+              {phase === "typing" && <div>[info] Typing solve.ts logic (line {currentLineIndex + 1}/{CODE_LINES.length})...</div>}
+              {(phase === "executing" || phase === "completed") && (
+                <>
+                  <div className="text-emerald-600 dark:text-emerald-400">[success] Compilation successful.</div>
+                  <div className="text-blue-500">[exec] Running execution pipeline solve(problem)...</div>
+                  {TASKS.map((task, idx) => {
+                    const lineIdx = idx + 1;
+                    if (phase === "executing" && lineIdx === activeExecutionIndex) {
+                      return <div key={task} className="text-blue-600 dark:text-blue-400 animate-pulse ml-2">[running] {task.toLowerCase()}()...</div>;
+                    }
+                    if (phase === "completed" || (phase === "executing" && lineIdx < activeExecutionIndex)) {
+                      return <div key={task} className="text-emerald-600 dark:text-emerald-500 ml-2">✓ {task.toLowerCase()}() completed successfully.</div>;
+                    }
+                    return null;
+                  })}
+                </>
               )}
-            </AnimatePresence>
-          </div>
+              {phase === "completed" && (
+                <div className="text-emerald-600 dark:text-emerald-400 font-semibold pt-1">✓ Build complete: 6 steps finalized.</div>
+              )}
+            </div>
+          )}
+
+          {activeTab === "debug" && (
+            <div className="font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-400 p-2.5 rounded-xl bg-neutral-50 dark:bg-white/[0.01] border border-neutral-200 dark:border-border-custom/30 space-y-1 select-text min-h-[110px] text-left">
+              <div className="text-neutral-400">&gt; Initial state: active = false</div>
+              {phase === "typing" && <div className="text-yellow-600 dark:text-yellow-500">&gt; Warning: solve is not fully defined yet</div>}
+              {phase === "executing" && (
+                <>
+                  <div className="text-blue-600 dark:text-blue-400">&gt; Calling solve(problem)</div>
+                  <div className="text-neutral-500">&gt; Current active call index: {activeExecutionIndex}</div>
+                </>
+              )}
+              {phase === "completed" && (
+                <>
+                  <div className="text-emerald-600 dark:text-emerald-400">&gt; Calling solve(problem)</div>
+                  <div className="text-emerald-600 dark:text-emerald-400">&gt; Return state: success (6 tasks completed)</div>
+                </>
+              )}
+            </div>
+          )}
+
         </div>
       </div>
 
