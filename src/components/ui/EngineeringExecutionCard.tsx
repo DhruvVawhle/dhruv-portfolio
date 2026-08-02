@@ -212,56 +212,66 @@ export default function EngineeringExecutionCard() {
       </div>
 
       {/* Terminal-Inspired Workflow Panel (Downside / Stacked vertically) */}
-      <div className="border-t border-border-custom/50 pt-5 sm:pt-6 mt-2 flex flex-col gap-5 sm:gap-6">
+      <div className="border-t border-border-custom/50 pt-5 mt-1 flex flex-col gap-4">
+        
         {/* Terminal Tab Header */}
-        <div className="flex items-center gap-6 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-text-secondary select-none overflow-x-auto scrollbar-none whitespace-nowrap">
-          <span className="hover:text-text-primary cursor-pointer transition-colors">Problems</span>
-          <span className="hover:text-text-primary cursor-pointer transition-colors">Output</span>
-          <span className="hover:text-text-primary cursor-pointer transition-colors">Debug Console</span>
-          <span className="text-accent border-b-2 border-accent pb-2 -mb-[10px] font-bold">Workflow Terminal</span>
+        <div className="flex items-center gap-5 border-b border-border-custom/30 pb-2 text-[10px] sm:text-xs font-mono text-neutral-500 dark:text-text-secondary select-none overflow-x-auto scrollbar-none whitespace-nowrap">
+          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Problems</span>
+          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Output</span>
+          <span className="hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors">Debug Console</span>
+          <span className="text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent pb-2 -mb-[10px] font-bold">Workflow Terminal</span>
         </div>
 
-        {/* Panel Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Active Tasks Grid */}
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs sm:text-[13px]">
+        {/* Panel Content (Stacked layout to prevent sidebar grid overlapping) */}
+        <div className="flex flex-col gap-4">
+          
+          {/* Tasks Grid: 2 columns on mobile/sidebar, 3 on wider screen sizes */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[10px] sm:text-xs">
             {TASKS.map((task) => {
               const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
               
               let stateText = "Pending";
               let stateSymbol = "○";
-              let colorClass = "text-text-secondary/55";
+              let cardBg = "bg-neutral-50 dark:bg-white/[0.02]";
+              let borderClass = "border-neutral-200 dark:border-border-custom/40";
+              let textClass = "text-neutral-500 dark:text-text-secondary/60";
 
               if (phase === "executing") {
                 if (associatedLineIndex === activeExecutionIndex) {
                   stateSymbol = "⟳";
                   stateText = "Running";
-                  colorClass = "text-blue-400 font-bold";
+                  cardBg = "bg-blue-50 dark:bg-blue-950/20";
+                  borderClass = "border-blue-200 dark:border-blue-500/30";
+                  textClass = "text-blue-600 dark:text-blue-400 font-bold animate-pulse";
                 } else if (associatedLineIndex < activeExecutionIndex) {
                   stateSymbol = "✓";
-                  stateText = "Completed";
-                  colorClass = "text-emerald-500 font-semibold";
+                  stateText = "Done";
+                  cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
+                  borderClass = "border-emerald-200 dark:border-emerald-500/20";
+                  textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
                 }
               } else if (phase === "completed") {
                 stateSymbol = "✓";
-                stateText = "Completed";
-                colorClass = "text-emerald-500 font-semibold";
+                stateText = "Done";
+                cardBg = "bg-emerald-50/55 dark:bg-emerald-950/10";
+                borderClass = "border-emerald-200 dark:border-emerald-500/20";
+                textClass = "text-emerald-600 dark:text-emerald-400 font-semibold";
               }
 
               return (
-                <div key={task} className={`flex flex-col p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-border-custom/40 justify-between gap-2 ${colorClass}`}>
-                  <span className="font-semibold uppercase tracking-wider text-[10px] opacity-75">{task}</span>
-                  <div className="flex items-center gap-1.5 text-[10px] sm:text-xs">
+                <div key={task} className={`flex flex-col p-3 rounded-xl border justify-between gap-1.5 transition-all duration-300 ${cardBg} ${borderClass} ${textClass}`}>
+                  <span className="font-semibold uppercase tracking-wider text-[9px] opacity-75">{task}</span>
+                  <div className="flex items-center gap-1.5 text-[9px] sm:text-[10px]">
                     <span className={stateSymbol === "⟳" ? "animate-spin inline-block" : ""}>{stateSymbol}</span>
-                    <span className="uppercase tracking-widest text-[9px] font-bold opacity-90">{stateText}</span>
+                    <span className="uppercase tracking-widest text-[8px] font-bold opacity-90">{stateText}</span>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Build Completion stats */}
-          <div className="lg:col-span-1 flex flex-col justify-center min-h-[90px]">
+          {/* Build Completion Stats (Full Width below Tasks) */}
+          <div className="min-h-[60px]">
             <AnimatePresence>
               {phase === "completed" && (
                 <motion.div
@@ -269,18 +279,20 @@ export default function EngineeringExecutionCard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.25 }}
-                  className="p-4 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/20 font-mono text-[10px] sm:text-xs text-text-secondary space-y-2"
+                  className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-500/[0.04] border border-emerald-200 dark:border-emerald-500/20 font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-text-secondary space-y-2 shadow-sm"
                 >
-                  <div className="text-emerald-400 font-bold flex items-center gap-1.5">
+                  <div className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
                     <span>✓ Build Successful</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span>Tasks Done</span>
-                    <span className="text-text-primary font-bold">6/6</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Duration</span>
-                    <span className="text-text-primary font-bold">0.42s</span>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center justify-between border-r border-neutral-200 dark:border-border-custom/40 pr-4">
+                      <span>Tasks Done</span>
+                      <span className="text-neutral-900 dark:text-text-primary font-bold">6/6</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Duration</span>
+                      <span className="text-neutral-900 dark:text-text-primary font-bold">0.42s</span>
+                    </div>
                   </div>
                 </motion.div>
               )}
