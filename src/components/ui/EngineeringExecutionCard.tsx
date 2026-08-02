@@ -24,7 +24,7 @@ export default function EngineeringExecutionCard() {
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [activeExecutionIndex, setActiveExecutionIndex] = useState(-1);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [activeTab, setActiveTab] = useState<"problems" | "output" | "debug" | "workflow">("workflow");
+  const [activeTab, setActiveTab] = useState<"problems" | "output" | "debug">("output");
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Check prefers-reduced-motion media query
@@ -231,7 +231,7 @@ export default function EngineeringExecutionCard() {
               activeTab === "output" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
             }`}
           >
-            Output
+            Output (Workflow)
           </button>
           <button
             onClick={() => setActiveTab("debug")}
@@ -241,20 +241,12 @@ export default function EngineeringExecutionCard() {
           >
             Debug Console
           </button>
-          <button
-            onClick={() => setActiveTab("workflow")}
-            className={`hover:text-text-primary dark:hover:text-white cursor-pointer transition-colors pb-2 -mb-[10px] ${
-              activeTab === "workflow" ? "text-blue-600 dark:text-accent border-b-2 border-blue-600 dark:border-accent font-bold" : ""
-            }`}
-          >
-            Workflow Terminal
-          </button>
         </div>
 
         {/* Panel Content (Stacked layout to prevent sidebar grid overlapping) */}
         <div className="min-h-[140px] flex flex-col justify-between">
           
-          {activeTab === "workflow" && (
+          {activeTab === "output" && (
             <div className="flex flex-col gap-4">
               {/* Tasks Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 font-mono text-[10px] sm:text-xs">
@@ -335,32 +327,6 @@ export default function EngineeringExecutionCard() {
           {activeTab === "problems" && (
             <div className="font-mono text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 p-2 space-y-1 min-h-[100px] flex items-center justify-center">
               <span>No problems have been detected in this workspace.</span>
-            </div>
-          )}
-
-          {activeTab === "output" && (
-            <div className="font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-400 p-2.5 rounded-xl bg-neutral-50 dark:bg-white/[0.01] border border-neutral-200 dark:border-border-custom/30 space-y-1.5 select-text min-h-[110px] text-left">
-              <div>[system] Initializing compiler...</div>
-              {phase === "typing" && <div>[info] Typing solve.ts logic (line {currentLineIndex + 1}/{CODE_LINES.length})...</div>}
-              {(phase === "executing" || phase === "completed") && (
-                <>
-                  <div className="text-emerald-600 dark:text-emerald-400">[success] Compilation successful.</div>
-                  <div className="text-blue-500">[exec] Running execution pipeline solve(problem)...</div>
-                  {TASKS.map((task, idx) => {
-                    const lineIdx = idx + 1;
-                    if (phase === "executing" && lineIdx === activeExecutionIndex) {
-                      return <div key={task} className="text-blue-600 dark:text-blue-400 animate-pulse ml-2">[running] {task.toLowerCase()}()...</div>;
-                    }
-                    if (phase === "completed" || (phase === "executing" && lineIdx < activeExecutionIndex)) {
-                      return <div key={task} className="text-emerald-600 dark:text-emerald-500 ml-2">✓ {task.toLowerCase()}() completed successfully.</div>;
-                    }
-                    return null;
-                  })}
-                </>
-              )}
-              {phase === "completed" && (
-                <div className="text-emerald-600 dark:text-emerald-400 font-semibold pt-1">✓ Build complete: 6 steps finalized.</div>
-              )}
             </div>
           )}
 
