@@ -197,12 +197,122 @@ const ExternalIcon = () => (
   </svg>
 );
 
+import FolderTree, { FolderNode } from "@/components/ui/FolderTree";
+
+const KRISHISAATHI_FOLDERS: FolderNode[] = [
+  {
+    name: "apps",
+    type: "folder",
+    children: [
+      {
+        name: "web",
+        type: "folder",
+        children: [
+          { name: "src", type: "folder", children: [{ name: "components", type: "folder" }, { name: "app", type: "folder" }] },
+          { name: "package.json", type: "file" }
+        ]
+      },
+      {
+        name: "backend",
+        type: "folder",
+        children: [
+          { name: "src", type: "folder", children: [{ name: "controllers", type: "folder" }, { name: "routes", type: "folder" }, { name: "models", type: "folder" }] },
+          { name: "package.json", type: "file" }
+        ]
+      },
+      {
+        name: "ml-prediction",
+        type: "folder",
+        children: [
+          { name: "arima_model.py", type: "file" },
+          { name: "requirements.txt", type: "file" }
+        ]
+      }
+    ]
+  },
+  {
+    name: "packages",
+    type: "folder",
+    children: [
+      { name: "shared-schemas", type: "folder" }
+    ]
+  },
+  { name: "README.md", type: "file" }
+];
+
+const MEDTALK_FOLDERS: FolderNode[] = [
+  {
+    name: "app",
+    type: "folder",
+    children: [
+      { name: "templates", type: "folder" },
+      { name: "static", type: "folder" },
+      { name: "routes.py", type: "file" }
+    ]
+  },
+  {
+    name: "services",
+    type: "folder",
+    children: [
+      { name: "gemini_service.py", type: "file" },
+      { name: "speech_service.py", type: "file" }
+    ]
+  },
+  { name: "config.py", type: "file" },
+  { name: "requirements.txt", type: "file" }
+];
+
+function CollapsibleSection({
+  title,
+  isOpen,
+  onToggle,
+  children
+}: {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="border border-white/10 rounded-2xl overflow-hidden bg-white/[0.02] transition-colors duration-250">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full px-6 py-4 flex items-center justify-between text-left font-display font-bold text-sm sm:text-base text-white hover:bg-white/[0.03] transition-colors focus:outline-none focus-visible:bg-white/[0.04]"
+      >
+        <span>{title}</span>
+        <span className="font-mono text-xs text-text-secondary select-none">
+          {isOpen ? "Collapse [-]" : "Expand [+]"}
+        </span>
+      </button>
+      {isOpen && (
+        <div className="px-6 pb-6 pt-2 border-t border-white/10 space-y-4">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function CaseStudyModal({
   project,
   isOpen,
   onClose,
 }: CaseStudyModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const [sectionsOpen, setSectionsOpen] = React.useState({
+    overview: true,
+    architecture: false,
+    folder: false,
+    decisions: false,
+    challenges: false,
+    deployment: false,
+    improvements: false
+  });
+
+  const toggleSection = (section: keyof typeof sectionsOpen) => {
+    setSectionsOpen((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -260,6 +370,7 @@ export default function CaseStudyModal({
   const slides = PROJECT_SHOWCASE_SLIDES[project.id] || [];
   const displayMode = PROJECT_DISPLAY_MODES[project.id] || "desktop";
   const learnings = PROJECT_LEARNINGS[project.id];
+  const folders = project.id === "krishisaathi" ? KRISHISAATHI_FOLDERS : MEDTALK_FOLDERS;
 
   return (
     <AnimatePresence>
@@ -329,14 +440,9 @@ export default function CaseStudyModal({
               </button>
             </div>
 
-            {/* Modal Content Body with Sequential Section Animations */}
-            <div className="p-6 sm:p-8 lg:p-12 space-y-12">
-              {/* ── HERO BANNER ─────────────────────────────────────────── */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-              >
+            {/* Modal Content Body with Collapsible Sections */}
+            <div className="p-6 sm:p-8 lg:p-12 space-y-6">
+              <div>
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
                   <h2
                     id="case-study-title"
@@ -348,183 +454,215 @@ export default function CaseStudyModal({
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 font-mono text-xs border border-white/20">
                       <ShieldIcon />
                       <span>
-                        Copyright Registered · Diary No.{" "}
-                        {project.copyrightFiled.diaryNumber}
+                        Copyright Registered · Diary No. {project.copyrightFiled.diaryNumber}
                       </span>
                     </div>
                   )}
                 </div>
-                <p
-                  className={`font-mono text-sm sm:text-base ${theme.accentText} uppercase tracking-wider`}
-                >
+                <p className={`font-mono text-sm sm:text-base ${theme.accentText} uppercase tracking-wider`}>
                   {project.subtitle}
                 </p>
-              </motion.div>
+              </div>
 
-              {/* ── 1. THE PROBLEM vs 2. THE SOLUTION STORYTELLING GRID ── */}
-              <motion.div
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] as const }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
+              {/* ── Collapsible Section: Overview ── */}
+              <CollapsibleSection
+                title="Overview & Project Purpose"
+                isOpen={sectionsOpen.overview}
+                onToggle={() => toggleSection("overview")}
               >
-                <div className="p-6 sm:p-7 rounded-2xl bg-white/[0.03] border border-white/10">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-red-400" />
-                    <h3 className="font-mono text-xs font-bold text-red-400 uppercase tracking-widest">
-                      01 · THE PROBLEM
-                    </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 inline-block mr-2" />
+                    <span className="font-mono text-xs text-red-400 uppercase tracking-wider font-bold">The Problem</span>
+                    <p className="mt-2 text-sm text-gray-300 leading-relaxed">{project.problem}</p>
                   </div>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                    {project.problem}
-                  </p>
-                </div>
-
-                <div className="p-6 sm:p-7 rounded-2xl bg-white/[0.03] border border-white/10">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span
-                      className={`w-2 h-2 rounded-full ${theme.dotColor}`}
-                    />
-                    <h3
-                      className={`font-mono text-xs font-bold uppercase tracking-widest ${theme.accentText}`}
-                    >
-                      02 · THE SOLUTION &amp; APPROACH
-                    </h3>
-                  </div>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                    {project.approach}
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* ── 3. INTERACTIVE PRODUCT SHOWCASE GALLERY ──────────────── */}
-              {slides.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] as const }}
-                  className="pt-2"
-                >
-                  <ProductShowcaseGallery
-                    slides={slides}
-                    displayMode={displayMode}
-                    accentName={theme.name}
-                  />
-                </motion.div>
-              )}
-
-              {/* ── 4. ENGINEERING ARCHITECTURE & TECH STACK ────────────── */}
-              <motion.div
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] as const }}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-4 border-t border-white/10"
-              >
-                <div className="lg:col-span-7 space-y-4">
-                  <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    04 · ENGINEERING ARCHITECTURE
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                    {project.architecture}
-                  </p>
-                </div>
-
-                <div className="lg:col-span-5">
-                  <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
-                    APPLIED TECHNOLOGY STACK
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="outline"
-                        className="inline-flex items-center gap-1.5 text-xs py-1 px-2.5 bg-white/[0.04] border-white/15 text-gray-200"
-                      >
-                        <TechIcon name={tech} size="sm" />
-                        <span>{tech}</span>
-                      </Badge>
-                    ))}
+                  <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block mr-2" />
+                    <span className="font-mono text-xs text-accent uppercase tracking-wider font-bold">The Solution</span>
+                    <p className="mt-2 text-sm text-gray-300 leading-relaxed">{project.approach}</p>
                   </div>
                 </div>
-              </motion.div>
-
-              {/* ── 5. PRODUCTION RESULTS & METRICS ────────────────────── */}
-              <motion.div
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
-                className="pt-4 border-t border-white/10"
-              >
-                <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">
-                  05 · PRODUCTION RESULTS &amp; OUTCOMES
-                </h3>
 
                 {project.metrics && project.metrics.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
                     {project.metrics.map((metric) => (
-                      <div
-                        key={metric.label}
-                        className="p-5 rounded-2xl bg-white/[0.04] border border-white/10"
-                      >
-                        <div className="font-display font-extrabold text-2xl sm:text-3xl text-white">
-                          {metric.value}
-                          {metric.suffix}
-                        </div>
-                        <div className="font-mono text-xs uppercase tracking-wider text-gray-400 mt-1">
-                          {metric.label}
-                        </div>
+                      <div key={metric.label} className="p-4 rounded-xl bg-white/[0.03] border border-white/5 text-center">
+                        <div className="font-display font-extrabold text-2xl text-white">{metric.value}{metric.suffix}</div>
+                        <div className="font-mono text-[10px] uppercase tracking-wider text-gray-400 mt-1">{metric.label}</div>
                       </div>
                     ))}
                   </div>
                 )}
+              </CollapsibleSection>
 
-                <ul className="space-y-2.5">
+              {/* ── Collapsible Section: Architecture ── */}
+              <CollapsibleSection
+                title="Architecture & Flow Diagram"
+                isOpen={sectionsOpen.architecture}
+                onToggle={() => toggleSection("architecture")}
+              >
+                <p className="text-sm text-gray-300 leading-relaxed">{project.architecture}</p>
+                {slides.length > 0 && (
+                  <div className="pt-2">
+                    <ProductShowcaseGallery
+                      slides={slides}
+                      displayMode={displayMode}
+                      accentName={theme.name}
+                    />
+                  </div>
+                )}
+              </CollapsibleSection>
+
+              {/* ── Collapsible Section: Folder Structure ── */}
+              <CollapsibleSection
+                title="Folder Structure & Codebase Layout"
+                isOpen={sectionsOpen.folder}
+                onToggle={() => toggleSection("folder")}
+              >
+                <FolderTree data={folders} />
+              </CollapsibleSection>
+
+              {/* ── Collapsible Section: Engineering Decisions ── */}
+              <CollapsibleSection
+                title="Engineering Decisions"
+                isOpen={sectionsOpen.decisions}
+                onToggle={() => toggleSection("decisions")}
+              >
+                <div className="space-y-4 font-mono text-xs sm:text-sm">
+                  {project.id === "krishisaathi" ? (
+                    <>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Next.js/React</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Selected to deliver fast client-side navigation. Preserves separation of concerns while routing dynamic agricultural product lists efficiently.
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Firestore + MongoDB</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Firestore coordinates real-time user bids and instant sessions. MongoDB aggregates high-volume static commodity catalogs and historical mandi pricing data under flexible document schemas.
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Python/ARIMA</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Offers lightweight, fast statistical model inference on time-series government market statistics without the latency of deep learning layers.
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Python/Flask</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Keeps the chatbot system micro-sized and provides simple integrations with Google Cloud TTS/STT pipelines and native AI APIs.
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Google Gemini NLU</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Provides zero-setup natural language classification and medical triage assessment with high translation capacity for regional vernacular languages.
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </CollapsibleSection>
+
+              {/* ── Collapsible Section: Challenges & Solutions ── */}
+              <CollapsibleSection
+                title="Challenges & Solutions"
+                isOpen={sectionsOpen.challenges}
+                onToggle={() => toggleSection("challenges")}
+              >
+                <div className="space-y-4 font-mono text-xs sm:text-sm text-gray-300">
+                  {project.id === "krishisaathi" ? (
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                      <div className="text-red-400 font-bold mb-1">Challenge: Processing 18,300+ AGMARKNET records on client request</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Querying MongoDB directly on client scroll created unacceptable API latency spikes.
+                      </div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Edge Caching & Indexing</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Pre-aggregated ARIMA model predictions and indexed commodity query parameters, lowering average lookup response speeds under 100ms.
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                      <div className="text-red-400 font-bold mb-1">Challenge: Unacceptable speech translation delays on audio files</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Transferring raw audio payloads in real-time over poor cellular rural networks failed frequently.
+                      </div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Compressed Audio Streams</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Implemented stream chunking and compressed audio compression layers before transmitting to the Google Cloud AI services.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CollapsibleSection>
+
+              {/* ── Collapsible Section: Deployment ── */}
+              <CollapsibleSection
+                title="Deployment & Runtime Environments"
+                isOpen={sectionsOpen.deployment}
+                onToggle={() => toggleSection("deployment")}
+              >
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {project.id === "krishisaathi"
+                    ? "Client application hosted on Vercel Edge networks; database and Node.js REST controllers running on a secured cloud VPS under Docker containers with automated SSL hooks."
+                    : "Deployed inside a containerized lightweight Python backend with secured API keys and environment variables integration."}
+                </p>
+              </CollapsibleSection>
+
+              {/* ── Collapsible Section: Future Improvements ── */}
+              <CollapsibleSection
+                title="Future Improvements & Roadmap"
+                isOpen={sectionsOpen.improvements}
+                onToggle={() => toggleSection("improvements")}
+              >
+                <ul className="list-disc pl-5 text-sm text-gray-300 space-y-1">
+                  {project.id === "krishisaathi" ? (
+                    <>
+                      <li>Integrate WhatsApp business gateway for offline bids from rural farmers.</li>
+                      <li>Incorporate automated SMS translation alerts for commodity price drops.</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>Implement Retrieval-Augmented Generation (RAG) on WHO medical databases.</li>
+                      <li>Incorporate localized audio output for vernacular tribal dialects.</li>
+                    </>
+                  )}
+                </ul>
+              </CollapsibleSection>
+
+              {/* ── Outcomes ── */}
+              <div className="pt-4 border-t border-white/10">
+                <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  Outcomes &amp; Accomplishments
+                </h3>
+                <ul className="space-y-2">
                   {project.outcomes.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 text-sm sm:text-base text-gray-300"
-                    >
-                      <span
-                        className={`font-bold mt-1 text-xs ${theme.accentText}`}
-                      >
-                        ◆
-                      </span>
+                    <li key={item} className="flex items-start gap-3 text-sm text-gray-300">
+                      <span className={`font-bold mt-1 text-xs ${theme.accentText}`}>◆</span>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
 
-              {/* ── 6. KEY LEARNINGS & REFLECTIONS ────────────────────── */}
+              {/* ── Key Learnings ── */}
               {learnings && (
-                <motion.div
-                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
-                  className="p-6 sm:p-8 rounded-2xl bg-white/[0.03] border border-white/10"
-                >
-                  <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
-                    06 · ARCHITECTURAL LEARNINGS &amp; REFLECTIONS
+                <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <h3 className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                    Architectural Learnings &amp; Reflections
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed italic">
-                    &ldquo;{learnings}&rdquo;
-                  </p>
-                </motion.div>
+                  <p className="text-sm text-gray-300 leading-relaxed italic">&ldquo;{learnings}&rdquo;</p>
+                </div>
               )}
 
-              {/* ── FOOTER ACTION LINKS ───────────────────────────────── */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] as const }}
-                className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4"
-              >
+              {/* ── Footer Action Links ── */}
+              <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-3">
                   {project.links.map((link) => (
                     <a
@@ -552,7 +690,7 @@ export default function CaseStudyModal({
                 >
                   Close Technical Deep Dive
                 </button>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>

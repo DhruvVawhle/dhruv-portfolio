@@ -64,6 +64,7 @@ export const metadata: Metadata = {
 
 import CubertoCursor from "@/components/effects/CubertoCursor";
 import LoadingSequence from "@/components/effects/LoadingSequence";
+import ClipboardToast from "@/components/ui/ClipboardToast";
 
 export default function RootLayout({
   children,
@@ -81,6 +82,7 @@ export default function RootLayout({
         <ThemeInitializer />
         <LoadingSequence />
         <CubertoCursor />
+        <ClipboardToast />
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>

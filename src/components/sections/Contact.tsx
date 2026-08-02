@@ -126,6 +126,7 @@ export default function Contact() {
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   data-cursor-text="CONNECT"
+                  className="flex items-center gap-2"
                 >
                   <Button
                     variant="primary"
@@ -136,6 +137,23 @@ export default function Contact() {
                     <MailIcon />
                     <span>Start a Conversation</span>
                   </Button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigator.clipboard.writeText("dhruvawhle@gmail.com");
+                      const { showToast } = require("@/components/ui/ClipboardToast");
+                      showToast("Email address copied to clipboard");
+                    }}
+                    className="h-12 w-12 rounded-full border border-border-custom bg-bg-surface hover:bg-foreground/5 flex items-center justify-center text-text-secondary hover:text-text-primary transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+                    aria-label="Copy Email Address"
+                    title="Copy Email Address"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                  </button>
                 </motion.div>
 
                 <motion.div
@@ -161,36 +179,97 @@ export default function Contact() {
                 <span className="font-mono text-xs text-text-secondary uppercase tracking-wider">
                   Verified Profiles:
                 </span>
-                <motion.a
-                  whileHover={{ y: -2, scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                  href="https://github.com/DhruvVawhle"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                  aria-label="GitHub Profile (opens in new tab)"
-                >
-                  <span className="text-accent">
-                    <GithubIcon />
+                
+                <div className="flex items-center gap-2">
+                  <motion.a
+                    whileHover={{ y: -2, scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                    href="https://github.com/DhruvVawhle"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
+                    aria-label="GitHub Profile (opens in new tab)"
+                  >
+                    <span className="text-accent">
+                      <GithubIcon />
+                    </span>
+                    <span>GitHub</span>
+                    <ExternalLinkIcon />
+                  </motion.a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText("https://github.com/DhruvVawhle");
+                      const { showToast } = require("@/components/ui/ClipboardToast");
+                      showToast("GitHub URL copied to clipboard");
+                    }}
+                    className="p-1.5 rounded-lg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+                    aria-label="Copy GitHub URL"
+                    title="Copy GitHub URL"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <motion.a
+                    whileHover={{ y: -2, scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                    href="https://linkedin.com/in/dhruv-vawhle-277b2b2b8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
+                    aria-label="LinkedIn Profile (opens in new tab)"
+                  >
+                    <span className="text-accent">
+                      <LinkedinIcon />
+                    </span>
+                    <span>LinkedIn</span>
+                    <ExternalLinkIcon />
+                  </motion.a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText("https://linkedin.com/in/dhruv-vawhle-277b2b2b8");
+                      const { showToast } = require("@/components/ui/ClipboardToast");
+                      showToast("LinkedIn URL copied to clipboard");
+                    }}
+                    className="p-1.5 rounded-lg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+                    aria-label="Copy LinkedIn URL"
+                    title="Copy LinkedIn URL"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs text-text-secondary uppercase tracking-wider pl-2 border-l border-border-custom">
+                    Portfolio Repo:
                   </span>
-                  <span>GitHub</span>
-                  <ExternalLinkIcon />
-                </motion.a>
-                <motion.a
-                  whileHover={{ y: -2, scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                  href="https://linkedin.com/in/dhruv-vawhle-277b2b2b8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                  aria-label="LinkedIn Profile (opens in new tab)"
-                >
-                  <span className="text-accent">
-                    <LinkedinIcon />
-                  </span>
-                  <span>LinkedIn</span>
-                  <ExternalLinkIcon />
-                </motion.a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText("https://github.com/DhruvVawhle/dhruv-portfolio");
+                      const { showToast } = require("@/components/ui/ClipboardToast");
+                      showToast("Repository URL copied to clipboard");
+                    }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border-custom bg-bg-surface hover:bg-foreground/5 text-text-secondary hover:text-text-primary font-mono text-xs cursor-pointer"
+                    aria-label="Copy Repository URL"
+                    title="Copy Repository URL"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                    <span>Copy Repo URL</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

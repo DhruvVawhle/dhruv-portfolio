@@ -111,13 +111,26 @@ export default function Projects() {
                 <div className="p-6 sm:p-8 rounded-3xl bg-bg-surface border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
                   {/* Card Header Badge */}
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border-custom/60">
-                    <span className="px-3 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                      {proj.id === "krishisaathi"
-                        ? "FEATURED SYSTEM"
-                        : proj.id === "medtalk"
-                        ? "APPLIED AI HEALTHCARE"
-                        : "TECHNICAL SHOWCASE"}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="px-3 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
+                        {proj.id === "krishisaathi"
+                          ? "FEATURED SYSTEM"
+                          : proj.id === "medtalk"
+                          ? "APPLIED AI HEALTHCARE"
+                          : "TECHNICAL SHOWCASE"}
+                      </span>
+                      {proj.id === "krishisaathi" ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
+                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                          <span>Live</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gray-500/10 border border-gray-500/20 text-text-secondary font-mono text-[10px] font-bold">
+                          <span className="w-1 h-1 rounded-full bg-gray-400" />
+                          <span>Local Dev</span>
+                        </span>
+                      )}
+                    </div>
                     <span className="font-mono text-xs text-text-secondary">
                       {proj.period}
                     </span>
@@ -247,6 +260,10 @@ export default function Projects() {
                   <span className="px-3.5 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
                     FEATURED ENGINEERING SYSTEM
                   </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Live</span>
+                  </span>
                   <span className="font-mono text-xs text-text-secondary">
                     {flagship.period}
                   </span>
@@ -255,8 +272,7 @@ export default function Projects() {
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/5 text-text-secondary font-mono text-xs border border-border-custom">
                     <ShieldIcon />
                     <span>
-                      Copyright Registered · Diary No.{" "}
-                      {flagship.copyrightFiled.diaryNumber}
+                      Copyright Registered · Diary No. {flagship.copyrightFiled.diaryNumber}
                     </span>
                   </div>
                 )}
@@ -433,6 +449,17 @@ export default function Projects() {
                           ? "APPLIED AI HEALTHCARE SYSTEM"
                           : "TECHNICAL SHOWCASE"}
                       </span>
+                      {project.id === "krishisaathi" ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          <span>Live</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gray-500/10 border border-gray-500/20 text-text-secondary font-mono text-[10px] font-bold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                          <span>Local Dev</span>
+                        </span>
+                      )}
                       <span className="font-mono text-xs text-text-secondary">
                         {project.period}
                       </span>
