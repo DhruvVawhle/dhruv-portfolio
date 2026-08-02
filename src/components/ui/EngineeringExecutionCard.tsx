@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
 const CODE_LINES = [
   "function solve(problem) {",
@@ -15,17 +15,6 @@ const CODE_LINES = [
 ];
 
 const FULL_CODE = CODE_LINES.join("\n");
-
-// Maps lines to tasks in the side monitor
-const LINE_TO_TASK_MAP: Record<number, string> = {
-  1: "Research",
-  2: "Design",
-  3: "Build",
-  4: "Test",
-  5: "Deploy",
-  6: "Improve"
-};
-
 const TASKS = ["Research", "Design", "Build", "Test", "Deploy", "Improve"];
 
 export default function EngineeringExecutionCard() {
@@ -51,27 +40,22 @@ export default function EngineeringExecutionCard() {
     if (phase !== "typing" || prefersReducedMotion) return;
 
     const targetLine = CODE_LINES[currentLineIndex];
-    
-    // Typing delay between 40ms and 60ms
-    const delay = Math.floor(Math.random() * 20) + 40;
+    const delay = Math.floor(Math.random() * 20) + 40; // 40-60ms typing speed
 
     const timer = setTimeout(() => {
       if (currentCharIndex < targetLine.length) {
-        // Append character to the current line
         const updatedLines = [...typedLines];
         updatedLines[currentLineIndex] = targetLine.slice(0, currentCharIndex + 1);
         setTypedLines(updatedLines);
         setCurrentCharIndex((prev) => prev + 1);
       } else {
-        // Move to the next line if available
         if (currentLineIndex < CODE_LINES.length - 1) {
           setTypedLines((prev) => [...prev, ""]);
           setCurrentLineIndex((prev) => prev + 1);
           setCurrentCharIndex(0);
         } else {
-          // Finished typing all lines, start execution phase
           setPhase("executing");
-          setActiveExecutionIndex(1); // Start from line 1: research(problem)
+          setActiveExecutionIndex(1); // Start executing research(problem)
         }
       }
     }, delay);
@@ -83,30 +67,28 @@ export default function EngineeringExecutionCard() {
   useEffect(() => {
     if (phase !== "executing" || prefersReducedMotion) return;
 
-    // Execution delay: 700ms
     const timer = setTimeout(() => {
       if (activeExecutionIndex < CODE_LINES.length - 2) {
         setActiveExecutionIndex((prev) => prev + 1);
       } else {
         setPhase("completed");
       }
-    }, 700);
+    }, 700); // 700ms execution delay
 
     return () => clearTimeout(timer);
   }, [phase, activeExecutionIndex, prefersReducedMotion]);
 
-  // 3. Reset/Restart Cycle
+  // 3. Reset Cycle
   useEffect(() => {
     if (phase !== "completed" || prefersReducedMotion) return;
 
-    // Restart 2 seconds after completion
     const timer = setTimeout(() => {
       setPhase("typing");
       setTypedLines([""]);
       setCurrentLineIndex(0);
       setCurrentCharIndex(0);
       setActiveExecutionIndex(-1);
-    }, 2000);
+    }, 2000); // Restart 2s after completion
 
     return () => clearTimeout(timer);
   }, [phase, prefersReducedMotion]);
@@ -120,74 +102,65 @@ export default function EngineeringExecutionCard() {
   return (
     <div
       ref={containerRef}
-      className="p-6 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.12)] transition-all duration-500"
+      className="p-5 sm:p-6 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/30 transition-all duration-300"
       aria-label="Engineering Workflow Simulator"
     >
-      {/* Accent strip on left side to match Intent card */}
-      <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-emerald-500/80 rounded-l-3xl" />
-
-      {/* Header with copy button */}
-      <div className="flex items-center justify-between mb-5 pb-3 border-b border-border-custom/60">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          <h4 className="font-mono text-xs uppercase tracking-wider text-text-secondary">
-            Workflow Simulator
-          </h4>
+      {/* Visual top bar resembling a VS Code editor tab header */}
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-border-custom/50">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-bg/85 rounded-lg border border-border-custom/60 font-mono text-[10px] sm:text-xs text-text-primary">
+            <span className="text-yellow-500 font-bold">JS</span>
+            <span>solve.js</span>
+          </div>
         </div>
         <button
           type="button"
           onClick={handleCopy}
-          className="p-1.5 rounded-lg border border-border-custom bg-bg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
-          aria-label="Copy Workflow Code"
-          title="Copy Workflow Code"
+          className="p-1.5 rounded-lg border border-border-custom/60 bg-bg/40 hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+          aria-label="Copy code block"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
             <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
           </svg>
         </button>
       </div>
 
-      {/* Main Split Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
+      {/* Grid: Responsive Stacking layout */}
+      <div className="flex flex-col lg:flex-row gap-4 items-stretch">
         
-        {/* Code Terminal View (Left 7 cols) */}
-        <div className="md:col-span-8 p-4 rounded-xl bg-black/40 border border-border-custom/80 font-mono text-[11px] sm:text-xs leading-relaxed relative min-h-[170px] flex flex-col justify-center">
+        {/* Editor Screen Code Area (Left/Top) */}
+        <div className="flex-1 p-4 rounded-xl bg-black border border-border-custom/50 font-mono text-[11px] sm:text-xs leading-relaxed relative min-h-[175px] flex flex-col justify-center">
           <div className="space-y-1 select-none">
             {typedLines.map((line, idx) => {
-              // Highlight styling
-              let textColor = "text-gray-500"; // Muted future
+              let lineClass = "text-text-secondary/50"; // Muted future
               
               if (phase === "typing") {
-                if (idx === currentLineIndex) textColor = "text-blue-400"; // Active
-                else if (idx < currentLineIndex) textColor = "text-emerald-500/90"; // Typed/Past
+                if (idx === currentLineIndex) lineClass = "text-blue-400 font-semibold";
+                else if (idx < currentLineIndex) lineClass = "text-emerald-500/80";
               } else {
-                // Executing or Completed phase
                 if (idx === 0 || idx === CODE_LINES.length - 1) {
-                  textColor = "text-text-primary/70";
+                  lineClass = "text-text-primary/70";
                 } else if (idx === activeExecutionIndex) {
-                  textColor = "text-blue-400 font-bold"; // Current active line
+                  lineClass = "text-blue-400 font-bold";
                 } else if (idx < activeExecutionIndex || phase === "completed") {
-                  textColor = "text-emerald-400"; // Completed lines
+                  lineClass = "text-emerald-400";
                 }
               }
 
               const isCurrentTypingLine = phase === "typing" && idx === currentLineIndex;
 
               return (
-                <div key={idx} className="flex items-center min-h-[18px]">
-                  {idx > 0 && idx < CODE_LINES.length - 1 ? (
-                    <span className="text-[9px] text-gray-600 w-4 inline-block select-none">
-                      {phase === "executing" && idx === activeExecutionIndex ? "▶" : "✓"}
-                    </span>
-                  ) : (
-                    <span className="w-4" />
-                  )}
-                  <span className={`${textColor} whitespace-pre`}>
+                <div key={idx} className="flex items-start min-h-[18px]">
+                  {/* VS Code Line Number */}
+                  <span className="text-[10px] text-gray-700 w-5 inline-block select-none text-right pr-2">
+                    {idx + 1}
+                  </span>
+                  <span className={`${lineClass} whitespace-pre flex-1`}>
                     {line}
                   </span>
                   {isCurrentTypingLine && (
-                    <span className="w-1.5 h-3.5 bg-blue-400 ml-0.5 animate-pulse inline-block" />
+                    <span className="w-1 h-3.5 bg-blue-400 ml-0.5 animate-pulse inline-block align-middle" />
                   )}
                 </div>
               );
@@ -195,51 +168,50 @@ export default function EngineeringExecutionCard() {
           </div>
         </div>
 
-        {/* Status Checklist / Side Monitor (Right 4 cols) */}
-        <div className="md:col-span-4 p-4 rounded-xl bg-white/[0.01] border border-border-custom/50 flex flex-col justify-between min-h-[140px]">
+        {/* Execution Monitor Area (Right/Bottom) */}
+        <div className="w-full lg:w-44 p-4 rounded-xl bg-bg border border-border-custom/50 flex flex-col justify-between">
           <div>
-            <div className="font-mono text-[10px] text-text-secondary uppercase tracking-wider mb-3 border-b border-border-custom/30 pb-1.5 flex justify-between">
-              <span>Status Monitor</span>
-              <span className="text-[9px] text-emerald-400">
-                {phase === "completed" ? "IDLE" : "SIMULATING"}
+            <div className="font-mono text-[9px] text-text-secondary uppercase tracking-wider mb-2.5 border-b border-border-custom/30 pb-1 flex justify-between">
+              <span>Execution</span>
+              <span className="text-emerald-400 font-bold">
+                {phase === "completed" ? "SUCCESS" : "RUNNING"}
               </span>
             </div>
             
-            <div className="space-y-1.5 font-mono text-[11px]">
+            <div className="space-y-1 font-mono text-[10px] sm:text-[11px]">
               {TASKS.map((task) => {
                 const associatedLineIndex = CODE_LINES.findIndex((line) => line.includes(task.toLowerCase()));
-                
-                let statusText = " ";
-                let colorClass = "text-gray-600";
+                let statusIcon = " ";
+                let colorClass = "text-text-secondary/50";
                 let isAnimating = false;
 
                 if (phase === "executing") {
                   if (associatedLineIndex === activeExecutionIndex) {
-                    statusText = "▶";
-                    colorClass = "text-blue-400 font-semibold";
+                    statusIcon = "▶";
+                    colorClass = "text-blue-400 font-bold";
                     isAnimating = true;
                   } else if (associatedLineIndex < activeExecutionIndex) {
-                    statusText = "✓";
-                    colorClass = "text-emerald-500";
+                    statusIcon = "✓";
+                    colorClass = "text-emerald-400";
                   }
                 } else if (phase === "completed") {
-                  statusText = "✓";
-                  colorClass = "text-emerald-500";
+                  statusIcon = "✓";
+                  colorClass = "text-emerald-400";
                 }
 
                 return (
                   <div key={task} className={`flex items-center justify-between py-0.5 ${colorClass}`}>
-                    <span className="capitalize">{task}</span>
+                    <span>{task}</span>
                     <span className="w-4 flex items-center justify-center font-bold">
                       {isAnimating ? (
                         <motion.span
                           animate={{ scale: [1, 1.2, 1] }}
                           transition={{ repeat: Infinity, duration: 0.6 }}
                         >
-                          {statusText}
+                          {statusIcon}
                         </motion.span>
                       ) : (
-                        statusText
+                        statusIcon
                       )}
                     </span>
                   </div>
@@ -248,6 +220,7 @@ export default function EngineeringExecutionCard() {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
