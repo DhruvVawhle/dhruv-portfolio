@@ -344,18 +344,18 @@ export default function ProductShowcaseGallery({
 
       {/* ── CLICKABLE PAGINATION STRIP / THUMBNAILS ── */}
       {slides.length > 1 && (
-        <div className="flex items-center justify-center gap-2.5 overflow-x-auto py-1">
+        <div className="flex items-center justify-start md:justify-center gap-3 overflow-x-auto py-2 scrollbar-thin">
           {slides.map((slide, idx) => (
             <button
               key={slide.src + idx}
               onClick={() => goToIndex(idx)}
-              className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+              className={`min-w-[42px] min-h-[38px] px-4 py-2.5 rounded-xl font-mono text-xs font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center justify-center gap-1.5 ${
                 idx === activeIdx
                   ? `${accentClasses} shadow-md scale-105`
                   : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent"
               }`}
             >
-              <span>{idx + 1}. </span>
+              <span>{idx + 1}.</span>
               <span className="hidden sm:inline">{slide.title}</span>
             </button>
           ))}
