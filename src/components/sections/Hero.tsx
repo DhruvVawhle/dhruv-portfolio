@@ -93,18 +93,60 @@ function SocialIcon({ icon }: { icon: string }) {
   return null;
 }
 
-/* ─── Engineering Architectural SVG Motifs (Minimal & Low Opacity) ─── */
 function ApiFlowMotif() {
   return (
-    <svg width="140" height="44" viewBox="0 0 140 44" fill="none" className="text-text-secondary opacity-35 dark:opacity-45 select-none pointer-events-none">
+    <svg width="140" height="44" viewBox="0 0 140 44" fill="none" className="text-text-secondary opacity-65 dark:opacity-85 select-none pointer-events-none">
+      {/* Left Node */}
       <circle cx="12" cy="22" r="4" fill="currentColor" />
+      
+      {/* Left Connection Line */}
       <line x1="16" y1="22" x2="54" y2="22" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
-      <rect x="54" y="10" width="32" height="24" rx="4" stroke="currentColor" strokeWidth="1.5" />
+      
+      {/* API Gateway Box (pulsing border) */}
+      <motion.rect
+        x="54"
+        y="10"
+        width="32"
+        height="24"
+        rx="4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        animate={{
+          stroke: ["rgba(255,255,255,0.15)", "var(--accent)", "rgba(255,255,255,0.15)"],
+          scale: [1, 1.05, 1],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{ transformOrigin: "70px 22px" }}
+      />
       <text x="70" y="25" textAnchor="middle" fontSize="9" fontFamily="monospace" fill="currentColor">
         API
       </text>
+      
+      {/* Right Connection Line */}
       <line x1="86" y1="22" x2="124" y2="22" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
+      
+      {/* Right Node */}
       <circle cx="128" cy="22" r="4" fill="var(--accent)" />
+
+      {/* Moving Signal packet */}
+      <motion.circle
+        r="2"
+        fill="var(--accent)"
+        cy="22"
+        animate={{
+          cx: [12, 54, 86, 128],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
     </svg>
   );
 }
