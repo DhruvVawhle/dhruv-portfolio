@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+import EngineeringExecutionCard from "@/components/ui/EngineeringExecutionCard";
 
 /* ─── Minimal Line Icons for Workflow Steps ────────────────────────── */
 const UnderstandIcon = () => (
@@ -200,6 +201,10 @@ export default function About() {
                   ))}
                 </ul>
               </div>
+            </ScrollReveal>
+
+            <ScrollReveal>
+              <EngineeringExecutionCard />
             </ScrollReveal>
           </div>
 
