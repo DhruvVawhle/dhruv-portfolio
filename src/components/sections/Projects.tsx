@@ -73,10 +73,19 @@ export default function Projects() {
 
   const filteredProjects = projects.filter((proj) => {
     const matchesCategory = selectedCategory === "All" || proj.category === selectedCategory;
+    
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return matchesCategory;
+
     const matchesSearch =
-      proj.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      proj.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      proj.techStack.some((tech) => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+      (proj.title || "").toLowerCase().includes(query) ||
+      (proj.subtitle || "").toLowerCase().includes(query) ||
+      (proj.problem || "").toLowerCase().includes(query) ||
+      (proj.approach || "").toLowerCase().includes(query) ||
+      (proj.architecture || "").toLowerCase().includes(query) ||
+      (proj.techStack || []).some((tech) => (tech || "").toLowerCase().includes(query)) ||
+      (proj.outcomes || []).some((outcome) => (outcome || "").toLowerCase().includes(query));
+
     return matchesCategory && matchesSearch;
   });
 
