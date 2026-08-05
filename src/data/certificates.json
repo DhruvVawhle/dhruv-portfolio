@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Google Cloud – Introduction to Security in the World of AI",
+    "issuer": "Google Cloud",
+    "date": "2025",
+    "credentialId": "GC-SEC-AI-9921",
+    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "image": "/images/certifications/google-cloud-ai-security.png",
+    "pdf": null,
+    "category": "Cloud"
+  },
+  {
+    "title": "Google Cloud – Exploring Data Transformation with Google Cloud",
+    "issuer": "Google Cloud",
+    "date": "2025",
+    "credentialId": "GC-DATA-TR-2881",
+    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "image": "/images/certifications/google-cloud-data-transformation.png",
+    "pdf": null,
+    "category": "Cloud"
+  },
+  {
+    "title": "Cisco Networking Academy – Introduction to Data Science",
+    "issuer": "Cisco Networking Academy",
+    "date": "2025",
+    "credentialId": "CISCO-DS-9192",
+    "verifyUrl": "https://www.netacad.com/",
+    "image": "/images/certifications/cisco-data-science.jpg",
+    "pdf": null,
+    "category": "Data Science"
+  },
+  {
+    "title": "NxtWave – AI for Students: Build Your Own Generative AI Model",
+    "issuer": "NxtWave",
+    "date": "2024",
+    "credentialId": "NXT-GEN-AI-1182",
+    "verifyUrl": "https://www.nxtwave.in/",
+    "image": "/images/certifications/nxtwave-generative-ai.jpg",
+    "pdf": null,
+    "category": "AI & ML"
+  },
+  {
+    "title": "Infosys Springboard – Basics of Python",
+    "issuer": "Infosys Springboard",
+    "date": "2024",
+    "credentialId": "INF-PY-4829",
+    "verifyUrl": "https://springboard.infosys.com/",
+    "image": "/images/certifications/Infosys Basic of Python.png",
+    "pdf": null,
+    "category": "Programming"
+  },
+  {
+    "title": "Edunet – Foundation Course on Green Skills & Artificial Intelligence",
+    "issuer": "Edunet Foundation",
+    "date": "2024",
+    "credentialId": "EDUNET-GREEN-AI-7721",
+    "verifyUrl": "https://edunetfoundation.org/",
+    "image": "/images/certifications/edunet-aiml.jpg",
+    "pdf": null,
+    "category": "AI & ML"
+  }
+]

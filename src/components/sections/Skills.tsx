@@ -6,6 +6,8 @@ import ScrollReveal from "@/components/effects/ScrollReveal";
 import TechIcon from "@/components/ui/TechIcon";
 import Button from "@/components/ui/Button";
 
+import { orbitRings, relationshipsMap, engineeringStack, techDetailsMap } from "@/lib/data";
+
 // Orbit ring configuration for the Engineering Ecosystem
 interface RingConfig {
   id: "inner" | "middle" | "outer";
@@ -16,61 +18,16 @@ interface RingConfig {
   skills: string[];
 }
 
-const ORBIT_RINGS: RingConfig[] = [
-  {
-    id: "inner",
-    radiusPx: 120, // 240px diameter
-    mobileRadiusPx: 60, // 120px diameter
-    duration: 75,
-    direction: 1,
-    skills: ["React", "TypeScript", "Node.js", "Python"],
-  },
-  {
-    id: "middle",
-    radiusPx: 200, // 400px diameter
-    mobileRadiusPx: 105, // 210px diameter
-    duration: 95,
-    direction: -1,
-    skills: ["Next.js", "MongoDB", "Tailwind CSS", "Express"],
-  },
-  {
-    id: "outer",
-    radiusPx: 285, // 570px diameter
-    mobileRadiusPx: 150, // 300px diameter
-    duration: 125,
-    direction: 1,
-    skills: ["AWS", "GCP", "Docker", "Git", "SQL"],
-  },
-];
+const ORBIT_RINGS: RingConfig[] = orbitRings as any;
 
 // Intelligent Engineering Ecosystem Relationships
-const RELATIONSHIPS_MAP: Record<string, string[]> = {
-  React: ["Next.js", "TypeScript", "Tailwind CSS"],
-  "Next.js": ["React", "TypeScript", "Tailwind CSS", "REST APIs"],
-  TypeScript: ["React", "Next.js", "Node.js", "Express"],
-  "Tailwind CSS": ["React", "Next.js"],
-  Python: ["Pandas", "Matplotlib", "Gemini API", "RAG", "Vector Database"],
-  Pandas: ["Python", "Matplotlib", "SQL"],
-  Matplotlib: ["Python", "Pandas"],
-  "Gemini API": ["Python", "RAG", "Vector Database", "Node.js"],
-  RAG: ["Python", "Gemini API", "Vector Database"],
-  "Node.js": ["Express", "REST APIs", "MongoDB", "Firebase"],
-  Express: ["Node.js", "REST APIs", "MongoDB"],
-  "REST APIs": ["Node.js", "Express", "MongoDB", "Next.js"],
-  AWS: ["Docker", "GCP", "SQL", "Git"],
-  GCP: ["AWS", "Docker", "Gemini API"],
-  Docker: ["AWS", "GCP", "Git", "Node.js"],
-  Firebase: ["Node.js", "MongoDB", "Firestore", "React"],
-  MongoDB: ["Node.js", "Express", "REST APIs", "Vector Database"],
-  "Vector Database": ["Python", "RAG", "Gemini API", "MongoDB"],
-  SQL: ["Pandas", "AWS", "Python"],
-  Firestore: ["Firebase", "React", "Node.js"],
-  Git: ["Docker", "TypeScript", "Next.js"],
-};
+const RELATIONSHIPS_MAP: Record<string, string[]> = relationshipsMap;
 
 interface TechCardItem {
   name: string;
   descriptor: string;
+  proficiency?: number;
+  yearsOfExperience?: number;
 }
 
 interface StackCategory {
@@ -82,86 +39,7 @@ interface StackCategory {
   technologies: TechCardItem[];
 }
 
-const ENGINEERING_STACK: StackCategory[] = [
-  {
-    id: "frontend",
-    title: "Frontend Engineering",
-    subtitle: "Component architectures & tokenized styling",
-    accentColor: "#3B82F6",
-    accentClass: "text-[#3B82F6] border-[#3B82F6]/30 bg-[#3B82F6]/10",
-    technologies: [
-      { name: "React", descriptor: "Component-driven UI library" },
-      { name: "Next.js", descriptor: "Full-stack React framework & App Router" },
-      { name: "TypeScript", descriptor: "End-to-end static typing & safety" },
-      { name: "Tailwind CSS", descriptor: "Token-based utility styling" },
-    ],
-  },
-  {
-    id: "backend",
-    title: "Backend & APIs",
-    subtitle: "Scalable server runtimes & RESTful endpoints",
-    accentColor: "#10B981",
-    accentClass: "text-[#10B981] border-[#10B981]/30 bg-[#10B981]/10",
-    technologies: [
-      { name: "Node.js", descriptor: "Async V8 JavaScript runtime" },
-      { name: "Express", descriptor: "Lightweight web API middleware" },
-      { name: "Python", descriptor: "Backend services & API integration" },
-      { name: "REST APIs", descriptor: "Structured HTTP service contracts" },
-    ],
-  },
-  {
-    id: "ai-ml",
-    title: "AI / Machine Learning",
-    subtitle: "Applied generative AI & data transformation",
-    accentColor: "#A855F7",
-    accentClass: "text-[#A855F7] border-[#A855F7]/30 bg-[#A855F7]/10",
-    technologies: [
-      { name: "Gemini API", descriptor: "Multimodal NLU & reasoning models" },
-      { name: "RAG", descriptor: "Retrieval-augmented generation pipelines" },
-      { name: "Pandas", descriptor: "Structured data analysis & cleaning" },
-      { name: "Matplotlib", descriptor: "Exploratory technical visualization" },
-    ],
-  },
-  {
-    id: "cloud-infrastructure",
-    title: "Cloud Infrastructure",
-    subtitle: "Managed compute & containerized environments",
-    accentColor: "#F97316",
-    accentClass: "text-[#F97316] border-[#F97316]/30 bg-[#F97316]/10",
-    technologies: [
-      { name: "AWS", descriptor: "Scalable cloud infrastructure & compute" },
-      { name: "GCP", descriptor: "Google Cloud AI & managed services" },
-      { name: "Docker", descriptor: "Containerized reproducible runtimes" },
-      { name: "Firebase", descriptor: "Authentication & real-time serverless" },
-    ],
-  },
-  {
-    id: "databases",
-    title: "Database Systems",
-    subtitle: "Relational, document & high-dimensional storage",
-    accentColor: "#059669",
-    accentClass: "text-[#059669] border-[#059669]/30 bg-[#059669]/10",
-    technologies: [
-      { name: "MongoDB", descriptor: "Distributed document database" },
-      { name: "Vector Database", descriptor: "High-dimensional semantic search" },
-      { name: "SQL", descriptor: "Relational schema modeling & queries" },
-      { name: "Firestore", descriptor: "Real-time document synchronization" },
-    ],
-  },
-  {
-    id: "developer-tools",
-    title: "Developer Tools",
-    subtitle: "Version control & collaborative engineering",
-    accentColor: "#EF4444",
-    accentClass: "text-[#EF4444] border-[#EF4444]/30 bg-[#EF4444]/10",
-    technologies: [
-      { name: "Git", descriptor: "Source control & branch management" },
-      { name: "Docker", descriptor: "Isolated local dev environments" },
-      { name: "REST APIs", descriptor: "API testing & contract validation" },
-      { name: "Python", descriptor: "Automation & scripting utilities" },
-    ],
-  },
-];
+const ENGINEERING_STACK: StackCategory[] = engineeringStack as any;
 
 interface TechDetailInfo {
   category: string;
@@ -173,323 +51,7 @@ interface TechDetailInfo {
   keyPatterns: string[];
 }
 
-const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = {
-  React: {
-    category: "Frontend Framework",
-    categoryColor: "#3B82F6",
-    role: "Client-Side UI Architect & State Engineer",
-    projectsList: ["KrishiSaathi AI Platform", "MedTalk Clinical Chatbot", "Portfolio Architecture"],
-    useCases: ["UI Architecture", "Reactive Reconciliation", "Component Design", "State Management"],
-    architecture:
-      "Implements unidirectional data flow with custom hooks and reactive virtual DOM reconciliation. Structured around atomic design tokens and memoized state selectors to eliminate unnecessary re-renders across high-frequency real-time interfaces.",
-    keyPatterns: [
-      "Custom Hooks & Context Providers",
-      "Virtual DOM Reconciliation & Memoization",
-      "Atomic Design System Components",
-      "Lazy Loading & Code Splitting",
-    ],
-  },
-  "Next.js": {
-    category: "Full-Stack Framework",
-    categoryColor: "#3B82F6",
-    role: "SSR Architecture & App Router Engineer",
-    projectsList: ["Portfolio Architecture", "KrishiSaathi Core API", "Enterprise Web Apps"],
-    useCases: ["React Server Components (RSC)", "App Router Navigation", "API Route Gateway", "Static & Dynamic Caching"],
-    architecture:
-      "Leverages React Server Components (RSCs), server actions, and edge route handlers for optimal First Contentful Paint (FCP) and secure server-to-server API execution without exposing client secrets.",
-    keyPatterns: [
-      "React Server Components (RSC)",
-      "Dynamic Route Handlers & API Middleware",
-      "Static Site Generation (SSG) + ISR",
-      "Turbopack Bundling & Optimization",
-    ],
-  },
-  TypeScript: {
-    category: "Type System & Language",
-    categoryColor: "#3B82F6",
-    role: "Domain Modeling & Type Contracts Engineer",
-    projectsList: ["Portfolio Site & Applications", "KrishiSaathi Core API", "All Production Microservices"],
-    useCases: ["End-to-End Type Safety", "API Payload Contracts", "Generics & Unions", "Zero Runtime Casting"],
-    architecture:
-      "Enforces end-to-end type safety across client interfaces, REST request payloads, and database schema definitions. Eliminates runtime null pointer errors through discriminated unions and strict compiler rules.",
-    keyPatterns: [
-      "Strict Null Checks & Discriminated Unions",
-      "Generics & Utility Type Transformations",
-      "End-to-End API Payload Validation",
-      "Shared Domain Type Definitions",
-    ],
-  },
-  "Tailwind CSS": {
-    category: "Design System & Styling",
-    categoryColor: "#3B82F6",
-    role: "Tokenized UI & Responsive Design Engineer",
-    projectsList: ["Portfolio Design System", "KrishiSaathi Responsive UI", "Mobile Dashboards"],
-    useCases: ["Custom Design Tokens", "Glassmorphic Surfaces", "Responsive Breakpoints", "Zero Layout Shift"],
-    architecture:
-      "Constrained design system architecture using custom color tokens, responsive breakpoints, and modern layout algorithms (CSS Grid/Flexbox) with zero dead CSS and sub-millisecond styling execution.",
-    keyPatterns: [
-      "Custom Design Tokens & CSS Variables",
-      "Dark Mode & Glassmorphic Surfaces",
-      "Responsive Breakpoint Engineering",
-      "Hardware-Accelerated Micro-Animations",
-    ],
-  },
-  "Node.js": {
-    category: "Backend Runtime",
-    categoryColor: "#10B981",
-    role: "Asynchronous Event-Driven Backend Engineer",
-    projectsList: ["KrishiSaathi Backend", "Edith AI Orchestrator", "Distributed Microservices"],
-    useCases: ["Non-Blocking I/O Streams", "Concurrent API Requests", "Cluster Processing", "Background Task Dispatch"],
-    architecture:
-      "High-throughput non-blocking I/O runtime handling concurrent REST API requests, websocket streams, and background task dispatching across microservices and external LLM endpoints.",
-    keyPatterns: [
-      "Non-Blocking Event Loop & Streams",
-      "JWT Authentication & Role Middleware",
-      "Cluster Mode Multi-Processing",
-      "Asynchronous Task Scheduling",
-    ],
-  },
-  Express: {
-    category: "API Gateway & Middleware",
-    categoryColor: "#10B981",
-    role: "HTTP API Gateway & Middleware Architect",
-    projectsList: ["KrishiSaathi Microservices", "Order & Inventory Routes", "Payment Gateway Integration"],
-    useCases: ["Middleware Chain of Responsibility", "CORS & Security Policies", "Rate Limiting", "JSON Error Serialization"],
-    architecture:
-      "Modular middleware chain handling request sanitation, CORS policies, rate limiting, and structured JSON error serialization for high-reliability backend service integration.",
-    keyPatterns: [
-      "Middleware Chain of Responsibility",
-      "Rate Limiting & DDOS Protection",
-      "Structured Error Handling & Logging",
-      "CORS & Security Headers (Helmet)",
-    ],
-  },
-  Python: {
-    category: "AI & Data Engineering",
-    categoryColor: "#A855F7",
-    role: "Machine Learning & Predictive Pipeline Engineer",
-    projectsList: ["KrishiSaathi ML Engine", "MedTalk AI Backend", "Automated Data Scrapers"],
-    useCases: ["Ensemble Regression Models", "Vector Embeddings & RAG", "FastAPI & Flask Endpoints", "Vectorized Numpy ETL"],
-    architecture:
-      "Powering predictive analytics pipelines, LLM inference endpoints, and automated data ingestion scripts. Utilizes vectorized numpy operations and FastAPI/Flask microservices for rapid data processing.",
-    keyPatterns: [
-      "FastAPI & Flask REST Endpoints",
-      "Scikit-Learn Regression & Time-Series Models",
-      "Vector Embeddings & RAG Retrieval",
-      "Asynchronous Data Scraping & ETL",
-    ],
-  },
-  "REST APIs": {
-    category: "Service Architecture",
-    categoryColor: "#10B981",
-    role: "HTTP Service Contract & Webhook Engineer",
-    projectsList: ["All Distributed Portfolio Systems", "Payment Webhook Endpoints", "External AI Gateway"],
-    useCases: ["Structured HTTP Contracts", "Webhook Callbacks", "Idempotent Operations", "Contract Validation"],
-    architecture:
-      "Disciplined RESTful service contracts implementing strict JSON schema validation, idempotent HTTP verbs, and robust webhook retry buffers across distributed microservice boundaries.",
-    keyPatterns: [
-      "OpenAPI Specification Contracts",
-      "Idempotent Payment Webhooks",
-      "Structured JSON Schema Validation",
-      "Distributed Tracing & Correlation IDs",
-    ],
-  },
-  "Gemini API": {
-    category: "Applied Generative AI",
-    categoryColor: "#A855F7",
-    role: "Multimodal AI Orchestrator & Prompt Engineer",
-    projectsList: ["Edith Assistant Orchestrator", "Automated Portfolio Insights", "MedTalk Clinical Reasoning"],
-    useCases: ["Multimodal NLU & Reasoning", "Structured JSON Outputs", "Multi-Step Tool Calling", "Context Caching"],
-    architecture:
-      "Integrates Google Gemini multimodal models using structured JSON schemas and function calling to execute complex reasoning workflows, code synthesis, and contextual document retrieval.",
-    keyPatterns: [
-      "Structured JSON Schema Enforcement",
-      "Multi-Turn Tool Calling & Orchestration",
-      "Low-Latency Streaming Token Handlers",
-      "Context Caching & Token Optimization",
-    ],
-  },
-  RAG: {
-    category: "Applied AI Pipeline",
-    categoryColor: "#A855F7",
-    role: "Retrieval-Augmented Generation Architect",
-    projectsList: ["MedTalk Clinical Knowledge Engine", "Document Query Retrieval Systems"],
-    useCases: ["High-Dimensional Embeddings", "Semantic Vector Search", "Chunking Strategies", "Hallucination Mitigation"],
-    architecture:
-      "Retrieval-Augmented Generation pipeline using semantic vector distance search to ground LLM inference in factual domain literature while eliminating hallucinated answers.",
-    keyPatterns: [
-      "Recursive Text Chunking & Embeddings",
-      "Cosine Similarity & Vector Indexing",
-      "Context Window Compression",
-      "Automated Citation Verification",
-    ],
-  },
-  Pandas: {
-    category: "Data Science & ETL",
-    categoryColor: "#A855F7",
-    role: "Tabular Data & Pipeline Engineer",
-    projectsList: ["Historical Mandi Crop Data Processing", "Market Trend Ingestion Scripts"],
-    useCases: ["Structured Tabular ETL", "Missing Value Imputation", "Time-Series Rolling Averages", "High-Speed CSV/Parquet Sync"],
-    architecture:
-      "High-performance dataframe manipulation and statistical aggregation across multi-year agricultural dataset streams to normalize pricing signals and train machine learning models.",
-    keyPatterns: [
-      "Vectorized Dataframe Transformations",
-      "Rolling Window Statistical Calculations",
-      "Multi-Source Dataset Normalization",
-      "Memory-Efficient Parquet Serialization",
-    ],
-  },
-  Matplotlib: {
-    category: "Visual Analytics",
-    categoryColor: "#A855F7",
-    role: "Exploratory Statistical Charting Engineer",
-    projectsList: ["Agricultural Market Trend Reports", "Crop Price Prediction Visualizations"],
-    useCases: ["Time-Series Trend Charts", "Regression Error Distributions", "Exploratory Data Analysis", "Report Generation"],
-    architecture:
-      "Generating precise mathematical and statistical data charts directly within analytical Python pipelines to validate model drift, feature correlation, and historical accuracy.",
-    keyPatterns: [
-      "Time-Series Trend & Forecast Plots",
-      "Correlation Heatmaps & Error Residuals",
-      "Automated Report PNG Generation",
-      "Custom Publication-Grade Styling",
-    ],
-  },
-  AWS: {
-    category: "Cloud Infrastructure",
-    categoryColor: "#F97316",
-    role: "Cloud Infrastructure Deployment Specialist",
-    projectsList: ["High-Availability Cloud Deployments", "Asset Storage CDN", "Serverless Trigger Pipelines"],
-    useCases: ["EC2 Virtual Compute", "S3 Asset Storage & CDN", "Lambda Asynchronous Triggers", "IAM Security Policies"],
-    architecture:
-      "Scalable cloud deployment leveraging EC2 virtual server instances, S3 object asset storage, CloudFront CDN edge caching, and Lambda functions for asynchronous background triggers.",
-    keyPatterns: [
-      "S3 Object Storage & CDN Caching",
-      "Serverless Lambda Functions",
-      "IAM Role & Security Groups",
-      "CloudWatch Metrics & Alerting",
-    ],
-  },
-  GCP: {
-    category: "Managed Cloud AI",
-    categoryColor: "#F97316",
-    role: "Google Cloud Certified AI Specialist",
-    projectsList: ["Google Cloud Certified AI Security", "Vertex AI Endpoint Integration", "BigQuery Analytics"],
-    useCases: ["Vertex AI Endpoints", "BigQuery SQL Analytics", "Cloud Functions Processing", "IAM & Service Account Security"],
-    architecture:
-      "Utilizing Google Cloud Vertex AI for model evaluation and inference integration alongside BigQuery for analytical processing over large historical agricultural datasets.",
-    keyPatterns: [
-      "Vertex AI Model Endpoints",
-      "BigQuery SQL Analytics",
-      "Cloud Functions Event Processing",
-      "IAM & Service Account Security",
-    ],
-  },
-  Docker: {
-    category: "DevOps & Containers",
-    categoryColor: "#F97316",
-    role: "Containerized Environment & CI/CD Architect",
-    projectsList: ["Backend Microservice Orchestration", "Reproducible Staging & Prod Builds", "Isolated Local Dev Engine"],
-    useCases: ["Multi-Stage Dockerfile Builds", "Docker Compose Orchestration", "Environment Parity", "Fast Cold Starts"],
-    architecture:
-      "Multi-stage container builds ensuring exact parity across local development, staging, and production cloud environments with minimal image footprint and fast cold starts.",
-    keyPatterns: [
-      "Multi-Stage Dockerfile Builds",
-      "Docker Compose Local Microservices",
-      "Environment Variable Isolation",
-      "Container Health Checks & Restart Policies",
-    ],
-  },
-  Firebase: {
-    category: "Serverless Cloud Platform",
-    categoryColor: "#F97316",
-    role: "Real-Time Cloud Synchronization Engineer",
-    projectsList: ["KrishiSaathi Real-time Order Updates", "Secure User Authentication", "Live Notification Engine"],
-    useCases: ["Real-Time Document Sync", "Serverless Authentication", "Live Webhook Subscriptions", "Firestore Indexes"],
-    architecture:
-      "Real-time event synchronization and managed serverless identity infrastructure powering instantaneous order state updates across concurrent buyer and seller sessions.",
-    keyPatterns: [
-      "Real-Time Document Listeners",
-      "Serverless Firebase Authentication",
-      "Compound Indexing & Security Rules",
-      "Cloud Functions Background Triggers",
-    ],
-  },
-  MongoDB: {
-    category: "NoSQL Database",
-    categoryColor: "#059669",
-    role: "Distributed Document Store Architect",
-    projectsList: ["KrishiSaathi Core Transactional Logs", "Geospatial Mandi Indexing", "User Inventory Storage"],
-    useCases: ["Multi-Stage Aggregations", "Compound & Geospatial Indexes", "Flexible BSON Schemas", "Mongoose Validation"],
-    architecture:
-      "Flexible BSON document schemas designed for rapid iteration, nested transaction histories, and multi-stage aggregation pipelines for high-speed real-time analytics and geospatial query filtering.",
-    keyPatterns: [
-      "Multi-Stage Aggregation Pipelines",
-      "Compound Indexing & Query Optimization",
-      "Geospatial Indexing for Local Markets",
-      "Mongoose Schema Validation",
-    ],
-  },
-  "Vector Database": {
-    category: "Semantic Vector Storage",
-    categoryColor: "#059669",
-    role: "High-Dimensional Vector Search Engineer",
-    projectsList: ["MedTalk AI Memory Embeddings", "Semantic Document Retrieval Engine"],
-    useCases: ["High-Dimensional Indexing", "Cosine Similarity Queries", "Metadata Filtering", "Real-time Embedding Lookup"],
-    architecture:
-      "High-speed semantic similarity indexing engine designed to store and query dense vector embeddings generated by LLM encoders for high-precision context retrieval.",
-    keyPatterns: [
-      "HNSW Vector Indexing Algorithms",
-      "Hybrid Keyword + Semantic Search",
-      "Low-Latency Cosine Distance Queries",
-      "Dynamic Metadata Filtering",
-    ],
-  },
-  SQL: {
-    category: "Relational Database",
-    categoryColor: "#059669",
-    role: "Normalized Relational Schema Engineer",
-    projectsList: ["Structured Financial Records", "ACID Transactional Logs", "Mandi Catalog Schemas"],
-    useCases: ["Normalized 3NF Relational Schemas", "ACID Transaction Integrity", "Complex Joins & Window Functions", "Query Plan Optimization"],
-    architecture:
-      "Structured tabular data modeling with foreign key constraints, normalized tables (3NF), and high-concurrency ACID transaction guarantees for mission-critical records.",
-    keyPatterns: [
-      "ACID Transaction Integrity",
-      "Normalized 3NF Relational Schemas",
-      "Complex Joins & Window Functions",
-      "Query Execution Plan Optimization",
-    ],
-  },
-  Firestore: {
-    category: "Real-Time Document Store",
-    categoryColor: "#059669",
-    role: "Low-Latency Cloud Database Specialist",
-    projectsList: ["Real-Time Marketplace Sync", "Live Diagnostic Chat Engine"],
-    useCases: ["Low-Latency Cloud Document Store", "Live Client Subscriptions", "Optimistic Concurrency", "Granular Security Rules"],
-    architecture:
-      "Low-latency cloud document database offering live client subscriptions, offline persistence capabilities, and atomic document updates for real-time collaborative interfaces.",
-    keyPatterns: [
-      "Atomic Batch Document Transactions",
-      "Offline Persistence Synchronization",
-      "Granular IAM & Security Rules",
-      "Compound Document Queries",
-    ],
-  },
-  Git: {
-    category: "Developer Tools",
-    categoryColor: "#EF4444",
-    role: "Version Control & CI/CD Gatekeeper",
-    projectsList: ["100% of Personal & Production Repositories", "Automated GitHub Actions CI/CD"],
-    useCases: ["Trunk-Based Development & GitFlow", "Semantic Commits", "Pull Request Review Gates", "Branch Protection"],
-    architecture:
-      "Disciplined branching strategy (GitFlow / Trunk-Based) with atomic commits, pull request code reviews, and automated linting/testing gates before merging into production.",
-    keyPatterns: [
-      "Trunk-Based Development & GitFlow",
-      "Semantic Commit Messages",
-      "Automated GitHub Actions CI/CD",
-      "Branch Protection & Code Review Gates",
-    ],
-  },
-};
+const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = techDetailsMap as any;
 
 const getTechDetail = (name: string): TechDetailInfo => {
   if (TECH_DETAILS_MAP[name]) return TECH_DETAILS_MAP[name];
@@ -1207,12 +769,27 @@ export default function Skills() {
                                         <TechIcon name={tech.name} size="md" />
                                       </div>
                                       <div>
-                                        <h5 className="font-display font-bold text-base text-white">
-                                          {tech.name}
+                                        <h5 className="font-display font-bold text-base text-white flex items-center gap-2 justify-between">
+                                          <span>{tech.name}</span>
+                                          {tech.proficiency && (
+                                            <span className="font-mono text-xs" style={{ color: category.accentColor }}>{tech.proficiency}%</span>
+                                          )}
                                         </h5>
                                         <p className="font-mono text-xs text-white/70 leading-relaxed mt-1">
                                           {tech.descriptor}
                                         </p>
+                                        {tech.proficiency && (
+                                          <div className="w-40 sm:w-56 mt-2 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                            <motion.div
+                                              initial={{ width: 0 }}
+                                              whileInView={{ width: `${tech.proficiency}%` }}
+                                              viewport={{ once: true }}
+                                              transition={{ duration: 1, ease: "easeOut" }}
+                                              className="h-full rounded-full"
+                                              style={{ backgroundColor: category.accentColor }}
+                                            />
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
                                   ))}
@@ -1294,6 +871,24 @@ export default function Skills() {
                                 <p className="text-xs text-white/70 leading-relaxed font-mono">
                                   {tech.descriptor}
                                 </p>
+                                {tech.proficiency && (
+                                  <div className="w-full mt-3.5">
+                                    <div className="flex justify-between items-center mb-1 font-mono text-[9px] uppercase tracking-wider text-white/40">
+                                      <span>Proficiency</span>
+                                      <span>{tech.proficiency}%</span>
+                                    </div>
+                                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                      <motion.div
+                                        initial={{ width: 0 }}
+                                        whileInView={{ width: `${tech.proficiency}%` }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 1.2, ease: "easeOut" }}
+                                        className="h-full rounded-full"
+                                        style={{ backgroundColor: category.accentColor }}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             );
                           })}

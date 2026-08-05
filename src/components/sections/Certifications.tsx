@@ -72,8 +72,16 @@ const issuerBranding: Record<
 };
 
 export default function Certifications() {
-  const featuredCert = certifications[0]; // Google Cloud Certified Professional Machine Learning Engineer
-  const secondaryCerts = certifications.slice(1); // Remaining credentials
+  const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const categories = ["All", "Cloud", "Data Science", "AI & ML", "Programming"];
+
+  const filteredCerts = certifications.filter(
+    (c) => selectedCategory === "All" || c.category === selectedCategory
+  );
+
+  const showFeatured = selectedCategory === "All";
+  const featuredCert = certifications[0];
+  const secondaryCerts = showFeatured ? certifications.slice(1) : filteredCerts;
 
   const renderCertCard = (cert: (typeof certifications)[0], i: number) => {
     const branding = issuerBranding[cert.issuer] || {
@@ -256,7 +264,7 @@ export default function Certifications() {
             </span>
           </div>
 
-          <div className="max-w-2xl mb-14">
+          <div className="max-w-2xl mb-8">
             <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-text-primary tracking-tight">
               Industry-validated certifications &amp; technical credentials.
             </h2>
@@ -264,17 +272,34 @@ export default function Certifications() {
               Demonstrated mastery across cloud infrastructure, networking, modern web development, and applied AI.
             </p>
           </div>
+
+          {/* ── Category Filter Tabs (Dynamic) ── */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-4 mb-10 scrollbar-none border-b border-border-custom/30">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`h-9 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+                  selectedCategory === cat
+                    ? "bg-accent/15 border-accent text-accent shadow-xs"
+                    : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </ScrollReveal>
 
         {/* ── MOBILE SWIPEABLE CAROUSEL (block md:hidden) ────────────────── */}
         <div className="block md:hidden mb-12">
           <div className="flex items-center justify-between mb-4 px-1">
             <span className="font-mono text-xs text-accent font-semibold tracking-wider uppercase">
-              ← Swipe to explore ({certifications.length} credentials) →
+              ← Swipe to explore ({secondaryCerts.length} credentials) →
             </span>
           </div>
           <div className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory no-scrollbar">
-            {[featuredCert, ...secondaryCerts].map((cert, idx) => (
+            {secondaryCerts.map((cert, idx) => (
               <div
                 key={`mobile-cert-${cert.title}`}
                 className="snap-center min-w-[285px] w-[85vw] max-w-[340px] flex-shrink-0 h-auto"
@@ -288,8 +313,9 @@ export default function Certifications() {
         {/* ── DESKTOP FULL VIEW (hidden md:block) ────────────────────────── */}
         <div className="hidden md:block">
           {/* ── 2. HERO SHOWCASE: FEATURED INDUSTRY CREDENTIAL ── */}
-          <ScrollReveal>
-          <motion.div
+          {showFeatured && featuredCert && (
+            <ScrollReveal>
+            <motion.div
             whileHover={{ y: -4, scale: 1.008 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             data-cursor-text="INSPECT"
@@ -440,12 +466,13 @@ export default function Certifications() {
             </div>
           </motion.div>
         </ScrollReveal>
+        )}
 
         {/* ── 3. SUPPORTING CREDENTIALS GRID ───────────────────────── */}
         <ScrollReveal>
           <div className="mb-6">
             <h3 className="font-mono text-xs uppercase tracking-widest text-text-secondary">
-              SPECIALIZED TECHNICAL CERTIFICATIONS
+              {selectedCategory === "All" ? "SPECIALIZED TECHNICAL CERTIFICATIONS" : `${selectedCategory} CERTIFICATIONS`}
             </h3>
           </div>
         </ScrollReveal>

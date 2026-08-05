@@ -1,0 +1,78 @@
+{
+  "hackathons": [
+    {
+      "id": "medimitra",
+      "name": "MediMitra",
+      "badge": "National-Level · SIH 2025",
+      "organizer": "Smart India Hackathon 2025",
+      "date": "2025",
+      "roleTeam": "Team Lead · Team MediMitra (6 members)",
+      "description": "Public health chatbot delivering disease awareness and outbreak alerts via low-bandwidth WhatsApp & SMS using an n8n RAG pipeline.",
+      "challenge": "Public health awareness in rural communities limited by low internet bandwidth and lack of medical app adoption.",
+      "role": "Team Lead & AI Architect — designed the n8n RAG workflow and multilingual Gemini NLU pipeline.",
+      "timeConstraint": "SIH National Software Sprint",
+      "outcome": "Selected among Top 30 college finalists for Smart India Hackathon software-track submission.",
+      "techStack": ["n8n", "Gemini API", "WhatsApp API", "MongoDB", "RAG", "Vector DB"],
+      "image": "/images/hackathons/medimitra-chatbot.png"
+    },
+    {
+      "id": "analytrix",
+      "name": "Analytrix '26 Datathon",
+      "badge": "First Place",
+      "organizer": "TCET",
+      "date": "Feb 2026",
+      "roleTeam": "Team: C72",
+      "description": "End-to-end data cleaning, validation pipeline, and executive dashboarding for noisy real-world datasets.",
+      "challenge": "Filtering raw unstructured data for accuracy under strict time and validation constraints.",
+      "role": "Data Pipeline & Visualization Lead — performed Python/Pandas cleaning and Power BI modeling.",
+      "timeConstraint": "Competitive Datathon Sprint",
+      "outcome": "High-signal Power BI & Python dashboards surfacing reliable operational insights.",
+      "techStack": ["Python", "Pandas", "Matplotlib", "Seaborn", "Power BI", "Excel"],
+      "image": "/images/hackathons/analytrix-datathon-certificate.jpg"
+    },
+    {
+      "id": "edith",
+      "name": "Edith – AI Agent Buildathon",
+      "badge": "Top Innovator",
+      "organizer": "Technium, SLRTCE",
+      "date": "Mar 2025",
+      "roleTeam": "Team: Fantastic Four",
+      "description": "Telegram-integrated AI agent enabling local kirana convenience stores to manage inventory and supplier orders through conversational chat.",
+      "challenge": "Kirana store owners struggle with complex inventory dashboards and manual order tracking.",
+      "role": "Full-Stack AI Engineer — integrated Telegram Bot API with n8n workflow automation.",
+      "timeConstraint": "24-Hour Intensive Buildathon",
+      "outcome": "Fully functioning Telegram bot processing real-time stock queries and automating supplier reorders.",
+      "techStack": ["n8n", "Gemini API", "Telegram Bot API"],
+      "image": "/images/hackathons/edith-hackathon-participation.jpg"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Smart India Hackathon Software Finalist",
+      "date": "2025",
+      "description": "Recognized as a top 30 team nationally at SIH 2025 for MediMitra."
+    }
+  ],
+  "research": [
+    {
+      "title": "Applied AI in Grassroots Agriculture",
+      "date": "Ongoing",
+      "description": "Developing local forecasting architectures utilizing ARIMA and historical AGMARKNET government crop data."
+    }
+  ],
+  "openSource": [
+    {
+      "title": "KrishiSaathi Platform Core Repo",
+      "url": "https://github.com/DhruvVawhle/KrishiSaathi",
+      "description": "Fully open sourced the hybrid Firestore + MongoDB agricultural commodity platform."
+    }
+  ],
+  "competitions": [
+    {
+      "name": "TCET Analytrix Datathon",
+      "rank": "Rank 1",
+      "date": "2026"
+    }
+  ],
+  "publications": []
+}

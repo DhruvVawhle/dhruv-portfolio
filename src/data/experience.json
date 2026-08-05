@@ -1,0 +1,48 @@
+[
+  {
+    "id": "codsoft",
+    "company": "CodSoft",
+    "companyLogo": "",
+    "role": "Web Development Intern",
+    "employmentType": "Internship",
+    "duration": "2026",
+    "location": "Remote",
+    "technologies": ["HTML", "CSS", "JavaScript", "Figma"],
+    "responsibilities": [
+      "Developed responsive, cross-browser-compatible web interfaces using HTML, CSS, and JavaScript",
+      "Implemented pixel-perfect designs from Figma mockups with attention to responsive breakpoints",
+      "Improved page load performance through image optimization and CSS refactoring"
+    ],
+    "achievements": [
+      "Optimized assets for client delivery reducing load times by 20%"
+    ],
+    "certificate": {
+      "title": "CodSoft Web Development Internship Certificate",
+      "image": "/images/certifications/codsoft-internship.png",
+      "verifiedId": "Verified CodSoft Internship Completion"
+    }
+  },
+  {
+    "id": "compozent",
+    "company": "Compozent",
+    "companyLogo": "",
+    "role": "SDE (Web) Intern",
+    "employmentType": "Internship",
+    "duration": "2025",
+    "location": "Remote",
+    "technologies": ["React", "Node.js", "Express", "REST APIs", "Agile"],
+    "responsibilities": [
+      "Built and maintained React-based web applications within an Agile development team",
+      "Developed RESTful API endpoints with Node.js/Express, integrating with existing microservices",
+      "Participated in sprint planning, code reviews, and retrospectives as part of Agile workflow"
+    ],
+    "achievements": [
+      "Implemented critical features within production sprints"
+    ],
+    "certificate": {
+      "title": "Compozent SDE Web Development Internship Completion Certificate",
+      "image": "/images/certifications/compozent-internship.jpg",
+      "verifiedId": "Verified Compozent Internship Completion"
+    }
+  }
+]

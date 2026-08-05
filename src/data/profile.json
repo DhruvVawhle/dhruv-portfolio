@@ -1,0 +1,41 @@
+{
+  "name": "Dhruv Vawhle",
+  "roles": [
+    "Software Engineer",
+    "Full-Stack Developer & AI/ML Engineer",
+    "Full Stack Developer",
+    "Machine Learning Enthusiast",
+    "AI Developer"
+  ],
+  "currentRole": "Full-Stack & AI/ML Engineer",
+  "tagline": "I build production software with real data, real users, and real legal ownership — not just tutorials.",
+  "profileImage": "/images/profile/dhruv-vawhle.jpg",
+  "availabilityStatus": "Available for Roles",
+  "location": "Mumbai, India",
+  "statistics": [
+    { "label": "Data Rows Processed", "value": "18300", "suffix": "+" },
+    { "label": "Bundle Size Reduction", "value": "69", "suffix": "%" },
+    { "label": "Languages Supported", "value": "8", "suffix": "" }
+  ],
+  "trustSignals": [
+    { "icon": "shield", "label": "Copyright-Filed Software" },
+    { "icon": "database", "label": "Full-Stack & Applied AI Systems" },
+    { "icon": "rocket", "label": "2 Production Deployments" }
+  ],
+  "ctaButtons": {
+    "primary": {
+      "label": "Explore Featured Projects",
+      "href": "#projects"
+    },
+    "secondary": {
+      "label": "View Resume",
+      "href": "/documents/Dhruv_Vawhle_Resume.pdf"
+    }
+  },
+  "resume": {
+    "url": "/documents/Dhruv_Vawhle_Resume.pdf",
+    "lastUpdated": "August 2026",
+    "version": "2.1"
+  },
+  "formspreeId": "xqnqyvqk"
+}

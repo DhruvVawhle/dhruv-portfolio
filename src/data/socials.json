@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Email",
+    "url": "mailto:dhruvawhle@gmail.com",
+    "icon": "mail"
+  },
+  {
+    "label": "LinkedIn",
+    "url": "https://linkedin.com/in/dhruv-vawhle-277b2b2b8",
+    "icon": "linkedin"
+  },
+  {
+    "label": "GitHub",
+    "url": "https://github.com/DhruvVawhle",
+    "icon": "github"
+  },
+  {
+    "label": "Resume",
+    "url": "/documents/Dhruv_Vawhle_Resume.pdf",
+    "icon": "resume"
+  }
+]

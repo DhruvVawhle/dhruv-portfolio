@@ -66,9 +66,22 @@ const ExploreArrowIcon = () => (
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const flagship = projects[0];
-  const secondaryProjects = projects.slice(1);
+  const categories = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud", "Mobile"];
+
+  const filteredProjects = projects.filter((proj) => {
+    const matchesCategory = selectedCategory === "All" || proj.category === selectedCategory;
+    const matchesSearch =
+      proj.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      proj.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      proj.techStack.some((tech) => tech.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  const flagship = filteredProjects.find((p) => p.featured) || filteredProjects[0];
+  const secondaryProjects = filteredProjects.filter((p) => p.id !== (flagship?.id || ""));
 
   return (
     <section id="projects" className="py-[var(--section-padding-y)] bg-bg">
@@ -90,7 +103,7 @@ export default function Projects() {
             </span>
           </div>
 
-          <div className="max-w-3xl mb-14">
+          <div className="max-w-3xl mb-8">
             <h2 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-text-primary tracking-tight mb-4">
               Engineering systems built for production scale.
             </h2>
@@ -98,11 +111,78 @@ export default function Projects() {
               My most comprehensive and impactful software engineering project, showcasing full-stack development, AI/ML integration, scalable architecture, and production-ready implementation.
             </p>
           </div>
+
+          {/* ── Search & Filter Controls (Dynamic, Premium Styling) ── */}
+          <div className="flex flex-col md:flex-row gap-5 mb-14 pb-8 border-b border-border-custom/30 items-stretch md:items-center">
+            {/* Search Input Box */}
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="Search projects by name, subtitle or tech stack..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full h-12 pl-11 pr-4 rounded-xl bg-bg-surface border border-border-custom text-text-primary placeholder-text-secondary/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-mono text-sm transition-all shadow-sm"
+              />
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60 pointer-events-none">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors text-xs font-mono font-bold"
+                >
+                  CLEAR
+                </button>
+              )}
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`h-10 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+                    selectedCategory === cat
+                      ? "bg-accent/15 border-accent text-accent shadow-xs"
+                      : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
         </ScrollReveal>
+
+        {/* ── No Projects Found State ── */}
+        {filteredProjects.length === 0 && (
+          <ScrollReveal>
+            <div className="text-center py-20 bg-bg-surface border border-border-custom rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">
+              <span className="text-accent text-4xl block mb-4">🔍</span>
+              <h3 className="font-display font-bold text-2xl text-text-primary mb-2">No Projects Found</h3>
+              <p className="text-text-secondary text-base leading-relaxed">
+                We couldn't find any projects matching "{searchQuery}" in category "{selectedCategory}". Try adjusting your filters or clearing search.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                }}
+                className="mt-6 h-10 px-5 rounded-xl bg-accent text-white font-mono text-xs font-bold hover:bg-accent-hover transition-colors cursor-pointer"
+              >
+                Reset Search Filters
+              </button>
+            </div>
+          </ScrollReveal>
+        )}
 
         {/* ── MOBILE STREAMLINED SHOWCASE (block lg:hidden) ───────────────── */}
         <div className="block lg:hidden space-y-10 mb-12">
-          {[flagship, ...secondaryProjects].map((proj, idx) => {
+          {flagship && [flagship, ...secondaryProjects].map((proj, idx) => {
             const isMedtalk = proj.id === "medtalk";
             const primaryMetric = proj.metrics && proj.metrics.length > 0 ? proj.metrics[0] : null;
 
@@ -113,13 +193,9 @@ export default function Projects() {
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border-custom/60">
                     <div className="flex items-center gap-2">
                       <span className="px-3 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                        {proj.id === "krishisaathi"
-                          ? "FEATURED SYSTEM"
-                          : proj.id === "medtalk"
-                          ? "APPLIED AI HEALTHCARE"
-                          : "TECHNICAL SHOWCASE"}
+                        {proj.featured ? "FEATURED SYSTEM" : `${proj.category} Showcase`}
                       </span>
-                      {proj.id === "krishisaathi" ? (
+                      {proj.liveDemo ? (
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
                           <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
                           <span>Live</span>
@@ -147,6 +223,8 @@ export default function Projects() {
                         proj.image ||
                         (isMedtalk
                           ? "/images/projects/medtalk-aichatbot.png"
+                          : proj.id === "imdbsentiment"
+                          ? "/images/projects/imdb-sentiment-analysis.png"
                           : "/images/projects/krishisaathi-homepage.png")
                       }
                       alt={`${proj.title} Preview`}
@@ -157,7 +235,7 @@ export default function Projects() {
                       }`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-all duration-500">
-                      <span className="px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
+                      <span className="px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
                         Explore Details
                       </span>
                     </div>
@@ -249,10 +327,11 @@ export default function Projects() {
         </div>
 
         {/* ── DESKTOP FULL SHOWCASE (hidden lg:block) ─────────────────────── */}
-        <div className="hidden lg:block">
-          {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE: KRISHISAATHI ── */}
-          <ScrollReveal>
-          <div className="mb-16">
+        {flagship && (
+          <div className="hidden lg:block">
+            {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE ── */}
+            <ScrollReveal>
+            <div className="mb-16">
             <div className="group relative p-6 sm:p-8 lg:p-10 rounded-3xl bg-bg-surface border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
               {/* Flagship Top Bar */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
@@ -297,7 +376,7 @@ export default function Projects() {
 
                     {/* Hover Prompt with Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-500 flex items-center justify-center">
-                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
+                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
                         <span>Explore Architecture</span>
                         <ExploreArrowIcon />
                       </span>
@@ -445,11 +524,9 @@ export default function Projects() {
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                     <div className="flex items-center gap-3">
                       <span className="px-3.5 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                        {project.id === "medtalk"
-                          ? "APPLIED AI HEALTHCARE SYSTEM"
-                          : "TECHNICAL SHOWCASE"}
+                        {project.featured ? "FEATURED SYSTEM" : `${project.category} Showcase`}
                       </span>
-                      {project.id === "krishisaathi" ? (
+                      {project.liveDemo ? (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                           <span>Live</span>
@@ -522,7 +599,9 @@ export default function Projects() {
                           aria-label={`Explore ${project.title} Technical Overview and Features`}
                           className="group/btn inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-foreground text-background hover:opacity-90 font-mono text-[15px] sm:text-base font-bold min-h-[52px] sm:min-h-[54px] shadow-md transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-[#111318]"
                         >
-                          <span>Explore AI Assistant</span>
+                          <span>
+                            {project.category === "AI" ? "Explore AI Assistant" : project.category === "Machine Learning" ? "Explore NLP Pipeline" : "Explore Project"}
+                          </span>
                           <span className="transform group-hover/btn:translate-x-2 transition-transform duration-300">
                             <ExploreArrowIcon />
                           </span>
@@ -561,6 +640,8 @@ export default function Projects() {
                             project.image ||
                             (project.id === "medtalk"
                               ? "/images/projects/medtalk-aichatbot.png"
+                              : project.id === "imdbsentiment"
+                              ? "/images/projects/imdb-sentiment-analysis.png"
                               : "/images/projects/krishisaathi-homepage.png")
                           }
                           alt={`${project.title} Preview`}
@@ -569,14 +650,22 @@ export default function Projects() {
                           className="object-cover transition-transform duration-700 ease-out group-hover/thumb:scale-[1.06]"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-all duration-500 flex items-center justify-center">
-                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-foreground text-background font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/thumb:translate-y-0 transition-transform duration-500">
-                            <span>Explore AI Assistant</span>
+                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/thumb:translate-y-0 transition-transform duration-500">
+                            <span>
+                              {project.category === "AI"
+                                ? "Explore AI Assistant"
+                                : project.category === "Machine Learning"
+                                ? "Explore NLP Pipeline"
+                                : "Explore Project"}
+                            </span>
                             <ExploreArrowIcon />
                           </span>
                         </div>
 
                         <div className="absolute inset-x-3 bottom-3 p-3 rounded-xl bg-bg-surface/95 backdrop-blur-md border border-border-custom flex items-center justify-between font-mono text-[11px] text-text-secondary">
-                          <span>Google Gemini API + Flask REST</span>
+                          <span>
+                            {project.techStack.slice(0, 3).join(" + ")}
+                          </span>
                           <span className="text-text-primary font-bold">
                             Deep dive →
                           </span>
@@ -590,6 +679,7 @@ export default function Projects() {
           })}
         </div>
         </div>
+        )}
       </div>
 
       {/* ── TECHNICAL DEEP DIVE MODAL ──────────────────────────────── */}

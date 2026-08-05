@@ -1,0 +1,20 @@
+[
+  {
+    "college": "SLRTCE (University of Mumbai)",
+    "degree": "Bachelor of Technology",
+    "branch": "Information Technology",
+    "duration": "2023 – 2027",
+    "cgpa": "9.1",
+    "coursework": [
+      "Data Structures & Algorithms",
+      "Database Management Systems",
+      "Operating Systems",
+      "Software Engineering",
+      "Artificial Intelligence & Machine Learning"
+    ],
+    "honors": [
+      "Dean's Honor List",
+      "Smart India Hackathon Finalist"
+    ]
+  }
+]

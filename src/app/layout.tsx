@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import ThemeInitializer from "@/components/ui/ThemeInitializer";
 import "./globals.css";
 import "devicon/devicon.min.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const inter = Inter({
@@ -25,12 +25,13 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400"],
 });
 
+import profileData from "@/data/profile.json";
+
 export const metadata: Metadata = {
-  title: "Dhruv Vawhle — Full-Stack Developer & AI/ML Engineer",
-  description:
-    "Portfolio of Dhruv Vawhle — a full-stack developer and AI/ML engineer building production software with real data, real users, and real legal ownership. Featured projects include KrishiSaathi (copyright-filed farm marketplace) and MedTalk (AI healthcare chatbot).",
+  title: `${profileData.name} — ${profileData.currentRole}`,
+  description: `Portfolio of ${profileData.name} — a ${profileData.currentRole.toLowerCase()} building production software. Tagline: "${profileData.tagline}"`,
   keywords: [
-    "Dhruv Vawhle",
+    profileData.name,
     "Full Stack Developer",
     "AI ML Engineer",
     "React",
@@ -41,20 +42,18 @@ export const metadata: Metadata = {
     "KrishiSaathi",
     "MedTalk",
   ],
-  authors: [{ name: "Dhruv Vawhle" }],
+  authors: [{ name: profileData.name }],
   openGraph: {
     type: "website",
-    title: "Dhruv Vawhle — Full-Stack Developer & AI/ML Engineer",
-    description:
-      "Building production software with real data, real users, and real legal ownership.",
-    siteName: "Dhruv Vawhle Portfolio",
+    title: `${profileData.name} — ${profileData.currentRole}`,
+    description: profileData.tagline,
+    siteName: `${profileData.name} Portfolio`,
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dhruv Vawhle — Full-Stack Developer & AI/ML Engineer",
-    description:
-      "Building production software with real data, real users, and real legal ownership.",
+    title: `${profileData.name} — ${profileData.currentRole}`,
+    description: profileData.tagline,
   },
   robots: {
     index: true,
@@ -75,7 +74,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="dark"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-bg text-text-primary font-body antialiased">

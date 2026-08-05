@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -8,8 +8,10 @@ import {
   useSpring,
   useReducedMotion,
   type Variants,
+  AnimatePresence,
 } from "motion/react";
 import { hero, socialLinks } from "@/lib/data";
+import heroData from "@/data/profile.json";
 import Button from "@/components/ui/Button";
 import TiltCard from "@/components/effects/TiltCard";
 import AnimatedBackground from "@/components/effects/AnimatedBackground";
@@ -209,6 +211,14 @@ export default function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
+  const [roleIndex, setRoleIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % heroData.roles.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const parallaxX = useSpring(mouseX, { stiffness: 60, damping: 20 });
   const parallaxY = useSpring(mouseY, { stiffness: 60, damping: 20 });
 
@@ -301,12 +311,12 @@ export default function Hero() {
             </span>
             <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
             <span className="font-mono text-xs text-text-secondary">
-              Dhruv Vawhle
+              {heroData.name}
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs text-text-secondary">
-              Full-Stack Developer &amp; Applied AI Engineer
+            <span className="font-mono text-xs text-text-secondary inline-flex min-w-[200px]">
+              {heroData.roles[roleIndex]}
             </span>
             <div className="hidden md:flex items-center gap-2 pl-3 border-l border-border-custom/60">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -347,8 +357,8 @@ export default function Hero() {
             <TiltCard maxTilt={6} className="w-full">
               <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90">
                 <Image
-                  src="/images/profile/dhruv-vawhle.jpg"
-                  alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
+                  src={heroData.profileImage}
+                  alt={`${heroData.name} – ${heroData.currentRole} Portrait`}
                   fill
                   priority
                   quality={100}
@@ -359,17 +369,17 @@ export default function Hero() {
                 <div className="absolute inset-x-3.5 bottom-3.5 p-5 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5">
                   <div>
                     <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                      Dhruv Vawhle
+                      {heroData.name}
                     </h3>
-                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
-                      Full-Stack &amp; AI/ML Engineer
+                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium min-h-[16px]">
+                      {heroData.roles[roleIndex]}
                     </p>
                   </div>
                   <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                    <span>B.Tech IT · Mumbai, India</span>
+                    <span>B.Tech IT · {heroData.location}</span>
                     <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Available for Roles</span>
+                      <span>{heroData.availabilityStatus}</span>
                     </div>
                   </div>
                 </div>
@@ -388,7 +398,7 @@ export default function Hero() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
+                    aria-label={link.label === "Resume" ? `Open ${heroData.name} Resume` : link.label}
                     className="w-11 h-11 min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                   >
                     <SocialIcon icon={link.icon} />
@@ -405,32 +415,30 @@ export default function Hero() {
           >
             <Button
               variant="primary"
-              href="#projects"
+              href={heroData.ctaButtons.primary.href}
               className="group/btn w-full sm:w-auto h-[46px] min-h-[46px] sm:h-[48px] sm:min-h-[48px] px-[28px] sm:px-[32px] rounded-full text-[15px] font-semibold leading-none whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-[10px] sm:gap-[12px]"
             >
-              <span>Explore Featured Projects</span>
+              <span>{heroData.ctaButtons.primary.label}</span>
               <ArrowRightIcon />
             </Button>
             <Button
               variant="secondary"
-              href="/documents/Dhruv_Vawhle_Resume.pdf"
+              href={heroData.resume.url}
               external
-              aria-label="Open Dhruv Vawhle Resume"
+              aria-label={`Open ${heroData.name} Resume`}
               className="w-full sm:w-auto h-[46px] min-h-[46px] sm:h-[48px] sm:min-h-[48px] px-[24px] sm:px-[28px] rounded-full text-[15px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
             >
-              <span>📄 View Resume</span>
+              <span>📄 {heroData.ctaButtons.secondary.label}</span>
             </Button>
           </motion.div>
 
           {/* 4. Attribution Title & Mission Description */}
           <motion.div variants={itemVariants} className="pt-3 border-t border-border-custom/50">
             <h2 className="text-lg sm:text-xl font-bold text-text-primary font-display">
-              Dhruv Vawhle — Full-Stack &amp; AI/ML Engineer
+              {heroData.name} — {heroData.currentRole}
             </h2>
             <p className="mt-2.5 text-base text-text-secondary leading-relaxed">
-              Driven by curiosity and a commitment to quality, I engineer
-              production software backed by real data, real users, and real
-              legal ownership.
+              {heroData.tagline}
             </p>
           </motion.div>
         </div>
@@ -468,12 +476,10 @@ export default function Hero() {
               {/* Attribution Title & Reference Mission Content */}
               <div className="mt-8 max-w-xl">
                 <h2 className="text-lg md:text-xl font-bold text-text-primary font-display">
-                  Dhruv Vawhle — Full-Stack &amp; AI/ML Engineer
+                  {heroData.name} — {heroData.currentRole}
                 </h2>
                 <p className="mt-3 text-base md:text-lg text-text-secondary leading-relaxed">
-                  Driven by curiosity and a commitment to quality, I engineer
-                  production software backed by real data, real users, and real
-                  legal ownership.
+                  {heroData.tagline}
                 </p>
               </div>
             </motion.div>
@@ -486,20 +492,20 @@ export default function Hero() {
               <div className="flex flex-row items-center gap-[16px] w-auto">
                 <Button
                   variant="primary"
-                  href="#projects"
+                  href={heroData.ctaButtons.primary.href}
                   className="group/btn w-auto h-[52px] min-h-[52px] px-[32px] rounded-full text-[16px] font-semibold leading-none whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-[12px]"
                 >
-                  <span>Explore Featured Projects</span>
+                  <span>{heroData.ctaButtons.primary.label}</span>
                   <ArrowRightIcon />
                 </Button>
                 <Button
                   variant="secondary"
-                  href="/documents/Dhruv_Vawhle_Resume.pdf"
+                  href={heroData.resume.url}
                   external
-                  aria-label="Open Dhruv Vawhle Resume"
+                  aria-label={`Open ${heroData.name} Resume`}
                   className="w-auto h-[52px] min-h-[52px] px-[28px] rounded-full text-[16px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
                 >
-                  <span>📄 View Resume</span>
+                  <span>📄 {heroData.ctaButtons.secondary.label}</span>
                 </Button>
               </div>
 
@@ -531,8 +537,8 @@ export default function Hero() {
               <TiltCard maxTilt={7} className="w-full">
                 <div className="relative w-full max-w-[300px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group">
                   <Image
-                    src="/images/profile/dhruv-vawhle.jpg"
-                    alt="Dhruv Vawhle – Full-Stack & AI/ML Engineer Portrait"
+                    src={heroData.profileImage}
+                    alt={`${heroData.name} – ${heroData.currentRole} Portrait`}
                     fill
                     priority
                     quality={100}
@@ -549,17 +555,17 @@ export default function Hero() {
                   <div className="absolute inset-x-4 bottom-4 p-6 sm:p-7 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-3 transition-all duration-300">
                     <div>
                       <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                        Dhruv Vawhle
+                        {heroData.name}
                       </h3>
-                      <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
-                        Full-Stack &amp; AI/ML Engineer
+                      <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium min-h-[16px]">
+                        {heroData.roles[roleIndex]}
                       </p>
                     </div>
                     <div className="pt-3 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                      <span>B.Tech IT · Mumbai, India</span>
+                      <span>B.Tech IT · {heroData.location}</span>
                       <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>Available for Roles</span>
+                        <span>{heroData.availabilityStatus}</span>
                       </div>
                     </div>
                   </div>
@@ -578,7 +584,7 @@ export default function Hero() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={link.label === "Resume" ? "Open Dhruv Vawhle Resume" : link.label}
+                      aria-label={link.label === "Resume" ? `Open ${heroData.name} Resume` : link.label}
                       id={`hero-social-${link.icon}`}
                       className="w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
                     >

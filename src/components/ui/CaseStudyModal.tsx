@@ -43,6 +43,15 @@ const PROJECT_THEMES: Record<string, ProjectTheme> = {
     primaryBtn:
       "bg-white hover:bg-gray-200 text-black font-mono font-bold shadow-md",
   },
+  imdbsentiment: {
+    name: "neutral",
+    badgeBg: "bg-white/10 text-white border border-white/20",
+    glowBg: "from-white/5 via-transparent to-transparent",
+    dotColor: "bg-white",
+    accentText: "text-gray-300",
+    primaryBtn:
+      "bg-white hover:bg-gray-200 text-black font-mono font-bold shadow-md",
+  },
 };
 
 const DEFAULT_THEME: ProjectTheme = {
@@ -144,11 +153,21 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
       caption: "Preliminary Guidance — Zoom on click and Lightbox support",
     },
   ],
+  imdbsentiment: [
+    {
+      src: "/images/projects/imdb-sentiment-analysis.png",
+      title: "Sentiment Analysis Dashboard",
+      description:
+        "Visualizing positive and negative sentiment distributions on IMDB movie reviews.",
+      caption: "Main Dashboard — Sentiment metrics and text classification stats",
+    },
+  ],
 };
 
 const PROJECT_DISPLAY_MODES: Record<string, "desktop" | "mobile"> = {
   krishisaathi: "desktop",
   medtalk: "desktop",
+  imdbsentiment: "desktop",
 };
 
 const PROJECT_LEARNINGS: Record<string, string> = {
@@ -156,6 +175,8 @@ const PROJECT_LEARNINGS: Record<string, string> = {
     "Designing a hybrid Firestore + MongoDB architecture demonstrated how to decouple real-time session synchronization from high-throughput commodity catalog queries. Optimizing ARIMA inference on 18,300+ government market records highlighted the importance of edge-caching market forecasts to maintain sub-200ms API response times across regional rural networks.",
   medtalk:
     "Building a medical assistant for underserved rural communities underscored the necessity of voice-first multilingual UX design and rigorous input sanitization when transcribing speech-to-text medical queries.",
+  imdbsentiment:
+    "Building this NLP workflow demonstrated the critical role of data cleaning and tokenization strategies in reducing noise before training. I learned to balance model complexity against inference latency, comparing classic statistical models (Logistic Regression, Naive Bayes) with Deep Learning architectures (Keras/TensorFlow).",
 };
 
 const ShieldIcon = () => (
@@ -260,6 +281,27 @@ const MEDTALK_FOLDERS: FolderNode[] = [
   },
   { name: "config.py", type: "file" },
   { name: "requirements.txt", type: "file" }
+];
+
+const IMDBSENTIMENT_FOLDERS: FolderNode[] = [
+  {
+    name: "notebooks",
+    type: "folder",
+    children: [
+      { name: "sentiment_analysis.ipynb", type: "file" }
+    ]
+  },
+  {
+    name: "src",
+    type: "folder",
+    children: [
+      { name: "preprocessing.py", type: "file" },
+      { name: "model.py", type: "file" },
+      { name: "utils.py", type: "file" }
+    ]
+  },
+  { name: "requirements.txt", type: "file" },
+  { name: "README.md", type: "file" }
 ];
 
 function CollapsibleSection({
@@ -370,7 +412,12 @@ export default function CaseStudyModal({
   const slides = PROJECT_SHOWCASE_SLIDES[project.id] || [];
   const displayMode = PROJECT_DISPLAY_MODES[project.id] || "desktop";
   const learnings = PROJECT_LEARNINGS[project.id];
-  const folders = project.id === "krishisaathi" ? KRISHISAATHI_FOLDERS : MEDTALK_FOLDERS;
+  const folders =
+    project.id === "krishisaathi"
+      ? KRISHISAATHI_FOLDERS
+      : project.id === "medtalk"
+      ? MEDTALK_FOLDERS
+      : IMDBSENTIMENT_FOLDERS;
 
   return (
     <AnimatePresence>
@@ -550,6 +597,27 @@ export default function CaseStudyModal({
                         </div>
                       </div>
                     </>
+                  ) : project.id === "imdbsentiment" ? (
+                    <>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: NLTK for Preprocessing</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          NLTK provides robust, resource-efficient methods for text tokenization, stop-word elimination, and lemmatization to clean raw review text.
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: TF-IDF Vectorization</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Converts processed text tokens into high-quality numerical features, capturing term frequencies and inverse document frequencies across reviews.
+                        </div>
+                      </div>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: Scikit-learn + TensorFlow/Keras</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Allows comparisons between classical linear algorithms (Logistic Regression, Naive Bayes) and deeper Neural Network structures for optimized classification.
+                        </div>
+                      </div>
+                    </>
                   ) : (
                     <>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
@@ -587,6 +655,17 @@ export default function CaseStudyModal({
                         Pre-aggregated ARIMA model predictions and indexed commodity query parameters, lowering average lookup response speeds under 100ms.
                       </div>
                     </div>
+                  ) : project.id === "imdbsentiment" ? (
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                      <div className="text-red-400 font-bold mb-1">Challenge: Processing high-dimensional TF-IDF vectors</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Too many unique words in 50K reviews create sparse matrices that lead to memory overflow during training.
+                      </div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Max Features Limit & Sub-sampling</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Constrained TF-IDF vectorizer to the top 5,000 most relevant features and utilized sparse matrices natively throughout training.
+                      </div>
+                    </div>
                   ) : (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                       <div className="text-red-400 font-bold mb-1">Challenge: Unacceptable speech translation delays on audio files</div>
@@ -611,6 +690,8 @@ export default function CaseStudyModal({
                 <p className="text-sm text-gray-300 leading-relaxed">
                   {project.id === "krishisaathi"
                     ? "Client application hosted on Vercel Edge networks; database and Node.js REST controllers running on a secured cloud VPS under Docker containers with automated SSL hooks."
+                    : project.id === "imdbsentiment"
+                    ? "Jupyter Notebook environment for exploratory data analysis, pipeline testing, and training. Production script version is package-ready as a standalone CLI application."
                     : "Deployed inside a containerized lightweight Python backend with secured API keys and environment variables integration."}
                 </p>
               </CollapsibleSection>
@@ -626,6 +707,11 @@ export default function CaseStudyModal({
                     <>
                       <li>Integrate WhatsApp business gateway for offline bids from rural farmers.</li>
                       <li>Incorporate automated SMS translation alerts for commodity price drops.</li>
+                    </>
+                  ) : project.id === "imdbsentiment" ? (
+                    <>
+                      <li>Deploy the trained model as a REST API endpoint using FastAPI or Flask.</li>
+                      <li>Incorporate live user rating feedback to periodically retrain models.</li>
                     </>
                   ) : (
                     <>

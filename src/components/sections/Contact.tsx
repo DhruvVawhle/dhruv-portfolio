@@ -4,6 +4,8 @@ import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import Button from "@/components/ui/Button";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+import profileData from "@/data/profile.json";
+import socialsData from "@/data/socials.json";
 
 const GithubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -23,7 +25,6 @@ const MailIcon = () => (
     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
 );
-
 
 const LocationIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -59,6 +60,12 @@ export default function Contact() {
     mouseX.set(-500);
     mouseY.set(-500);
   };
+
+  const emailSocial = socialsData.find((s) => s.label === "Email") || { url: "mailto:dhruvawhle@gmail.com" };
+  const githubSocial = socialsData.find((s) => s.label === "GitHub") || { url: "https://github.com/DhruvVawhle" };
+  const linkedinSocial = socialsData.find((s) => s.label === "LinkedIn") || { url: "https://linkedin.com/in/dhruv-vawhle-277b2b2b8" };
+  
+  const rawEmail = emailSocial.url.replace("mailto:", "");
 
   return (
     <section id="contact" className="py-[var(--section-padding-y)] bg-bg" aria-label="Contact Section">
@@ -108,7 +115,7 @@ export default function Contact() {
                 </div>
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono min-h-[28px]">
                   <LocationIcon />
-                  <span>Mumbai, India</span>
+                  <span>{profileData.location}</span>
                 </div>
               </div>
 
@@ -131,7 +138,7 @@ export default function Contact() {
                   <Button
                     variant="primary"
                     size="lg"
-                    href="mailto:dhruvawhle@gmail.com"
+                    href={emailSocial.url}
                     className="shadow-md hover:shadow-xl hover:shadow-accent/25 transition-all duration-300 justify-center w-full sm:w-auto"
                   >
                     <MailIcon />
@@ -141,7 +148,7 @@ export default function Contact() {
                     type="button"
                     onClick={(e) => {
                       e.preventDefault();
-                      navigator.clipboard.writeText("dhruvawhle@gmail.com");
+                      navigator.clipboard.writeText(rawEmail);
                       const { showToast } = require("@/components/ui/ClipboardToast");
                       showToast("Email address copied to clipboard");
                     }}
@@ -164,7 +171,7 @@ export default function Contact() {
                   <Button
                     variant="secondary"
                     size="lg"
-                    href="/documents/Dhruv_Vawhle_Resume.pdf"
+                    href={profileData.resume.url}
                     external
                     aria-label="Open Dhruv Vawhle Resume"
                     className="justify-center hover:border-accent hover:bg-accent/5 transition-all duration-300 w-full sm:w-auto"
@@ -184,7 +191,7 @@ export default function Contact() {
                   <motion.a
                     whileHover={{ y: -2, scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    href="https://github.com/DhruvVawhle"
+                    href={githubSocial.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
@@ -199,7 +206,7 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText("https://github.com/DhruvVawhle");
+                      navigator.clipboard.writeText(githubSocial.url);
                       const { showToast } = require("@/components/ui/ClipboardToast");
                       showToast("GitHub URL copied to clipboard");
                     }}
@@ -218,7 +225,7 @@ export default function Contact() {
                   <motion.a
                     whileHover={{ y: -2, scale: 1.05 }}
                     transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    href="https://linkedin.com/in/dhruv-vawhle-277b2b2b8"
+                    href={linkedinSocial.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
@@ -233,7 +240,7 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={() => {
-                      navigator.clipboard.writeText("https://linkedin.com/in/dhruv-vawhle-277b2b2b8");
+                      navigator.clipboard.writeText(linkedinSocial.url);
                       const { showToast } = require("@/components/ui/ClipboardToast");
                       showToast("LinkedIn URL copied to clipboard");
                     }}
