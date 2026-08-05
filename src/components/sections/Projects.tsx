@@ -66,27 +66,12 @@ const ExploreArrowIcon = () => (
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud", "Mobile"];
 
   const filteredProjects = projects.filter((proj) => {
-    const matchesCategory = selectedCategory === "All" || proj.category === selectedCategory;
-    
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) return matchesCategory;
-
-    const matchesSearch =
-      (proj.title || "").toLowerCase().includes(query) ||
-      (proj.subtitle || "").toLowerCase().includes(query) ||
-      (proj.problem || "").toLowerCase().includes(query) ||
-      (proj.approach || "").toLowerCase().includes(query) ||
-      (proj.architecture || "").toLowerCase().includes(query) ||
-      (proj.techStack || []).some((tech) => (tech || "").toLowerCase().includes(query)) ||
-      (proj.outcomes || []).some((outcome) => (outcome || "").toLowerCase().includes(query));
-
-    return matchesCategory && matchesSearch;
+    return selectedCategory === "All" || proj.category === selectedCategory;
   });
 
   const flagship = filteredProjects.find((p) => p.featured) || filteredProjects[0];
@@ -121,49 +106,21 @@ export default function Projects() {
             </p>
           </div>
 
-          {/* ── Search & Filter Controls (Dynamic, Premium Styling) ── */}
-          <div className="flex flex-col md:flex-row gap-5 mb-14 pb-8 border-b border-border-custom/30 items-stretch md:items-center">
-            {/* Search Input Box */}
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Search projects by name, subtitle or tech stack..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-12 pl-11 pr-4 rounded-xl bg-bg-surface border border-border-custom text-text-primary placeholder-text-secondary/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent font-mono text-sm transition-all shadow-sm"
-              />
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60 pointer-events-none">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-              </span>
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors text-xs font-mono font-bold"
-                >
-                  CLEAR
-                </button>
-              )}
-            </div>
-
-            {/* Category Filter Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`h-10 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
-                    selectedCategory === cat
-                      ? "bg-accent/15 border-accent text-accent shadow-xs"
-                      : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+          {/* ── Filter Controls (Dynamic, Premium Styling) ── */}
+          <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-4 mb-14 border-b border-border-custom/30 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`h-10 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+                  selectedCategory === cat
+                    ? "bg-accent/15 border-accent text-accent shadow-xs"
+                    : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </ScrollReveal>
 
@@ -174,16 +131,15 @@ export default function Projects() {
               <span className="text-accent text-4xl block mb-4">🔍</span>
               <h3 className="font-display font-bold text-2xl text-text-primary mb-2">No Projects Found</h3>
               <p className="text-text-secondary text-base leading-relaxed">
-                We couldn't find any projects matching "{searchQuery}" in category "{selectedCategory}". Try adjusting your filters or clearing search.
+                We couldn't find any projects in category "{selectedCategory}". Try adjusting your filters.
               </p>
               <button
                 onClick={() => {
-                  setSearchQuery("");
                   setSelectedCategory("All");
                 }}
                 className="mt-6 h-10 px-5 rounded-xl bg-accent text-white font-mono text-xs font-bold hover:bg-accent-hover transition-colors cursor-pointer"
               >
-                Reset Search Filters
+                Reset Filters
               </button>
             </div>
           </ScrollReveal>
