@@ -8,6 +8,7 @@ import ScrollReveal from "@/components/effects/ScrollReveal";
 import TiltCard from "@/components/effects/TiltCard";
 import TechIcon from "@/components/ui/TechIcon";
 import CaseStudyModal from "@/components/ui/CaseStudyModal";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 const ShieldIcon = () => (
   <svg
@@ -153,7 +154,11 @@ export default function Projects() {
 
             return (
               <ScrollReveal key={`mobile-${proj.id}`} delay={idx * 0.08}>
-                <div className="p-6 sm:p-8 rounded-3xl bg-bg-surface border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+                <GlowCard
+                  customSize
+                  glowColor={proj.id === "medtalk" ? "blue" : proj.id === "imdbsentiment" ? "orange" : "green"}
+                  className="p-6 sm:p-8 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between !aspect-auto"
+                >
                   {/* Card Header Badge */}
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border-custom/60">
                     <div className="flex items-center gap-2">
@@ -285,7 +290,7 @@ export default function Projects() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </GlowCard>
               </ScrollReveal>
             );
           })}
@@ -297,7 +302,11 @@ export default function Projects() {
             {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE ── */}
             <ScrollReveal>
             <div className="mb-16">
-            <div className="group relative p-6 sm:p-8 lg:p-10 rounded-3xl bg-bg-surface border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <GlowCard
+              customSize
+              glowColor="green"
+              className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden !aspect-auto !grid-rows-none"
+            >
               {/* Flagship Top Bar */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                 <div className="flex items-center gap-3">
@@ -450,7 +459,7 @@ export default function Projects() {
                   </div>
                 </div>
               </div>
-            </div>
+            </GlowCard>
           </div>
         </ScrollReveal>
 
@@ -484,7 +493,11 @@ export default function Projects() {
 
             return (
               <ScrollReveal key={project.id} delay={index * 0.1}>
-                <article className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-bg-surface border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                <GlowCard
+                  customSize
+                  glowColor={project.id === "medtalk" ? "blue" : project.id === "imdbsentiment" ? "orange" : "purple"}
+                  className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden !aspect-auto !grid-rows-none"
+                >
                   {/* Top Bar */}
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                     <div className="flex items-center gap-3">
@@ -638,7 +651,7 @@ export default function Projects() {
                       </div>
                     </div>
                   </div>
-                </article>
+                </GlowCard>
               </ScrollReveal>
             );
           })}

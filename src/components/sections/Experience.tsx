@@ -6,6 +6,7 @@ import Image from "next/image";
 import { experiences } from "@/lib/data";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import LightboxModal, { LightboxSlide } from "@/components/ui/LightboxModal";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 const CompanyLogoTile = ({ company }: { company: string }) => {
   const letter = company.charAt(0).toUpperCase();
@@ -98,7 +99,11 @@ export default function Experience() {
                 />
 
                 {/* Content Card with Subtle Hover Lift */}
-                <div className="bg-bg-surface/80 border border-border-custom group-hover:border-accent/40 rounded-3xl p-6 sm:p-8 shadow-sm group-hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                <GlowCard
+                  customSize
+                  glowColor="purple"
+                  className="bg-bg-surface/80 border border-border-custom group-hover:border-accent/40 rounded-3xl p-6 sm:p-8 shadow-sm group-hover:shadow-[0_8px_30px_rgba(59,130,246,0.12)] group-hover:-translate-y-1 transition-all duration-300 relative overflow-hidden !aspect-auto !grid-rows-none"
+                >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border-custom/60">
                     <div className="flex items-center gap-4">
                       <CompanyLogoTile company={exp.company} />
@@ -206,7 +211,7 @@ export default function Experience() {
                       </div>
                     </div>
                   )}
-                </div>
+                </GlowCard>
               </div>
             </ScrollReveal>
           ))}

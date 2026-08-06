@@ -6,6 +6,7 @@ import Image from "next/image";
 import { certifications } from "@/lib/data";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import { SiGooglecloud, SiCisco } from "react-icons/si";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 const DefaultCertIcon = () => (
   <svg
@@ -97,8 +98,13 @@ export default function Certifications() {
           whileHover={{ y: -6, scale: 1.015 }}
           transition={{ type: "spring", stiffness: 380, damping: 24 }}
           data-cursor-text="INSPECT"
-          className="relative p-6 sm:p-7 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/70 focus-within:border-accent/80 shadow-sm hover:shadow-[0_0_28px_rgba(59,130,246,0.22)] transition-all duration-300 flex flex-col justify-between h-full group overflow-hidden"
+          className="h-full"
         >
+          <GlowCard
+            customSize
+            glowColor={cert.category === "Cloud" ? "blue" : cert.category === "AI & ML" ? "purple" : "green"}
+            className="relative p-6 sm:p-7 !rounded-2xl border border-border-custom hover:border-accent/70 focus-within:border-accent/80 shadow-sm hover:shadow-[0_0_28px_rgba(59,130,246,0.22)] transition-all duration-300 flex flex-col justify-between h-full group overflow-hidden !aspect-auto !grid-rows-none"
+          >
           {/* Animated border/glow backdrop effect on focus/hover */}
           <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-accent/15 blur-2xl opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
           <div className="absolute inset-0 rounded-2xl border border-accent/0 group-hover:border-accent/40 group-focus-within:border-accent/50 pointer-events-none transition-colors duration-300" />
@@ -236,6 +242,7 @@ export default function Certifications() {
               )}
             </div>
           </div>
+          </GlowCard>
         </motion.div>
       </ScrollReveal>
     );

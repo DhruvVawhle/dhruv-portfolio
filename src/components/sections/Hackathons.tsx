@@ -7,6 +7,7 @@ import ScrollReveal from "@/components/effects/ScrollReveal";
 import Badge from "@/components/ui/Badge";
 import TechIcon from "@/components/ui/TechIcon";
 import LightboxModal from "@/components/ui/LightboxModal";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 const TrophyIcon = () => (
   <svg
@@ -71,7 +72,11 @@ export default function Hackathons() {
         {/* ── 2. FEATURED 1.5X SHOWCASE: MEDIMITRA (SIH 2025 ) ── */}
         <ScrollReveal>
           <div className="mb-16">
-            <div className="p-6 sm:p-8 lg:p-10 rounded-3xl bg-gradient-to-br from-amber-500/10 via-bg-surface to-bg-surface border-2 border-amber-500/50 shadow-xl relative overflow-hidden">
+            <GlowCard
+              customSize
+              glowColor="orange"
+              className="p-6 sm:p-8 lg:p-10 !rounded-3xl bg-gradient-to-br from-amber-500/10 via-bg-surface to-bg-surface border-2 border-amber-500/50 shadow-xl relative overflow-hidden !aspect-auto !grid-rows-none"
+            >
               {/* Top Row: Featured Badge + Trophy Winner Ribbon */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                 <div className="flex items-center gap-3">
@@ -364,7 +369,7 @@ export default function Hackathons() {
                   </div>
                 </div>
               </div>
-            </div>
+            </GlowCard>
           </div>
         </ScrollReveal>
 
@@ -384,7 +389,11 @@ export default function Hackathons() {
               delay={index * 0.1}
               className="h-full"
             >
-              <div className="group p-6 sm:p-8 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full">
+              <GlowCard
+                customSize
+                glowColor={index % 2 === 0 ? "blue" : "purple"}
+                className="group p-6 sm:p-8 !rounded-2xl border border-border-custom hover:border-accent/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full !aspect-auto !grid-rows-none"
+              >
                 <div>
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                     <span className="font-mono text-xs text-accent font-bold">
@@ -455,7 +464,7 @@ export default function Hackathons() {
                     {hackathon.techStack.join(" · ")}
                   </p>
                 </div>
-              </div>
+              </GlowCard>
             </ScrollReveal>
           ))}
         </div>

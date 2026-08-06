@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import EngineeringExecutionCard from "@/components/ui/EngineeringExecutionCard";
+import { GlowCard } from "@/components/ui/spotlight-card";
 
 /* ─── Minimal Line Icons for Workflow Steps ────────────────────────── */
 const UnderstandIcon = () => (
@@ -166,9 +167,10 @@ export default function About() {
              ========================================================= */}
           <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8">
             <ScrollReveal>
-              <div
-                data-cursor-text="PHILOSOPHY"
-                className="p-8 sm:p-9 rounded-3xl bg-bg-surface border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.16)] transition-all duration-500"
+              <GlowCard
+                customSize
+                glowColor="blue"
+                className="p-8 sm:p-9 !rounded-3xl border border-border-custom shadow-sm relative overflow-hidden group hover:border-accent/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.16)] transition-all duration-500 !aspect-auto !grid-rows-none"
               >
                 <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-accent/80 rounded-l-3xl" />
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-border-custom/60">
@@ -200,7 +202,7 @@ export default function About() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </GlowCard>
             </ScrollReveal>
 
             <ScrollReveal>

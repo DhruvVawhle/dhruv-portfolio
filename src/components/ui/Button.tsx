@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { type ButtonHTMLAttributes, forwardRef, useRef, useState } from "react";
+import React, { type ButtonHTMLAttributes, forwardRef, useRef, useState, useLayoutEffect, useCallback } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,10 +14,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ripple?: boolean;
 }
 
-interface RippleItem {
-  id: number;
-  x: number;
-  y: number;
+const FILL_DURATION = 0.5;
+const FILL_EASE = [0.16, 1, 0.3, 1] as const;
+
+function getCoverDiameter(width: number, height: number, x: number, y: number) {
+  return Math.ceil(
+    2 *
+      Math.max(
+        Math.hypot(x, y),
+        Math.hypot(width - x, y),
+        Math.hypot(x, height - y),
+        Math.hypot(width - x, height - y)
+      )
+  );
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -32,13 +41,26 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       magnetic = true,
       ripple = true,
       onClick,
+      onBlur,
+      onFocus,
+      onKeyDown,
+      onKeyUp,
+      onPointerCancel,
+      onPointerDown,
+      onPointerEnter,
+      onPointerLeave,
+      onPointerUp,
       ...props
     },
     ref
   ) => {
     const internalRef = useRef<HTMLButtonElement | HTMLAnchorElement | null>(null);
-    const shouldReduceMotion = useReducedMotion();
-    const [ripples, setRipples] = useState<RippleItem[]>([]);
+
+    // Origin fill states
+    const [hovered, setHovered] = useState(false);
+    const [isPressed, setIsPressed] = useState(false);
+    const [origin, setOrigin] = useState({ x: 0, y: 0 });
+    const [coverSize, setCoverSize] = useState(0);
 
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -59,34 +81,68 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       y.set(distanceY);
     };
 
-    const handleMouseLeave = () => {
-      if (!magnetic) return;
-      x.set(0);
-      y.set(0);
+    const handleMouseLeave = (e: React.MouseEvent) => {
+      if (magnetic) {
+        x.set(0);
+        y.set(0);
+      }
+      setHovered(false);
+      setIsPressed(false);
+      onPointerLeave?.(e as any);
     };
 
-    const handleClick = (e: React.MouseEvent<any>) => {
-      if (ripple && internalRef.current) {
-        const rect = (internalRef.current as HTMLElement).getBoundingClientRect();
-        const rippleX = e.clientX - rect.left;
-        const rippleY = e.clientY - rect.top;
-        const newRipple: RippleItem = {
-          id: Date.now(),
-          x: rippleX,
-          y: rippleY,
-        };
+    const updateOrigin = useCallback((x: number, y: number) => {
+      const node = internalRef.current;
+      if (!node) return;
 
-        setRipples((prev) => [...prev, newRipple]);
+      const rect = node.getBoundingClientRect();
+      setOrigin({ x, y });
+      setCoverSize(getCoverDiameter(rect.width, rect.height, x, y));
+    }, []);
 
-        setTimeout(() => {
-          setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-        }, 600);
+    const updateOriginFromPointer = useCallback(
+      (event: React.PointerEvent<any>) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        updateOrigin(event.clientX - rect.left, event.clientY - rect.top);
+      },
+      [updateOrigin]
+    );
+
+    const updateOriginFromCenter = useCallback(() => {
+      const node = internalRef.current;
+      if (!node) return;
+
+      const rect = node.getBoundingClientRect();
+      updateOrigin(rect.width / 2, rect.height / 2);
+    }, [updateOrigin]);
+
+    const showFill = ripple && (hovered || isPressed);
+
+    useLayoutEffect(() => {
+      const node = internalRef.current;
+      if (!(node && showFill)) return;
+
+      const measure = () => {
+        const rect = node.getBoundingClientRect();
+        setCoverSize(
+          getCoverDiameter(rect.width, rect.height, origin.x, origin.y)
+        );
+      };
+
+      measure();
+
+      const observer = new ResizeObserver(measure);
+      observer.observe(node);
+
+      const fonts = document.fonts;
+      if (fonts?.ready) {
+        fonts.ready.then(measure).catch(() => undefined);
       }
 
-      if (onClick) {
-        onClick(e);
-      }
-    };
+      return () => observer.disconnect();
+    }, [showFill, origin.x, origin.y]);
+
+    const fillTransition = { duration: FILL_DURATION, ease: FILL_EASE };
 
     const setRefs = (element: any) => {
       internalRef.current = element;
@@ -96,6 +152,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         (ref as any).current = element;
       }
     };
+
+    const shouldReduceMotion = useReducedMotion();
 
     const baseStyles =
       "relative inline-flex items-center justify-center gap-2 font-medium rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 cursor-pointer select-none overflow-hidden active:scale-[0.98] z-10";
@@ -117,20 +175,69 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const classes = cn(baseStyles, variants[variant], sizes[size], className);
 
-    const renderedRipples = ripple ? (
-      ripples.map((r) => (
-        <span
-          key={r.id}
-          className="absolute rounded-full pointer-events-none bg-white/35 animate-ripple z-0"
-          style={{
-            left: r.x,
-            top: r.y,
-            width: "12px",
-            height: "12px",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
-      ))
+    const pointerEvents = {
+      onBlur: (event: any) => {
+        onBlur?.(event);
+        setIsPressed(false);
+        setHovered(false);
+      },
+      onClick: onClick,
+      onFocus: (event: any) => {
+        onFocus?.(event);
+        if (event.currentTarget.matches(":focus-visible")) {
+          updateOriginFromCenter();
+          setHovered(true);
+        }
+      },
+      onKeyDown: (event: any) => {
+        onKeyDown?.(event);
+        if (event.key === " " || event.key === "Enter") {
+          updateOriginFromCenter();
+          setIsPressed(true);
+          setHovered(true);
+        }
+      },
+      onKeyUp: (event: any) => {
+        onKeyUp?.(event);
+        setIsPressed(false);
+        setHovered(false);
+      },
+      onPointerCancel: (event: any) => {
+        onPointerCancel?.(event);
+        setIsPressed(false);
+      },
+      onPointerDown: (event: any) => {
+        onPointerDown?.(event);
+        updateOriginFromPointer(event);
+        setIsPressed(true);
+        setHovered(true);
+      },
+      onPointerEnter: (event: any) => {
+        onPointerEnter?.(event);
+        updateOriginFromPointer(event);
+        setHovered(true);
+      },
+      onPointerUp: (event: any) => {
+        onPointerUp?.(event);
+        setIsPressed(false);
+      },
+    };
+
+    const fillOverlay = ripple ? (
+      <motion.span
+        animate={{ scale: showFill && coverSize > 0 ? 1 : 0 }}
+        aria-hidden
+        className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full z-0"
+        initial={false}
+        style={{
+          height: coverSize,
+          left: origin.x,
+          top: origin.y,
+          width: coverSize,
+          backgroundColor: variant === "primary" ? "rgba(255, 255, 255, 0.15)" : "rgba(59, 130, 246, 0.08)",
+        }}
+        transition={fillTransition}
+      />
     ) : null;
 
     if (href) {
@@ -143,16 +250,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           rel={external ? "noopener noreferrer" : undefined}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          onClick={handleClick}
           style={{
             x: shouldReduceMotion ? 0 : springX,
             y: shouldReduceMotion ? 0 : springY,
           }}
           data-cursor-text="LINK"
+          {...pointerEvents}
           {...(props as any)}
         >
           <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
-          {renderedRipples}
+          {fillOverlay}
         </motion.a>
       );
     }
@@ -163,16 +270,16 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={classes}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
         style={{
           x: shouldReduceMotion ? 0 : springX,
           y: shouldReduceMotion ? 0 : springY,
         }}
         data-cursor-text={variant === "primary" ? "CLICK" : undefined}
+        {...pointerEvents}
         {...(props as any)}
       >
         <span className="relative z-10 inline-flex items-center gap-2">{children}</span>
-        {renderedRipples}
+        {fillOverlay}
       </motion.button>
     );
   }
