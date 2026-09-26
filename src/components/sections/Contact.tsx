@@ -63,7 +63,7 @@ export default function Contact() {
 
   const emailSocial = socialsData.find((s) => s.label === "Email") || { url: "mailto:dhruvawhle@gmail.com" };
   const githubSocial = socialsData.find((s) => s.label === "GitHub") || { url: "https://github.com/DhruvVawhle" };
-  const linkedinSocial = socialsData.find((s) => s.label === "LinkedIn") || { url: "https://linkedin.com/in/dhruv-vawhle-277b2b2b8" };
+  const linkedinSocial = socialsData.find((s) => s.label === "LinkedIn") || { url: "https://linkedin.com/in/dhruvvawhle" };
   
   const rawEmail = emailSocial.url.replace("mailto:", "");
 

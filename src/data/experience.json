@@ -5,16 +5,16 @@
     "companyLogo": "",
     "role": "Web Development Intern",
     "employmentType": "Internship",
-    "duration": "2026",
-    "location": "Remote",
-    "technologies": ["HTML", "CSS", "JavaScript", "Figma"],
+    "duration": "Dec 2025 – Jan 2026",
+    "location": "Mumbai, India",
+    "technologies": ["HTML", "CSS", "JavaScript", "Git", "GitHub Pages"],
     "responsibilities": [
-      "Developed responsive, cross-browser-compatible web interfaces using HTML, CSS, and JavaScript",
-      "Implemented pixel-perfect designs from Figma mockups with attention to responsive breakpoints",
-      "Improved page load performance through image optimization and CSS refactoring"
+      "Built and deployed responsive web applications using HTML, CSS, and JavaScript.",
+      "Implemented interactive UI components, including calculators and landing pages.",
+      "Managed version control and deployment workflows using Git and GitHub Pages."
     ],
     "achievements": [
-      "Optimized assets for client delivery reducing load times by 20%"
+      "Managed version control and deployment workflows using Git and GitHub Pages."
     ],
     "certificate": {
       "title": "CodSoft Web Development Internship Certificate",
@@ -26,18 +26,18 @@
     "id": "compozent",
     "company": "Compozent",
     "companyLogo": "",
-    "role": "SDE (Web) Intern",
+    "role": "Software Development Engineer (Web) Intern",
     "employmentType": "Internship",
-    "duration": "2025",
-    "location": "Remote",
-    "technologies": ["React", "Node.js", "Express", "REST APIs", "Agile"],
+    "duration": "Dec 2024 – Jan 2025",
+    "location": "Mumbai, India",
+    "technologies": ["React", "Node.js", "Agile", "Git", "REST APIs"],
     "responsibilities": [
-      "Built and maintained React-based web applications within an Agile development team",
-      "Developed RESTful API endpoints with Node.js/Express, integrating with existing microservices",
-      "Participated in sprint planning, code reviews, and retrospectives as part of Agile workflow"
+      "Developed and enhanced production-level features using React and Node.js within an Agile development environment.",
+      "Debugged, refactored, and optimized existing code to improve readability, performance, and maintainability.",
+      "Collaborated with cross-functional teams using Git-based workflows, sprint planning, and code reviews."
     ],
     "achievements": [
-      "Implemented critical features within production sprints"
+      "Collaborated with cross-functional teams using Git-based workflows, sprint planning, and code reviews."
     ],
     "certificate": {
       "title": "Compozent SDE Web Development Internship Completion Certificate",
