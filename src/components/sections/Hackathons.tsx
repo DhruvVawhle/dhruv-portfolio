@@ -71,7 +71,7 @@ export default function Hackathons() {
 
         {/* ── 2. FEATURED 1.5X SHOWCASE: MEDIMITRA (SIH 2025 ) ── */}
         <ScrollReveal>
-          <div className="mb-16">
+          <div id="hackathon-medimitra" className="mb-16 scroll-mt-28">
             <GlowCard
               customSize
               glowColor="orange"

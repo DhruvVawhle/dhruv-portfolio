@@ -153,12 +153,17 @@ export default function Projects() {
             const primaryMetric = proj.metrics && proj.metrics.length > 0 ? proj.metrics[0] : null;
 
             return (
-              <ScrollReveal key={`mobile-${proj.id}`} delay={idx * 0.08}>
-                <GlowCard
-                  customSize
-                  glowColor={proj.id === "medtalk" ? "blue" : proj.id === "imdbsentiment" ? "orange" : "green"}
-                  className="p-6 sm:p-8 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between !aspect-auto"
-                >
+              <div
+                key={`mobile-${proj.id}`}
+                id={`project-${proj.id}`}
+                className="scroll-mt-24 sm:scroll-mt-28"
+              >
+                <ScrollReveal delay={idx * 0.08}>
+                  <GlowCard
+                    customSize
+                    glowColor={proj.id === "medtalk" ? "blue" : proj.id === "imdbsentiment" ? "orange" : "green"}
+                    className="p-6 sm:p-8 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between !aspect-auto"
+                  >
                   {/* Card Header Badge */}
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border-custom/60">
                     <div className="flex items-center gap-2">
@@ -292,6 +297,7 @@ export default function Projects() {
                   </div>
                 </GlowCard>
               </ScrollReveal>
+            </div>
             );
           })}
         </div>
@@ -300,13 +306,13 @@ export default function Projects() {
         {flagship && (
           <div className="hidden lg:block">
             {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE ── */}
-            <ScrollReveal>
-            <div className="mb-16">
-            <GlowCard
-              customSize
-              glowColor="green"
-              className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden !aspect-auto !grid-rows-none"
-            >
+            <div id={`project-${flagship.id}`} className="mb-16 scroll-mt-28">
+              <ScrollReveal>
+                <GlowCard
+                  customSize
+                  glowColor="green"
+                  className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden !aspect-auto !grid-rows-none"
+                >
               {/* Flagship Top Bar */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                 <div className="flex items-center gap-3">
@@ -460,8 +466,8 @@ export default function Projects() {
                 </div>
               </div>
             </GlowCard>
-          </div>
-        </ScrollReveal>
+          </ScrollReveal>
+        </div>
 
         {/* ── 3. SELECTED PROJECTS HEADER & DIVIDER ───────────────────────────── */}
         <ScrollReveal>
@@ -492,12 +498,17 @@ export default function Projects() {
             const isContentLeft = index % 2 === 0;
 
             return (
-              <ScrollReveal key={project.id} delay={index * 0.1}>
-                <GlowCard
-                  customSize
-                  glowColor={project.id === "medtalk" ? "blue" : project.id === "imdbsentiment" ? "orange" : "purple"}
-                  className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden !aspect-auto !grid-rows-none"
-                >
+              <div
+                key={`desktop-${project.id}`}
+                id={`project-${project.id}`}
+                className="scroll-mt-28"
+              >
+                <ScrollReveal delay={index * 0.1}>
+                  <GlowCard
+                    customSize
+                    glowColor={project.id === "medtalk" ? "blue" : project.id === "imdbsentiment" ? "orange" : "purple"}
+                    className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden !aspect-auto !grid-rows-none"
+                  >
                   {/* Top Bar */}
                   <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
                     <div className="flex items-center gap-3">
@@ -653,6 +664,7 @@ export default function Projects() {
                   </div>
                 </GlowCard>
               </ScrollReveal>
+            </div>
             );
           })}
         </div>

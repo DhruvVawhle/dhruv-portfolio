@@ -2,45 +2,62 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { navLinks } from "@/lib/data";
+import Image from "next/image";
+import Link from "next/link";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { Menu, MenuItem, ProductItem, HoveredLink } from "@/components/ui/navbar-menu";
+
+const springTransition = {
+  type: "spring" as const,
+  mass: 0.5,
+  damping: 11.5,
+  stiffness: 100,
+  restDelta: 0.001,
+  restSpeed: 0.001,
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string>("#about");
   const [activeHoverItem, setActiveHoverItem] = useState<string | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const shouldReduceMotion = useReducedMotion();
 
   const isManualNavRef = useRef(false);
   const manualNavTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const navItems = [
+    { label: "About", href: "#about" },
+    { label: "Projects", href: "#projects", hasDropdown: true },
+    { label: "Experience", href: "#experience", hasDropdown: true },
+    { label: "Hackathons", href: "#hackathons" },
+    { label: "Skills", href: "#skills", hasDropdown: true },
+    { label: "Contact", href: "#contact" },
+  ];
+
   const determineActiveSection = useCallback(() => {
     if (isManualNavRef.current) return;
 
-    // Check if scrolled to bottom edge of the document
     const isAtBottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 30;
 
-    if (isAtBottom && navLinks.length > 0) {
-      setActiveSection(navLinks[navLinks.length - 1].href);
+    if (isAtBottom) {
+      setActiveSection("#contact");
       return;
     }
 
-    const focalY = window.innerHeight * 0.35; // Focal point 35% down viewport below sticky navbar
+    const focalY = window.innerHeight * 0.35;
     let currentActive = "";
 
-    for (const link of navLinks) {
-      const id = link.href.replace("#", "");
+    for (const item of navItems) {
+      const id = item.href.replace("#", "");
       const el = document.getElementById(id);
       if (!el) continue;
 
       const rect = el.getBoundingClientRect();
       if (rect.top <= focalY && rect.bottom > 80) {
-        currentActive = link.href;
+        currentActive = item.href;
       }
     }
 
@@ -78,64 +95,24 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [determineActiveSection]);
 
-  // Synchronize on initial mount and hash changes
-  useEffect(() => {
-    const syncWithHash = () => {
-      const hash = window.location.hash;
-      if (hash && navLinks.some((link) => link.href === hash)) {
-        setActiveSection(hash);
-      } else {
-        determineActiveSection();
-      }
-    };
+  const scrollToTarget = (targetIdOrHref: string) => {
+    const rawId = targetIdOrHref.replace("#", "");
+    const targetElement = document.getElementById(rawId);
 
-    syncWithHash();
-    window.addEventListener("hashchange", syncWithHash);
-    return () => window.removeEventListener("hashchange", syncWithHash);
-  }, [determineActiveSection]);
-
-  // Secondary IntersectionObserver sync
-  useEffect(() => {
-    const sectionIds = navLinks.map((link) => link.href.replace("#", ""));
-    const elements = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (isManualNavRef.current) return;
-
-        const visibleEntries = entries.filter((e) => e.isIntersecting);
-        if (visibleEntries.length > 0) {
-          visibleEntries.sort((a, b) => {
-            const centerA = Math.abs(
-              a.boundingClientRect.top +
-                a.boundingClientRect.height / 2 -
-                window.innerHeight / 2
-            );
-            const centerB = Math.abs(
-              b.boundingClientRect.top +
-                b.boundingClientRect.height / 2 -
-                window.innerHeight / 2
-            );
-            return centerA - centerB;
-          });
-          setActiveSection(`#${visibleEntries[0].target.id}`);
-        }
-      },
-      {
-        rootMargin: "-80px 0px -40% 0px",
-        threshold: [0.1, 0.3, 0.6],
-      }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  const handleNavClick = (href: string) => {
-    setActiveSection(href);
     setActiveHoverItem(null);
+    setMobileOpen(false);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+      if (targetIdOrHref.startsWith("#project-") || targetIdOrHref.startsWith("#hackathon-")) {
+        setActiveSection(targetIdOrHref.includes("hackathon") ? "#hackathons" : "#projects");
+      } else {
+        setActiveSection(targetIdOrHref);
+      }
+    } else {
+      window.location.hash = targetIdOrHref;
+    }
+
     isManualNavRef.current = true;
     if (manualNavTimeoutRef.current) {
       clearTimeout(manualNavTimeoutRef.current);
@@ -143,7 +120,6 @@ export default function Navbar() {
     manualNavTimeoutRef.current = setTimeout(() => {
       isManualNavRef.current = false;
     }, 900);
-    setMobileOpen(false);
   };
 
   useEffect(() => {
@@ -163,7 +139,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
           scrolled
             ? "bg-bg/85 backdrop-blur-2xl border-b border-border-custom shadow-[0_4px_30px_rgba(0,0,0,0.15)] py-1"
-            : "bg-transparent py-3"
+            : "bg-transparent py-2.5"
         }`}
       >
         {/* Top Edge Scroll Progress Bar */}
@@ -178,7 +154,10 @@ export default function Navbar() {
           {/* Logo/Name */}
           <a
             href="#"
-            onClick={() => handleNavClick("")}
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="font-display font-extrabold text-lg text-text-primary tracking-tight hover:text-accent transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-accent rounded-md"
             aria-label="Dhruv Vawhle — Home"
           >
@@ -186,173 +165,305 @@ export default function Navbar() {
             <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" />
           </a>
 
-          {/* Desktop Aceternity Interactive Navbar Menu */}
-          <div className="hidden md:block">
-            <Menu setActive={setActiveHoverItem}>
-              <MenuItem
-                setActive={setActiveHoverItem}
-                active={activeHoverItem}
-                item="About"
-                href="#about"
-                onClick={() => handleNavClick("#about")}
-              />
+          {/* Desktop Glass Pill Navbar with Aceternity Hover Popovers */}
+          <nav
+            onMouseLeave={() => setActiveHoverItem(null)}
+            className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-bg-surface/75 dark:bg-[#131418]/75 border border-border-custom/80 backdrop-blur-xl shadow-xs ring-1 ring-black/5 dark:ring-white/5 relative"
+            aria-label="Desktop Navigation"
+          >
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href;
 
-              <MenuItem
-                setActive={setActiveHoverItem}
-                active={activeHoverItem}
-                item="Projects"
-                href="#projects"
-                onClick={() => handleNavClick("#projects")}
-              >
-                <div className="grid grid-cols-2 gap-4 p-2 w-[520px]">
-                  <ProductItem
-                    title="KrishiSaathi"
-                    href="#projects"
-                    src="/images/projects/krishisaathi-homepage.png"
-                    description="Farm-to-market marketplace with ARIMA price forecasting & hybrid Firestore+MongoDB architecture."
-                    onClick={() => handleNavClick("#projects")}
-                  />
-                  <ProductItem
-                    title="MedTalk AI"
-                    href="#projects"
-                    src="/images/projects/medtalk-aichatbot.png"
-                    description="24/7 multilingual healthcare assistant powered by Google Gemini and Speech STT/TTS."
-                    onClick={() => handleNavClick("#projects")}
-                  />
-                  <ProductItem
-                    title="IMDB Sentiment"
-                    href="#projects"
-                    src="/images/projects/imdb-sentiment-analysis.png"
-                    description="NLP sentiment analysis pipeline evaluated on 50,000 reviews with TF-IDF & Bi-LSTM."
-                    onClick={() => handleNavClick("#projects")}
-                  />
-                  <ProductItem
-                    title="MediMitra (SIH)"
-                    href="#hackathons"
-                    src="/images/hackathons/medimitra-chatbot.png"
-                    description="National Finalist at SIH 2025: WhatsApp + n8n healthcare assistant for government problem statement."
-                    onClick={() => handleNavClick("#hackathons")}
-                  />
+              return (
+                <div
+                  key={item.href}
+                  onMouseEnter={() => item.hasDropdown ? setActiveHoverItem(item.label) : setActiveHoverItem(null)}
+                  className="relative"
+                >
+                  <button
+                    type="button"
+                    onClick={() => scrollToTarget(item.href)}
+                    className={`text-xs font-mono px-4 py-1.5 rounded-full transition-colors duration-200 relative z-10 cursor-pointer select-none inline-flex items-center gap-1 ${
+                      isActive
+                        ? "text-background font-bold"
+                        : "text-text-secondary hover:text-text-primary font-medium"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="navbar-active-pill"
+                        className="absolute inset-0 bg-foreground rounded-full shadow-sm -z-10"
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : {
+                                type: "spring",
+                                stiffness: 420,
+                                damping: 28,
+                              }
+                        }
+                      />
+                    )}
+                    <span>{item.label}</span>
+                  </button>
+
+                  {/* Aceternity Spring Animated Dropdown Popover */}
+                  {item.hasDropdown && activeHoverItem === item.label && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.88, y: 8 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.88, y: 8 }}
+                      transition={springTransition}
+                      className="absolute top-[calc(100%_+_0.6rem)] left-1/2 transform -translate-x-1/2 pt-1 z-50"
+                    >
+                      <motion.div
+                        layoutId="navbar-dropdown-active"
+                        className="bg-bg-surface/95 dark:bg-[#131418]/95 backdrop-blur-2xl rounded-2xl overflow-hidden border border-border-custom shadow-2xl ring-1 ring-black/5 dark:ring-white/10"
+                      >
+                        {/* 1. Projects Dropdown with Direct Jump Anchors */}
+                        {item.label === "Projects" && (
+                          <div className="grid grid-cols-2 gap-3 p-3 w-[520px]">
+                            {/* IMDB Sentiment */}
+                            <button
+                              type="button"
+                              onClick={() => scrollToTarget("#project-imdbsentiment")}
+                              className="flex space-x-3 group/item p-2 rounded-xl hover:bg-foreground/5 transition-colors text-left cursor-pointer w-full"
+                            >
+                              <div className="relative w-[110px] h-[65px] rounded-lg overflow-hidden flex-shrink-0 border border-border-custom bg-black/20">
+                                <Image
+                                  src="/images/projects/imdb-sentiment-analysis.png"
+                                  fill
+                                  alt="IMDB Sentiment"
+                                  sizes="110px"
+                                  className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-bold font-display text-text-primary group-hover/item:text-accent transition-colors leading-tight mb-1">
+                                  IMDB Sentiment
+                                </h4>
+                                <p className="text-text-secondary text-xs line-clamp-2 leading-relaxed font-sans">
+                                  NLP sentiment classifier on 50K reviews with TF-IDF &amp; Bi-LSTM.
+                                </p>
+                              </div>
+                            </button>
+
+                            {/* KrishiSaathi */}
+                            <button
+                              type="button"
+                              onClick={() => scrollToTarget("#project-krishisaathi")}
+                              className="flex space-x-3 group/item p-2 rounded-xl hover:bg-foreground/5 transition-colors text-left cursor-pointer w-full"
+                            >
+                              <div className="relative w-[110px] h-[65px] rounded-lg overflow-hidden flex-shrink-0 border border-border-custom bg-black/20">
+                                <Image
+                                  src="/images/projects/krishisaathi-homepage.png"
+                                  fill
+                                  alt="KrishiSaathi"
+                                  sizes="110px"
+                                  className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-bold font-display text-text-primary group-hover/item:text-accent transition-colors leading-tight mb-1">
+                                  KrishiSaathi
+                                </h4>
+                                <p className="text-text-secondary text-xs line-clamp-2 leading-relaxed font-sans">
+                                  Farm-to-market platform with ARIMA mandi forecasting.
+                                </p>
+                              </div>
+                            </button>
+
+                            {/* MedTalk AI */}
+                            <button
+                              type="button"
+                              onClick={() => scrollToTarget("#project-medtalk")}
+                              className="flex space-x-3 group/item p-2 rounded-xl hover:bg-foreground/5 transition-colors text-left cursor-pointer w-full"
+                            >
+                              <div className="relative w-[110px] h-[65px] rounded-lg overflow-hidden flex-shrink-0 border border-border-custom bg-black/20">
+                                <Image
+                                  src="/images/projects/medtalk-aichatbot.png"
+                                  fill
+                                  alt="MedTalk AI"
+                                  sizes="110px"
+                                  className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-bold font-display text-text-primary group-hover/item:text-accent transition-colors leading-tight mb-1">
+                                  MedTalk AI
+                                </h4>
+                                <p className="text-text-secondary text-xs line-clamp-2 leading-relaxed font-sans">
+                                  Multilingual 24/7 healthcare assistant via Gemini &amp; Speech API.
+                                </p>
+                              </div>
+                            </button>
+
+                            {/* MediMitra SIH */}
+                            <button
+                              type="button"
+                              onClick={() => scrollToTarget("#hackathon-medimitra")}
+                              className="flex space-x-3 group/item p-2 rounded-xl hover:bg-foreground/5 transition-colors text-left cursor-pointer w-full"
+                            >
+                              <div className="relative w-[110px] h-[65px] rounded-lg overflow-hidden flex-shrink-0 border border-border-custom bg-black/20">
+                                <Image
+                                  src="/images/hackathons/medimitra-chatbot.png"
+                                  fill
+                                  alt="MediMitra SIH"
+                                  sizes="110px"
+                                  className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-bold font-display text-text-primary group-hover/item:text-accent transition-colors leading-tight mb-1">
+                                  MediMitra (SIH)
+                                </h4>
+                                <p className="text-text-secondary text-xs line-clamp-2 leading-relaxed font-sans">
+                                  National Finalist SIH 2025: WhatsApp + n8n automation.
+                                </p>
+                              </div>
+                            </button>
+                          </div>
+                        )}
+
+                        {/* 2. Experience Dropdown */}
+                        {item.label === "Experience" && (
+                          <div className="flex flex-col space-y-3 p-3 w-64 text-left">
+                            <div className="border-b border-border-custom/50 pb-2.5">
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                Work Experience
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#experience")}
+                                className="w-full text-left font-bold text-xs text-text-primary hover:text-accent py-1 block transition-colors cursor-pointer"
+                              >
+                                CodSoft · Web Dev Intern
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#experience")}
+                                className="w-full text-left font-bold text-xs text-text-primary hover:text-accent py-1 block transition-colors cursor-pointer"
+                              >
+                                Compozent · SDE (Web) Intern
+                              </button>
+                            </div>
+                            <div>
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                Hackathons &amp; Sprints
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#hackathon-medimitra")}
+                                className="w-full text-left text-xs text-text-secondary hover:text-accent py-0.5 block transition-colors cursor-pointer font-mono"
+                              >
+                                SIH 2025 · MediMitra
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#hackathons")}
+                                className="w-full text-left text-xs text-text-secondary hover:text-accent py-0.5 block transition-colors cursor-pointer font-mono"
+                              >
+                                Analytix&apos;26 Datathon · 1st Place
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#hackathons")}
+                                className="w-full text-left text-xs text-text-secondary hover:text-accent py-0.5 block transition-colors cursor-pointer font-mono"
+                              >
+                                Edith AI Buildathon
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 3. Skills Dropdown */}
+                        {item.label === "Skills" && (
+                          <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-3 w-72 text-left">
+                            <div>
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                Frontend
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                React &amp; Next.js
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                TypeScript &amp; Tailwind
+                              </button>
+                            </div>
+                            <div>
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                Backend
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                Node.js &amp; Express
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                Python &amp; REST APIs
+                              </button>
+                            </div>
+                            <div>
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                AI &amp; Data
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                Gemini API &amp; RAG
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                ARIMA &amp; Pandas
+                              </button>
+                            </div>
+                            <div>
+                              <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1">
+                                Cloud &amp; DB
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                MongoDB &amp; Firestore
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => scrollToTarget("#skills")}
+                                className="text-xs text-text-secondary hover:text-accent transition-colors font-mono block py-0.5 cursor-pointer text-left w-full"
+                              >
+                                AWS, GCP &amp; Docker
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </motion.div>
+                    </motion.div>
+                  )}
                 </div>
-              </MenuItem>
-
-              <MenuItem
-                setActive={setActiveHoverItem}
-                active={activeHoverItem}
-                item="Experience"
-                href="#experience"
-                onClick={() => handleNavClick("#experience")}
-              >
-                <div className="flex flex-col space-y-3.5 p-2 w-64">
-                  <div className="border-b border-border-custom/50 pb-2">
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold">
-                      Work Experience
-                    </span>
-                    <HoveredLink
-                      href="#experience"
-                      onClick={() => handleNavClick("#experience")}
-                      className="font-bold text-text-primary hover:text-accent mt-1"
-                    >
-                      CodSoft · Web Dev Intern
-                    </HoveredLink>
-                    <HoveredLink
-                      href="#experience"
-                      onClick={() => handleNavClick("#experience")}
-                      className="font-bold text-text-primary hover:text-accent"
-                    >
-                      Compozent · SDE (Web) Intern
-                    </HoveredLink>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold">
-                      Hackathons
-                    </span>
-                    <HoveredLink
-                      href="#hackathons"
-                      onClick={() => handleNavClick("#hackathons")}
-                    >
-                      SIH 2025 · MediMitra
-                    </HoveredLink>
-                    <HoveredLink
-                      href="#hackathons"
-                      onClick={() => handleNavClick("#hackathons")}
-                    >
-                      Analytix&apos;26 Datathon · 1st Place
-                    </HoveredLink>
-                    <HoveredLink
-                      href="#hackathons"
-                      onClick={() => handleNavClick("#hackathons")}
-                    >
-                      Edith AI Buildathon
-                    </HoveredLink>
-                  </div>
-                </div>
-              </MenuItem>
-
-              <MenuItem
-                setActive={setActiveHoverItem}
-                active={activeHoverItem}
-                item="Skills"
-                href="#skills"
-                onClick={() => handleNavClick("#skills")}
-              >
-                <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-2 w-72">
-                  <div>
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
-                      Frontend
-                    </span>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      React &amp; Next.js
-                    </HoveredLink>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      TypeScript &amp; Tailwind
-                    </HoveredLink>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
-                      Backend
-                    </span>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      Node.js &amp; Express
-                    </HoveredLink>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      Python &amp; REST APIs
-                    </HoveredLink>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
-                      AI &amp; Data
-                    </span>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      Gemini API &amp; RAG
-                    </HoveredLink>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      ARIMA &amp; Pandas
-                    </HoveredLink>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
-                      Cloud &amp; DB
-                    </span>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      MongoDB &amp; Firestore
-                    </HoveredLink>
-                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
-                      AWS, GCP &amp; Docker
-                    </HoveredLink>
-                  </div>
-                </div>
-              </MenuItem>
-
-              <MenuItem
-                setActive={setActiveHoverItem}
-                active={activeHoverItem}
-                item="Contact"
-                href="#contact"
-                onClick={() => handleNavClick("#contact")}
-              />
-            </Menu>
-          </div>
+              );
+            })}
+          </nav>
 
           {/* Right side controls */}
           <div className="flex items-center gap-3">
@@ -400,14 +511,14 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
           >
             <nav className="flex flex-col items-center justify-center h-full gap-5 sm:gap-8 px-6">
-              {navLinks.map((link, i) => {
-                const isActive = activeSection === link.href;
+              {navItems.map((item, i) => {
+                const isActive = activeSection === item.href;
                 return (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => handleNavClick(link.href)}
-                    className={`text-xl xs:text-2xl font-display font-bold transition-colors relative px-7 py-3.5 min-h-[48px] flex items-center justify-center rounded-full z-10 w-full max-w-xs text-center ${
+                  <motion.button
+                    key={item.href}
+                    type="button"
+                    onClick={() => scrollToTarget(item.href)}
+                    className={`text-xl xs:text-2xl font-display font-bold transition-colors relative px-7 py-3.5 min-h-[48px] flex items-center justify-center rounded-full z-10 w-full max-w-xs text-center cursor-pointer ${
                       isActive
                         ? "text-background"
                         : "text-text-primary hover:text-text-secondary"
@@ -432,8 +543,8 @@ export default function Navbar() {
                         }
                       />
                     )}
-                    {link.label}
-                  </motion.a>
+                    {item.label}
+                  </motion.button>
                 );
               })}
             </nav>
