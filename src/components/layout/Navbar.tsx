@@ -4,12 +4,14 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { navLinks } from "@/lib/data";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { Menu, MenuItem, ProductItem, HoveredLink } from "@/components/ui/navbar-menu";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeHoverItem, setActiveHoverItem] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
   const isManualNavRef = useRef(false);
@@ -37,7 +39,6 @@ export default function Navbar() {
       if (!el) continue;
 
       const rect = el.getBoundingClientRect();
-      // If the section top is above our focal line and its bottom is below the navbar
       if (rect.top <= focalY && rect.bottom > 80) {
         currentActive = link.href;
       }
@@ -72,7 +73,6 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    // Initial sync
     onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
@@ -135,6 +135,7 @@ export default function Navbar() {
 
   const handleNavClick = (href: string) => {
     setActiveSection(href);
+    setActiveHoverItem(null);
     isManualNavRef.current = true;
     if (manualNavTimeoutRef.current) {
       clearTimeout(manualNavTimeoutRef.current);
@@ -161,8 +162,8 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-bg/85 backdrop-blur-2xl border-b border-border-custom shadow-[0_4px_30px_rgba(0,0,0,0.15)] py-0.5"
-            : "bg-transparent py-2"
+            ? "bg-bg/85 backdrop-blur-2xl border-b border-border-custom shadow-[0_4px_30px_rgba(0,0,0,0.15)] py-1"
+            : "bg-transparent py-3"
         }`}
       >
         {/* Top Edge Scroll Progress Bar */}
@@ -173,65 +174,194 @@ export default function Navbar() {
           />
         </div>
 
-        <nav
-          className="content-width flex items-center justify-between h-16 mx-auto"
-          aria-label="Main navigation"
-        >
+        <div className="content-width flex items-center justify-between h-14 sm:h-16 mx-auto">
           {/* Logo/Name */}
           <a
             href="#"
             onClick={() => handleNavClick("")}
-            className="font-display font-extrabold text-lg text-text-primary tracking-tight hover:text-accent transition-colors flex items-center gap-1.5"
+            className="font-display font-extrabold text-lg text-text-primary tracking-tight hover:text-accent transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-accent rounded-md"
             aria-label="Dhruv Vawhle — Home"
           >
             <span>DV</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" />
           </a>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-bg-surface/70 border border-border-custom/80 backdrop-blur-md shadow-xs">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href;
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className={`text-xs font-mono px-4 py-1.5 rounded-full transition-colors duration-200 relative z-10 ${
-                    isActive
-                      ? "text-background font-bold"
-                      : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-active-pill"
-                      className="absolute inset-0 bg-foreground rounded-full shadow-sm -z-10"
-                      transition={
-                        shouldReduceMotion
-                          ? { duration: 0 }
-                          : {
-                              type: "spring",
-                              stiffness: 420,
-                              damping: 28,
-                            }
-                      }
-                    />
-                  )}
-                  {link.label}
-                </a>
-              );
-            })}
+          {/* Desktop Aceternity Interactive Navbar Menu */}
+          <div className="hidden md:block">
+            <Menu setActive={setActiveHoverItem}>
+              <MenuItem
+                setActive={setActiveHoverItem}
+                active={activeHoverItem}
+                item="About"
+                href="#about"
+                onClick={() => handleNavClick("#about")}
+              />
+
+              <MenuItem
+                setActive={setActiveHoverItem}
+                active={activeHoverItem}
+                item="Projects"
+                href="#projects"
+                onClick={() => handleNavClick("#projects")}
+              >
+                <div className="grid grid-cols-2 gap-4 p-2 w-[520px]">
+                  <ProductItem
+                    title="KrishiSaathi"
+                    href="#projects"
+                    src="/images/projects/krishisaathi-homepage.png"
+                    description="Farm-to-market marketplace with ARIMA price forecasting & hybrid Firestore+MongoDB architecture."
+                    onClick={() => handleNavClick("#projects")}
+                  />
+                  <ProductItem
+                    title="MedTalk AI"
+                    href="#projects"
+                    src="/images/projects/medtalk-aichatbot.png"
+                    description="24/7 multilingual healthcare assistant powered by Google Gemini and Speech STT/TTS."
+                    onClick={() => handleNavClick("#projects")}
+                  />
+                  <ProductItem
+                    title="IMDB Sentiment"
+                    href="#projects"
+                    src="/images/projects/imdb-sentiment-analysis.png"
+                    description="NLP sentiment analysis pipeline evaluated on 50,000 reviews with TF-IDF & Bi-LSTM."
+                    onClick={() => handleNavClick("#projects")}
+                  />
+                  <ProductItem
+                    title="MediMitra (SIH)"
+                    href="#hackathons"
+                    src="/images/hackathons/medimitra-chatbot.png"
+                    description="National Finalist at SIH 2025: WhatsApp + n8n healthcare assistant for government problem statement."
+                    onClick={() => handleNavClick("#hackathons")}
+                  />
+                </div>
+              </MenuItem>
+
+              <MenuItem
+                setActive={setActiveHoverItem}
+                active={activeHoverItem}
+                item="Experience"
+                href="#experience"
+                onClick={() => handleNavClick("#experience")}
+              >
+                <div className="flex flex-col space-y-3.5 p-2 w-64">
+                  <div className="border-b border-border-custom/50 pb-2">
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold">
+                      Work Experience
+                    </span>
+                    <HoveredLink
+                      href="#experience"
+                      onClick={() => handleNavClick("#experience")}
+                      className="font-bold text-text-primary hover:text-accent mt-1"
+                    >
+                      CodSoft · Web Dev Intern
+                    </HoveredLink>
+                    <HoveredLink
+                      href="#experience"
+                      onClick={() => handleNavClick("#experience")}
+                      className="font-bold text-text-primary hover:text-accent"
+                    >
+                      Compozent · SDE (Web) Intern
+                    </HoveredLink>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold">
+                      Hackathons
+                    </span>
+                    <HoveredLink
+                      href="#hackathons"
+                      onClick={() => handleNavClick("#hackathons")}
+                    >
+                      SIH 2025 · MediMitra
+                    </HoveredLink>
+                    <HoveredLink
+                      href="#hackathons"
+                      onClick={() => handleNavClick("#hackathons")}
+                    >
+                      Analytix&apos;26 Datathon · 1st Place
+                    </HoveredLink>
+                    <HoveredLink
+                      href="#hackathons"
+                      onClick={() => handleNavClick("#hackathons")}
+                    >
+                      Edith AI Buildathon
+                    </HoveredLink>
+                  </div>
+                </div>
+              </MenuItem>
+
+              <MenuItem
+                setActive={setActiveHoverItem}
+                active={activeHoverItem}
+                item="Skills"
+                href="#skills"
+                onClick={() => handleNavClick("#skills")}
+              >
+                <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-2 w-72">
+                  <div>
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
+                      Frontend
+                    </span>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      React &amp; Next.js
+                    </HoveredLink>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      TypeScript &amp; Tailwind
+                    </HoveredLink>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
+                      Backend
+                    </span>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      Node.js &amp; Express
+                    </HoveredLink>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      Python &amp; REST APIs
+                    </HoveredLink>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
+                      AI &amp; Data
+                    </span>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      Gemini API &amp; RAG
+                    </HoveredLink>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      ARIMA &amp; Pandas
+                    </HoveredLink>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-accent uppercase tracking-wider font-bold block mb-1.5">
+                      Cloud &amp; DB
+                    </span>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      MongoDB &amp; Firestore
+                    </HoveredLink>
+                    <HoveredLink href="#skills" onClick={() => handleNavClick("#skills")}>
+                      AWS, GCP &amp; Docker
+                    </HoveredLink>
+                  </div>
+                </div>
+              </MenuItem>
+
+              <MenuItem
+                setActive={setActiveHoverItem}
+                active={activeHoverItem}
+                item="Contact"
+                href="#contact"
+                onClick={() => handleNavClick("#contact")}
+              />
+            </Menu>
           </div>
 
-          {/* Right side */}
+          {/* Right side controls */}
           <div className="flex items-center gap-3">
             <ThemeToggle />
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden w-12 h-12 min-h-[48px] min-w-[48px] rounded-xl flex flex-col items-center justify-center gap-1.5 bg-bg-surface border border-border-custom cursor-pointer"
+              className="md:hidden w-11 h-11 min-h-[44px] min-w-[44px] rounded-xl flex flex-col items-center justify-center gap-1.5 bg-bg-surface border border-border-custom cursor-pointer focus-visible:ring-2 focus-visible:ring-accent"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               id="mobile-menu-toggle"
@@ -256,10 +386,10 @@ export default function Navbar() {
               />
             </button>
           </div>
-        </nav>
+        </div>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -291,11 +421,15 @@ export default function Navbar() {
                       <motion.span
                         layoutId="navbar-mobile-pill"
                         className="absolute inset-0 bg-foreground rounded-full -z-10"
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 30,
-                        }}
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : {
+                                type: "spring",
+                                stiffness: 380,
+                                damping: 30,
+                              }
+                        }
                       />
                     )}
                     {link.label}
