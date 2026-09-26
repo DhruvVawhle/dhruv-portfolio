@@ -97,20 +97,78 @@ export default function Navbar() {
 
   const scrollToTarget = (targetIdOrHref: string) => {
     const rawId = targetIdOrHref.replace("#", "");
-    const targetElement = document.getElementById(rawId);
+    const cleanProjectId = rawId.replace(/^project-/, "");
 
     setActiveHoverItem(null);
     setMobileOpen(false);
 
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
-      if (targetIdOrHref.startsWith("#project-") || targetIdOrHref.startsWith("#hackathon-")) {
-        setActiveSection(targetIdOrHref.includes("hackathon") ? "#hackathons" : "#projects");
-      } else {
-        setActiveSection(targetIdOrHref);
+    const isProjectJump =
+      rawId.startsWith("project-") ||
+      cleanProjectId === "imdbsentiment" ||
+      cleanProjectId === "krishisaathi" ||
+      cleanProjectId === "medtalk";
+
+    if (isProjectJump) {
+      window.dispatchEvent(new CustomEvent("project-jump", { detail: cleanProjectId }));
+      setActiveSection("#projects");
+      try {
+        window.history.pushState(null, "", `#project-${cleanProjectId}`);
+      } catch {
+        // Fallback if pushState fails
+      }
+
+      const attemptScroll = () => {
+        const candidates = Array.from(
+          document.querySelectorAll(
+            `[data-project-id="${cleanProjectId}"], [data-project-target="project-${cleanProjectId}"], #project-${cleanProjectId}, #mobile-project-${cleanProjectId}`
+          )
+        ) as HTMLElement[];
+
+        const visible = candidates.find(
+          (el) => el.offsetParent !== null || el.getClientRects().length > 0
+        );
+
+        if (visible) {
+          const navOffset = 85;
+          const topPos = visible.getBoundingClientRect().top + window.scrollY - navOffset;
+          window.scrollTo({
+            top: Math.max(0, topPos),
+            behavior: "smooth",
+          });
+          return true;
+        }
+        return false;
+      };
+
+      if (!attemptScroll()) {
+        setTimeout(attemptScroll, 60);
       }
     } else {
-      window.location.hash = targetIdOrHref;
+      const candidates = Array.from(
+        document.querySelectorAll(`[id="${rawId}"], [data-project-target="${rawId}"]`)
+      ) as HTMLElement[];
+
+      const visible =
+        candidates.find(
+          (el) => el.offsetParent !== null || el.getClientRects().length > 0
+        ) || candidates[0] || document.getElementById(rawId);
+
+      if (visible) {
+        const navOffset = 80;
+        const topPos = visible.getBoundingClientRect().top + window.scrollY - navOffset;
+        window.scrollTo({
+          top: Math.max(0, topPos),
+          behavior: "smooth",
+        });
+
+        if (targetIdOrHref.startsWith("#hackathon-")) {
+          setActiveSection("#hackathons");
+        } else {
+          setActiveSection(targetIdOrHref);
+        }
+      } else {
+        window.location.hash = targetIdOrHref;
+      }
     }
 
     isManualNavRef.current = true;
@@ -119,7 +177,7 @@ export default function Navbar() {
     }
     manualNavTimeoutRef.current = setTimeout(() => {
       isManualNavRef.current = false;
-    }, 900);
+    }, 1000);
   };
 
   useEffect(() => {

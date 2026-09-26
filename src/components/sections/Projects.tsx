@@ -71,6 +71,63 @@ export default function Projects() {
 
   const categories = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud", "Mobile"];
 
+  React.useEffect(() => {
+    const handleProjectJump = (projectId: string) => {
+      const cleanId = projectId.replace(/^#?project-/, "").replace(/^#/, "");
+      const found = projects.find((p) => p.id === cleanId);
+      if (found) {
+        setSelectedCategory("All");
+      }
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const candidates = Array.from(
+            document.querySelectorAll(
+              `[data-project-id="${cleanId}"], [data-project-target="project-${cleanId}"], #project-${cleanId}, #mobile-project-${cleanId}`
+            )
+          ) as HTMLElement[];
+
+          const visible = candidates.find(
+            (el) => el.offsetParent !== null || el.getClientRects().length > 0
+          );
+
+          if (visible) {
+            const navOffset = 85;
+            const topPos = visible.getBoundingClientRect().top + window.scrollY - navOffset;
+            window.scrollTo({
+              top: Math.max(0, topPos),
+              behavior: "smooth",
+            });
+          }
+        }, 60);
+      });
+    };
+
+    const onCustomEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail) handleProjectJump(detail);
+    };
+
+    const onHashChange = () => {
+      const hash = window.location.hash;
+      if (hash && (hash.startsWith("#project-") || hash.startsWith("#imdbsentiment") || hash.startsWith("#krishisaathi") || hash.startsWith("#medtalk"))) {
+        handleProjectJump(hash);
+      }
+    };
+
+    window.addEventListener("project-jump", onCustomEvent);
+    window.addEventListener("hashchange", onHashChange);
+
+    if (window.location.hash) {
+      onHashChange();
+    }
+
+    return () => {
+      window.removeEventListener("project-jump", onCustomEvent);
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, []);
+
   const filteredProjects = projects.filter((proj) => {
     return selectedCategory === "All" || proj.category === selectedCategory;
   });
@@ -155,7 +212,9 @@ export default function Projects() {
             return (
               <div
                 key={`mobile-${proj.id}`}
-                id={`project-${proj.id}`}
+                id={`mobile-project-${proj.id}`}
+                data-project-id={proj.id}
+                data-project-target={`project-${proj.id}`}
                 className="scroll-mt-24 sm:scroll-mt-28"
               >
                 <ScrollReveal delay={idx * 0.08}>
@@ -306,7 +365,12 @@ export default function Projects() {
         {flagship && (
           <div className="hidden lg:block">
             {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE ── */}
-            <div id={`project-${flagship.id}`} className="mb-16 scroll-mt-28">
+            <div
+              id={`project-${flagship.id}`}
+              data-project-id={flagship.id}
+              data-project-target={`project-${flagship.id}`}
+              className="mb-16 scroll-mt-28"
+            >
               <ScrollReveal>
                 <GlowCard
                   customSize
@@ -501,6 +565,8 @@ export default function Projects() {
               <div
                 key={`desktop-${project.id}`}
                 id={`project-${project.id}`}
+                data-project-id={project.id}
+                data-project-target={`project-${project.id}`}
                 className="scroll-mt-28"
               >
                 <ScrollReveal delay={index * 0.1}>
