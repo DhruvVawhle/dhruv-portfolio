@@ -11,7 +11,7 @@
 
 **A high-performance, editorial software engineering portfolio showcasing production full-stack systems, applied AI architectures, and verified deployments.**
 
-[🚀 Live Preview](https://dhruvvawhle.vercel.app) · [📄 View Resume](https://dhruvvawhle.vercel.app/documents/Dhruv_Resume_Updated_07-08-2026_.pdf) · [📬 Connect](https://linkedin.com/in/dhruvvawhle)
+[🚀 Live Preview](https://dhruvvawhle.vercel.app) · [📄 View Resume](https://dhruvvawhle.vercel.app/documents/Dhruv_Resume_Updated_07-08-2026_.pdf) · [📬 Connect](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8)
 
 </div>
 
@@ -133,7 +133,7 @@ Or connect the GitHub repository directly to Vercel for automatic CI/CD on every
 
 **Dhruv Vawhle**
 - **Website**: [dhruvvawhle.vercel.app](https://dhruvvawhle.vercel.app)
-- **LinkedIn**: [linkedin.com/in/dhruvvawhle](https://linkedin.com/in/dhruvvawhle)
+- **LinkedIn**: [linkedin.com/in/dhruv-vawhle-277b2b2b8](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8)
 - **GitHub**: [@DhruvVawhle](https://github.com/DhruvVawhle)
 - **Email**: [dhruvawhle@gmail.com](mailto:dhruvawhle@gmail.com)
 
