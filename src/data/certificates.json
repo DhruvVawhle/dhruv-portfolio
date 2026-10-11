@@ -1,26 +1,19 @@
 [
   {
-    "title": "Google Cloud – Introduction to Security in the World of AI",
-    "issuer": "Google Cloud",
+    "title": "Pyverse – Python Certification",
+    "name": "Pyverse (Python)",
+    "issuer": "Pyverse",
     "date": "2025",
-    "credentialId": "GC-SEC-AI-9921",
-    "verifyUrl": "https://www.cloudskillsboost.google/",
-    "image": "/images/certifications/google-cloud-ai-security.png",
+    "credentialId": null,
+    "verifyUrl": null,
+    "image": null,
+    "todoImage": "TODO: Add Pyverse Python certificate image to /public/images/certifications/pyverse-python.png",
     "pdf": null,
-    "category": "Cloud"
-  },
-  {
-    "title": "Google Cloud – Exploring Data Transformation with Google Cloud",
-    "issuer": "Google Cloud",
-    "date": "2025",
-    "credentialId": "GC-DATA-TR-2881",
-    "verifyUrl": "https://www.cloudskillsboost.google/",
-    "image": "/images/certifications/google-cloud-data-transformation.png",
-    "pdf": null,
-    "category": "Cloud"
+    "category": "Programming"
   },
   {
     "title": "Cisco Networking Academy – Introduction to Data Science",
+    "name": "Intro to Data Science",
     "issuer": "Cisco Networking Academy",
     "date": "2025",
     "credentialId": "CISCO-DS-9192",
@@ -31,6 +24,7 @@
   },
   {
     "title": "NxtWave – AI for Students: Build Your Own Generative AI Model",
+    "name": "AI for Students",
     "issuer": "NxtWave",
     "date": "2024",
     "credentialId": "NXT-GEN-AI-1182",
@@ -40,17 +34,19 @@
     "category": "AI & ML"
   },
   {
-    "title": "Infosys Springboard – Basics of Python",
-    "issuer": "Infosys Springboard",
-    "date": "2024",
-    "credentialId": "INF-PY-4829",
-    "verifyUrl": "https://springboard.infosys.com/",
-    "image": "/images/certifications/Infosys Basic of Python.png",
+    "title": "Google Cloud – Introduction to Generative AI",
+    "name": "Intro to Generative AI",
+    "issuer": "Google Cloud",
+    "date": "2025",
+    "credentialId": null,
+    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "image": "/images/certifications/google-cloud-generative-ai.png",
     "pdf": null,
-    "category": "Programming"
+    "category": "AI & ML"
   },
   {
     "title": "Edunet – Foundation Course on Green Skills & Artificial Intelligence",
+    "name": "EduNet Green Skills & AI",
     "issuer": "Edunet Foundation",
     "date": "2024",
     "credentialId": "EDUNET-GREEN-AI-7721",
@@ -58,5 +54,16 @@
     "image": "/images/certifications/edunet-aiml.jpg",
     "pdf": null,
     "category": "AI & ML"
+  },
+  {
+    "title": "Google Cloud – Introduction to Security in the World of AI",
+    "name": "Security in AI",
+    "issuer": "Google Cloud",
+    "date": "2025",
+    "credentialId": null,
+    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "image": "/images/certifications/google-cloud-ai-security.png",
+    "pdf": null,
+    "category": "Cloud"
   }
 ]

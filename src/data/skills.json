@@ -6,7 +6,7 @@
       "mobileRadiusPx": 60,
       "duration": 75,
       "direction": 1,
-      "skills": ["React", "TypeScript", "Node.js", "Python"]
+      "skills": ["React.js", "TypeScript", "Next.js", "Python"]
     },
     {
       "id": "middle",
@@ -14,7 +14,7 @@
       "mobileRadiusPx": 105,
       "duration": 95,
       "direction": -1,
-      "skills": ["Next.js", "MongoDB", "Tailwind CSS", "Express"]
+      "skills": ["Node.js", "MongoDB", "Firebase Firestore", "Tailwind CSS"]
     },
     {
       "id": "outer",
@@ -22,406 +22,383 @@
       "mobileRadiusPx": 150,
       "duration": 125,
       "direction": 1,
-      "skills": ["AWS", "GCP", "Docker", "Git", "SQL"]
+      "skills": ["AWS", "Google Cloud Platform (GCP)", "Docker", "Git", "SQL", "Postman"]
     }
   ],
   "relationshipsMap": {
-    "React": ["Next.js", "TypeScript", "Tailwind CSS"],
-    "Next.js": ["React", "TypeScript", "Tailwind CSS", "REST APIs"],
-    "TypeScript": ["React", "Next.js", "Node.js", "Express"],
-    "Tailwind CSS": ["React", "Next.js"],
-    "Python": ["Pandas", "Matplotlib", "Gemini API", "RAG", "Vector Database"],
-    "Pandas": ["Python", "Matplotlib", "SQL"],
-    "Matplotlib": ["Python", "Pandas"],
-    "Gemini API": ["Python", "RAG", "Vector Database", "Node.js"],
-    "RAG": ["Python", "Gemini API", "Vector Database"],
-    "Node.js": ["Express", "REST APIs", "MongoDB", "Firebase"],
-    "Express": ["Node.js", "REST APIs", "MongoDB"],
-    "REST APIs": ["Node.js", "Express", "MongoDB", "Next.js"],
-    "AWS": ["Docker", "GCP", "SQL", "Git"],
-    "GCP": ["AWS", "Docker", "Gemini API"],
-    "Docker": ["AWS", "GCP", "Git", "Node.js"],
-    "Firebase": ["Node.js", "MongoDB", "Firestore", "React"],
-    "MongoDB": ["Node.js", "Express", "REST APIs", "Vector Database"],
-    "Vector Database": ["Python", "RAG", "Gemini API", "MongoDB"],
-    "SQL": ["Pandas", "AWS", "Python"],
-    "Firestore": ["Firebase", "React", "Node.js"],
-    "Git": ["Docker", "TypeScript", "Next.js"]
+    "Python": ["scikit-learn", "TensorFlow/Keras", "Flask", "ARIMA Forecasting", "Gemini API", "SQL"],
+    "JavaScript": ["React.js", "Next.js", "Node.js", "Express.js", "HTML", "CSS"],
+    "TypeScript": ["React.js", "Next.js", "Node.js", "Prompt Injection Defense"],
+    "SQL": ["MySQL", "SQLite", "Python", "Node.js"],
+    "HTML": ["CSS", "JavaScript", "React.js"],
+    "CSS": ["HTML", "Tailwind CSS"],
+    "MongoDB": ["Node.js", "Express.js", "Next.js", "REST APIs"],
+    "Firebase Firestore": ["Next.js", "React.js", "Prompt Injection Defense", "Node.js"],
+    "MySQL": ["SQL", "Node.js", "Express.js", "Python"],
+    "SQLite": ["SQL", "Python", "FastAPI", "CampusAI"],
+    "React.js": ["Next.js", "TypeScript", "Tailwind CSS", "JavaScript"],
+    "Next.js": ["React.js", "TypeScript", "Tailwind CSS", "REST APIs", "Prompt Injection Defense"],
+    "Node.js": ["Express.js", "REST APIs", "MongoDB", "Firebase Firestore"],
+    "Express.js": ["Node.js", "REST APIs", "MongoDB"],
+    "Flask": ["Python", "REST APIs", "Gemini API"],
+    "Tailwind CSS": ["React.js", "Next.js", "CSS"],
+    "AWS": ["Docker", "Google Cloud Platform (GCP)", "Vercel", "Git"],
+    "Google Cloud Platform (GCP)": ["AWS", "Gemini API", "Docker", "Vercel"],
+    "Vercel": ["Next.js", "React.js", "Git", "GitHub"],
+    "Docker": ["AWS", "Google Cloud Platform (GCP)", "Node.js", "Python"],
+    "Git": ["GitHub", "Docker", "TypeScript", "Next.js"],
+    "GitHub": ["Git", "Vercel", "CI/CD"],
+    "REST APIs": ["Node.js", "Express.js", "Next.js", "Flask", "Postman"],
+    "Postman": ["REST APIs", "Node.js", "Express.js", "Functional Testing"],
+    "Functional Testing": ["Test Case Design", "Postman", "QA Procedures"],
+    "Test Case Design": ["Functional Testing", "QA Procedures", "Defect Reporting"],
+    "Machine Learning": ["scikit-learn", "TensorFlow/Keras", "ARIMA Forecasting", "Python"],
+    "scikit-learn": ["Machine Learning", "Python", "TensorFlow/Keras"],
+    "TensorFlow/Keras": ["Machine Learning", "Python", "scikit-learn"],
+    "ARIMA Forecasting": ["Python", "Machine Learning", "KrishiSaathi"],
+    "Gemini API": ["Python", "Next.js", "Prompt Injection Defense"],
+    "Prompt Injection Defense": ["Next.js", "Firebase Firestore", "TypeScript", "AI Security"]
   },
   "engineeringStack": [
     {
-      "id": "frontend",
-      "title": "Frontend Engineering",
-      "subtitle": "Component architectures & tokenized styling",
+      "id": "languages",
+      "title": "Languages",
+      "subtitle": "Core programming & scripting languages",
       "accentColor": "#3B82F6",
       "accentClass": "text-[#3B82F6] border-[#3B82F6]/30 bg-[#3B82F6]/10",
       "technologies": [
-        { "name": "React", "descriptor": "Component-driven UI library", "proficiency": 92, "yearsOfExperience": 3 },
-        { "name": "Next.js", "descriptor": "Full-stack React framework & App Router", "proficiency": 88, "yearsOfExperience": 2 },
-        { "name": "TypeScript", "descriptor": "End-to-end static typing & safety", "proficiency": 90, "yearsOfExperience": 2 },
-        { "name": "Tailwind CSS", "descriptor": "Token-based utility styling", "proficiency": 95, "yearsOfExperience": 3 }
-      ]
-    },
-    {
-      "id": "backend",
-      "title": "Backend & APIs",
-      "subtitle": "Scalable server runtimes & RESTful endpoints",
-      "accentColor": "#10B981",
-      "accentClass": "text-[#10B981] border-[#10B981]/30 bg-[#10B981]/10",
-      "technologies": [
-        { "name": "Node.js", "descriptor": "Async V8 JavaScript runtime", "proficiency": 85, "yearsOfExperience": 2 },
-        { "name": "Express", "descriptor": "Lightweight web API middleware", "proficiency": 87, "yearsOfExperience": 2 },
-        { "name": "Python", "descriptor": "Backend services & API integration", "proficiency": 90, "yearsOfExperience": 3 },
-        { "name": "REST APIs", "descriptor": "Structured HTTP service contracts", "proficiency": 92, "yearsOfExperience": 3 }
-      ]
-    },
-    {
-      "id": "ai-ml",
-      "title": "AI / Machine Learning",
-      "subtitle": "Applied generative AI & data transformation",
-      "accentColor": "#A855F7",
-      "accentClass": "text-[#A855F7] border-[#A855F7]/30 bg-[#A855F7]/10",
-      "technologies": [
-        { "name": "Gemini API", "descriptor": "Multimodal NLU & reasoning models", "proficiency": 88, "yearsOfExperience": 1.5 },
-        { "name": "RAG", "descriptor": "Retrieval-augmented generation pipelines", "proficiency": 85, "yearsOfExperience": 1.5 },
-        { "name": "Pandas", "descriptor": "Structured data analysis & cleaning", "proficiency": 80, "yearsOfExperience": 2 },
-        { "name": "Matplotlib", "descriptor": "Exploratory technical visualization", "proficiency": 78, "yearsOfExperience": 2 }
-      ]
-    },
-    {
-      "id": "cloud-infrastructure",
-      "title": "Cloud Infrastructure",
-      "subtitle": "Managed compute & containerized environments",
-      "accentColor": "#F97316",
-      "accentClass": "text-[#F97316] border-[#F97316]/30 bg-[#F97316]/10",
-      "technologies": [
-        { "name": "AWS", "descriptor": "Scalable cloud infrastructure & compute", "proficiency": 75, "yearsOfExperience": 1.5 },
-        { "name": "GCP", "descriptor": "Google Cloud AI & managed services", "proficiency": 80, "yearsOfExperience": 1.5 },
-        { "name": "Docker", "descriptor": "Containerized reproducible runtimes", "proficiency": 82, "yearsOfExperience": 2 },
-        { "name": "Firebase", "descriptor": "Authentication & real-time serverless", "proficiency": 90, "yearsOfExperience": 2 }
+        { "name": "Python", "descriptor": "Backend services, ML pipelines & scripting" },
+        { "name": "JavaScript", "descriptor": "Dynamic web scripting & asynchronous logic" },
+        { "name": "TypeScript", "descriptor": "Static typing, safety & type contracts" },
+        { "name": "SQL", "descriptor": "Relational queries & structured data models" },
+        { "name": "HTML", "descriptor": "Semantic structure & web fundamentals" },
+        { "name": "CSS", "descriptor": "Layout engines, responsiveness & typography" }
       ]
     },
     {
       "id": "databases",
-      "title": "Database Systems",
-      "subtitle": "Relational, document & high-dimensional storage",
-      "accentColor": "#059669",
-      "accentClass": "text-[#059669] border-[#059669]/30 bg-[#059669]/10",
+      "title": "Databases",
+      "subtitle": "Document, relational & embedded data stores",
+      "accentColor": "#10B981",
+      "accentClass": "text-[#10B981] border-[#10B981]/30 bg-[#10B981]/10",
       "technologies": [
-        { "name": "MongoDB", "descriptor": "Distributed document database", "proficiency": 88, "yearsOfExperience": 2 },
-        { "name": "Vector Database", "descriptor": "High-dimensional semantic search", "proficiency": 82, "yearsOfExperience": 1.5 },
-        { "name": "SQL", "descriptor": "Relational schema modeling & queries", "proficiency": 85, "yearsOfExperience": 2 },
-        { "name": "Firestore", "descriptor": "Real-time document synchronization", "proficiency": 90, "yearsOfExperience": 2 }
+        { "name": "MongoDB", "descriptor": "Document data store & aggregation pipelines" },
+        { "name": "Firebase Firestore", "descriptor": "Real-time sync & serverless persistence" },
+        { "name": "MySQL", "descriptor": "Relational database management & ACID tables" },
+        { "name": "SQLite", "descriptor": "Lightweight embedded relational database" }
       ]
     },
     {
-      "id": "developer-tools",
-      "title": "Developer Tools",
-      "subtitle": "Version control & collaborative engineering",
-      "accentColor": "#EF4444",
-      "accentClass": "text-[#EF4444] border-[#EF4444]/30 bg-[#EF4444]/10",
+      "id": "frameworks-libraries",
+      "title": "Frameworks and Libraries",
+      "subtitle": "Modern frontend, server & styling runtimes",
+      "accentColor": "#8B5CF6",
+      "accentClass": "text-[#8B5CF6] border-[#8B5CF6]/30 bg-[#8B5CF6]/10",
       "technologies": [
-        { "name": "Git", "descriptor": "Source control & branch management", "proficiency": 92, "yearsOfExperience": 3 },
-        { "name": "Docker", "descriptor": "Isolated local dev environments", "proficiency": 82, "yearsOfExperience": 2 },
-        { "name": "REST APIs", "descriptor": "API testing & contract validation", "proficiency": 92, "yearsOfExperience": 3 },
-        { "name": "Python", "descriptor": "Automation & scripting utilities", "proficiency": 90, "yearsOfExperience": 3 }
+        { "name": "React.js", "descriptor": "Component-driven user interface architecture" },
+        { "name": "Next.js", "descriptor": "Full-stack React framework & App Router" },
+        { "name": "Node.js", "descriptor": "Asynchronous event-driven server runtime" },
+        { "name": "Express.js", "descriptor": "HTTP server middleware & routing" },
+        { "name": "Flask", "descriptor": "Lightweight Python microservices & REST APIs" },
+        { "name": "Tailwind CSS", "descriptor": "Token-based utility-first CSS design system" }
+      ]
+    },
+    {
+      "id": "cloud-deployment",
+      "title": "Cloud and Deployment",
+      "subtitle": "Compute infrastructure, containers & edge hosting",
+      "accentColor": "#F97316",
+      "accentClass": "text-[#F97316] border-[#F97316]/30 bg-[#F97316]/10",
+      "technologies": [
+        { "name": "AWS", "descriptor": "Scalable cloud infrastructure & compute" },
+        { "name": "Google Cloud Platform (GCP)", "descriptor": "Cloud services, storage & managed APIs" },
+        { "name": "Vercel", "descriptor": "Edge deployment, CI/CD & preview workflows" },
+        { "name": "Docker", "descriptor": "Containerized application packaging" }
+      ]
+    },
+    {
+      "id": "tools-testing",
+      "title": "Tools and Testing",
+      "subtitle": "Version control, API contracts & QA methodologies",
+      "accentColor": "#EC4899",
+      "accentClass": "text-[#EC4899] border-[#EC4899]/30 bg-[#EC4899]/10",
+      "technologies": [
+        { "name": "Git", "descriptor": "Distributed version control & branch workflows" },
+        { "name": "GitHub", "descriptor": "Collaborative code review, PRs & repo hosting" },
+        { "name": "REST APIs", "descriptor": "Structured HTTP contracts & endpoint design" },
+        { "name": "Postman", "descriptor": "API testing, validation & environment scripting" },
+        { "name": "Functional Testing", "descriptor": "Feature validation, regression checks & QA" },
+        { "name": "Test Case Design", "descriptor": "Systematic scenario modeling & test execution" }
+      ]
+    },
+    {
+      "id": "machine-learning-security",
+      "title": "Machine Learning and Security",
+      "subtitle": "Predictive modeling, NLU & LLM vulnerability defense",
+      "accentColor": "#06B6D4",
+      "accentClass": "text-[#06B6D4] border-[#06B6D4]/30 bg-[#06B6D4]/10",
+      "technologies": [
+        { "name": "Machine Learning", "descriptor": "Supervised learning, classification & regression" },
+        { "name": "scikit-learn", "descriptor": "Data preprocessing & classic ML algorithms" },
+        { "name": "TensorFlow/Keras", "descriptor": "Neural network architectures & deep learning" },
+        { "name": "ARIMA Forecasting", "descriptor": "Time-series commodity price prediction models" },
+        { "name": "Gemini API", "descriptor": "Multimodal reasoning & structured outputs" },
+        { "name": "Prompt Injection Defense", "descriptor": "Pattern guards, proxy validation & policy engines" }
       ]
     }
   ],
   "techDetailsMap": {
-    "React": {
-      "category": "Frontend Framework",
+    "React.js": {
+      "category": "Frameworks and Libraries",
       "categoryColor": "#3B82F6",
-      "role": "Client-Side UI Architect & State Engineer",
-      "projectsList": ["KrishiSaathi AI Platform", "MedTalk Clinical Chatbot", "Portfolio Architecture"],
-      "useCases": ["UI Architecture", "Reactive Reconciliation", "Component Design", "State Management"],
-      "architecture": "Implements unidirectional data flow with custom hooks and reactive virtual DOM reconciliation. Structured around atomic design tokens and memoized state selectors to eliminate unnecessary re-renders across high-frequency real-time interfaces.",
-      "keyPatterns": [
-        "Custom Hooks & Context Providers",
-        "Virtual DOM Reconciliation & Memoization",
-        "Atomic Design System Components",
-        "Lazy Loading & Code Splitting"
-      ]
+      "role": "Frontend Architecture",
+      "projectsList": ["KrishiSaathi", "CampusAI", "Portfolio Site"],
+      "useCases": ["Component Architecture", "State Management", "Kiosk UI"],
+      "architecture": "Structured reusable components and hooks with clean state management.",
+      "keyPatterns": ["Custom Hooks", "Component Composition", "Virtual DOM Reconciliation"]
     },
     "Next.js": {
-      "category": "Full-Stack Framework",
+      "category": "Frameworks and Libraries",
       "categoryColor": "#3B82F6",
-      "role": "SSR Architecture & App Router Engineer",
-      "projectsList": ["Portfolio Architecture", "KrishiSaathi Core API", "Enterprise Web Apps"],
-      "useCases": ["React Server Components (RSC)", "App Router Navigation", "API Route Gateway", "Static & Dynamic Caching"],
-      "architecture": "Leverages React Server Components (RSCs), server actions, and edge route handlers for optimal First Contentful Paint (FCP) and secure server-to-server API execution without exposing client secrets.",
-      "keyPatterns": [
-        "React Server Components (RSC)",
-        "Dynamic Route Handlers & API Middleware",
-        "Static Site Generation (SSG) + ISR",
-        "Turbopack Bundling & Optimization"
-      ]
+      "role": "Full-Stack Web Architecture",
+      "projectsList": ["PromptShield", "CampusAI", "Portfolio Site"],
+      "useCases": ["App Router", "Server Components", "API Security Gateway"],
+      "architecture": "Full-stack framework powering server actions, API routes, and static generation.",
+      "keyPatterns": ["App Router", "API Route Handlers", "Server Components"]
     },
     "TypeScript": {
-      "category": "Type System & Language",
+      "category": "Languages",
       "categoryColor": "#3B82F6",
-      "role": "Domain Modeling & Type Contracts Engineer",
-      "projectsList": ["Portfolio Site & Applications", "KrishiSaathi Core API", "All Production Microservices"],
-      "useCases": ["End-to-End Type Safety", "API Payload Contracts", "Generics & Unions", "Zero Runtime Casting"],
-      "architecture": "Enforces end-to-end type safety across client interfaces, REST request payloads, and database schema definitions. Eliminates runtime null pointer errors through discriminated unions and strict compiler rules.",
-      "keyPatterns": [
-        "Strict Null Checks & Discriminated Unions",
-        "Generics & Utility Type Transformations",
-        "End-to-End API Payload Validation",
-        "Shared Domain Type Definitions"
-      ]
-    },
-    "Tailwind CSS": {
-      "category": "Design System & Styling",
-      "categoryColor": "#3B82F6",
-      "role": "Tokenized UI & Responsive Design Engineer",
-      "projectsList": ["Portfolio Design System", "KrishiSaathi Responsive UI", "Mobile Dashboards"],
-      "useCases": ["Custom Design Tokens", "Glassmorphic Surfaces", "Responsive Breakpoints", "Zero Layout Shift"],
-      "architecture": "Constrained design system architecture using custom color tokens, responsive breakpoints, and modern layout algorithms (CSS Grid/Flexbox) with zero dead CSS and sub-millisecond styling execution.",
-      "keyPatterns": [
-        "Custom Design Tokens & CSS Variables",
-        "Dark Mode & Glassmorphic Surfaces",
-        "Responsive Breakpoint Engineering",
-        "Hardware-Accelerated Micro-Animations"
-      ]
-    },
-    "Node.js": {
-      "category": "Backend Runtime",
-      "categoryColor": "#10B981",
-      "role": "Asynchronous Event-Driven Backend Engineer",
-      "projectsList": ["KrishiSaathi Backend", "Edith AI Orchestrator", "Distributed Microservices"],
-      "useCases": ["Non-Blocking I/O Streams", "Concurrent API Requests", "Cluster Processing", "Background Task Dispatch"],
-      "architecture": "High-throughput non-blocking I/O runtime handling concurrent REST API requests, websocket streams, and background task dispatching across microservices and external LLM endpoints.",
-      "keyPatterns": [
-        "Non-Blocking Event Loop & Streams",
-        "JWT Authentication & Role Middleware",
-        "Cluster Mode Multi-Processing",
-        "Asynchronous Task Scheduling"
-      ]
-    },
-    "Express": {
-      "category": "API Gateway & Middleware",
-      "categoryColor": "#10B981",
-      "role": "HTTP API Gateway & Middleware Architect",
-      "projectsList": ["KrishiSaathi Microservices", "Order & Inventory Routes", "Payment Gateway Integration"],
-      "useCases": ["Middleware Chain of Responsibility", "CORS & Security Policies", "Rate Limiting", "JSON Error Serialization"],
-      "architecture": "Modular middleware chain handling request sanitation, CORS policies, rate limiting, and structured JSON error serialization for high-reliability backend service integration.",
-      "keyPatterns": [
-        "Middleware Chain of Responsibility",
-        "Rate Limiting & DDOS Protection",
-        "Structured Error Handling & Logging",
-        "CORS & Security Headers (Helmet)"
-      ]
+      "role": "Type Safety & Domain Contracts",
+      "projectsList": ["PromptShield", "CampusAI", "Portfolio Site"],
+      "useCases": ["Static Typing", "API Contracts", "Discriminated Unions"],
+      "architecture": "End-to-end static typing across frontend interfaces and server endpoints.",
+      "keyPatterns": ["Interface Contracts", "Generics", "Type Inference"]
     },
     "Python": {
-      "category": "AI & Data Engineering",
+      "category": "Languages",
       "categoryColor": "#A855F7",
-      "role": "Machine Learning & Predictive Pipeline Engineer",
-      "projectsList": ["KrishiSaathi ML Engine", "MedTalk AI Backend", "Automated Data Scrapers"],
-      "useCases": ["Ensemble Regression Models", "Vector Embeddings & RAG", "FastAPI & Flask Endpoints", "Vectorized Numpy ETL"],
-      "architecture": "Powering predictive analytics pipelines, LLM inference endpoints, and automated data ingestion scripts. Utilizes vectorized numpy operations and FastAPI/Flask microservices for rapid data processing.",
-      "keyPatterns": [
-        "FastAPI & Flask REST Endpoints",
-        "Scikit-Learn Regression & Time-Series Models",
-        "Vector Embeddings & RAG Retrieval",
-        "Asynchronous Data Scraping & ETL"
-      ]
+      "role": "Applied ML & Backend Services",
+      "projectsList": ["KrishiSaathi", "IMDB Sentiment", "MedTalk"],
+      "useCases": ["Time-Series Modeling", "Data Processing", "NLP Classification"],
+      "architecture": "Powers predictive analytics, ML training pipelines, and REST backend services.",
+      "keyPatterns": ["ARIMA Modeling", "NLP Preprocessing", "REST Endpoints"]
     },
-    "REST APIs": {
-      "category": "Service Architecture",
+    "Node.js": {
+      "category": "Frameworks and Libraries",
       "categoryColor": "#10B981",
-      "role": "HTTP Service Contract & Webhook Engineer",
-      "projectsList": ["All Distributed Portfolio Systems", "Payment Webhook Endpoints", "External AI Gateway"],
-      "useCases": ["Structured HTTP Contracts", "Webhook Callbacks", "Idempotent Operations", "Contract Validation"],
-      "architecture": "Disciplined RESTful service contracts implementing strict JSON schema validation, idempotent HTTP verbs, and robust webhook retry buffers across distributed microservice boundaries.",
-      "keyPatterns": [
-        "OpenAPI Specification Contracts",
-        "Idempotent Payment Webhooks",
-        "Structured JSON Schema Validation",
-        "Distributed Tracing & Correlation IDs"
-      ]
+      "role": "Backend Server Runtime",
+      "projectsList": ["KrishiSaathi", "Compozent Internship"],
+      "useCases": ["Asynchronous APIs", "RESTful Routes", "Authentication"],
+      "architecture": "Event-driven runtime handling concurrent API endpoints and database access.",
+      "keyPatterns": ["Event Loop", "Middleware", "REST Handlers"]
     },
-    "Gemini API": {
-      "category": "Applied Generative AI",
+    "Express.js": {
+      "category": "Frameworks and Libraries",
+      "categoryColor": "#10B981",
+      "role": "API Middleware & Routing",
+      "projectsList": ["KrishiSaathi"],
+      "useCases": ["REST Routing", "Middleware Chains", "CORS Configuration"],
+      "architecture": "Modular API routing layer connecting clients with database operations.",
+      "keyPatterns": ["Route Handlers", "Error Middleware", "JSON Body Parsing"]
+    },
+    "Flask": {
+      "category": "Frameworks and Libraries",
       "categoryColor": "#A855F7",
-      "role": "Multimodal AI Orchestrator & Prompt Engineer",
-      "projectsList": ["Edith Assistant Orchestrator", "Automated Portfolio Insights", "MedTalk Clinical Reasoning"],
-      "useCases": ["Multimodal NLU & Reasoning", "Structured JSON Outputs", "Multi-Step Tool Calling", "Context Caching"],
-      "architecture": "Integrates Google Gemini multimodal models using structured JSON schemas and function calling to execute complex reasoning workflows, code synthesis, and contextual document retrieval.",
-      "keyPatterns": [
-        "Structured JSON Schema Enforcement",
-        "Multi-Turn Tool Calling & Orchestration",
-        "Low-Latency Streaming Token Handlers",
-        "Context Caching & Token Optimization"
-      ]
+      "role": "Microservice Architecture",
+      "projectsList": ["MedTalk"],
+      "useCases": ["REST Endpoints", "API Wrappers", "NLU Interfacing"],
+      "architecture": "Lightweight Python microservices serving REST contracts.",
+      "keyPatterns": ["RESTful Endpoints", "Blueprint Routing", "CORS Handling"]
     },
-    "RAG": {
-      "category": "Applied AI Pipeline",
-      "categoryColor": "#A855F7",
-      "role": "Retrieval-Augmented Generation Architect",
-      "projectsList": ["MedTalk Clinical Knowledge Engine", "Document Query Retrieval Systems"],
-      "useCases": ["High-Dimensional Embeddings", "Semantic Vector Search", "Chunking Strategies", "Hallucination Mitigation"],
-      "architecture": "Retrieval-Augmented Generation pipeline using semantic vector distance search to ground LLM inference in factual domain literature while eliminating hallucinated answers.",
-      "keyPatterns": [
-        "Recursive Text Chunking & Embeddings",
-        "Cosine Similarity & Vector Indexing",
-        "Context Window Compression",
-        "Automated Citation Verification"
-      ]
-    },
-    "Pandas": {
-      "category": "Data Science & ETL",
-      "categoryColor": "#A855F7",
-      "role": "Tabular Data & Pipeline Engineer",
-      "projectsList": ["Historical Mandi Crop Data Processing", "Market Trend Ingestion Scripts"],
-      "useCases": ["Structured Tabular ETL", "Missing Value Imputation", "Time-Series Rolling Averages", "High-Speed CSV/Parquet Sync"],
-      "architecture": "High-performance dataframe manipulation and statistical aggregation across multi-year agricultural dataset streams to normalize pricing signals and train machine learning models.",
-      "keyPatterns": [
-        "Vectorized Dataframe Transformations",
-        "Rolling Window Statistical Calculations",
-        "Multi-Source Dataset Normalization",
-        "Memory-Efficient Parquet Serialization"
-      ]
-    },
-    "Matplotlib": {
-      "category": "Visual Analytics",
-      "categoryColor": "#A855F7",
-      "role": "Exploratory Statistical Charting Engineer",
-      "projectsList": ["Agricultural Market Trend Reports", "Crop Price Prediction Visualizations"],
-      "useCases": ["Time-Series Trend Charts", "Regression Error Distributions", "Exploratory Data Analysis", "Report Generation"],
-      "architecture": "Generating precise mathematical and statistical data charts directly within analytical Python pipelines to validate model drift, feature correlation, and historical accuracy.",
-      "keyPatterns": [
-        "Time-Series Trend & Forecast Plots",
-        "Correlation Heatmaps & Error Residuals",
-        "Automated Report PNG Generation",
-        "Custom Publication-Grade Styling"
-      ]
-    },
-    "AWS": {
-      "category": "Cloud Infrastructure",
-      "categoryColor": "#F97316",
-      "role": "Cloud Infrastructure Deployment Specialist",
-      "projectsList": ["High-Availability Cloud Deployments", "Asset Storage CDN", "Serverless Trigger Pipelines"],
-      "useCases": ["EC2 Virtual Compute", "S3 Asset Storage & CDN", "Lambda Asynchronous Triggers", "IAM Security Policies"],
-      "architecture": "Scalable cloud deployment leveraging EC2 virtual server instances, S3 object asset storage, CloudFront CDN edge caching, and Lambda functions for asynchronous background triggers.",
-      "keyPatterns": [
-        "S3 Object Storage & CDN Caching",
-        "Serverless Lambda Functions",
-        "IAM Role & Security Groups",
-        "CloudWatch Metrics & Alerting"
-      ]
-    },
-    "GCP": {
-      "category": "Managed Cloud AI",
-      "categoryColor": "#F97316",
-      "role": "Google Cloud Certified AI Specialist",
-      "projectsList": ["Google Cloud Certified AI Security", "Vertex AI Endpoint Integration", "BigQuery Analytics"],
-      "useCases": ["Vertex AI Endpoints", "BigQuery SQL Analytics", "Cloud Functions Processing", "IAM & Service Account Security"],
-      "architecture": "Utilizing Google Cloud Vertex AI for model evaluation and inference integration alongside BigQuery for analytical processing over large historical agricultural datasets.",
-      "keyPatterns": [
-        "Vertex AI Model Endpoints",
-        "BigQuery SQL Analytics",
-        "Cloud Functions Event Processing",
-        "IAM & Service Account Security"
-      ]
-    },
-    "Docker": {
-      "category": "DevOps & Containers",
-      "categoryColor": "#F97316",
-      "role": "Containerized Environment & CI/CD Architect",
-      "projectsList": ["Backend Microservice Orchestration", "Reproducible Staging & Prod Builds", "Isolated Local Dev Engine"],
-      "useCases": ["Multi-Stage Dockerfile Builds", "Docker Compose Orchestration", "Environment Parity", "Fast Cold Starts"],
-      "architecture": "Multi-stage container builds ensuring exact parity across local development, staging, and production cloud environments with minimal image footprint and fast cold starts.",
-      "keyPatterns": [
-        "Multi-Stage Dockerfile Builds",
-        "Docker Compose Local Microservices",
-        "Environment Variable Isolation",
-        "Container Health Checks & Restart Policies"
-      ]
-    },
-    "Firebase": {
-      "category": "Serverless Cloud Platform",
-      "categoryColor": "#F97316",
-      "role": "Real-Time Cloud Synchronization Engineer",
-      "projectsList": ["KrishiSaathi Real-time Order Updates", "Secure User Authentication", "Live Notification Engine"],
-      "useCases": ["Real-Time Document Sync", "Serverless Authentication", "Live Webhook Subscriptions", "Firestore Indexes"],
-      "architecture": "Real-time event synchronization and managed serverless identity infrastructure powering instantaneous order state updates across concurrent buyer and seller sessions.",
-      "keyPatterns": [
-        "Real-Time Document Listeners",
-        "Serverless Firebase Authentication",
-        "Compound Indexing & Security Rules",
-        "Cloud Functions Background Triggers"
-      ]
+    "Tailwind CSS": {
+      "category": "Frameworks and Libraries",
+      "categoryColor": "#3B82F6",
+      "role": "UI Styling & Design Systems",
+      "projectsList": ["PromptShield", "CampusAI", "KrishiSaathi", "Portfolio"],
+      "useCases": ["Responsive Layouts", "Dark Mode", "Custom Theme Tokens"],
+      "architecture": "Utility-first design token system ensuring consistent responsive aesthetics.",
+      "keyPatterns": ["Theme Tokens", "Responsive Grid/Flexbox", "Micro-Animations"]
     },
     "MongoDB": {
-      "category": "NoSQL Database",
-      "categoryColor": "#059669",
-      "role": "Distributed Document Store Architect",
-      "projectsList": ["KrishiSaathi Core Transactional Logs", "Geospatial Mandi Indexing", "User Inventory Storage"],
-      "useCases": ["Multi-Stage Aggregations", "Compound & Geospatial Indexes", "Flexible BSON Schemas", "Mongoose Validation"],
-      "architecture": "Flexible BSON document schemas designed for rapid iteration, nested transaction histories, and multi-stage aggregation pipelines for high-speed real-time analytics and geospatial query filtering.",
-      "keyPatterns": [
-        "Multi-Stage Aggregation Pipelines",
-        "Compound Indexing & Query Optimization",
-        "Geospatial Indexing for Local Markets",
-        "Mongoose Schema Validation"
-      ]
+      "category": "Databases",
+      "categoryColor": "#10B981",
+      "role": "Document Database",
+      "projectsList": ["KrishiSaathi", "MediMitra"],
+      "useCases": ["Commodity Catalogs", "User Profiles", "Flexible Schemas"],
+      "architecture": "Document store handling catalog data and query aggregations.",
+      "keyPatterns": ["Schema Modeling", "Indexing", "CRUD Operations"]
     },
-    "Vector Database": {
-      "category": "Semantic Vector Storage",
-      "categoryColor": "#059669",
-      "role": "High-Dimensional Vector Search Engineer",
-      "projectsList": ["MedTalk AI Memory Embeddings", "Semantic Document Retrieval Engine"],
-      "useCases": ["High-Dimensional Indexing", "Cosine Similarity Queries", "Metadata Filtering", "Real-time Embedding Lookup"],
-      "architecture": "High-speed semantic similarity indexing engine designed to store and query dense vector embeddings generated by LLM encoders for high-precision context retrieval.",
-      "keyPatterns": [
-        "HNSW Vector Indexing Algorithms",
-        "Hybrid Keyword + Semantic Search",
-        "Low-Latency Cosine Distance Queries",
-        "Dynamic Metadata Filtering"
-      ]
+    "Firebase Firestore": {
+      "category": "Databases",
+      "categoryColor": "#F59E0B",
+      "role": "Real-Time Document Store",
+      "projectsList": ["PromptShield", "KrishiSaathi"],
+      "useCases": ["Audit Logs", "Incident Telemetry", "Real-Time Cart Sync"],
+      "architecture": "Serverless document persistence with security rules and live synchronization.",
+      "keyPatterns": ["Security Rules", "Real-Time Listeners", "Admin SDK Integration"]
     },
-    "SQL": {
-      "category": "Relational Database",
-      "categoryColor": "#059669",
-      "role": "Normalized Relational Schema Engineer",
-      "projectsList": ["Structured Financial Records", "ACID Transactional Logs", "Mandi Catalog Schemas"],
-      "useCases": ["Normalized 3NF Relational Schemas", "ACID Transaction Integrity", "Complex Joins & Window Functions", "Query Plan Optimization"],
-      "architecture": "Structured tabular data modeling with foreign key constraints, normalized tables (3NF), and high-concurrency ACID transaction guarantees for mission-critical records.",
-      "keyPatterns": [
-        "ACID Transaction Integrity",
-        "Normalized 3NF Relational Schemas",
-        "Complex Joins & Window Functions",
-        "Query Execution Plan Optimization"
-      ]
+    "MySQL": {
+      "category": "Databases",
+      "categoryColor": "#0284C7",
+      "role": "Relational Database",
+      "projectsList": ["Academic & Enterprise Projects"],
+      "useCases": ["Relational Queries", "Normalized Schemas", "Joins"],
+      "architecture": "Structured relational data management with foreign keys and ACID transactions.",
+      "keyPatterns": ["Normalization", "Complex Joins", "Indexing"]
     },
-    "Firestore": {
-      "category": "Real-Time Document Store",
-      "categoryColor": "#059669",
-      "role": "Low-Latency Cloud Database Specialist",
-      "projectsList": ["Real-Time Marketplace Sync", "Live Diagnostic Chat Engine"],
-      "useCases": ["Low-Latency Cloud Document Store", "Live Client Subscriptions", "Optimistic Concurrency", "Granular Security Rules"],
-      "architecture": "Low-latency cloud document database offering live client subscriptions, offline persistence capabilities, and atomic document updates for real-time collaborative interfaces.",
-      "keyPatterns": [
-        "Atomic Batch Document Transactions",
-        "Offline Persistence Synchronization",
-        "Granular IAM & Security Rules",
-        "Compound Document Queries"
-      ]
+    "SQLite": {
+      "category": "Databases",
+      "categoryColor": "#0284C7",
+      "role": "Embedded Relational Database",
+      "projectsList": ["CampusAI"],
+      "useCases": ["Local Caching", "Kiosk Persistence", "Lightweight Tables"],
+      "architecture": "Self-contained serverless SQL engine ideal for local device storage.",
+      "keyPatterns": ["File-Based Storage", "Transactional Queries"]
+    },
+    "AWS": {
+      "category": "Cloud and Deployment",
+      "categoryColor": "#F97316",
+      "role": "Cloud Infrastructure",
+      "projectsList": ["Cloud Architecture"],
+      "useCases": ["Compute Services", "Cloud Storage", "Hosting"],
+      "architecture": "Managed cloud services providing scalable computing and storage.",
+      "keyPatterns": ["IAM Policies", "Cloud Compute", "Object Storage"]
+    },
+    "Google Cloud Platform (GCP)": {
+      "category": "Cloud and Deployment",
+      "categoryColor": "#4285F4",
+      "role": "Cloud Services & Managed AI",
+      "projectsList": ["MedTalk", "Google Cloud Certifications"],
+      "useCases": ["AI Services", "Managed APIs", "Cloud Infrastructure"],
+      "architecture": "Google Cloud infrastructure hosting APIs and cognitive services.",
+      "keyPatterns": ["Speech APIs", "Cloud IAM", "Cloud Compute"]
+    },
+    "Vercel": {
+      "category": "Cloud and Deployment",
+      "categoryColor": "#000000",
+      "role": "Edge Deployment Platform",
+      "projectsList": ["KrishiSaathi", "Portfolio Site"],
+      "useCases": ["Serverless Functions", "Continuous Deployment", "Edge Caching"],
+      "architecture": "Git-integrated deployment pipeline for Next.js and frontend applications.",
+      "keyPatterns": ["Preview Branches", "Edge Functions", "Automated Builds"]
+    },
+    "Docker": {
+      "category": "Cloud and Deployment",
+      "categoryColor": "#2496ED",
+      "role": "Containerization",
+      "projectsList": ["Development Environments"],
+      "useCases": ["Reproducible Runtimes", "Service Isolation", "Environment Consistency"],
+      "architecture": "Container images packaging application code with required system dependencies.",
+      "keyPatterns": ["Dockerfile Configuration", "Container Lifecycle", "Multi-Stage Builds"]
     },
     "Git": {
-      "category": "Developer Tools",
+      "category": "Tools and Testing",
+      "categoryColor": "#F05032",
+      "role": "Version Control",
+      "projectsList": ["All Projects"],
+      "useCases": ["Branching", "Merge Resolution", "Commit History"],
+      "architecture": "Distributed version control system managing code evolution across teams.",
+      "keyPatterns": ["Feature Branching", "Rebase & Merge", "Commit Hygiene"]
+    },
+    "GitHub": {
+      "category": "Tools and Testing",
+      "categoryColor": "#181717",
+      "role": "Collaboration & Repository Hosting",
+      "projectsList": ["PromptShield", "CampusAI", "KrishiSaathi"],
+      "useCases": ["Pull Requests", "Code Reviews", "Issue Tracking"],
+      "architecture": "Central repository management platform supporting team collaboration.",
+      "keyPatterns": ["Pull Request Workflows", "Release Tags", "Repository Forking"]
+    },
+    "REST APIs": {
+      "category": "Tools and Testing",
+      "categoryColor": "#10B981",
+      "role": "API Integration",
+      "projectsList": ["PromptShield", "CampusAI", "KrishiSaathi"],
+      "useCases": ["Client-Server Contracts", "HTTP Verbs", "JSON Payloads"],
+      "architecture": "Standardized RESTful interfaces defining data contracts and status codes.",
+      "keyPatterns": ["Stateless Communication", "Status Codes", "JSON Validation"]
+    },
+    "Postman": {
+      "category": "Tools and Testing",
+      "categoryColor": "#FF6C37",
+      "role": "API Testing & Documentation",
+      "projectsList": ["API Verification"],
+      "useCases": ["Endpoint Testing", "Collection Runner", "Environment Variables"],
+      "architecture": "API platform for building, mocking, and testing HTTP endpoints.",
+      "keyPatterns": ["Request Collections", "Environment Scripts", "Assertion Testing"]
+    },
+    "Functional Testing": {
+      "category": "Tools and Testing",
+      "categoryColor": "#EC4899",
+      "role": "Quality Assurance",
+      "projectsList": ["PRAM Educate Internship"],
+      "useCases": ["Feature Validation", "User Flow Verification", "Defect Logging"],
+      "architecture": "Structured testing validating system requirements against functional specs.",
+      "keyPatterns": ["Black-Box Testing", "User Flow Verification", "Defect Verification"]
+    },
+    "Test Case Design": {
+      "category": "Tools and Testing",
+      "categoryColor": "#EC4899",
+      "role": "QA Methodology",
+      "projectsList": ["PRAM Educate Internship"],
+      "useCases": ["Scenario Mapping", "Boundary Value Analysis", "Equivalence Partitioning"],
+      "architecture": "Systematic design of test cases covering positive, negative, and edge cases.",
+      "keyPatterns": ["Boundary Value Analysis", "Equivalence Partitioning", "Test Suites"]
+    },
+    "Machine Learning": {
+      "category": "Machine Learning and Security",
+      "categoryColor": "#06B6D4",
+      "role": "Applied Modeling",
+      "projectsList": ["KrishiSaathi", "IMDB Sentiment"],
+      "useCases": ["Predictive Modeling", "Feature Engineering", "Model Evaluation"],
+      "architecture": "End-to-end applied ML pipelines from data preprocessing to model inference.",
+      "keyPatterns": ["Feature Extraction", "Cross-Validation", "Evaluation Metrics"]
+    },
+    "scikit-learn": {
+      "category": "Machine Learning and Security",
+      "categoryColor": "#F59E0B",
+      "role": "Machine Learning Library",
+      "projectsList": ["IMDB Sentiment"],
+      "useCases": ["Classifiers", "TF-IDF Vectorization", "Hyperparameter Tuning"],
+      "architecture": "Python library powering classic ML algorithms and preprocessing utilities.",
+      "keyPatterns": ["Pipeline Objects", "TF-IDF Vectorizer", "Classifier Training"]
+    },
+    "TensorFlow/Keras": {
+      "category": "Machine Learning and Security",
+      "categoryColor": "#FF6F00",
+      "role": "Deep Learning Framework",
+      "projectsList": ["IMDB Sentiment"],
+      "useCases": ["Bidirectional LSTM", "Sequence Modeling", "Neural Networks"],
+      "architecture": "Deep learning framework for building neural network models.",
+      "keyPatterns": ["Sequential Models", "LSTM Layers", "Loss Optimization"]
+    },
+    "ARIMA Forecasting": {
+      "category": "Machine Learning and Security",
+      "categoryColor": "#10B981",
+      "role": "Time-Series Econometrics",
+      "projectsList": ["KrishiSaathi"],
+      "useCases": ["Mandi Price Prediction", "Trend Estimation", "Seasonality Modeling"],
+      "architecture": "Autoregressive Integrated Moving Average models trained on AGMARKNET mandi data.",
+      "keyPatterns": ["Stationarity Testing", "Differencing", "Lag Selection (p,d,q)"]
+    },
+    "Gemini API": {
+      "category": "Machine Learning and Security",
+      "categoryColor": "#8E75B2",
+      "role": "Multimodal NLU Integration",
+      "projectsList": ["MediMitra", "MedTalk"],
+      "useCases": ["Natural Language Understanding", "Structured Reasoning", "Context Prompting"],
+      "architecture": "Cloud-hosted multimodal LLMs delivering conversational intelligence.",
+      "keyPatterns": ["System Instructions", "Structured JSON Outputs", "Prompt Engineering"]
+    },
+    "Prompt Injection Defense": {
+      "category": "Machine Learning and Security",
       "categoryColor": "#EF4444",
-      "role": "Version Control & CI/CD Gatekeeper",
-      "projectsList": ["100% of Personal & Production Repositories", "Automated GitHub Actions CI/CD"],
-      "useCases": ["Trunk-Based Development & GitFlow", "Semantic Commits", "Pull Request Review Gates", "Branch Protection"],
-      "architecture": "Disciplined branching strategy (GitFlow / Trunk-Based) with atomic commits, pull request code reviews, and automated linting/testing gates before merging into production.",
-      "keyPatterns": [
-        "Trunk-Based Development & GitFlow",
-        "Semantic Commit Messages",
-        "Automated GitHub Actions CI/CD",
-        "Branch Protection & Code Review Gates"
-      ]
+      "role": "AI Security Architecture",
+      "projectsList": ["PromptShield"],
+      "useCases": ["Threat Heuristics", "Jailbreak Detection", "Policy Enforcement"],
+      "architecture": "Two-layer defense combining client pattern inspection and server proxy routing.",
+      "keyPatterns": ["0–100 Risk Scoring", "Pre-Execution Sanitization", "Policy Engines"]
     }
   }
 }

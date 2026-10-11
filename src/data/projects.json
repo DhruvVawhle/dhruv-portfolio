@@ -1,9 +1,116 @@
 [
   {
+    "id": "promptshield",
+    "title": "PromptShield",
+    "subtitle": "LLM Prompt Injection Detection & Prevention Gateway",
+    "description": "Full-stack security gateway analyzing prompts, assigning risk scores, and intercepting injection threats before reaching LLMs.",
+    "category": "AI Security",
+    "thumbnail": "/images/projects/promptshield.png",
+    "screenshots": [
+      "/images/projects/promptshield.png"
+    ],
+    "todoScreenshot": null,
+    "todoArchitecture": "TODO: Add PromptShield architecture diagram to /public/images/projects/promptshield-architecture.png",
+    "technologies": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Firebase Auth",
+      "Firestore",
+      "Firebase Admin SDK",
+      "OmniRoute"
+    ],
+    "githubRepository": "https://github.com/DhruvVawhle/PromptShield",
+    "liveDemo": null,
+    "datasetLink": null,
+    "duration": "Sep 2026 – Present",
+    "status": "In Development",
+    "featured": true,
+    "highlights": [
+      "Full-stack Next.js 16 / TypeScript security gateway that analyzes each prompt, assigns a 0–100 risk score, and allows, warns, sanitizes, or blocks it before it reaches the LLM.",
+      "Detects prompt injection, jailbreaks, system-prompt leaks, role override, credential probing, and tool abuse using a two-layer defense: client-side pattern guard plus server-side proxy through an OpenAI-compatible gateway (OmniRoute).",
+      "API secured with Firebase Admin ID-token verification (incl. revocation checks) and server-only credentials; dashboard modules for secured chat, playground, incidents, analytics, and audit logs.",
+      "Configurable policy engine (thresholds; allow/warn/sanitize/block actions), Firestore security rules, incident and audit logging, a programmatic analysis API, and probe / sanitization-verification scripts."
+    ],
+    "features": [
+      "0–100 Real-Time Risk Scoring Engine",
+      "Two-Layer Defense (Client Pattern Guard + Server-Side OmniRoute Proxy)",
+      "Multi-Threat Detection (Injection, Jailbreaks, System Leak, Role Override, Credential Probing)",
+      "Firebase Admin ID-Token Verification with Revocation Checks",
+      "Configurable Policy Engine (Allow, Warn, Sanitize, Block Actions)",
+      "Telemetry Dashboards: Secured Chat, Playground, Incidents, Analytics, and Audit Logs"
+    ],
+    "problem": "LLM integrations in modern applications are exposed to adversarial prompt injection, credential exfiltration, role overrides, and system-prompt extraction. Standard application layers lack pre-execution inspection to neutralize threats before they reach costly or sensitive upstream LLMs.",
+    "approach": "Built a comprehensive full-stack Next.js 16 / TypeScript security gateway enforcing a two-layer defense: an immediate client-side pattern guard combined with an authenticated server-side proxy routing through an OpenAI-compatible gateway (OmniRoute). Configured a policy engine that evaluates multi-vector threat scores to allow, warn, sanitize, or block queries dynamically.",
+    "architecture": "Full-stack Next.js 16 App Router architecture in TypeScript with Tailwind CSS. Firebase Admin SDK verifies ID tokens with strict revocation checks and server-only credentials. Requests pass through a dual inspection pipeline (pattern heuristics + server proxy) before forwarding to upstream LLMs via OmniRoute. Firestore security rules protect multi-tenant audit logs, incident reports, and real-time security analytics.",
+    "metrics": [
+      { "label": "Threat Risk Scoring", "value": "0–100", "suffix": " Scale" },
+      { "label": "Defense Architecture", "value": "2", "suffix": " Layers" },
+      { "label": "Enforcement Actions", "value": "4", "suffix": " (Allow/Warn/Sanitize/Block)" }
+    ]
+  },
+  {
+    "id": "campusai",
+    "title": "CampusAI",
+    "subtitle": "Voice-Enabled College Reception Robot",
+    "description": "Kiosk interface with a 3D robot, audio visualizer, and multilingual voice assistant for college reception (Final-Year Major Project, IT & EXTC).",
+    "category": "Robotics & AI",
+    "thumbnail": "/images/projects/campusai.png",
+    "screenshots": [
+      "/images/projects/campusai.png"
+    ],
+    "todoScreenshot": null,
+    "todoArchitecture": "TODO: Add CampusAI kiosk & backend architecture diagram to /public/images/projects/campusai-architecture.png",
+    "technologies": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "React Three Fiber",
+      "Web Audio API",
+      "WebSocket",
+      "REST APIs"
+    ],
+    "githubRepository": "https://github.com/DhruvVawhle/CampusAI",
+    "upstreamRepository": "https://github.com/jayeshtiwari-ai/CampusAI",
+    "liveDemo": null,
+    "datasetLink": null,
+    "duration": "Oct 2026 – Present",
+    "status": "In Development",
+    "featured": true,
+    "highlights": [
+      "My part: Next.js, TypeScript, Tailwind, Framer Motion and React Three Fiber kiosk interface with a 3D robot and idle/listening/thinking/speaking states for a multilingual (English, Hindi, Marathi, Hinglish) voice assistant.",
+      "Touchscreen kiosk UI with an audio visualizer, QR route display, and custom hooks for Web Audio recording, WebSocket, and REST clients.",
+      "Integrates a teammate's FastAPI backend (Groq LLM and Whisper, FAISS RAG, SQLite) through REST chat and voice endpoints.",
+      "Backend, RAG pipeline, and agent orchestrator are the work of teammate Jayesh Tiwari; this repository is forked from upstream jayeshtiwari-ai/CampusAI."
+    ],
+    "features": [
+      "React Three Fiber 3D Robot with 4 Interactive States (Idle, Listening, Thinking, Speaking)",
+      "Multilingual Voice Assistant (English, Hindi, Marathi, Hinglish)",
+      "Touchscreen Kiosk UI with Real-Time Audio Visualizer",
+      "Dynamic QR Route Display for Campus Navigation",
+      "Custom React Hooks for Web Audio Recording, WebSocket, and REST Streaming"
+    ],
+    "problem": "College visitors, parents, and incoming students encounter navigation confusion and repetitive queries at administrative reception desks. Campus kiosks need an intuitive, physical-robot interface capable of natural, voice-driven interaction in multiple local dialects.",
+    "approach": "Engineered a touch-enabled, 3D interactive kiosk frontend in Next.js and React Three Fiber representing the reception robot. Implemented low-latency audio capture with Web Audio API, dynamic state animations (idle/listening/thinking/speaking), audio visualizers, and QR route generators. Connected to teammate Jayesh Tiwari's FastAPI RAG backend via REST and WebSocket.",
+    "architecture": "Next.js frontend with React Three Fiber rendering the 3D robot avatar, driven by Framer Motion and custom Web Audio hooks. Connects to backend services via REST chat and voice endpoints. Attributed Collaboration Note: The backend / RAG / agent pipeline (FastAPI, Groq LLM, Whisper STT, FAISS RAG, SQLite) is the work of teammate Jayesh Tiwari. The repository is a fork crediting upstream jayeshtiwari-ai/CampusAI.",
+    "metrics": [
+      { "label": "Supported Languages", "value": "4", "suffix": " (EN, HI, MR, Hinglish)" },
+      { "label": "Interactive 3D States", "value": "4", "suffix": " (Idle/Listen/Think/Speak)" },
+      { "label": "Departments Involved", "value": "2", "suffix": " (IT & EXTC)" }
+    ],
+    "attribution": {
+      "frontend": "Dhruv Vawhle (Next.js, TypeScript, Tailwind, Framer Motion, React Three Fiber kiosk interface)",
+      "backend": "Jayesh Tiwari (FastAPI, Groq LLM, Whisper, FAISS RAG, SQLite)",
+      "upstreamRepo": "https://github.com/jayeshtiwari-ai/CampusAI"
+    }
+  },
+  {
     "id": "krishisaathi",
     "title": "KrishiSaathi",
-    "description": "Farm-to-Market Marketplace Eliminating Agricultural Middlemen",
-    "category": "Web",
+    "subtitle": "Farm-to-Market Marketplace Platform",
+    "description": "Full-stack marketplace connecting farmers directly with buyers with an ARIMA price forecasting engine trained on AGMARKNET mandi data.",
+    "category": "Web & ML",
     "thumbnail": "/images/projects/krishisaathi-homepage.png",
     "screenshots": [
       "/images/projects/krishisaathi-homepage.png",
@@ -34,26 +141,25 @@
     "status": "Completed",
     "featured": true,
     "highlights": [
-      "Built a full-stack marketplace platform connecting farmers directly with buyers, eliminating agricultural middlemen for 18,300+ commodity price records.",
-      "Developed an ARIMA-based machine learning model trained on AGMARKNET government mandi price data to forecast commodity prices.",
-      "Engineered a hybrid Firestore and MongoDB persistence architecture with real-time cart synchronization and role-based farmer and buyer dashboards.",
-      "Integrated Google, Facebook, and Apple OAuth with Razorpay payments and 8-language commodity search; reduced bundle size 69% (2.9MB → 900KB) via code splitting.",
-      "Filed for copyright registration with the Indian Copyright Office (Diary No. SW-21662/2026-CO), currently in re-scrutiny."
+      "Full-stack marketplace connecting farmers directly with buyers (18,300+ commodity price records) with an ARIMA model trained on AGMARKNET mandi price data to forecast prices.",
+      "Hybrid Firestore and MongoDB architecture with real-time cart sync and role-based farmer and buyer dashboards.",
+      "Google, Facebook, and Apple OAuth, Razorpay payments, and 8-language commodity search; bundle size cut 69% (2.9MB to 900KB) via code splitting.",
+      "Filed for copyright registration, Indian Copyright Office (Diary No. SW-21662/2026-CO), currently in re-scrutiny."
     ],
     "features": [
       "Real-time cart synchronization",
       "Interactive farmer & buyer dashboards",
-      "AGMARKNET mandi price forecasting",
+      "AGMARKNET mandi price forecasting via ARIMA",
       "Razorpay checkout flow",
-      "Discriminative user onboarding"
+      "8-language commodity search"
     ],
     "problem": "Indian farmers lose 25–40% of revenue to middlemen in traditional mandi (market) systems. No direct-to-buyer digital platform existed that combined real-time market price intelligence with a streamlined e-commerce flow for agricultural commodities.",
     "approach": "Built a full-stack marketplace with a price-prediction engine trained on government data. Designed a hybrid database architecture combining Firestore's real-time sync with MongoDB's flexibility for complex commodity queries. Implemented role-based dashboards for farmers and buyers with multi-language search support.",
     "architecture": "Hybrid Firestore + MongoDB architecture — Firestore handles real-time cart sync and user sessions, while MongoDB manages the commodity catalog and price history. ARIMA-based price prediction model trained on 18,300+ rows of AGMARKNET government mandi data. React frontend with code-split routes, Node.js/Express API layer, Razorpay payment integration, and OAuth via Google/Facebook/Apple.",
     "metrics": [
-      { "label": "Data Rows Processed", "value": "18300", "suffix": "+" },
-      { "label": "Bundle Size Reduction", "value": "69", "suffix": "%" },
-      { "label": "Languages Supported", "value": "8", "suffix": "" }
+      { "label": "Commodity Records", "value": "18300", "suffix": "+" },
+      { "label": "Bundle Size Cut", "value": "69", "suffix": "%" },
+      { "label": "Search Languages", "value": "8", "suffix": "" }
     ],
     "copyrightFiled": {
       "diaryNumber": "SW-21662/2026-CO",
@@ -61,51 +167,15 @@
     }
   },
   {
-    "id": "medtalk",
-    "title": "MedTalk – AI Healthcare Chatbot",
-    "description": "24/7 Multilingual AI Healthcare Chatbot",
-    "category": "AI",
-    "thumbnail": "/images/projects/medtalk-aichatbot.png",
-    "screenshots": [
-      "/images/projects/medtalk-aichatbot.png"
-    ],
-    "technologies": [
-      "Python",
-      "Flask",
-      "Google Gemini API",
-      "Google Cloud Speech-to-Text",
-      "Google Cloud Text-to-Speech",
-      "REST APIs"
-    ],
-    "githubRepository": "https://github.com/DhruvVawhle/MedTalk-AI-Chatbot",
-    "liveDemo": null,
-    "datasetLink": null,
-    "duration": "Jan 2025 – May 2025",
-    "status": "Completed",
-    "featured": false,
-    "highlights": [
-      "Developed a 24/7 multilingual AI chatbot using the Google Gemini API with voice-based interaction (Google Cloud Speech-to-Text / Text-to-Speech).",
-      "Built a secure Flask REST backend for preliminary healthcare guidance with robust query resolution.",
-      "Integrated natural language understanding to deliver accessible healthcare guidance across languages."
-    ],
-    "features": [
-      "Multilingual voice conversation (STT & TTS)",
-      "Clinical query reasoning via Google Gemini API",
-      "Secure Flask REST API backend",
-      "Responsive interactive user dashboard"
-    ],
-    "problem": "Healthcare access in multilingual regions is limited by language barriers and the unavailability of medical professionals around the clock. Patients need reliable, accessible preliminary health guidance at any hour.",
-    "approach": "Built a voice-enabled AI chatbot powered by Google's Gemini API for medical query understanding, with Google Cloud Speech-to-Text and Text-to-Speech for multilingual voice interactions. Designed a secure RESTful backend with Flask, focusing on response accuracy and patient data privacy.",
-    "architecture": "Python/Flask backend serving a RESTful API. Google Gemini API handles natural language understanding and medical response generation. Google Cloud STT/TTS enables voice input and audio output in multiple languages. Secure session management and input sanitization throughout.",
-    "metrics": [
-      { "label": "Availability", "value": "24", "suffix": "/7" }
-    ]
-  },
-  {
     "id": "imdbsentiment",
     "title": "IMDB Movie Review Sentiment",
-    "description": "NLP Sentiment Classifier for 50,000 IMDB Reviews",
+    "subtitle": "NLP Sentiment Classifier for 50,000 IMDB Reviews",
+    "description": "Natural language processing classifier evaluating Logistic Regression, Naïve Bayes, and Bidirectional LSTM models on 50,000 reviews.",
     "category": "Machine Learning",
+    "thumbnail": "/images/projects/imdb-sentiment-analysis.png",
+    "screenshots": [
+      "/images/projects/imdb-sentiment-analysis.png"
+    ],
     "technologies": [
       "Python",
       "TF-IDF",
@@ -113,22 +183,15 @@
       "Naïve Bayes",
       "Bidirectional LSTM",
       "Scikit-learn",
-      "TensorFlow",
-      "Keras",
-      "NLTK",
-      "Pandas",
-      "NumPy"
-    ],
-    "thumbnail": "/images/projects/imdb-sentiment-analysis.png",
-    "screenshots": [
-      "/images/projects/imdb-sentiment-analysis.png"
+      "TensorFlow/Keras"
     ],
     "githubRepository": "https://github.com/DhruvVawhle/IMDB-Movie-Review-Sentiment-Analysis",
     "liveDemo": null,
     "datasetLink": "https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews",
     "duration": "Jan 2026 – May 2026",
-    "status": "Completed",
+    "status": "Archived",
     "featured": false,
+    "isArchived": true,
     "highlights": [
       "Built an NLP sentiment classifier for 50,000 IMDB reviews using TF-IDF feature extraction.",
       "Evaluated Logistic Regression, Naïve Bayes, and Bidirectional LSTM models on accuracy and F1-score.",
@@ -137,15 +200,55 @@
     "features": [
       "TF-IDF numerical feature extraction pipeline",
       "Multi-model comparison: Logistic Regression, Naïve Bayes, Bidirectional LSTM",
-      "Accuracy and F1-score evaluation metrics",
-      "Exploratory Data Analysis visualizations"
+      "Accuracy and F1-score evaluation metrics"
     ],
-    "problem": "Understanding user feedback at scale is a common challenge for digital platforms. Manual review classification is inefficient and error-prone, requiring automated natural language understanding pipelines to accurately determine sentiment in movie reviews.",
-    "approach": "Developed an end-to-end NLP and machine learning pipeline to preprocess raw IMDB text data, extract TF-IDF features, and train supervised classifiers. Conducted extensive hyperparameter tuning and model evaluation using accuracy, precision, recall, and F1-score alongside confusion matrices and word clouds.",
-    "architecture": "Python-driven NLP pipeline utilizing NLTK for tokenization, stop-word removal, and lemmatization. TF-IDF vectorization for text representation. Model suite includes Scikit-learn (Logistic Regression, Naive Bayes, SVM) and TensorFlow/Keras neural network models for binary classification.",
+    "problem": "Manual review classification is inefficient and error-prone, requiring automated natural language understanding pipelines to accurately determine sentiment in movie reviews.",
+    "approach": "Developed an end-to-end NLP and machine learning pipeline to preprocess raw IMDB text data, extract TF-IDF features, and train supervised classifiers with extensive evaluation.",
+    "architecture": "Python NLP pipeline utilizing Scikit-learn (Logistic Regression, Naive Bayes) and TensorFlow/Keras neural network models for binary classification.",
     "metrics": [
-      { "label": "Reviews Analyzed", "value": "50000", "suffix": "+" },
-      { "label": "Pipeline Accuracy", "value": "89.5", "suffix": "%" }
+      { "label": "Reviews Analyzed", "value": "50000", "suffix": "+" }
+    ]
+  },
+  {
+    "id": "medtalk",
+    "title": "MedTalk – AI Healthcare Chatbot",
+    "subtitle": "24/7 Multilingual AI Healthcare Chatbot",
+    "description": "Voice-enabled preliminary healthcare guidance chatbot utilizing the Google Gemini API, Speech-to-Text, and Text-to-Speech.",
+    "category": "AI",
+    "thumbnail": "/images/projects/medtalk-aichatbot.png",
+    "screenshots": [
+      "/images/projects/medtalk-aichatbot.png"
+    ],
+    "technologies": [
+      "Python",
+      "Flask",
+      "Gemini API",
+      "Google Cloud STT",
+      "Google Cloud TTS",
+      "REST APIs"
+    ],
+    "githubRepository": "https://github.com/DhruvVawhle/MedTalk-AI-Chatbot",
+    "liveDemo": null,
+    "datasetLink": null,
+    "duration": "Jan 2025 – May 2025",
+    "status": "Archived",
+    "featured": false,
+    "isArchived": true,
+    "highlights": [
+      "Developed a 24/7 multilingual AI chatbot using the Google Gemini API with voice-based interaction (Google Cloud Speech-to-Text / Text-to-Speech).",
+      "Built a secure Flask REST backend for preliminary healthcare guidance with robust query resolution.",
+      "Integrated natural language understanding to deliver accessible healthcare guidance across languages."
+    ],
+    "features": [
+      "Multilingual voice conversation (STT & TTS)",
+      "Clinical query reasoning via Google Gemini API",
+      "Secure Flask REST API backend"
+    ],
+    "problem": "Healthcare access in multilingual regions is limited by language barriers and the unavailability of medical professionals around the clock.",
+    "approach": "Built a voice-enabled AI chatbot powered by Google Gemini API for medical query understanding, with Google Cloud Speech-to-Text and Text-to-Speech for voice interactions.",
+    "architecture": "Python/Flask backend serving a RESTful API with Google Gemini API for natural language understanding and Google Cloud STT/TTS for voice processing.",
+    "metrics": [
+      { "label": "Availability", "value": "24", "suffix": "/7" }
     ]
   }
 ]

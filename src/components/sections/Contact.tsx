@@ -1,57 +1,46 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
-import Button from "@/components/ui/Button";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue } from "motion/react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import profileData from "@/data/profile.json";
-import socialsData from "@/data/socials.json";
-
-const GithubIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-  </svg>
-);
-
-const LinkedinIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-  </svg>
-);
-
-const MailIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-);
-
-const LocationIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-    <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const ExternalLinkIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    <polyline points="15 3 21 3 21 9" />
-    <line x1="10" y1="14" x2="21" y2="3" />
-  </svg>
-);
+import { CONNECT_PROFILES } from "@/data/credentialsAndConnect";
+import ConversationDialog from "@/components/sections/ConversationDialog";
+import { useSimpleToast, copyToClipboard } from "@/components/ui/SimpleToast";
 
 export default function Contact() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [istTime, setIstTime] = useState("");
+  const { showToast } = useSimpleToast();
+
+  const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(-500);
   const mouseY = useMotionValue(-500);
 
-  const springX = useSpring(mouseX, { stiffness: 120, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 120, damping: 20 });
+  // Live clock for Asia/Kolkata updating every 20 seconds
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const now = new Date();
+        const formatted = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        }).format(now);
+        setIstTime(`${formatted} IST`);
+      } catch (err) {
+        setIstTime("Asia/Kolkata");
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 20000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
   };
@@ -61,21 +50,24 @@ export default function Contact() {
     mouseY.set(-500);
   };
 
-  const emailSocial = socialsData.find((s) => s.label === "Email") || { url: "mailto:dhruvawhle@gmail.com" };
-  const githubSocial = socialsData.find((s) => s.label === "GitHub") || { url: "https://github.com/DhruvVawhle" };
-  const linkedinSocial = socialsData.find((s) => s.label === "LinkedIn") || { url: "https://linkedin.com/in/dhruvvawhle" };
-  
-  const rawEmail = emailSocial.url.replace("mailto:", "");
+  const handleCopyProfile = async (label: string, url: string) => {
+    const success = await copyToClipboard(url);
+    if (success) {
+      showToast(`${label} URL copied to clipboard`);
+    } else {
+      showToast(`Failed to copy ${label} URL`);
+    }
+  };
 
   return (
-    <section id="contact" className="py-[var(--section-padding-y)] bg-bg" aria-label="Contact Section">
+    <section id="contact" className="py-[var(--section-padding-y)] bg-bg" aria-label="Connect Section">
       <div className="content-width">
-        {/* Apple Spatial Section Header */}
+        {/* Header */}
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-12 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-                08 · CONNECT
+                Connect / engineering collaboration
               </span>
               <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
               <span className="font-mono text-xs text-text-secondary">
@@ -83,42 +75,53 @@ export default function Contact() {
               </span>
             </div>
             <span className="font-mono text-xs text-text-secondary">
-              Open to Software Engineering Roles (2027)
+              Open to software engineering roles (2027)
             </span>
           </div>
 
+          {/* Large Card with cursor-following blue glow */}
           <div
-            ref={containerRef}
+            ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative p-8 sm:p-12 lg:p-16 rounded-3xl bg-bg-surface border border-border-custom hover:border-accent/50 shadow-xl overflow-hidden group transition-colors duration-500"
+            className="relative p-8 sm:p-12 lg:p-16 rounded-3xl bg-bg-surface border border-border-custom hover:border-accent/50 shadow-xl overflow-hidden group transition-all duration-500"
           >
-            {/* Interactive Background Gradient Driven By Mouse Movement */}
+            {/* Cursor-following blue glow */}
             <motion.div
               style={{
-                x: springX,
-                y: springY,
-                left: 0,
-                top: 0,
+                left: mouseX,
+                top: mouseY,
                 translateX: "-50%",
                 translateY: "-50%",
               }}
-              className="pointer-events-none absolute w-[480px] h-[480px] rounded-full bg-gradient-to-r from-accent/20 via-blue-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+              className="pointer-events-none absolute w-[450px] h-[450px] rounded-full bg-blue-500/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             />
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.08),transparent_70%)]" />
 
             <div className="relative z-10 max-w-3xl">
+              {/* Chips row */}
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-medium min-h-[28px]">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Available for 2027 Engineering Roles</span>
+                  <span>Available for 2027 engineering roles</span>
                 </div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono min-h-[28px]">
-                  <LocationIcon />
-                  <span>{profileData.location}</span>
+
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>Mumbai, Maharashtra, India</span>
                 </div>
+
+                {istTime && (
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    <span>{istTime}</span>
+                  </div>
+                )}
               </div>
 
+              {/* Heading and text verbatim */}
               <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
                 Let&apos;s build reliable software together.
               </h2>
@@ -126,162 +129,74 @@ export default function Contact() {
                 Whether you are hiring for your engineering team or looking to discuss full-stack architecture and applied AI systems, I am available for 2027 engineering opportunities.
               </p>
 
-              {/* Authoritative Primary + Secondary Actions with Magnetic CTA Interactions */}
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8">
-                <motion.div
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                  data-cursor-text="CONNECT"
-                  className="flex items-center gap-2"
+                <button
+                  type="button"
+                  onClick={() => setIsDialogOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-accent text-white font-mono text-sm font-bold shadow-md hover:shadow-xl hover:shadow-accent/25 hover:bg-accent/90 transition-all duration-300 cursor-pointer"
                 >
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    href={emailSocial.url}
-                    className="shadow-md hover:shadow-xl hover:shadow-accent/25 transition-all duration-300 justify-center w-full sm:w-auto"
-                  >
-                    <MailIcon />
-                    <span>Start a Conversation</span>
-                  </Button>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigator.clipboard.writeText(rawEmail);
-                      const { showToast } = require("@/components/ui/ClipboardToast");
-                      showToast("Email address copied to clipboard");
-                    }}
-                    className="h-12 w-12 rounded-full border border-border-custom bg-bg-surface hover:bg-foreground/5 flex items-center justify-center text-text-secondary hover:text-text-primary transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
-                    aria-label="Copy Email Address"
-                    title="Copy Email Address"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
-                  </button>
-                </motion.div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                  <span>Start a conversation</span>
+                </button>
 
-                <motion.div
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                <a
+                  href="/resume.pdf"
+                  download="Dhruv_Vawhle_Resume.pdf"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-border-custom bg-bg-surface hover:border-accent hover:bg-accent/5 text-text-primary font-mono text-sm font-medium transition-all duration-300"
                 >
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    href={profileData.resume.url}
-                    external
-                    aria-label="Open Dhruv Vawhle Resume"
-                    className="justify-center hover:border-accent hover:bg-accent/5 transition-all duration-300 w-full sm:w-auto"
-                  >
-                    <span>📄 View Resume</span>
-                  </Button>
-                </motion.div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  <span>Download resume</span>
+                </a>
               </div>
 
-              {/* Non-Duplicated Social Connect Dock */}
+              {/* Row: Verified Profiles */}
               <div className="flex flex-wrap items-center gap-6 mt-10 pt-8 border-t border-border-custom/60">
                 <span className="font-mono text-xs text-text-secondary uppercase tracking-wider">
-                  Verified Profiles:
+                  Verified profiles:
                 </span>
-                
-                <div className="flex items-center gap-2">
-                  <motion.a
-                    whileHover={{ y: -2, scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    href={githubSocial.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                    aria-label="GitHub Profile (opens in new tab)"
-                  >
-                    <span className="text-accent">
-                      <GithubIcon />
-                    </span>
-                    <span>GitHub</span>
-                    <ExternalLinkIcon />
-                  </motion.a>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(githubSocial.url);
-                      const { showToast } = require("@/components/ui/ClipboardToast");
-                      showToast("GitHub URL copied to clipboard");
-                    }}
-                    className="p-1.5 rounded-lg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
-                    aria-label="Copy GitHub URL"
-                    title="Copy GitHub URL"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
-                  </button>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <motion.a
-                    whileHover={{ y: -2, scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 450, damping: 25 }}
-                    href={linkedinSocial.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
-                    aria-label="LinkedIn Profile (opens in new tab)"
-                  >
-                    <span className="text-accent">
-                      <LinkedinIcon />
-                    </span>
-                    <span>LinkedIn</span>
-                    <ExternalLinkIcon />
-                  </motion.a>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(linkedinSocial.url);
-                      const { showToast } = require("@/components/ui/ClipboardToast");
-                      showToast("LinkedIn URL copied to clipboard");
-                    }}
-                    className="p-1.5 rounded-lg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
-                    aria-label="Copy LinkedIn URL"
-                    title="Copy LinkedIn URL"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-text-secondary uppercase tracking-wider pl-2 border-l border-border-custom">
-                    Portfolio Repo:
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText("https://github.com/DhruvVawhle/dhruv-portfolio");
-                      const { showToast } = require("@/components/ui/ClipboardToast");
-                      showToast("Repository URL copied to clipboard");
-                    }}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-border-custom bg-bg-surface hover:bg-foreground/5 text-text-secondary hover:text-text-primary font-mono text-xs cursor-pointer"
-                    aria-label="Copy Repository URL"
-                    title="Copy Repository URL"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
-                    <span>Copy Repo URL</span>
-                  </button>
-                </div>
+                {CONNECT_PROFILES.map((profile) => (
+                  <div key={profile.label} className="flex items-center gap-2">
+                    <a
+                      href={profile.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text-secondary hover:text-text-primary text-sm font-medium transition-colors"
+                    >
+                      <span>{profile.label} ↗</span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyProfile(profile.label, profile.url)}
+                      aria-label={`Copy ${profile.label} URL`}
+                      className="p-1.5 rounded-lg hover:bg-foreground/5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </ScrollReveal>
       </div>
+
+      {/* Start A Conversation Modal Dialog */}
+      <ConversationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </section>
   );
 }

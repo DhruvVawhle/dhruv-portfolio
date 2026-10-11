@@ -7,6 +7,7 @@ import skillsData from "@/data/skills.json";
 import certificatesData from "@/data/certificates.json";
 import achievementsData from "@/data/achievements.json";
 import socialsData from "@/data/socials.json";
+import educationData from "@/data/education.json";
 
 export interface Project {
   id: string;
@@ -28,9 +29,18 @@ export interface Project {
   images?: string[];
   category: string;
   featured: boolean;
+  isArchived?: boolean;
   features: string[];
   status: string;
   liveDemo?: string;
+  upstreamRepository?: string;
+  attribution?: {
+    frontend?: string;
+    backend?: string;
+    upstreamRepo?: string;
+  };
+  todoScreenshot?: string;
+  todoArchitecture?: string;
 }
 
 export interface Experience {
@@ -38,12 +48,25 @@ export interface Experience {
   company: string;
   role: string;
   period: string;
+  location: string;
   bullets: string[];
+  technologies?: string[];
   certificate?: {
     title: string;
     image: string;
     verifiedId?: string;
   };
+  todoCertificate?: string;
+}
+
+export interface Education {
+  college: string;
+  degree: string;
+  branch: string;
+  specialization?: string;
+  duration: string;
+  cgpa: string;
+  location?: string;
 }
 
 export interface SkillCategory {
@@ -53,11 +76,14 @@ export interface SkillCategory {
 
 export interface Certification {
   title: string;
+  name?: string;
   issuer: string;
+  date?: string;
   image?: string;
   credentialId?: string;
   verifyUrl?: string;
   category: string;
+  todoImage?: string;
 }
 
 export interface Hackathon {
@@ -85,7 +111,11 @@ export interface TrustSignal {
 export const hero = {
   name: heroData.name,
   role: heroData.currentRole,
+  title: heroData.title || "Software Engineer",
   tagline: heroData.tagline,
+  summary: heroData.summary,
+  location: heroData.location,
+  contact: heroData.contact,
   trustSignals: heroData.trustSignals as TrustSignal[],
 };
 
@@ -101,10 +131,13 @@ export const projects: Project[] = projectsData.map((p) => {
   if (p.datasetLink) {
     links.push({ label: "Dataset", url: p.datasetLink, icon: "external" });
   }
+  if (p.upstreamRepository) {
+    links.push({ label: "Upstream Repo", url: p.upstreamRepository, icon: "github" });
+  }
   return {
     id: p.id,
     title: p.title,
-    subtitle: p.description,
+    subtitle: p.subtitle || p.description,
     period: p.duration,
     problem: p.problem,
     approach: p.approach,
@@ -118,9 +151,14 @@ export const projects: Project[] = projectsData.map((p) => {
     images: p.screenshots,
     category: p.category,
     featured: p.featured,
+    isArchived: (p as any).isArchived || false,
     features: p.features,
     status: p.status,
     liveDemo: p.liveDemo || undefined,
+    upstreamRepository: p.upstreamRepository || undefined,
+    attribution: (p as any).attribution || undefined,
+    todoScreenshot: (p as any).todoScreenshot || undefined,
+    todoArchitecture: (p as any).todoArchitecture || undefined,
   };
 });
 
@@ -130,8 +168,22 @@ export const experiences: Experience[] = experienceData.map((e) => ({
   company: e.company,
   role: e.role,
   period: e.duration,
+  location: e.location,
   bullets: e.responsibilities,
+  technologies: e.technologies,
   certificate: e.certificate || undefined,
+  todoCertificate: (e as any).todoCertificate || undefined,
+}));
+
+// ─── Education ───
+export const education: Education[] = educationData.map((ed) => ({
+  college: ed.college,
+  degree: ed.degree,
+  branch: ed.branch,
+  specialization: ed.specialization,
+  duration: ed.duration,
+  cgpa: ed.cgpa,
+  location: ed.location,
 }));
 
 // ─── Skills ───
@@ -140,7 +192,7 @@ export const relationshipsMap = skillsData.relationshipsMap;
 export const engineeringStack = skillsData.engineeringStack;
 export const techDetailsMap = skillsData.techDetailsMap;
 
-// Legacy compatibility for simple list mapping:
+// Categorized skill list mapping:
 export const skillCategories: SkillCategory[] = skillsData.engineeringStack.map((cat) => ({
   title: cat.title,
   skills: cat.technologies.map((t) => t.name),
@@ -166,11 +218,14 @@ export const hackathons: Hackathon[] = achievementsData.hackathons.map((h) => ({
 // ─── Certifications ───
 export const certifications: Certification[] = certificatesData.map((c) => ({
   title: c.title,
+  name: (c as any).name || c.title,
   issuer: c.issuer,
+  date: c.date,
   image: c.image || undefined,
   credentialId: c.credentialId || undefined,
   verifyUrl: c.verifyUrl || undefined,
   category: c.category,
+  todoImage: (c as any).todoImage || undefined,
 }));
 
 // ─── Navigation ───

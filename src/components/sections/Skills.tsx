@@ -623,14 +623,14 @@ export default function Skills() {
           </span>
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 max-w-3xl px-4">
             {[
-              "React",
+              "React.js",
               "Next.js",
               "TypeScript",
               "Python",
               "Gemini API",
               "MongoDB",
               "Tailwind CSS",
-              "Firebase",
+              "Firebase Firestore",
             ].map((tech) => {
               const isChipSelected = selectedNode === tech;
               return (

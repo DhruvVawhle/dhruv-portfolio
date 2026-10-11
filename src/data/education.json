@@ -1,20 +1,11 @@
 [
   {
-    "college": "SLRTCE (University of Mumbai)",
-    "degree": "Bachelor of Technology",
+    "college": "Shree L. R. Tiwari College of Engineering, University of Mumbai",
+    "degree": "B.Tech in Information Technology (Honors in Data Science)",
     "branch": "Information Technology",
-    "duration": "2023 – 2027",
-    "cgpa": "9.1",
-    "coursework": [
-      "Data Structures & Algorithms",
-      "Database Management Systems",
-      "Operating Systems",
-      "Software Engineering",
-      "Artificial Intelligence & Machine Learning"
-    ],
-    "honors": [
-      "Dean's Honor List",
-      "Smart India Hackathon Finalist"
-    ]
+    "specialization": "Honors in Data Science",
+    "duration": "Aug 2023 – Jun 2027",
+    "cgpa": "7.41/10",
+    "location": "Mumbai, Maharashtra, India"
   }
 ]

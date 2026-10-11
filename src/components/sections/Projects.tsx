@@ -1,748 +1,326 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { projects, Project } from "@/lib/data";
-import Badge from "@/components/ui/Badge";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { SHOWCASE_PROJECTS, ShowcaseProject } from "@/data/showcaseProjects";
+import CoverflowCard from "@/components/sections/CoverflowCard";
+import ProjectDetailSheet from "@/components/sections/ProjectDetailSheet";
+import DriftingParticleField from "@/components/sections/DriftingParticleField";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import TiltCard from "@/components/effects/TiltCard";
 import TechIcon from "@/components/ui/TechIcon";
-import CaseStudyModal from "@/components/ui/CaseStudyModal";
-import { GlowCard } from "@/components/ui/spotlight-card";
 
-const ShieldIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
-const GithubIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-  </svg>
-);
-
-const ExternalIcon = () => (
-  <svg
-    width="15"
-    height="15"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    <polyline points="15 3 21 3 21 9" />
-    <line x1="10" y1="14" x2="21" y2="3" />
-  </svg>
-);
-
-const ExploreArrowIcon = () => (
-  <svg
-    width="15"
-    height="15"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
+const FILTER_CHIPS = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud"] as const;
+type FilterChip = (typeof FILTER_CHIPS)[number];
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [activeFilter, setActiveFilter] = useState<FilterChip>("All");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<ShowcaseProject | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isSectionVisible, setIsSectionVisible] = useState(true);
+  const [showFallbackList, setShowFallbackList] = useState(false);
 
-  const categories = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud", "Mobile"];
+  const sectionRef = useRef<HTMLElement>(null);
+  const dragStartX = useRef<number | null>(null);
 
-  React.useEffect(() => {
-    const handleProjectJump = (projectId: string) => {
-      const cleanId = projectId.replace(/^#?project-/, "").replace(/^#/, "");
-      const found = projects.find((p) => p.id === cleanId);
-      if (found) {
-        setSelectedCategory("All");
-      }
+  // Filter projects based on active chip
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "All") {
+      return SHOWCASE_PROJECTS;
+    }
+    // Filter out the GitHub card if not on "All" filter
+    return SHOWCASE_PROJECTS.filter((p) =>
+      !p.isGitHubCard && p.categories.includes(activeFilter as any)
+    );
+  }, [activeFilter]);
 
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          const candidates = Array.from(
-            document.querySelectorAll(
-              `[data-project-id="${cleanId}"], [data-project-target="project-${cleanId}"], #project-${cleanId}, #mobile-project-${cleanId}`
-            )
-          ) as HTMLElement[];
+  // Reset to first matching card when filter changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [activeFilter]);
 
-          const visible = candidates.find(
-            (el) => el.offsetParent !== null || el.getClientRects().length > 0
-          );
+  // Track visibility to pause Three.js particle loop when off-screen
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSectionVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
 
-          if (visible) {
-            const navOffset = 85;
-            const topPos = visible.getBoundingClientRect().top + window.scrollY - navOffset;
-            window.scrollTo({
-              top: Math.max(0, topPos),
-              behavior: "smooth",
-            });
-          }
-        }, 60);
-      });
-    };
-
-    const onCustomEvent = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail) handleProjectJump(detail);
-    };
-
-    const onHashChange = () => {
-      const hash = window.location.hash;
-      if (hash && (hash.startsWith("#project-") || hash.startsWith("#imdbsentiment") || hash.startsWith("#krishisaathi") || hash.startsWith("#medtalk"))) {
-        handleProjectJump(hash);
-      }
-    };
-
-    window.addEventListener("project-jump", onCustomEvent);
-    window.addEventListener("hashchange", onHashChange);
-
-    if (window.location.hash) {
-      onHashChange();
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
 
-    return () => {
-      window.removeEventListener("project-jump", onCustomEvent);
-      window.removeEventListener("hashchange", onHashChange);
-    };
+    return () => observer.disconnect();
   }, []);
 
-  const filteredProjects = projects.filter((proj) => {
-    return selectedCategory === "All" || proj.category === selectedCategory;
-  });
+  // Keyboard navigation for active card
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept when sheet modal is open
+      if (isSheetOpen) return;
 
-  const flagship = filteredProjects.find((p) => p.featured) || filteredProjects[0];
-  const secondaryProjects = filteredProjects.filter((p) => p.id !== (flagship?.id || ""));
+      if (e.key === "ArrowLeft") {
+        setActiveIndex((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [filteredProjects.length, isSheetOpen]);
+
+  // Drag / swipe handlers with touch-action: pan-y
+  const handleTouchStart = (e: React.TouchEvent) => {
+    dragStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (dragStartX.current === null) return;
+    const diff = dragStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        // Swiped left -> next
+        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
+      } else {
+        // Swiped right -> prev
+        setActiveIndex((prev) => Math.max(0, prev - 1));
+      }
+    }
+    dragStartX.current = null;
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    dragStartX.current = e.clientX;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (dragStartX.current === null) return;
+    const diff = dragStartX.current - e.clientX;
+    if (Math.abs(diff) > 45) {
+      if (diff > 0) {
+        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
+      } else {
+        setActiveIndex((prev) => Math.max(0, prev - 1));
+      }
+    }
+    dragStartX.current = null;
+  };
+
+  const openProjectSheet = (project: ShowcaseProject) => {
+    setSelectedProject(project);
+    setIsSheetOpen(true);
+  };
+
+  const currentFrontProject = filteredProjects[activeIndex];
 
   return (
-    <section id="projects" className="py-[var(--section-padding-y)] bg-bg">
-      <div className="content-width">
-        {/* ── 1. FEATURED PROJECT HEADER ───────────────────────────────────── */}
+    <section
+      id="projects"
+      ref={sectionRef}
+      className="py-[var(--section-padding-y)] bg-bg relative overflow-hidden"
+      aria-label="Projects Section"
+    >
+      {/* Three.js subtle drifting particles behind the stage */}
+      <DriftingParticleField paused={!isSectionVisible} />
+
+      <div className="content-width relative z-10">
+        {/* Editorial Chapter Header */}
         <ScrollReveal>
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-12 border-b border-border-custom/60">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-                03 · PRODUCTION SYSTEMS
+                02 · SELECTED WORK
               </span>
               <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
               <span className="font-mono text-xs text-text-secondary">
-                Flagship &amp; Applied Work
+                Production Case Studies
               </span>
             </div>
             <span className="font-mono text-xs text-text-secondary">
-              Real Users &amp; Scalable APIs
+              Next.js · React · AI/ML · Security
             </span>
           </div>
 
           <div className="max-w-3xl mb-8">
-            <h2 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-text-primary tracking-tight mb-4">
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
               Engineering systems built for production scale.
             </h2>
-            <p className="text-base sm:text-lg text-text-secondary leading-relaxed">
-              My most comprehensive and impactful software engineering project, showcasing full-stack development, AI/ML integration, scalable architecture, and production-ready implementation.
+            <p className="mt-3 text-base sm:text-lg text-text-secondary leading-relaxed">
+              Full-stack architectures, applied machine learning systems, and AI security gateways with measurable impact.
             </p>
           </div>
 
-          {/* ── Filter Controls (Dynamic, Premium Styling) ── */}
-          <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto pb-4 mb-14 border-b border-border-custom/30 scrollbar-none">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`h-10 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
-                  selectedCategory === cat
-                    ? "bg-accent/15 border-accent text-accent shadow-xs"
-                    : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        {/* ── No Projects Found State ── */}
-        {filteredProjects.length === 0 && (
-          <ScrollReveal>
-            <div className="text-center py-20 bg-bg-surface border border-border-custom rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">
-              <span className="text-accent text-4xl block mb-4">🔍</span>
-              <h3 className="font-display font-bold text-2xl text-text-primary mb-2">No Projects Found</h3>
-              <p className="text-text-secondary text-base leading-relaxed">
-                We couldn't find any projects in category "{selectedCategory}". Try adjusting your filters.
-              </p>
-              <button
-                onClick={() => {
-                  setSelectedCategory("All");
-                }}
-                className="mt-6 h-10 px-5 rounded-xl bg-accent text-white font-mono text-xs font-bold hover:bg-accent-hover transition-colors cursor-pointer"
-              >
-                Reset Filters
-              </button>
-            </div>
-          </ScrollReveal>
-        )}
-
-        {/* ── MOBILE STREAMLINED SHOWCASE (block lg:hidden) ───────────────── */}
-        <div className="block lg:hidden space-y-10 mb-12">
-          {flagship && [flagship, ...secondaryProjects].map((proj, idx) => {
-            const isMedtalk = proj.id === "medtalk";
-            const primaryMetric = proj.metrics && proj.metrics.length > 0 ? proj.metrics[0] : null;
-
-            return (
-              <div
-                key={`mobile-${proj.id}`}
-                id={`mobile-project-${proj.id}`}
-                data-project-id={proj.id}
-                data-project-target={`project-${proj.id}`}
-                className="scroll-mt-24 sm:scroll-mt-28"
-              >
-                <ScrollReveal delay={idx * 0.08}>
-                  <GlowCard
-                    customSize
-                    glowColor={proj.id === "medtalk" ? "blue" : proj.id === "imdbsentiment" ? "orange" : "green"}
-                    className="p-6 sm:p-8 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm transition-all duration-300 relative overflow-hidden flex flex-col justify-between !aspect-auto"
-                  >
-                  {/* Card Header Badge */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-border-custom/60">
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                        {proj.featured ? "FEATURED SYSTEM" : `${proj.category} Showcase`}
-                      </span>
-                      {proj.liveDemo ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
-                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                          <span>Live</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gray-500/10 border border-gray-500/20 text-text-secondary font-mono text-[10px] font-bold">
-                          <span className="w-1 h-1 rounded-full bg-gray-400" />
-                          <span>Local Dev</span>
-                        </span>
-                      )}
-                    </div>
-                    <span className="font-mono text-xs text-text-secondary">
-                      {proj.period}
-                    </span>
-                  </div>
-
-                  {/* Screenshot Preview with Intelligent Crop & Gradient Overlay */}
-                  <div
-                    onClick={() => setSelectedProject(proj)}
-                    data-cursor-text="CASE STUDY"
-                    className="group/img relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-md mb-6 cursor-pointer"
-                  >
-                    <Image
-                      src={
-                        proj.image ||
-                        (isMedtalk
-                          ? "/images/projects/medtalk-aichatbot.png"
-                          : proj.id === "imdbsentiment"
-                          ? "/images/projects/imdb-sentiment-analysis.png"
-                          : "/images/projects/krishisaathi-homepage.png")
-                      }
-                      alt={`${proj.title} Preview`}
-                      fill
-                      sizes="(max-width:768px) 100vw, 50vw"
-                      className={`object-cover transition-transform duration-700 ease-out group-hover/img:scale-[1.06] ${
-                        isMedtalk ? "object-top" : "object-center"
-                      }`}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-all duration-500">
-                      <span className="px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
-                        Explore Details
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title & Subtitle */}
-                  <h3 className="font-display font-extrabold text-2xl sm:text-3xl text-text-primary leading-tight">
-                    {proj.title}
-                  </h3>
-                  <p className="font-mono text-sm text-text-secondary uppercase tracking-wider mt-1.5 mb-5">
-                    {proj.subtitle}
-                  </p>
-
-                  {/* Primary Highlight Metric */}
-                  {primaryMetric && (
-                    <div className="mb-6 p-4 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-between">
-                      <div>
-                        <div className="font-mono text-[11px] text-accent uppercase tracking-wider font-bold">
-                          {primaryMetric.label}
-                        </div>
-                        <div className="font-display font-black text-xl text-text-primary mt-0.5">
-                          {primaryMetric.value}
-                          {primaryMetric.suffix}
-                        </div>
-                      </div>
-                      <span className="font-mono text-[10px] text-accent font-semibold px-2.5 py-1 rounded bg-accent/15">
-                        KEY IMPACT
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Tech Stack Chips */}
-                  <div className="mb-6">
-                    <div className="font-mono text-xs text-text-secondary uppercase tracking-wider mb-2 font-semibold">
-                      Core Stack
-                    </div>
-                    <div className="flex flex-wrap gap-2 sm:gap-2.5">
-                      {proj.techStack.slice(0, 6).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2.5 py-1.5 rounded-md bg-bg border border-border-custom text-text-primary/90 font-mono text-xs sm:text-sm"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {proj.techStack.length > 6 && (
-                        <span className="px-2.5 py-1.5 rounded-md bg-bg border border-border-custom text-text-secondary font-mono text-xs sm:text-sm">
-                          +{proj.techStack.length - 6} more
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* View Full Project Button */}
-                  <div className="pt-4 border-t border-border-custom/60 flex flex-col gap-3.5">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(proj)}
-                      data-cursor-text="CASE STUDY"
-                      className="group/btn w-full min-h-[54px] px-7 py-4 rounded-xl bg-foreground text-background font-mono text-base font-bold shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
-                    >
-                      <span>View Full Project Case Study</span>
-                      <span className="transform group-hover/btn:translate-x-1.5 transition-transform duration-300">
-                        <ExploreArrowIcon />
-                      </span>
-                    </button>
-
-                    <div className="flex items-center gap-3">
-                      {proj.links.map((link) => (
-                        <a
-                          key={link.label}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-cursor-text="LINK"
-                          className="flex-1 min-h-[52px] flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-[15px] font-bold transition-colors"
-                        >
-                          {link.icon === "github" && <GithubIcon />}
-                          {link.icon === "external" && <ExternalIcon />}
-                          <span>{link.label}</span>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </GlowCard>
-              </ScrollReveal>
-            </div>
-            );
-          })}
-        </div>
-
-        {/* ── DESKTOP FULL SHOWCASE (hidden lg:block) ─────────────────────── */}
-        {flagship && (
-          <div className="hidden lg:block">
-            {/* ── 2. FEATURED PROJECT SYSTEM SHOWCASE ── */}
-            <div
-              id={`project-${flagship.id}`}
-              data-project-id={flagship.id}
-              data-project-target={`project-${flagship.id}`}
-              className="mb-16 scroll-mt-28"
-            >
-              <ScrollReveal>
-                <GlowCard
-                  customSize
-                  glowColor="green"
-                  className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden !aspect-auto !grid-rows-none"
+          {/* Filter Chips */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+            {FILTER_CHIPS.map((chip) => {
+              const isActive = activeFilter === chip;
+              return (
+                <button
+                  key={chip}
+                  onClick={() => setActiveFilter(chip)}
+                  className={`h-9 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+                    isActive
+                      ? "bg-accent/15 border-accent text-accent shadow-xs"
+                      : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                  }`}
                 >
-              {/* Flagship Top Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
-                <div className="flex items-center gap-3">
-                  <span className="px-3.5 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                    FEATURED ENGINEERING SYSTEM
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Live</span>
-                  </span>
-                  <span className="font-mono text-xs text-text-secondary">
-                    {flagship.period}
-                  </span>
-                </div>
-                {flagship.copyrightFiled && (
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-foreground/5 text-text-secondary font-mono text-xs border border-border-custom">
-                    <ShieldIcon />
-                    <span>
-                      Copyright Registered · Diary No. {flagship.copyrightFiled.diaryNumber}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Grid: Hero Preview Image (Left 5) | High-Signal Metadata (Right 7) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
-                {/* Left 5 Columns (~15% reduced width): Hero Image Preview Hook */}
-                <div className="lg:col-span-5">
-                  <div
-                    onClick={() => setSelectedProject(flagship)}
-                    data-cursor-text="CASE STUDY"
-                    className="group/img relative aspect-[16/11] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-xl cursor-pointer"
-                  >
-                    <Image
-                      src="/images/projects/krishisaathi-homepage.png"
-                      alt={`${flagship.title} Hero Preview`}
-                      fill
-                      sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-[1.06]"
-                    />
-
-                    {/* Hover Prompt with Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/img:opacity-100 transition-all duration-500 flex items-center justify-center">
-                      <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/img:translate-y-0 transition-transform duration-500">
-                        <span>Explore Architecture</span>
-                        <ExploreArrowIcon />
-                      </span>
-                    </div>
-
-                    <div className="absolute inset-x-3 bottom-3 p-3 rounded-xl bg-bg-surface/95 backdrop-blur-md border border-border-custom flex items-center justify-between font-mono text-[11px] text-text-secondary">
-                      <span>Hybrid Firestore + MongoDB</span>
-                      <span className="text-text-primary font-bold">
-                        Deep dive →
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right 7 Columns: Spacious Scannable Overview & Differentiated Metrics */}
-                <div className="lg:col-span-7 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-text-primary leading-tight">
-                      {flagship.title}
-                    </h3>
-                    <p className="font-mono text-xs text-text-secondary uppercase tracking-wider mt-2 mb-6">
-                      {flagship.subtitle}
-                    </p>
-
-                    {/* Differentiated Key Metrics Hierarchy */}
-                    {flagship.metrics && flagship.metrics.length > 0 && (
-                      <div className="space-y-4 mb-8">
-                        {/* Primary Featured Impact Metric */}
-                        <div className="px-5 py-4 sm:px-6 sm:py-5 rounded-2xl bg-accent/10 border-2 border-accent/40 flex items-center justify-between shadow-xs">
-                          <div>
-                            <div className="font-mono text-[11px] text-accent uppercase tracking-wider font-bold">
-                              {flagship.metrics[0].label}
-                            </div>
-                            <div className="font-display font-black text-2xl sm:text-3xl text-text-primary mt-0.5">
-                              {flagship.metrics[0].value}
-                              {flagship.metrics[0].suffix}
-                            </div>
-                          </div>
-                          <span className="font-mono text-[11px] text-accent font-semibold px-3 py-1 rounded-md bg-accent/15 hidden sm:inline">
-                            PRIMARY IMPACT
-                          </span>
-                        </div>
-
-                        {/* Secondary Supporting Metrics Grid */}
-                        {flagship.metrics.length > 1 && (
-                          <div className="grid grid-cols-2 gap-4 sm:gap-5">
-                            {flagship.metrics.slice(1).map((metric) => (
-                              <div
-                                key={metric.label}
-                                className="px-4 py-3.5 sm:px-5 sm:py-4 rounded-xl bg-bg/80 border border-border-custom text-left flex flex-col justify-between"
-                              >
-                                <div className="font-mono text-[10px] text-text-secondary uppercase tracking-wider line-clamp-1">
-                                  {metric.label}
-                                </div>
-                                <div className="font-display font-bold text-lg sm:text-xl text-text-primary mt-1">
-                                  {metric.value}
-                                  {metric.suffix}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Applied Tech Stack as Regular Text */}
-                    <div className="mb-8">
-                      <h4 className="text-[11px] font-mono text-text-secondary uppercase tracking-wider mb-2">
-                        Core Architecture & Stack
-                      </h4>
-                      <p className="font-mono text-xs sm:text-sm text-text-primary/90 leading-relaxed">
-                        {flagship.techStack.join(" · ")}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons: Primary Engineering CTA */}
-                  <div className="flex flex-wrap items-center gap-4 pt-5 border-t border-border-custom/60">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedProject(flagship)}
-                      data-cursor-text="CASE STUDY"
-                      aria-label={`Explore ${flagship.title} Platform Architecture and Technical Details`}
-                      className="group/btn inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-foreground text-background hover:opacity-90 font-mono text-[15px] sm:text-base font-bold min-h-[52px] sm:min-h-[54px] shadow-md transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-[#111318]"
-                    >
-                      <span>Explore Platform</span>
-                      <span className="transform group-hover/btn:translate-x-2 transition-transform duration-300">
-                        <ExploreArrowIcon />
-                      </span>
-                    </button>
-
-                    {flagship.links.map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-cursor-text="LINK"
-                        className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-sm sm:text-[15px] font-bold min-h-[52px] sm:min-h-[54px] transition-colors"
-                      >
-                        {link.icon === "github" && <GithubIcon />}
-                        {link.icon === "external" && <ExternalIcon />}
-                        <span>{link.label}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </GlowCard>
-          </ScrollReveal>
-        </div>
-
-        {/* ── 3. SELECTED PROJECTS HEADER & DIVIDER ───────────────────────────── */}
-        <ScrollReveal>
-          <div className="pt-20 sm:pt-24 mt-16 border-t border-border-custom/80 mb-16">
-            <div className="max-w-3xl space-y-4">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-bold text-accent tracking-widest uppercase">
-                  02
-                </span>
-                <span className="w-4 h-px bg-border-custom" />
-                <span className="font-mono text-xs font-semibold text-text-secondary tracking-widest uppercase">
-                  APPLIED AI &amp; HEALTHCARE ARCHITECTURE
-                </span>
-              </div>
-              <h3 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-text-primary tracking-tight">
-                Voice-Enabled Multilingual Healthcare Assistant
-              </h3>
-              <p className="text-base sm:text-lg text-text-secondary leading-relaxed pt-1">
-                Demonstrating applied artificial intelligence, natural language understanding, and voice-assisted RESTful architectures designed for 24/7 preliminary healthcare accessibility.
-              </p>
-            </div>
+                  {chip}
+                </button>
+              );
+            })}
           </div>
         </ScrollReveal>
 
-        {/* ── ALTERNATING LAYOUT SHOWCASE: MEDTALK & SECONDARY PROJECTS ── */}
-        <div className="space-y-20 lg:space-y-28">
-          {secondaryProjects.map((project, index) => {
-            const isContentLeft = index % 2 === 0;
+        {/* 3D Coverflow Stage */}
+        <div
+          style={{
+            perspective: "1100px",
+            touchAction: "pan-y",
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          className="relative w-full h-[520px] sm:h-[540px] flex items-center justify-center overflow-visible"
+        >
+          {filteredProjects.map((project, idx) => {
+            const offset = idx - activeIndex;
+            const isFront = offset === 0;
 
             return (
-              <div
-                key={`desktop-${project.id}`}
-                id={`project-${project.id}`}
-                data-project-id={project.id}
-                data-project-target={`project-${project.id}`}
-                className="scroll-mt-28"
-              >
-                <ScrollReveal delay={index * 0.1}>
-                  <GlowCard
-                    customSize
-                    glowColor={project.id === "medtalk" ? "blue" : project.id === "imdbsentiment" ? "orange" : "purple"}
-                    className="p-6 sm:p-8 lg:p-10 !rounded-3xl border border-border-custom hover:border-foreground/25 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden !aspect-auto !grid-rows-none"
-                  >
-                  {/* Top Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-border-custom/60 relative z-10">
-                    <div className="flex items-center gap-3">
-                      <span className="px-3.5 py-1 rounded-full bg-foreground/5 text-text-primary border border-border-custom font-mono text-[11px] font-bold tracking-wider uppercase">
-                        {project.featured ? "FEATURED SYSTEM" : `${project.category} Showcase`}
-                      </span>
-                      {project.liveDemo ? (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-mono text-[10px] font-bold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <span>Live</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gray-500/10 border border-gray-500/20 text-text-secondary font-mono text-[10px] font-bold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                          <span>Local Dev</span>
-                        </span>
-                      )}
-                      <span className="font-mono text-xs text-text-secondary">
-                        {project.period}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Alternating Grid: Content Left (7 cols) / Image Right (5 cols) for MedTalk */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
-                    {/* Content Column */}
-                    <div
-                      className={`lg:col-span-7 flex flex-col justify-between ${
-                        isContentLeft ? "lg:order-1" : "lg:order-2"
-                      }`}
-                    >
-                      <div>
-                        <h3 className="font-display font-extrabold text-3xl sm:text-4xl text-text-primary leading-tight">
-                          {project.title}
-                        </h3>
-                        <p className="font-mono text-xs text-text-secondary uppercase tracking-wider mt-2 mb-6">
-                          {project.subtitle}
-                        </p>
-
-                        {/* Differentiated Metrics for MedTalk */}
-                        {project.metrics && project.metrics.length > 0 && (
-                          <div className="mb-8">
-                            <div className="p-4 sm:p-5 rounded-2xl bg-accent/10 border-2 border-accent/40 flex items-center justify-between shadow-xs max-w-md">
-                              <div>
-                                <div className="font-mono text-[11px] text-accent uppercase tracking-wider font-bold">
-                                  {project.metrics[0].label}
-                                </div>
-                                <div className="font-display font-black text-2xl sm:text-3xl text-text-primary mt-0.5">
-                                  {project.metrics[0].value}
-                                  {project.metrics[0].suffix}
-                                </div>
-                              </div>
-                              <span className="font-mono text-[11px] text-accent font-semibold px-3 py-1 rounded-md bg-accent/15 hidden sm:inline">
-                                CONTINUOUS RUNTIME
-                              </span>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Applied Tech Stack */}
-                        <div className="mb-8">
-                          <h4 className="text-[11px] font-mono text-text-secondary uppercase tracking-wider mb-2">
-                            Core Architecture &amp; Stack
-                          </h4>
-                          <p className="font-mono text-xs sm:text-sm text-text-primary/90 leading-relaxed">
-                            {project.techStack.join(" · ")}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Action CTA Button */}
-                      <div className="flex flex-wrap items-center gap-3.5 pt-4 border-t border-border-custom/60">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedProject(project)}
-                          data-cursor-text="CASE STUDY"
-                          aria-label={`Explore ${project.title} Technical Overview and Features`}
-                          className="group/btn inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-foreground text-background hover:opacity-90 font-mono text-[15px] sm:text-base font-bold min-h-[52px] sm:min-h-[54px] shadow-md transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-[#111318]"
-                        >
-                          <span>
-                            {project.category === "AI" ? "Explore AI Assistant" : project.category === "Machine Learning" ? "Explore NLP Pipeline" : "Explore Project"}
-                          </span>
-                          <span className="transform group-hover/btn:translate-x-2 transition-transform duration-300">
-                            <ExploreArrowIcon />
-                          </span>
-                        </button>
-
-                        {project.links.map((link) => (
-                          <a
-                            key={link.label}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            data-cursor-text="LINK"
-                            className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-bg border border-border-custom hover:border-foreground/30 text-text-secondary hover:text-text-primary font-mono text-sm sm:text-[15px] font-bold min-h-[52px] sm:min-h-[54px] transition-colors"
-                          >
-                            {link.icon === "github" && <GithubIcon />}
-                            {link.icon === "external" && <ExternalIcon />}
-                            <span>{link.label}</span>
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Image Column */}
-                    <div
-                      className={`lg:col-span-5 ${
-                        isContentLeft ? "lg:order-2" : "lg:order-1"
-                      }`}
-                    >
-                      <div
-                        onClick={() => setSelectedProject(project)}
-                        data-cursor-text="CASE STUDY"
-                        className="group/thumb relative aspect-[16/11] w-full rounded-2xl overflow-hidden border border-border-custom bg-black/40 shadow-xl cursor-pointer"
-                      >
-                        <Image
-                          src={
-                            project.image ||
-                            (project.id === "medtalk"
-                              ? "/images/projects/medtalk-aichatbot.png"
-                              : project.id === "imdbsentiment"
-                              ? "/images/projects/imdb-sentiment-analysis.png"
-                              : "/images/projects/krishisaathi-homepage.png")
-                          }
-                          alt={`${project.title} Preview`}
-                          fill
-                          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                          className="object-cover transition-transform duration-700 ease-out group-hover/thumb:scale-[1.06]"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-0 group-hover/thumb:opacity-100 transition-all duration-500 flex items-center justify-center">
-                          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/80 border border-white/10 text-white font-mono text-sm sm:text-[15px] font-bold shadow-xl transform translate-y-3 group-hover/thumb:translate-y-0 transition-transform duration-500">
-                            <span>
-                              {project.category === "AI"
-                                ? "Explore AI Assistant"
-                                : project.category === "Machine Learning"
-                                ? "Explore NLP Pipeline"
-                                : "Explore Project"}
-                            </span>
-                            <ExploreArrowIcon />
-                          </span>
-                        </div>
-
-                        <div className="absolute inset-x-3 bottom-3 p-3 rounded-xl bg-bg-surface/95 backdrop-blur-md border border-border-custom flex items-center justify-between font-mono text-[11px] text-text-secondary">
-                          <span>
-                            {project.techStack.slice(0, 3).join(" + ")}
-                          </span>
-                          <span className="text-text-primary font-bold">
-                            Deep dive →
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </GlowCard>
-              </ScrollReveal>
-            </div>
+              <CoverflowCard
+                key={project.id}
+                project={project}
+                isFront={isFront}
+                offset={offset}
+                onSelect={() => setActiveIndex(idx)}
+                onOpenDetail={() => openProjectSheet(project)}
+              />
             );
           })}
         </div>
+
+        {/* Carousel Navigation Bar (Prev / Next & Dots) */}
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Navigation Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
+              disabled={activeIndex === 0}
+              aria-label="Previous project card"
+              className="w-10 h-10 rounded-full border border-border-custom bg-bg-surface hover:border-accent disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-text-primary transition-colors cursor-pointer shadow-xs"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center gap-2">
+              {filteredProjects.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveIndex(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeIndex === idx ? "w-7 bg-accent" : "w-2 bg-border-custom hover:bg-neutral-400"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1))}
+              disabled={activeIndex === filteredProjects.length - 1}
+              aria-label="Next project card"
+              className="w-10 h-10 rounded-full border border-border-custom bg-bg-surface hover:border-accent disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-text-primary transition-colors cursor-pointer shadow-xs"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Toggle Non-3D Fallback List */}
+          <button
+            onClick={() => setShowFallbackList(!showFallbackList)}
+            className="font-mono text-xs text-text-secondary hover:text-accent underline underline-offset-4 cursor-pointer transition-colors"
+          >
+            {showFallbackList ? "Hide standard list view" : "View as standard list"}
+          </button>
         </div>
-        )}
+
+        {/* GitHub profile invitation line */}
+        <div className="mt-8 pt-6 border-t border-border-custom/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <p className="font-mono text-xs sm:text-sm text-text-secondary">
+            Want to see more projects? Browse my GitHub profile.
+          </p>
+          <a
+            href="https://github.com/DhruvVawhle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-custom hover:border-accent bg-bg-surface font-mono text-xs font-semibold text-text-primary transition-colors shadow-xs"
+          >
+            <span>github.com/DhruvVawhle ↗</span>
+          </a>
+        </div>
+
+        {/* Accessible Plain "All Projects" Non-3D Fallback List */}
+        <AnimatePresence>
+          {showFallbackList && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-10 overflow-hidden"
+            >
+              <h3 className="font-mono text-xs uppercase tracking-widest text-text-secondary mb-4">
+                All Projects Reference List
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {SHOWCASE_PROJECTS.filter((p) => !p.isGitHubCard).map((p) => (
+                  <div
+                    key={`fallback-${p.id}`}
+                    onClick={() => openProjectSheet(p)}
+                    className="p-5 rounded-2xl border border-border-custom bg-bg-surface hover:border-accent transition-all cursor-pointer shadow-xs"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-display font-bold text-base text-text-primary">
+                        {p.title}
+                      </span>
+                      <span className="font-mono text-[11px] text-accent">
+                        {p.status}
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-secondary leading-relaxed mb-3">
+                      {p.subtitle}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {p.stack.slice(0, 5).map((t) => (
+                        <span
+                          key={t}
+                          className="px-2 py-0.5 rounded-md bg-bg font-mono text-[10px] text-text-secondary border border-border-custom"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* ── TECHNICAL DEEP DIVE MODAL ──────────────────────────────── */}
-      <CaseStudyModal
+      {/* Detail Sheet Portal */}
+      <ProjectDetailSheet
         project={selectedProject}
-        isOpen={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
+        isOpen={isSheetOpen}
+        onClose={() => setIsSheetOpen(false)}
       />
     </section>
   );

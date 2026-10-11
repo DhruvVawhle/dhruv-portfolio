@@ -7,41 +7,41 @@
       "organizer": "Smart India Hackathon (SIH) 2025 – PS ID: SIH25049",
       "date": "2025",
       "roleTeam": "Team Lead · Team MediMitra (6 members)",
-      "description": "Built an AI-powered multilingual healthcare assistant with WhatsApp Business API integration and n8n workflow automation, using Gemini and MongoDB, for a national government problem statement.",
+      "description": "Smart India Hackathon (SIH) 2025 – MediMitra (PS ID: SIH25049): multilingual AI healthcare assistant (WhatsApp API, n8n, Gemini, MongoDB).",
       "challenge": "Public health awareness in rural communities limited by low internet bandwidth and lack of medical app adoption.",
       "role": "Team Lead & AI Architect — designed the n8n workflow automation and multilingual Gemini NLU pipeline.",
       "timeConstraint": "SIH National Software Sprint",
       "outcome": "Selected among Top 30 college finalists for Smart India Hackathon software-track submission.",
-      "techStack": ["n8n", "Gemini API", "WhatsApp Business API", "MongoDB", "RAG", "Vector DB"],
+      "techStack": ["WhatsApp API", "n8n", "Gemini API", "MongoDB"],
       "image": "/images/hackathons/medimitra-chatbot.png"
     },
     {
       "id": "analytrix",
-      "name": "Analytix'26 Datathon",
+      "name": "Analytix 2026 Datathon",
       "badge": "First Place",
       "organizer": "Thakur College (24-hr Datathon)",
       "date": "Feb 2026",
       "roleTeam": "Team Edith",
-      "description": "Analyzed complex datasets and presented actionable insights as a team under competitive 24-hour datathon constraints.",
+      "description": "Analytix 2026 Datathon (24-hr, Thakur College), team Edith – AI Agent.",
       "challenge": "Filtering raw unstructured data for accuracy under strict time and validation constraints.",
       "role": "Data Pipeline & Visualization Lead — performed Python/Pandas cleaning and statistical modeling.",
       "timeConstraint": "24-Hour Datathon Sprint",
       "outcome": "High-signal analytical dashboards surfacing reliable operational insights.",
-      "techStack": ["Python", "Pandas", "Matplotlib", "Seaborn", "Data Visualization", "Data Transformation"],
+      "techStack": ["Python", "Pandas", "Matplotlib", "Seaborn", "AI Agent"],
       "image": "/images/hackathons/analytrix-datathon-certificate.jpg"
     },
     {
       "id": "edith",
-      "name": "Edith – AI Agent Buildathon",
-      "badge": "Top Innovator",
-      "organizer": "Technium, SLRTCE (12-hr)",
-      "date": "Mar 2025",
-      "roleTeam": "Team: Fantastic Four",
-      "description": "Built an AI agent solution under 12-hour time constraints enabling automated conversational workflows and order tracking.",
+      "name": "Buildathon (12-hr)",
+      "badge": "AI Agent Solution",
+      "organizer": "Buildathon (12-hr)",
+      "date": "2025",
+      "roleTeam": "Team Edith",
+      "description": "Buildathon (12-hr) – AI agent solution.",
       "challenge": "Store owners struggle with complex inventory dashboards and manual order tracking.",
-      "role": "Full-Stack AI Engineer — integrated Telegram Bot API with n8n workflow automation.",
+      "role": "Full-Stack AI Engineer — integrated Telegram Bot API with automated conversational workflows.",
       "timeConstraint": "12-Hour Intensive Buildathon",
-      "outcome": "Fully functioning AI agent processing real-time stock queries and automating supplier reorders.",
+      "outcome": "Fully functioning AI agent solution processing real-time conversational workflows.",
       "techStack": ["n8n", "Gemini API", "Telegram Bot API", "Python"],
       "image": "/images/hackathons/edith-hackathon-participation.jpg"
     }
@@ -50,13 +50,13 @@
     {
       "title": "Smart India Hackathon Software Finalist",
       "date": "2025",
-      "description": "Recognized as a top 30 team nationally at SIH 2025 for MediMitra."
+      "description": "Recognized as a top 30 team nationally at SIH 2025 for MediMitra (PS ID: SIH25049)."
     }
   ],
   "research": [
     {
       "title": "Applied AI in Grassroots Agriculture",
-      "date": "Ongoing",
+      "date": "2025 – 2026",
       "description": "Developing local forecasting architectures utilizing ARIMA and historical AGMARKNET government crop data."
     }
   ],
@@ -64,12 +64,22 @@
     {
       "title": "KrishiSaathi Platform Core Repo",
       "url": "https://github.com/DhruvVawhle/KrishiSaathi",
-      "description": "Fully open sourced the hybrid Firestore + MongoDB agricultural commodity platform."
+      "description": "Open-source hybrid Firestore + MongoDB agricultural commodity marketplace."
+    },
+    {
+      "title": "PromptShield LLM Security Gateway",
+      "url": "https://github.com/DhruvVawhle/PromptShield",
+      "description": "Two-layer prompt injection detection and prevention gateway."
+    },
+    {
+      "title": "CampusAI Reception Robot Kiosk",
+      "url": "https://github.com/DhruvVawhle/CampusAI",
+      "description": "Next.js & React Three Fiber kiosk UI (fork of jayeshtiwari-ai/CampusAI)."
     }
   ],
   "competitions": [
     {
-      "name": "TCET Analytrix Datathon",
+      "name": "TCET Analytix 2026 Datathon",
       "rank": "Rank 1",
       "date": "2026"
     }

@@ -1,35 +1,75 @@
+import React from "react";
 import { cn } from "@/lib/utils";
 
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-  hover?: boolean;
-  padding?: "sm" | "md" | "lg";
-}
-
-export default function Card({
-  children,
+export function Card({
   className,
-  hover = true,
-  padding = "md",
-}: CardProps) {
-  const paddings = {
-    sm: "p-4",
-    md: "p-6 md:p-8",
-    lg: "p-8 md:p-10",
-  };
-
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        "rounded-2xl bg-bg-surface border border-border-custom",
-        paddings[padding],
-        hover &&
-          "transition-all duration-300 hover:border-accent/20 hover:bg-bg-surface-hover card-glow",
+        "rounded-2xl border border-border-custom bg-bg-surface text-text-primary shadow-xs transition-colors",
         className
       )}
-    >
-      {children}
-    </div>
+      {...props}
+    />
+  );
+}
+
+export function CardHeader({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      {...props}
+    />
+  );
+}
+
+export function CardTitle({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement>) {
+  return (
+    <h3
+      className={cn(
+        "font-display font-bold leading-none tracking-tight text-text-primary",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function CardDescription({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p
+      className={cn("text-sm text-text-secondary leading-relaxed", className)}
+      {...props}
+    />
+  );
+}
+
+export function CardContent({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("p-6 pt-0", className)} {...props} />;
+}
+
+export function CardFooter({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("flex items-center p-6 pt-0", className)}
+      {...props}
+    />
   );
 }

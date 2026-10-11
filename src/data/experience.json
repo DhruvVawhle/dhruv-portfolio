@@ -1,5 +1,33 @@
 [
   {
+    "id": "pram-educate",
+    "company": "PRAM Educate IT Software LLP",
+    "companyLogo": "",
+    "role": "Software Quality Testing Assurance Intern",
+    "employmentType": "Internship",
+    "duration": "Aug 2026 – Oct 2026",
+    "location": "Itanagar, India",
+    "technologies": [
+      "Functional Testing",
+      "Test Case Design",
+      "QA Procedures",
+      "Defect Reporting",
+      "Mobile App Testing"
+    ],
+    "responsibilities": [
+      "Completed 150+ hours of on-the-job training in technical and functional testing.",
+      "Executed QA procedures and test cases for the PRAM Edu mobile app to verify functionality and report defects."
+    ],
+    "achievements": [
+      "Completed 150+ hours of on-the-job training in technical and functional testing."
+    ],
+    "certificate": {
+      "title": "PRAM Educate Software Quality Assurance Internship Certificate",
+      "image": "/images/certifications/pramedu-internship.jpg",
+      "verifiedId": "PRAM ID: ST29068"
+    }
+  },
+  {
     "id": "codsoft",
     "company": "CodSoft",
     "companyLogo": "",
@@ -9,12 +37,10 @@
     "location": "Mumbai, India",
     "technologies": ["HTML", "CSS", "JavaScript", "Git", "GitHub Pages"],
     "responsibilities": [
-      "Built and deployed responsive web applications using HTML, CSS, and JavaScript.",
-      "Implemented interactive UI components, including calculators and landing pages.",
-      "Managed version control and deployment workflows using Git and GitHub Pages."
+      "Built and deployed responsive web apps and UI components (calculator, landing pages) using HTML, CSS, JavaScript, Git, and GitHub Pages."
     ],
     "achievements": [
-      "Managed version control and deployment workflows using Git and GitHub Pages."
+      "Built and deployed responsive web apps and UI components (calculator, landing pages) using HTML, CSS, JavaScript, Git, and GitHub Pages."
     ],
     "certificate": {
       "title": "CodSoft Web Development Internship Certificate",
@@ -30,14 +56,14 @@
     "employmentType": "Internship",
     "duration": "Dec 2024 – Jan 2025",
     "location": "Mumbai, India",
-    "technologies": ["React", "Node.js", "Agile", "Git", "REST APIs"],
+    "technologies": ["React", "Node.js", "Agile", "Git", "Code Reviews"],
     "responsibilities": [
-      "Developed and enhanced production-level features using React and Node.js within an Agile development environment.",
-      "Debugged, refactored, and optimized existing code to improve readability, performance, and maintainability.",
-      "Collaborated with cross-functional teams using Git-based workflows, sprint planning, and code reviews."
+      "Developed and enhanced production-level features using React and Node.js within an Agile environment.",
+      "Debugged, refactored, and optimized code; collaborated via Git, sprint planning, and code reviews.",
+      "Recognized by the HR team for initiative, dedication, and eagerness to learn."
     ],
     "achievements": [
-      "Collaborated with cross-functional teams using Git-based workflows, sprint planning, and code reviews."
+      "Recognized by the HR team for initiative, dedication, and eagerness to learn."
     ],
     "certificate": {
       "title": "Compozent SDE Web Development Internship Completion Certificate",

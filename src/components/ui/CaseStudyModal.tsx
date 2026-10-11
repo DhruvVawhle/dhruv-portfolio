@@ -25,32 +25,50 @@ interface ProjectTheme {
 }
 
 const PROJECT_THEMES: Record<string, ProjectTheme> = {
-  krishisaathi: {
-    name: "neutral",
-    badgeBg: "bg-white/10 text-white border border-white/20",
-    glowBg: "from-white/5 via-transparent to-transparent",
-    dotColor: "bg-white",
-    accentText: "text-gray-300",
+  promptshield: {
+    name: "red",
+    badgeBg: "bg-red-500/20 text-red-300 border border-red-500/30",
+    glowBg: "from-red-500/10 via-transparent to-transparent",
+    dotColor: "bg-red-400",
+    accentText: "text-red-300",
     primaryBtn:
-      "bg-white hover:bg-gray-200 text-black font-mono font-bold shadow-md",
+      "bg-red-500 hover:bg-red-600 text-white font-mono font-bold shadow-md",
+  },
+  campusai: {
+    name: "cyan",
+    badgeBg: "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30",
+    glowBg: "from-cyan-500/10 via-transparent to-transparent",
+    dotColor: "bg-cyan-400",
+    accentText: "text-cyan-300",
+    primaryBtn:
+      "bg-cyan-500 hover:bg-cyan-600 text-black font-mono font-bold shadow-md",
+  },
+  krishisaathi: {
+    name: "green",
+    badgeBg: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+    glowBg: "from-emerald-500/10 via-transparent to-transparent",
+    dotColor: "bg-emerald-400",
+    accentText: "text-emerald-300",
+    primaryBtn:
+      "bg-emerald-500 hover:bg-emerald-600 text-black font-mono font-bold shadow-md",
   },
   medtalk: {
-    name: "neutral",
-    badgeBg: "bg-white/10 text-white border border-white/20",
-    glowBg: "from-white/5 via-transparent to-transparent",
-    dotColor: "bg-white",
-    accentText: "text-gray-300",
+    name: "blue",
+    badgeBg: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
+    glowBg: "from-blue-500/10 via-transparent to-transparent",
+    dotColor: "bg-blue-400",
+    accentText: "text-blue-300",
     primaryBtn:
-      "bg-white hover:bg-gray-200 text-black font-mono font-bold shadow-md",
+      "bg-blue-500 hover:bg-blue-600 text-white font-mono font-bold shadow-md",
   },
   imdbsentiment: {
-    name: "neutral",
-    badgeBg: "bg-white/10 text-white border border-white/20",
-    glowBg: "from-white/5 via-transparent to-transparent",
-    dotColor: "bg-white",
-    accentText: "text-gray-300",
+    name: "orange",
+    badgeBg: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+    glowBg: "from-amber-500/10 via-transparent to-transparent",
+    dotColor: "bg-amber-400",
+    accentText: "text-amber-300",
     primaryBtn:
-      "bg-white hover:bg-gray-200 text-black font-mono font-bold shadow-md",
+      "bg-amber-500 hover:bg-amber-600 text-black font-mono font-bold shadow-md",
   },
 };
 
@@ -65,6 +83,24 @@ const DEFAULT_THEME: ProjectTheme = {
 };
 
 const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
+  promptshield: [
+    {
+      src: "/images/projects/promptshield.png",
+      title: "PromptShield Architecture Specification",
+      description:
+        "Two-layer defense with client-side pattern guard, Firebase Admin ID-token verification, and OpenAI-compatible gateway (OmniRoute).",
+      caption: "Architecture Blueprint — Pre-execution prompt risk evaluation (0–100)",
+    },
+  ],
+  campusai: [
+    {
+      src: "/images/projects/campusai.png",
+      title: "CampusAI Touchscreen Kiosk UI",
+      description:
+        "React Three Fiber 3D robot interface with idle, listening, thinking, and speaking states for multilingual voice assistance.",
+      caption: "Kiosk UI — Multilingual voice assistant (EN, HI, MR, Hinglish)",
+    },
+  ],
   krishisaathi: [
     {
       src: "/images/projects/krishisaathi-homepage.png",
@@ -138,20 +174,6 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
         "Voice-enabled preliminary healthcare guidance powered by Google Gemini NLU.",
       caption: "AI Chatbot UI — Multilingual voice healthcare assistant",
     },
-    {
-      src: "/images/projects/medtalk-aichatbot.png",
-      title: "Expandable Image View",
-      description:
-        "Instant speech-to-text interaction across regional vernacular languages with high accuracy.",
-      caption: "Expandable Image — Speech recognition and voice synthesis",
-    },
-    {
-      src: "/images/projects/medtalk-aichatbot.png",
-      title: "Preliminary Medical Guidance",
-      description:
-        "Zoom on click & Lightbox modal inspection for 24/7 medical query resolution and triage.",
-      caption: "Preliminary Guidance — Zoom on click and Lightbox support",
-    },
   ],
   imdbsentiment: [
     {
@@ -165,18 +187,24 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
 };
 
 const PROJECT_DISPLAY_MODES: Record<string, "desktop" | "mobile"> = {
+  promptshield: "desktop",
+  campusai: "desktop",
   krishisaathi: "desktop",
   medtalk: "desktop",
   imdbsentiment: "desktop",
 };
 
 const PROJECT_LEARNINGS: Record<string, string> = {
+  promptshield:
+    "Designing a two-layer defense gateway demonstrated how client-side heuristics can drastically reduce unnecessary LLM invocation costs and latency by stopping blatant attacks early, while server-side OmniRoute proxies enforce comprehensive policy checks and token revocation.",
+  campusai:
+    "Developing a touchscreen kiosk with React Three Fiber taught me how to manage real-time Web Audio buffers and WebSocket synchronization across physical hardware. Working on a multi-department team with Jayesh Tiwari reinforced disciplined interface boundaries between the Next.js kiosk client and the FastAPI RAG backend.",
   krishisaathi:
     "Designing a hybrid Firestore + MongoDB architecture demonstrated how to decouple real-time session synchronization from high-throughput commodity catalog queries. Optimizing ARIMA inference on 18,300+ government market records highlighted the importance of edge-caching market forecasts to maintain sub-200ms API response times across regional rural networks.",
   medtalk:
     "Building a medical assistant for underserved rural communities underscored the necessity of voice-first multilingual UX design and rigorous input sanitization when transcribing speech-to-text medical queries.",
   imdbsentiment:
-    "Building this NLP workflow demonstrated the critical role of data cleaning and tokenization strategies in reducing noise before training. I learned to balance model complexity against inference latency, comparing classic statistical models (Logistic Regression, Naive Bayes) with Deep Learning architectures (Keras/TensorFlow).",
+    "Building this NLP workflow demonstrated the critical role of data cleaning and tokenization strategies in reducing noise before training. I learned to balance model complexity against inference latency, comparing classic statistical models with Deep Learning architectures.",
 };
 
 const ShieldIcon = () => (
@@ -219,6 +247,71 @@ const ExternalIcon = () => (
 );
 
 import FolderTree, { FolderNode } from "@/components/ui/FolderTree";
+
+const PROMPTSHIELD_FOLDERS: FolderNode[] = [
+  {
+    name: "src",
+    type: "folder",
+    children: [
+      {
+        name: "app",
+        type: "folder",
+        children: [
+          { name: "api", type: "folder", children: [{ name: "analyze", type: "folder" }, { name: "proxy", type: "folder" }] },
+          { name: "dashboard", type: "folder" },
+          { name: "playground", type: "folder" },
+          { name: "incidents", type: "folder" }
+        ]
+      },
+      {
+        name: "lib",
+        type: "folder",
+        children: [
+          { name: "firebase-admin.ts", type: "file" },
+          { name: "pattern-guard.ts", type: "file" },
+          { name: "policy-engine.ts", type: "file" },
+          { name: "omniroute-client.ts", type: "file" }
+        ]
+      }
+    ]
+  },
+  { name: "firestore.rules", type: "file" },
+  { name: "package.json", type: "file" },
+  { name: "README.md", type: "file" }
+];
+
+const CAMPUSAI_FOLDERS: FolderNode[] = [
+  {
+    name: "src",
+    type: "folder",
+    children: [
+      {
+        name: "components",
+        type: "folder",
+        children: [
+          { name: "robot-3d", type: "folder" },
+          { name: "audio-visualizer", type: "folder" },
+          { name: "qr-route", type: "folder" }
+        ]
+      },
+      {
+        name: "hooks",
+        type: "folder",
+        children: [
+          { name: "useWebAudio.ts", type: "file" },
+          { name: "useWebSocket.ts", type: "file" }
+        ]
+      },
+      {
+        name: "app",
+        type: "folder",
+        children: [{ name: "kiosk", type: "folder" }]
+      }
+    ]
+  },
+  { name: "package.json", type: "file" },
+  { name: "README.md", type: "file" }
+];
 
 const KRISHISAATHI_FOLDERS: FolderNode[] = [
   {
@@ -389,7 +482,6 @@ export default function CaseStudyModal({
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
-      // Auto focus the close button or first action
       setTimeout(() => {
         if (modalRef.current) {
           const closeBtn = modalRef.current.querySelector('button[aria-label="Close Technical Deep Dive"]') as HTMLElement;
@@ -413,7 +505,11 @@ export default function CaseStudyModal({
   const displayMode = PROJECT_DISPLAY_MODES[project.id] || "desktop";
   const learnings = PROJECT_LEARNINGS[project.id];
   const folders =
-    project.id === "krishisaathi"
+    project.id === "promptshield"
+      ? PROMPTSHIELD_FOLDERS
+      : project.id === "campusai"
+      ? CAMPUSAI_FOLDERS
+      : project.id === "krishisaathi"
       ? KRISHISAATHI_FOLDERS
       : project.id === "medtalk"
       ? MEDTALK_FOLDERS
@@ -509,6 +605,22 @@ export default function CaseStudyModal({
                 <p className={`font-mono text-sm sm:text-base ${theme.accentText} uppercase tracking-wider`}>
                   {project.subtitle}
                 </p>
+
+                {/* Explicit Teammate Attribution Card for CampusAI */}
+                {project.id === "campusai" && (
+                  <div className="mt-4 p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/30 font-mono text-xs text-cyan-200 space-y-1">
+                    <div className="font-bold text-cyan-400">Collaboration Attribution Notice:</div>
+                    <p>
+                      <strong>Frontend &amp; Kiosk Interface:</strong> Dhruv Vawhle (Next.js, TypeScript, Tailwind, Framer Motion, React Three Fiber).
+                    </p>
+                    <p>
+                      <strong>Backend &amp; RAG Pipeline:</strong> Jayesh Tiwari (FastAPI, Groq LLM, Whisper, FAISS RAG, SQLite).
+                    </p>
+                    <p className="text-cyan-300/80">
+                      Repository is a fork of upstream: <a href="https://github.com/jayeshtiwari-ai/CampusAI" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">jayeshtiwari-ai/CampusAI</a>
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* ── Collapsible Section: Overview ── */}
@@ -576,63 +688,58 @@ export default function CaseStudyModal({
                 onToggle={() => toggleSection("decisions")}
               >
                 <div className="space-y-4 font-mono text-xs sm:text-sm">
-                  {project.id === "krishisaathi" ? (
+                  {project.id === "promptshield" ? (
                     <>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Next.js/React</div>
+                        <div className="text-white font-bold mb-1">Choice: Two-Layer Defense (Pattern Guard + Server Proxy)</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Selected to deliver fast client-side navigation. Preserves separation of concerns while routing dynamic agricultural product lists efficiently.
+                          Client-side pattern evaluation catches immediate heuristic signatures without server network hops, while server-side proxy routes via OmniRoute with Firebase Admin ID-token verification to prevent secret leakage.
                         </div>
                       </div>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Firestore + MongoDB</div>
+                        <div className="text-white font-bold mb-1">Choice: Configurable Policy Engine</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Firestore coordinates real-time user bids and instant sessions. MongoDB aggregates high-volume static commodity catalogs and historical mandi pricing data under flexible document schemas.
-                        </div>
-                      </div>
-                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Python/ARIMA</div>
-                        <div className="text-gray-400 leading-relaxed">
-                          Offers lightweight, fast statistical model inference on time-series government market statistics without the latency of deep learning layers.
+                          Supports custom threat risk thresholds (0–100 scale) mapped to explicit enforcement actions: allow, warn, sanitize, or block queries prior to LLM forwarding.
                         </div>
                       </div>
                     </>
-                  ) : project.id === "imdbsentiment" ? (
+                  ) : project.id === "campusai" ? (
                     <>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: NLTK for Preprocessing</div>
+                        <div className="text-white font-bold mb-1">Choice: React Three Fiber for 3D Robot Avatar</div>
                         <div className="text-gray-400 leading-relaxed">
-                          NLTK provides robust, resource-efficient methods for text tokenization, stop-word elimination, and lemmatization to clean raw review text.
+                          Renders a responsive 3D robot avatar capable of smoothly animating between idle, listening, thinking, and speaking states on touch kiosk hardware.
                         </div>
                       </div>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: TF-IDF Vectorization</div>
+                        <div className="text-white font-bold mb-1">Choice: Decoupled REST/WebSocket Integration</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Converts processed text tokens into high-quality numerical features, capturing term frequencies and inverse document frequencies across reviews.
+                          Cleanly separates the frontend touchscreen interface from teammate Jayesh Tiwari's FastAPI RAG backend, allowing independent scaling and testing.
+                        </div>
+                      </div>
+                    </>
+                  ) : project.id === "krishisaathi" ? (
+                    <>
+                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                        <div className="text-white font-bold mb-1">Choice: React with Code Splitting</div>
+                        <div className="text-gray-400 leading-relaxed">
+                          Cut initial bundle size by 69% (2.9MB down to 900KB) to ensure rapid loading on low-bandwidth rural networks.
                         </div>
                       </div>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Scikit-learn + TensorFlow/Keras</div>
+                        <div className="text-white font-bold mb-1">Choice: Hybrid Firestore + MongoDB Architecture</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Allows comparisons between classical linear algorithms (Logistic Regression, Naive Bayes) and deeper Neural Network structures for optimized classification.
+                          Firestore coordinates real-time user cart synchronization while MongoDB aggregates large commodity price catalogs and historical AGMARKNET mandi data.
                         </div>
                       </div>
                     </>
                   ) : (
-                    <>
-                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Python/Flask</div>
-                        <div className="text-gray-400 leading-relaxed">
-                          Keeps the chatbot system micro-sized and provides simple integrations with Google Cloud TTS/STT pipelines and native AI APIs.
-                        </div>
+                    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                      <div className="text-white font-bold mb-1">Modular Architecture</div>
+                      <div className="text-gray-400 leading-relaxed">
+                        Designed with separation of concerns and typed contracts.
                       </div>
-                      <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Google Gemini NLU</div>
-                        <div className="text-gray-400 leading-relaxed">
-                          Provides zero-setup natural language classification and medical triage assessment with high translation capacity for regional vernacular languages.
-                        </div>
-                      </div>
-                    </>
+                    </div>
                   )}
                 </div>
               </CollapsibleSection>
@@ -644,82 +751,41 @@ export default function CaseStudyModal({
                 onToggle={() => toggleSection("challenges")}
               >
                 <div className="space-y-4 font-mono text-xs sm:text-sm text-gray-300">
-                  {project.id === "krishisaathi" ? (
+                  {project.id === "promptshield" ? (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                      <div className="text-red-400 font-bold mb-1">Challenge: Processing 18,300+ AGMARKNET records on client request</div>
+                      <div className="text-red-400 font-bold mb-1">Challenge: Minimizing latency on pre-execution prompt evaluation</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Querying MongoDB directly on client scroll created unacceptable API latency spikes.
+                        Evaluating complex prompt injection patterns and jailbreak signatures before forwarding to LLMs can introduce noticeable interaction delays.
                       </div>
-                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Edge Caching & Indexing</div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Layered Heuristic Scoring &amp; Parallel Verification</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Pre-aggregated ARIMA model predictions and indexed commodity query parameters, lowering average lookup response speeds under 100ms.
+                        Employed fast client-side pattern matching for obvious indicators, paired with streamlined server-side ID-token verification and caching.
                       </div>
                     </div>
-                  ) : project.id === "imdbsentiment" ? (
+                  ) : project.id === "campusai" ? (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                      <div className="text-red-400 font-bold mb-1">Challenge: Processing high-dimensional TF-IDF vectors</div>
+                      <div className="text-red-400 font-bold mb-1">Challenge: Reliable Web Audio streaming and visualizer synchronization on touchscreen hardware</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Too many unique words in 50K reviews create sparse matrices that lead to memory overflow during training.
+                        Hardware kiosks have variable audio hardware, leading to microphone dropouts and visualizer lag.
                       </div>
-                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Max Features Limit & Sub-sampling</div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Custom Web Audio Lifecycle Hooks</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Constrained TF-IDF vectorizer to the top 5,000 most relevant features and utilized sparse matrices natively throughout training.
+                        Engineered resilient custom hooks managing audio capture buffers, WebSocket reconnection protocols, and fallback REST voice uploads.
                       </div>
                     </div>
                   ) : (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                      <div className="text-red-400 font-bold mb-1">Challenge: Unacceptable speech translation delays on audio files</div>
+                      <div className="text-red-400 font-bold mb-1">Challenge: Processing 18,300+ AGMARKNET records without latency spikes</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Transferring raw audio payloads in real-time over poor cellular rural networks failed frequently.
+                        Querying MongoDB directly on client scroll created unacceptable API latency spikes.
                       </div>
-                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Compressed Audio Streams</div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Edge Caching &amp; Indexing</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Implemented stream chunking and compressed audio compression layers before transmitting to the Google Cloud AI services.
+                        Pre-aggregated ARIMA model predictions and indexed commodity query parameters, lowering average lookup speeds under 100ms.
                       </div>
                     </div>
                   )}
                 </div>
-              </CollapsibleSection>
-
-              {/* ── Collapsible Section: Deployment ── */}
-              <CollapsibleSection
-                title="Deployment & Runtime Environments"
-                isOpen={sectionsOpen.deployment}
-                onToggle={() => toggleSection("deployment")}
-              >
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  {project.id === "krishisaathi"
-                    ? "Client application hosted on Vercel Edge networks; database and Node.js REST controllers running on a secured cloud VPS under Docker containers with automated SSL hooks."
-                    : project.id === "imdbsentiment"
-                    ? "Jupyter Notebook environment for exploratory data analysis, pipeline testing, and training. Production script version is package-ready as a standalone CLI application."
-                    : "Deployed inside a containerized lightweight Python backend with secured API keys and environment variables integration."}
-                </p>
-              </CollapsibleSection>
-
-              {/* ── Collapsible Section: Future Improvements ── */}
-              <CollapsibleSection
-                title="Future Improvements & Roadmap"
-                isOpen={sectionsOpen.improvements}
-                onToggle={() => toggleSection("improvements")}
-              >
-                <ul className="list-disc pl-5 text-sm text-gray-300 space-y-1">
-                  {project.id === "krishisaathi" ? (
-                    <>
-                      <li>Integrate WhatsApp business gateway for offline bids from rural farmers.</li>
-                      <li>Incorporate automated SMS translation alerts for commodity price drops.</li>
-                    </>
-                  ) : project.id === "imdbsentiment" ? (
-                    <>
-                      <li>Deploy the trained model as a REST API endpoint using FastAPI or Flask.</li>
-                      <li>Incorporate live user rating feedback to periodically retrain models.</li>
-                    </>
-                  ) : (
-                    <>
-                      <li>Implement Retrieval-Augmented Generation (RAG) on WHO medical databases.</li>
-                      <li>Incorporate localized audio output for vernacular tribal dialects.</li>
-                    </>
-                  )}
-                </ul>
               </CollapsibleSection>
 
               {/* ── Outcomes ── */}

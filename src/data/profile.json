@@ -1,26 +1,36 @@
 {
   "name": "Dhruv Vawhle",
+  "title": "Software Engineer",
   "roles": [
     "Software Engineer",
-    "Full-Stack Developer & AI/ML Engineer",
-    "Full Stack Developer",
-    "Machine Learning Enthusiast",
-    "AI Developer"
+    "Full-Stack Web Developer",
+    "AI/ML Engineer",
+    "AI Security Specialist"
   ],
-  "currentRole": "Full-Stack & AI/ML Engineer",
-  "tagline": "I build production software with real data, real users, and real legal ownership — not just tutorials.",
+  "currentRole": "Software Engineer",
+  "tagline": "Final-year Information Technology undergraduate specializing in full-stack web development, applied machine learning, and AI security.",
+  "summary": "Final-year Information Technology undergraduate specializing in full-stack web development, applied machine learning, and AI security. Built and deployed production software including a farm-to-market marketplace with ARIMA-based price forecasting, a multilingual AI healthcare assistant, and an LLM prompt-injection security gateway. Skilled in React, Next.js, TypeScript, Node.js, Python, and cloud deployment (AWS, GCP, Vercel), with Agile and QA testing experience.",
   "profileImage": "/images/profile/dhruv-vawhle.jpg",
   "availabilityStatus": "Available for Roles",
-  "location": "Mumbai, India",
+  "location": "Mumbai, Maharashtra, India",
+  "contact": {
+    "phone": "+91-9167261231",
+    "email": "dhruvawhle@gmail.com"
+  },
+  "links": {
+    "linkedin": "https://linkedin.com/in/dhruvvawhle",
+    "github": "https://github.com/DhruvVawhle",
+    "live": "https://dhruvvawhle.vercel.app"
+  },
   "statistics": [
     { "label": "Data Rows Processed", "value": "18300", "suffix": "+" },
-    { "label": "Bundle Size Reduction", "value": "69", "suffix": "%" },
+    { "label": "Bundle Size Cut", "value": "69", "suffix": "%" },
     { "label": "Languages Supported", "value": "8", "suffix": "" }
   ],
   "trustSignals": [
     { "icon": "shield", "label": "Copyright-Filed Software" },
     { "icon": "database", "label": "Full-Stack & Applied AI Systems" },
-    { "icon": "rocket", "label": "2 Production Deployments" }
+    { "icon": "rocket", "label": "Production Deployments" }
   ],
   "ctaButtons": {
     "primary": {
@@ -28,14 +38,14 @@
       "href": "#projects"
     },
     "secondary": {
-      "label": "View Resume",
-      "href": "/documents/Dhruv_Resume_Updated_07-08-2026_.pdf"
+      "label": "Download Resume",
+      "href": "/Dhruv_Resume.pdf"
     }
   },
   "resume": {
-    "url": "/documents/Dhruv_Resume_Updated_07-08-2026_.pdf",
-    "lastUpdated": "August 2026",
-    "version": "2.2"
+    "url": "/Dhruv_Resume.pdf",
+    "lastUpdated": "October 2026",
+    "version": "2.4"
   },
   "formspreeId": "xqnqyvqk"
 }

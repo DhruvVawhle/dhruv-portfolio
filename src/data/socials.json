@@ -5,6 +5,11 @@
     "icon": "mail"
   },
   {
+    "label": "Phone",
+    "url": "tel:+919167261231",
+    "icon": "phone"
+  },
+  {
     "label": "LinkedIn",
     "url": "https://linkedin.com/in/dhruvvawhle",
     "icon": "linkedin"
@@ -16,7 +21,7 @@
   },
   {
     "label": "Resume",
-    "url": "/documents/Dhruv_Resume_Updated_07-08-2026_.pdf",
+    "url": "/Dhruv_Resume.pdf",
     "icon": "resume"
   }
 ]

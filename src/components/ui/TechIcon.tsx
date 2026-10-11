@@ -111,6 +111,7 @@ const ICON_MAP: Record<string, IconConfig> = {
 
   // Frameworks & Libraries
   React: { type: "devicon", className: "devicon-react-original colored" },
+  "React.js": { type: "devicon", className: "devicon-react-original colored" },
   "Next.js": {
     type: "react-icon",
     icon: SiNextdotjs,
@@ -119,6 +120,12 @@ const ICON_MAP: Record<string, IconConfig> = {
   },
   "Node.js": { type: "devicon", className: "devicon-nodejs-plain colored" },
   Express: {
+    type: "react-icon",
+    icon: SiExpress,
+    colorClass: "text-[#000000]",
+    isDarkLogo: true,
+  },
+  "Express.js": {
     type: "react-icon",
     icon: SiExpress,
     colorClass: "text-[#000000]",
@@ -143,16 +150,34 @@ const ICON_MAP: Record<string, IconConfig> = {
     type: "react-icon",
     icon: FirestoreSvg,
   },
+  "Firebase Firestore": {
+    type: "react-icon",
+    icon: FirestoreSvg,
+  },
   Firebase: { type: "devicon", className: "devicon-firebase-plain colored" },
+  MySQL: { type: "devicon", className: "devicon-mysql-plain colored" },
+  SQLite: { type: "devicon", className: "devicon-sqlite-plain colored" },
   AWS: { type: "devicon", className: "devicon-amazonwebservices-plain-wordmark colored", isDarkLogo: true },
   GCP: { type: "devicon", className: "devicon-googlecloud-plain colored" },
   "Google Cloud": { type: "devicon", className: "devicon-googlecloud-plain colored" },
+  "Google Cloud Platform (GCP)": { type: "devicon", className: "devicon-googlecloud-plain colored" },
   Vercel: { type: "devicon", className: "devicon-vercel-original colored", isDarkLogo: true },
   Docker: { type: "devicon", className: "devicon-docker-plain colored" },
 
-  // Tools, Workflow & APIs
+  // Tools, Workflow & Testing
   Git: { type: "devicon", className: "devicon-git-plain colored" },
   GitHub: { type: "devicon", className: "devicon-github-original colored", isDarkLogo: true },
+  Postman: { type: "devicon", className: "devicon-postman-plain colored" },
+  "Functional Testing": {
+    type: "react-icon",
+    icon: FallbackTechSvg,
+    colorClass: "text-[#10B981]",
+  },
+  "Test Case Design": {
+    type: "react-icon",
+    icon: FallbackTechSvg,
+    colorClass: "text-[#3B82F6]",
+  },
   Arduino: { type: "devicon", className: "devicon-arduino-plain colored" },
   Razorpay: {
     type: "react-icon",
@@ -170,6 +195,23 @@ const ICON_MAP: Record<string, IconConfig> = {
     icon: SiGooglegemini,
     colorClass: "text-[#8E75B2]",
   },
+  "Machine Learning": {
+    type: "react-icon",
+    icon: RagSvg,
+    colorClass: "text-[#06B6D4]",
+  },
+  "scikit-learn": { type: "devicon", className: "devicon-scikitlearn-plain colored" },
+  "TensorFlow/Keras": { type: "devicon", className: "devicon-tensorflow-line colored" },
+  "ARIMA Forecasting": {
+    type: "react-icon",
+    icon: FallbackTechSvg,
+    colorClass: "text-[#10B981]",
+  },
+  "Prompt Injection Defense": {
+    type: "react-icon",
+    icon: FallbackTechSvg,
+    colorClass: "text-[#EF4444]",
+  },
   "Google Cloud STT": { type: "devicon", className: "devicon-googlecloud-plain colored" },
   "Google Cloud TTS": { type: "devicon", className: "devicon-googlecloud-plain colored" },
   n8n: {
@@ -184,6 +226,11 @@ const ICON_MAP: Record<string, IconConfig> = {
     colorClass: "text-[#26A5E4]",
   },
   "WhatsApp Business API": {
+    type: "react-icon",
+    icon: SiWhatsapp,
+    colorClass: "text-[#25D366]",
+  },
+  "WhatsApp API": {
     type: "react-icon",
     icon: SiWhatsapp,
     colorClass: "text-[#25D366]",

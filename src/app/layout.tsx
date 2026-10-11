@@ -35,42 +35,55 @@ const jetbrainsMono = JetBrains_Mono({
 import profileData from "@/data/profile.json";
 
 export const metadata: Metadata = {
-  title: `${profileData.name} — ${profileData.currentRole}`,
-  description: `Portfolio of ${profileData.name} — a ${profileData.currentRole.toLowerCase()} building production software. Tagline: "${profileData.tagline}"`,
+  title: "Dhruv Vawhle — Software Engineer",
+  description: profileData.summary,
+  metadataBase: new URL("https://dhruvvawhle.vercel.app"),
+  alternates: {
+    canonical: "https://dhruvvawhle.vercel.app",
+  },
   keywords: [
-    profileData.name,
-    "Full Stack Developer",
-    "AI ML Engineer",
+    "Dhruv Vawhle",
+    "Software Engineer",
+    "Full-Stack Web Development",
+    "Applied Machine Learning",
+    "AI Security",
     "React",
     "Next.js",
+    "TypeScript",
     "Node.js",
     "Python",
-    "Portfolio",
+    "PromptShield",
+    "CampusAI",
     "KrishiSaathi",
-    "MedTalk",
   ],
-  authors: [{ name: profileData.name }],
+  authors: [{ name: "Dhruv Vawhle", url: "https://dhruvvawhle.vercel.app" }],
   openGraph: {
     type: "website",
-    title: `${profileData.name} — ${profileData.currentRole}`,
-    description: profileData.tagline,
-    siteName: `${profileData.name} Portfolio`,
+    url: "https://dhruvvawhle.vercel.app",
+    title: "Dhruv Vawhle — Software Engineer",
+    description: profileData.summary,
+    siteName: "Dhruv Vawhle Portfolio",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${profileData.name} — ${profileData.currentRole}`,
-    description: profileData.tagline,
+    title: "Dhruv Vawhle — Software Engineer",
+    description: profileData.summary,
   },
   robots: {
     index: true,
     follow: true,
+  },
+  verification: {
+    google: "ilWe8rbEpZ3jRWG1eMpVD5-MIA3McyKXWSekxu8heQY",
   },
 };
 
 import CubertoCursor from "@/components/effects/CubertoCursor";
 import LoadingSequence from "@/components/effects/LoadingSequence";
 import ClipboardToast from "@/components/ui/ClipboardToast";
+import SmoothScrollProvider from "@/components/effects/SmoothScrollProvider";
+import { SimpleToastProvider } from "@/components/ui/SimpleToast";
 
 export default function RootLayout({
   children,
@@ -85,14 +98,18 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-bg text-text-primary font-body antialiased">
-        <ThemeInitializer />
-        <LoadingSequence />
-        <CubertoCursor />
-        <ClipboardToast />
-        <a href="#main-content" className="skip-to-content">
-          Skip to content
-        </a>
-        {children}
+        <SmoothScrollProvider>
+          <SimpleToastProvider>
+            <ThemeInitializer />
+            <LoadingSequence />
+            <CubertoCursor />
+            <ClipboardToast />
+            <a href="#main-content" className="skip-to-content">
+              Skip to content
+            </a>
+            {children}
+          </SimpleToastProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

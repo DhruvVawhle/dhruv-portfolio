@@ -424,8 +424,9 @@ export default function Hero() {
             <Button
               variant="secondary"
               href={heroData.resume.url}
+              download="Dhruv_Vawhle_Resume.pdf"
               external
-              aria-label={`Open ${heroData.name} Resume`}
+              aria-label={`Download ${heroData.name} Resume`}
               className="w-full sm:w-auto h-[46px] min-h-[46px] sm:h-[48px] sm:min-h-[48px] px-[24px] sm:px-[28px] rounded-full text-[15px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
             >
               <span>📄 {heroData.ctaButtons.secondary.label}</span>
@@ -501,8 +502,9 @@ export default function Hero() {
                 <Button
                   variant="secondary"
                   href={heroData.resume.url}
+                  download="Dhruv_Vawhle_Resume.pdf"
                   external
-                  aria-label={`Open ${heroData.name} Resume`}
+                  aria-label={`Download ${heroData.name} Resume`}
                   className="w-auto h-[52px] min-h-[52px] px-[28px] rounded-full text-[16px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
                 >
                   <span>📄 {heroData.ctaButtons.secondary.label}</span>
