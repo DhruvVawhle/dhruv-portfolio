@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { motion } from "motion/react";
+import { Eye, ExternalLink } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
 
@@ -20,7 +21,7 @@ export default function CoverflowCard({
   onSelect,
   onOpenDetail,
 }: CardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -28,43 +29,6 @@ export default function CoverflowCard({
       setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
   }, []);
-
-  // 3D Tilt & Glare mouse interaction for the active front card
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const glareX = useMotionValue(50);
-  const glareY = useMotionValue(50);
-  const glareOpacity = useMotionValue(0);
-
-  const springTiltX = useSpring(rotateX, { stiffness: 260, damping: 20 });
-  const springTiltY = useSpring(rotateY, { stiffness: 260, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isFront || reducedMotion) return;
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const tiltX = ((y - centerY) / centerY) * -10;
-    const tiltY = ((x - centerX) / centerX) * 10;
-
-    rotateX.set(tiltX);
-    rotateY.set(tiltY);
-
-    glareX.set((x / rect.width) * 100);
-    glareY.set((y / rect.height) * 100);
-    glareOpacity.set(0.35);
-  };
-
-  const handleMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-    glareOpacity.set(0);
-  };
 
   // 3D Coverflow positioning math
   const absOffset = Math.abs(offset);
@@ -76,7 +40,8 @@ export default function CoverflowCard({
   const pointerEvents = absOffset > 2 ? "none" : "auto";
 
   // Card click behavior
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (isFront) {
       if (project.isGitHubCard) {
         window.open(project.githubUrl, "_blank", "noopener,noreferrer");
@@ -91,7 +56,7 @@ export default function CoverflowCard({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (isFront && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
-      handleClick();
+      handleClick(e as any);
     }
   };
 
@@ -99,72 +64,81 @@ export default function CoverflowCard({
 
   return (
     <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => {
+        if (isFront) setIsHovered(true);
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+      }}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={isFront ? 0 : -1}
       role="button"
-      aria-label={`${project.title}. ${isFront ? "Click or press Enter to view details." : "Click to bring to front."}`}
+      aria-label={`${project.title}. ${isFront ? "Click to view project details." : "Click to bring to front."}`}
       animate={{
         x: translateX,
         z: translateZ,
         rotateY: rotateYCover,
         opacity: opacity,
-        scale: isFront ? 1 : 0.9,
+        scale: isFront ? (isHovered && !reducedMotion ? 1.02 : 1) : 0.9,
       }}
       transition={{
         type: "spring",
-        stiffness: 240,
-        damping: 24,
+        stiffness: 260,
+        damping: 26,
       }}
       style={{
         zIndex,
         pointerEvents: pointerEvents as any,
         transformStyle: "preserve-3d",
       }}
-      className={`absolute top-0 w-[300px] sm:w-[350px] md:w-[380px] h-[460px] sm:h-[480px] select-none rounded-3xl cursor-pointer focus:outline-none ${
+      className={`absolute top-0 w-[300px] sm:w-[350px] md:w-[380px] h-[485px] sm:h-[505px] select-none rounded-3xl cursor-pointer focus:outline-none ${
         isFront ? "focus-visible:ring-2 focus-visible:ring-accent" : ""
       }`}
     >
-      {/* Tilt container for active card */}
-      <motion.div
-        style={{
-          rotateX: isFront && !reducedMotion ? springTiltX : 0,
-          rotateY: isFront && !reducedMotion ? springTiltY : 0,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative w-full h-full rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-7 flex flex-col justify-between shadow-xl transition-shadow duration-300 overflow-hidden group"
+      {/* Stable container for active card with smooth lift on hover */}
+      <div
+        className={`relative w-full h-full rounded-3xl bg-bg-surface border p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 overflow-hidden group ${
+          isFront
+            ? isHovered
+              ? "border-accent ring-2 ring-accent/30 shadow-2xl"
+              : "border-accent/40 shadow-xl hover:border-accent"
+            : "border-border-custom hover:border-accent/40 shadow-md"
+        }`}
       >
-        {/* Magic UI-style animated border beam for front card */}
-        {isFront && !reducedMotion && (
+        {/* Full Card Blurry Showcase Hover Overlay (Zero Glitch, Pointer Events None) */}
+        {isFront && (
           <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-[1px] rounded-3xl overflow-hidden"
+            className={`pointer-events-none absolute inset-0 z-30 rounded-3xl bg-neutral-950/65 dark:bg-neutral-950/80 backdrop-blur-md transition-all duration-300 flex flex-col items-center justify-center p-6 text-center ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <div className="absolute inset-0 border-2 border-accent/40 rounded-3xl" />
-            <div className="border-beam-line absolute -inset-[100%] rounded-full bg-[conic-gradient(from_0deg,transparent_0_300deg,#3b82f6_360deg)] opacity-70 animate-[spin_4s_linear_infinite]" />
-            <div className="absolute inset-[1.5px] rounded-3xl bg-bg-surface" />
+            <div
+              className={`flex flex-col items-center gap-3 transition-all duration-300 ${
+                isHovered ? "translate-y-0 scale-100 opacity-100" : "translate-y-3 scale-95 opacity-0"
+              }`}
+            >
+              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-accent shadow-2xl backdrop-blur-sm">
+                <Eye className="w-7 h-7 text-white" />
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-accent text-white font-sans text-sm font-bold shadow-xl shadow-accent/25">
+                  <span>{project.isGitHubCard ? "Showcase Repository" : "Showcase Project"}</span>
+                  <ExternalLink className="w-4 h-4" />
+                </span>
+                <span className="font-mono text-xs text-white/90 font-medium">
+                  Click anywhere to view full case study & details
+                </span>
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Aceternity glare overlay on front card */}
-        {isFront && !reducedMotion && (
-          <motion.div
-            style={{
-              opacity: glareOpacity,
-              background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 65%)`,
-            }}
-            className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-200"
-          />
         )}
 
         {/* Content Container */}
         <div className="relative z-10 flex flex-col h-full justify-between">
           {/* Top Meta Bar */}
           <div>
-            <div className="flex items-center justify-between gap-2 mb-4">
+            <div className="flex items-center justify-between gap-2 mb-3.5">
               <span className="font-mono text-[11px] font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent">
                 {project.tag}
               </span>
@@ -187,14 +161,13 @@ export default function CoverflowCard({
 
             {/* Project Image Preview Slot */}
             {!project.isGitHubCard && (
-              <div className="mt-3 relative w-full h-32 rounded-xl border border-border-custom bg-bg/50 overflow-hidden flex items-center justify-center">
+              <div className="mt-3 relative w-full h-28 sm:h-32 rounded-xl border border-border-custom bg-bg/50 overflow-hidden flex items-center justify-center">
                 {project.image ? (
                   <img
                     src={project.image}
                     alt={`${project.title} preview`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                     onError={(e) => {
-                      // Fallback gracefully if image is a TODO slot
                       (e.target as HTMLElement).style.display = "none";
                     }}
                   />
@@ -204,6 +177,8 @@ export default function CoverflowCard({
                     <span className="font-mono text-[9px] text-text-secondary mt-0.5">Asset ready</span>
                   </div>
                 )}
+                
+                {/* Subtle bottom shadow */}
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-surface/80 via-transparent to-transparent pointer-events-none" />
               </div>
             )}
@@ -221,11 +196,11 @@ export default function CoverflowCard({
             </div>
           ) : (
             primaryMetric && (
-              <div className="my-4 p-4 rounded-2xl bg-accent/5 border border-accent/20">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-text-secondary block">
+              <div className="my-3 p-3.5 rounded-2xl bg-accent/5 border border-accent/20">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block">
                   {primaryMetric.label}
                 </span>
-                <div className="mt-1 font-display font-black text-2xl sm:text-3xl text-accent">
+                <div className="mt-0.5 font-display font-black text-2xl text-accent">
                   {primaryMetric.value}{" "}
                   {primaryMetric.suffix && (
                     <span className="text-xs font-mono font-medium text-text-secondary">
@@ -237,9 +212,9 @@ export default function CoverflowCard({
             )
           )}
 
-          {/* Bottom: Stack Chips & CTA prompt */}
+          {/* Bottom: Stack Chips & Clean Action Link */}
           <div>
-            <div className="flex flex-wrap gap-1.5 mb-4">
+            <div className="flex flex-wrap gap-1.5 mb-3">
               {project.stack.slice(0, 4).map((tech) => (
                 <span
                   key={tech}
@@ -256,13 +231,18 @@ export default function CoverflowCard({
               )}
             </div>
 
+            {/* Bottom Meta & Action Prompt */}
             <div className="pt-3 border-t border-border-custom/60 flex items-center justify-between font-mono text-xs text-text-secondary">
-              <span>{isFront ? (project.isGitHubCard ? "Click to open GitHub ↗" : "Click to view case study") : "Click to bring forward"}</span>
-              <span className="text-accent">→</span>
+              <span className="group-hover:text-accent font-medium transition-colors">
+                {isFront ? (project.isGitHubCard ? "Open GitHub Repository" : "View Project Case Study") : "Click to bring forward"}
+              </span>
+              <span className="text-accent transform group-hover:translate-x-1.5 transition-transform duration-200">
+                {project.isGitHubCard ? "↗" : "→"}
+              </span>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

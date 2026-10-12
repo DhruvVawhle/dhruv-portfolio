@@ -5,10 +5,7 @@ export interface ExperienceItem {
   period: string;
   status: "Completed" | "Certificate pending";
   bullets: string[];
-  tags: string[];
   credential?: {
-    badge: string;
-    issuerNote: string;
     title: string;
     buttonText: string;
     image: string;
@@ -26,12 +23,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
       "Completed 150+ hours of on-the-job training in technical and functional testing.",
       "Executed QA procedures and test cases for the PRAM Edumobile app to verify functionality and report defects."
     ],
-    tags: ["Functional testing", "Technical testing", "QA test cases", "Defect reporting"],
     credential: {
-      badge: "Completed internship / Verified",
-      issuerNote: "PRAM Educate official credentials · ST29068",
-      title: "PRAM Educate Software Quality Assurance Internship Certificate",
-      buttonText: "View internship certificate",
+      title: "QA Internship Certificate",
+      buttonText: "View Certificate",
       image: "/images/certifications/pramedu-internship.jpg"
     }
   },
@@ -44,12 +38,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     bullets: [
       "Built and deployed responsive web apps and UI components (calculator, landing pages) using HTML, CSS, JavaScript, Git, and GitHub Pages."
     ],
-    tags: ["HTML", "CSS", "JavaScript", "Git", "GitHub Pages"],
     credential: {
-      badge: "Completed internship / Verified",
-      issuerNote: "CodSoft official credentials",
-      title: "CodSoft Web Development Internship Certificate",
-      buttonText: "View internship certificate",
+      title: "Web Dev Internship Certificate",
+      buttonText: "View Certificate",
       image: "/images/certifications/codsoft-internship.png"
     }
   },
@@ -64,12 +55,9 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
       "Debugged, refactored, and optimized code; collaborated via Git, sprint planning, and code reviews.",
       "Recognized by the HR team for initiative, dedication, and eagerness to learn."
     ],
-    tags: ["React", "Node.js", "Agile", "Git", "Sprint planning", "Code reviews"],
     credential: {
-      badge: "Completed internship / Verified",
-      issuerNote: "Compozent official credentials",
-      title: "Compozent SDE Web Development Internship Completion Certificate",
-      buttonText: "View internship certificate",
+      title: "SDE Internship Certificate",
+      buttonText: "View Certificate",
       image: "/images/certifications/compozent-internship.jpg"
     }
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { WORKFLOW_HEADER_CODE, WORKFLOW_STEPS, WorkflowStep } from "@/data/engineeringWorkflow";
+import { WORKFLOW_HEADER_CODE, WORKFLOW_STEPS } from "@/data/engineeringWorkflow";
 import { renderHighlightedLine } from "@/components/sections/syntaxHighlighter";
 
 interface VSCodeEditorProps {
@@ -281,7 +281,6 @@ export default function VSCodeEditor({
                 <span>OUTPUT</span>
                 <span>DEBUG CONSOLE</span>
               </div>
-              <span className="text-[#666666]">node v20.12.0</span>
             </div>
             <div
               aria-live="polite"
@@ -322,7 +321,6 @@ export default function VSCodeEditor({
       >
         <div className="flex items-center gap-3">
           <span>main*</span>
-          <span>{hasError ? "⊗ 1 error" : "✓ 0 errors"}</span>
         </div>
         <div className="flex items-center gap-3">
           <span>

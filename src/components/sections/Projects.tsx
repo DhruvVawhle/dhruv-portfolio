@@ -7,7 +7,6 @@ import CoverflowCard from "@/components/sections/CoverflowCard";
 import ProjectDetailSheet from "@/components/sections/ProjectDetailSheet";
 import DriftingParticleField from "@/components/sections/DriftingParticleField";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import TechIcon from "@/components/ui/TechIcon";
 
 const FILTER_CHIPS = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud"] as const;
 type FilterChip = (typeof FILTER_CHIPS)[number];
@@ -132,16 +131,9 @@ export default function Projects() {
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-                02 · SELECTED WORK
-              </span>
-              <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
-              <span className="font-mono text-xs text-text-secondary">
-                Production Case Studies
+                Selected Work
               </span>
             </div>
-            <span className="font-mono text-xs text-text-secondary">
-              Next.js · React · AI/ML · Security
-            </span>
           </div>
 
           <div className="max-w-3xl mb-8">

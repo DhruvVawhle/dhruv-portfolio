@@ -1,45 +1,32 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
   motion,
-  useMotionValue,
   useSpring,
+  useMotionValue,
   useReducedMotion,
   type Variants,
-  AnimatePresence,
 } from "motion/react";
-import { hero, socialLinks } from "@/lib/data";
-import heroData from "@/data/profile.json";
-import Button from "@/components/ui/Button";
-import TiltCard from "@/components/effects/TiltCard";
-import AnimatedBackground from "@/components/effects/AnimatedBackground";
+import HeroNodeNetwork from "@/components/effects/HeroNodeNetwork";
 
-/* ─── Icons & Engineering Graphic Motifs ───────────────────────────── */
+/* ─── Engineering Icons ─────────────────────────────────────────── */
 const ShieldIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
     <path d="m9 12 2 2 4-4" />
   </svg>
 );
 
 const DatabaseIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <ellipse cx="12" cy="5" rx="9" ry="3" />
     <path d="M3 5V19A9 3 0 0 0 21 19V5" />
     <path d="M3 12A9 3 0 0 0 21 12" />
   </svg>
 );
 
-const RocketIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-  </svg>
-);
 
 const GithubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -53,19 +40,6 @@ const LinkedinIcon = () => (
   </svg>
 );
 
-const MailIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-);
-
-const PhoneIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-  </svg>
-);
-
 const ResumeIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -74,187 +48,434 @@ const ResumeIcon = () => (
 );
 
 const ArrowRightIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-[2px] transition-transform duration-200">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-1 transition-transform duration-200">
     <path d="M5 12h14" />
     <path d="m12 5 7 7-7 7" />
   </svg>
 );
 
-const trustIcons = [
-  <ShieldIcon key="shield" />,
-  <DatabaseIcon key="db" />,
-  <RocketIcon key="rocket" />,
-];
+const MessageIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
 
-function SocialIcon({ icon }: { icon: string }) {
-  if (icon === "github") return <GithubIcon />;
-  if (icon === "linkedin") return <LinkedinIcon />;
-  if (icon === "mail") return <MailIcon />;
-  if (icon === "phone") return <PhoneIcon />;
-  if (icon === "resume") return <ResumeIcon />;
-  return null;
-}
-
-function ApiFlowMotif() {
+/* ─── Micro Animated Node-Graph Chip ────────────────────────────── */
+function NodeGraphChip() {
   return (
-    <svg width="140" height="44" viewBox="0 0 140 44" fill="none" className="text-text-secondary opacity-65 dark:opacity-85 select-none pointer-events-none">
-      {/* Left Node */}
-      <circle cx="12" cy="22" r="4" fill="currentColor" />
-      
-      {/* Left Connection Line */}
-      <line x1="16" y1="22" x2="54" y2="22" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
-      
-      {/* API Gateway Box (pulsing border) */}
-      <motion.rect
-        x="54"
-        y="10"
-        width="32"
-        height="24"
-        rx="4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        animate={{
-          stroke: ["rgba(255,255,255,0.15)", "var(--accent)", "rgba(255,255,255,0.15)"],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{ transformOrigin: "70px 22px" }}
-      />
-      <text x="70" y="25" textAnchor="middle" fontSize="9" fontFamily="monospace" fill="currentColor">
-        API
-      </text>
-      
-      {/* Right Connection Line */}
-      <line x1="86" y1="22" x2="124" y2="22" stroke="currentColor" strokeWidth="1.2" strokeDasharray="3 3" />
-      
-      {/* Right Node */}
-      <circle cx="128" cy="22" r="4" fill="var(--accent)" />
+    <div className="p-2 sm:p-2.5 rounded-xl bg-bg-surface/85 backdrop-blur-md border border-border-custom/80 shadow-md">
+      <svg width="56" height="26" viewBox="0 0 56 26" fill="none" className="overflow-visible select-none pointer-events-none">
+        {/* Connection lines */}
+        <line x1="8" y1="13" x2="28" y2="6" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
+        <line x1="8" y1="13" x2="28" y2="20" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
+        <line x1="28" y1="6" x2="48" y2="13" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
+        <line x1="28" y1="20" x2="48" y2="13" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
 
-      {/* Moving Signal packet */}
-      <motion.circle
-        r="2"
-        fill="var(--accent)"
-        cy="22"
-        animate={{
-          cx: [12, 54, 86, 128],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </svg>
+        {/* Nodes */}
+        <circle cx="8" cy="13" r="3" fill="currentColor" className="text-text-secondary" />
+        <circle cx="28" cy="6" r="3.2" fill="var(--accent)" />
+        <circle cx="28" cy="20" r="3.2" fill="var(--accent)" />
+        <circle cx="48" cy="13" r="3.5" fill="var(--accent)" />
+
+        {/* Dynamic Pulse Ring */}
+        <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.5" className="animate-ping" />
+
+        {/* Traveling signal */}
+        <motion.circle
+          r="1.8"
+          fill="#ffffff"
+          animate={{
+            cx: [8, 28, 48],
+            cy: [13, 6, 13],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </svg>
+    </div>
   );
 }
 
-function GitGraphMotif() {
-  return (
-    <svg width="110" height="36" viewBox="0 0 110 36" fill="none" className="text-text-secondary opacity-65 dark:opacity-85 select-none pointer-events-none">
-      {/* Node 1 */}
-      <circle cx="14" cy="18" r="4" stroke="currentColor" strokeWidth="1.5" />
-      <line x1="18" y1="18" x2="52" y2="18" stroke="currentColor" strokeWidth="1.5" />
-      
-      {/* Middle Node (Split Point) */}
-      <circle cx="56" cy="18" r="4" fill="var(--accent)" />
-      
-      {/* Upper Branch */}
-      <path d="M60 18 C 70 18, 70 8, 86 8" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="90" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
-      
-      {/* Lower Branch */}
-      <path d="M60 18 C 70 18, 70 28, 86 28" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="90" cy="28" r="4" stroke="currentColor" strokeWidth="1.5" />
+/* ─── Scramble Word Component ───────────────────────────────────── */
+const SCRAMBLE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789!<>_—=*+";
 
-      {/* Upper Branch Animated Signal */}
-      <motion.circle
-        r="2"
-        fill="var(--accent)"
-        animate={{
-          cx: [14, 56, 73, 90],
-          cy: [18, 18, 11, 8],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 2.2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+function ScrambleWord({
+  text,
+  className = "",
+  isTouchDevice = false,
+  shouldReduceMotion = false,
+}: {
+  text: string;
+  className?: string;
+  isTouchDevice?: boolean;
+  shouldReduceMotion?: boolean;
+}) {
+  const [displayText, setDisplayText] = useState(text);
+  const isScramblingRef = useRef(false);
 
-      {/* Lower Branch Animated Signal */}
-      <motion.circle
-        r="2"
-        fill="var(--accent)"
-        animate={{
-          cx: [14, 56, 73, 90],
-          cy: [18, 18, 25, 28],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 2.2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </svg>
-  );
-}
+  const scramble = useCallback(() => {
+    if (isTouchDevice || shouldReduceMotion || isScramblingRef.current) return;
+    isScramblingRef.current = true;
 
-export default function Hero() {
-  const shouldReduceMotion = useReducedMotion();
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+    const length = text.length;
+    let iteration = 0;
+    const maxIterations = length * 3;
 
-  const [roleIndex, setRoleIndex] = useState(0);
-  useEffect(() => {
     const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % heroData.roles.length);
-    }, 3000);
-    return () => clearInterval(interval);
+      iteration++;
+      const resolvedIndex = Math.floor((iteration / maxIterations) * length);
+
+      const scrambled = text
+        .split("")
+        .map((char, index) => {
+          if (char === " ") return " ";
+          if (index < resolvedIndex) return text[index];
+          return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        })
+        .join("");
+
+      setDisplayText(scrambled);
+
+      if (iteration >= maxIterations) {
+        clearInterval(interval);
+        setDisplayText(text);
+        isScramblingRef.current = false;
+      }
+    }, 28);
+  }, [text, isTouchDevice, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (!isTouchDevice && !shouldReduceMotion) {
+      scramble();
+    } else {
+      setDisplayText(text);
+    }
+  }, [scramble, isTouchDevice, shouldReduceMotion, text]);
+
+  return (
+    <span
+      onMouseEnter={() => {
+        if (!isTouchDevice && !shouldReduceMotion) {
+          scramble();
+        }
+      }}
+      className={`relative inline-block cursor-default select-none ${className}`}
+    >
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{displayText}</span>
+    </span>
+  );
+}
+
+/* ─── Magnetic Button Wrapper (Mouse Only) ───────────────────────── */
+function MagneticButton({
+  children,
+  className = "",
+  isTouchDevice = false,
+  shouldReduceMotion = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  isTouchDevice?: boolean;
+  shouldReduceMotion?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const springX = useSpring(x, { stiffness: 260, damping: 20 });
+  const springY = useSpring(y, { stiffness: 260, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice || shouldReduceMotion || !ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distanceX = (e.clientX - centerX) * 0.22;
+    const distanceY = (e.clientY - centerY) * 0.22;
+    x.set(distanceX);
+    y.set(distanceY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        x: isTouchDevice || shouldReduceMotion ? 0 : springX,
+        y: isTouchDevice || shouldReduceMotion ? 0 : springY,
+      }}
+      className={`inline-block ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ─── Magnifying Dock Component ─────────────────────────────────── */
+interface DockItem {
+  id: string;
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  ariaLabel: string;
+  external?: boolean;
+}
+
+function DirectContactDock({
+  isTouchDevice,
+  shouldReduceMotion,
+}: {
+  isTouchDevice: boolean;
+  shouldReduceMotion: boolean;
+}) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [mouseX, setMouseX] = useState<number | null>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+
+  const items: DockItem[] = [
+    {
+      id: "linkedin",
+      label: "LinkedIn",
+      href: "https://linkedin.com/in/dhruv-vawhle-277b2b2b8",
+      icon: <LinkedinIcon />,
+      ariaLabel: "LinkedIn Profile",
+      external: true,
+    },
+    {
+      id: "github",
+      label: "GitHub",
+      href: "https://github.com/DhruvVawhle",
+      icon: <GithubIcon />,
+      ariaLabel: "GitHub Profile",
+      external: true,
+    },
+    {
+      id: "resume",
+      label: "Resume",
+      href: "/resume.pdf",
+      icon: <ResumeIcon />,
+      ariaLabel: "View resume",
+      external: true,
+    },
+    {
+      id: "email",
+      label: "Email",
+      href: "mailto:dhruvvawhle@gmail.com",
+      icon: <MessageIcon />,
+      ariaLabel: "Email dhruvvawhle@gmail.com",
+      external: true,
+    },
+  ];
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice || shouldReduceMotion || !dockRef.current) return;
+    const rect = dockRef.current.getBoundingClientRect();
+    setMouseX(e.clientX - rect.left);
+  };
+
+  const handleMouseLeave = () => {
+    setMouseX(null);
+    setHoveredIndex(null);
+  };
+
+  return (
+    <div
+      ref={dockRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-xl bg-bg/60 border border-border-custom/80 shadow-xs"
+    >
+      {items.map((item, index) => {
+        let scale = 1;
+        if (!isTouchDevice && !shouldReduceMotion && mouseX !== null) {
+          const itemCenter = index * 48 + 24;
+          const dist = Math.abs(mouseX - itemCenter);
+          scale = 1 + Math.max(0, 0.32 * (1 - dist / 80));
+        }
+
+        const isItemHovered = hoveredIndex === index && !isTouchDevice;
+
+        return (
+          <div key={item.id} className="relative flex flex-col items-center">
+            {/* Tooltip on mouse hover */}
+            {isItemHovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: -4 }}
+                exit={{ opacity: 0, y: 6 }}
+                className="absolute -top-8 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-foreground text-background pointer-events-none shadow-md whitespace-nowrap z-30"
+              >
+                {item.label}
+              </motion.div>
+            )}
+
+            <motion.a
+              href={item.href}
+              {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              aria-label={item.ariaLabel}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              animate={{ scale: isTouchDevice || shouldReduceMotion ? 1 : scale }}
+              transition={{ type: "spring", stiffness: 350, damping: 25 }}
+              className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent"
+            >
+              {item.icon}
+            </motion.a>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ─── Credibility Spotlight Card ────────────────────────────────── */
+function CredibilityCard({
+  category,
+  title,
+  icon,
+  isTouchDevice,
+}: {
+  category: string;
+  title: string;
+  icon: React.ReactNode;
+  isTouchDevice: boolean;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, active: false });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setSpotlight({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      active: true,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setSpotlight((prev) => ({ ...prev, active: false }));
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 overflow-hidden group select-none"
+    >
+      {/* Radial Cursor Spotlight */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+        style={{
+          opacity: spotlight.active ? 1 : 0,
+          background: `radial-gradient(220px circle at ${spotlight.x}px ${spotlight.y}px, rgba(59, 130, 246, 0.14), transparent 80%)`,
+        }}
+      />
+
+      <div className="w-11 h-11 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+
+      <div className="relative z-10">
+        <div className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
+          {category}
+        </div>
+        <div className="text-xs sm:text-sm font-semibold text-text-primary leading-snug mt-0.5">
+          {title}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Hero Section Component ────────────────────────────────────── */
+export default function Hero() {
+  const shouldReduceMotion = Boolean(useReducedMotion());
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchColorActive, setIsTouchColorActive] = useState(false);
+  const [activeSpecialty, setActiveSpecialty] = useState(0);
+
+  // 3D tilt & glare states for portrait
+  const portraitCardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, isHovering: false });
+
+  // Detect touch capability
+  useEffect(() => {
+    const isTouch =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window);
+    setIsTouchDevice(isTouch);
   }, []);
 
-  const parallaxX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const parallaxY = useSpring(mouseY, { stiffness: 60, damping: 20 });
-
+  // Cycling specialties highlight in paragraph
   useEffect(() => {
     if (shouldReduceMotion) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 18;
-      const y = (e.clientY / innerHeight - 0.5) * 18;
-      mouseX.set(x);
-      mouseY.set(y);
-    };
+    const interval = setInterval(() => {
+      setActiveSpecialty((prev) => (prev + 1) % 3);
+    }, 2600);
+    return () => clearInterval(interval);
+  }, [shouldReduceMotion]);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY, shouldReduceMotion]);
+  // Handle 3D Tilt & Glare on Portrait (Mouse only)
+  const handlePortraitMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isTouchDevice || shouldReduceMotion || !portraitCardRef.current) return;
+    const rect = portraitCardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-  // Staggered Cuberto reveal variants
+    const maxTilt = 7;
+    const rotateX = ((e.clientY - centerY) / (rect.height / 2)) * -maxTilt;
+    const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * maxTilt;
+
+    const glareX = ((e.clientX - rect.left) / rect.width) * 100;
+    const glareY = ((e.clientY - rect.top) / rect.height) * 100;
+
+    setTilt({ rotateX, rotateY, glareX, glareY, isHovering: true });
+  };
+
+  const handlePortraitMouseLeave = () => {
+    setTilt({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, isHovering: false });
+  };
+
+  const handlePortraitTap = () => {
+    if (isTouchDevice) {
+      setIsTouchColorActive((prev) => !prev);
+    }
+  };
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.12,
-        delayChildren: shouldReduceMotion ? 0 : 0.1,
+        staggerChildren: shouldReduceMotion ? 0 : 0.1,
+        delayChildren: shouldReduceMotion ? 0 : 0.05,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.65,
+        duration: 0.6,
         ease: [0.16, 1, 0.3, 1] as const,
       },
     },
@@ -263,33 +484,30 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden pt-8 pb-10 sm:pt-16 sm:pb-14 lg:pt-32 lg:pb-28 bg-bg border-b border-border-custom/40"
+      className="relative overflow-hidden pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 bg-bg border-b border-border-custom/40"
       aria-label="Portfolio Introduction"
     >
-      {/* ── Architectural Animated Background & Interactive Glow ── */}
-      <AnimatedBackground />
+      {/* ── 1. Single WebGL Canvas: Three.js Node Network Background ── */}
+      <HeroNodeNetwork />
 
-      {/* ── Additional 1px Background Grid Pattern (Low Opacity) ── */}
+      {/* ── Subtle Architectural Grid Line Overlay ── */}
       <div className="absolute inset-0 pointer-events-none">
         <div
-          className="absolute inset-0 opacity-[0.06] dark:opacity-[0.10]"
+          className="absolute inset-0 opacity-[0.05] dark:opacity-[0.08]"
           style={{
             backgroundImage: `
               linear-gradient(to right, currentColor 1px, transparent 1px),
               linear-gradient(to bottom, currentColor 1px, transparent 1px)
             `,
             backgroundSize: "44px 44px",
-            maskImage:
-              "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)",
           }}
         />
         <div
-          className="absolute bottom-0 left-0 right-0 h-44 pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
           style={{
-            background:
-              "linear-gradient(to top, var(--bg) 0%, transparent 100%)",
+            background: "linear-gradient(to top, var(--bg) 0%, transparent 100%)",
           }}
         />
       </div>
@@ -300,343 +518,312 @@ export default function Hero() {
         animate="visible"
         className="content-width relative z-10"
       >
-        {/* ── 1. EDITORIAL CHAPTER METADATA BAR ───────────────────────── */}
+        {/* ── TOP STRIP ──────────────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-wrap items-center justify-between gap-4 pb-4 sm:pb-5 mb-6 sm:mb-10 border-b border-border-custom/60"
+          className="flex flex-wrap items-center justify-between gap-4 pb-4 sm:pb-5 mb-8 sm:mb-12 border-b border-border-custom/60"
         >
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-              01 · PORTFOLIO
-            </span>
-            <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
-            <span className="font-mono text-xs text-text-secondary">
-              {heroData.name}
+              Dhruv Vawhle
             </span>
           </div>
+
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs text-text-secondary inline-flex min-w-[200px]">
-              {heroData.roles[roleIndex]}
+            <span className="font-mono text-xs text-text-secondary">
+              AI Security Specialist
             </span>
-            <div className="hidden md:flex items-center gap-2 pl-3 border-l border-border-custom/60">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-mono text-[11px] text-text-secondary">
-                PRODUCTION RUNTIME ACTIVE
-              </span>
-            </div>
           </div>
         </motion.div>
 
-        {/* =========================================================
-            MOBILE / TABLET VIEW (block lg:hidden): Optimized Hierarchy
-            Headline -> Portrait -> Buttons -> Role/Bio -> Stats
-           ========================================================= */}
-        <div className="block lg:hidden space-y-7 pt-1">
-          {/* 1. Identity & Headline */}
-          <motion.div variants={itemVariants}>
-            <div className="flex items-center gap-3 mb-3.5 font-mono text-[11px] text-text-secondary/60">
-              <span>&lt;production_architecture /&gt;</span>
-              <span className="w-8 h-[1px] bg-border-custom" />
-              <span>v2.0.26</span>
-            </div>
-            <div className="font-display font-black tracking-tighter uppercase leading-[0.88] select-none text-5xl sm:text-7xl md:text-8xl">
-              <div className="text-text-primary">ENGINEER</div>
-              <div className="text-accent">BUILDER</div>
-              <div className="text-text-primary">PROBLEM</div>
-              <div className="text-text-primary">SOLVER</div>
-            </div>
-          </motion.div>
-
-          {/* 2. Portrait Card immediately inside first screen */}
-          <motion.div variants={itemVariants} className="relative pt-2">
-            <div className="flex items-center justify-between mb-2.5 px-1 font-mono text-xs text-text-secondary">
-              <span>PORTRAIT // ARCHITECTURE</span>
-              <span className="text-accent font-semibold">GRASSROOTS SCALE</span>
-            </div>
-
-            <TiltCard maxTilt={6} className="w-full">
-              <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90">
-                <Image
-                  src={heroData.profileImage}
-                  alt={`${heroData.name} – ${heroData.currentRole} Portrait`}
-                  fill
-                  priority
-                  quality={100}
-                  sizes="(max-width:768px) 100vw, 50vw"
-                  className="object-cover grayscale contrast-110"
-                />
-
-                <div className="absolute inset-x-3.5 bottom-3.5 p-5 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5">
-                  <div>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                      {heroData.name}
-                    </h3>
-                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium min-h-[16px]">
-                      {heroData.roles[roleIndex]}
-                    </p>
-                  </div>
-                  <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                    <span>B.Tech IT · {heroData.location}</span>
-                    <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>{heroData.availabilityStatus}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            {/* Direct Contact Channels alongside portrait */}
-            <div className="mt-3.5 flex items-center justify-between p-3.5 sm:p-4 max-w-[320px] sm:max-w-md mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-sm">
-              <span className="font-mono text-xs text-text-secondary font-medium">
-                DIRECT CONTACT CHANNELS
-              </span>
-              <div className="flex items-center gap-2">
-                {socialLinks.map((link) => (
-                  <a
-                    key={`mobile-${link.label}`}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={link.label === "Resume" ? `Open ${heroData.name} Resume` : link.label}
-                    className="w-11 h-11 min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
-                  >
-                    <SocialIcon icon={link.icon} />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* 3. Primary CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-[10px] sm:gap-[12px]"
-          >
-            <Button
-              variant="primary"
-              href={heroData.ctaButtons.primary.href}
-              className="group/btn w-full sm:w-auto h-[46px] min-h-[46px] sm:h-[48px] sm:min-h-[48px] px-[28px] sm:px-[32px] rounded-full text-[15px] font-semibold leading-none whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-[10px] sm:gap-[12px]"
-            >
-              <span>{heroData.ctaButtons.primary.label}</span>
-              <ArrowRightIcon />
-            </Button>
-            <Button
-              variant="secondary"
-              href={heroData.resume.url}
-              download="Dhruv_Vawhle_Resume.pdf"
-              external
-              aria-label={`Download ${heroData.name} Resume`}
-              className="w-full sm:w-auto h-[46px] min-h-[46px] sm:h-[48px] sm:min-h-[48px] px-[24px] sm:px-[28px] rounded-full text-[15px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
-            >
-              <span>📄 {heroData.ctaButtons.secondary.label}</span>
-            </Button>
-          </motion.div>
-
-          {/* 4. Attribution Title & Mission Description */}
-          <motion.div variants={itemVariants} className="pt-3 border-t border-border-custom/50">
-            <h2 className="text-lg sm:text-xl font-bold text-text-primary font-display">
-              {heroData.name} — {heroData.currentRole}
-            </h2>
-            <p className="mt-2.5 text-base text-text-secondary leading-relaxed">
-              {heroData.tagline}
-            </p>
-          </motion.div>
-        </div>
-
-        {/* =========================================================
-            DESKTOP VIEW (hidden lg:grid): 100% UNCHANGED LAYOUT
-           ========================================================= */}
-        <div className="hidden lg:grid grid-cols-12 gap-8 items-start">
-          {/* LEFT ZONE: Oversized Stacked Editorial Headlines (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between z-10 pt-2 space-y-7 sm:space-y-8">
+        {/* ── MAIN HERO GRID ─────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          {/* LEFT ZONE: Stacked Typography, Bio, CTA Buttons (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col space-y-7 sm:space-y-8">
             <motion.div variants={itemVariants}>
-              {/* Engineering Code Fragment Graphic Overlay */}
-              <div className="flex items-center gap-3 mb-5 font-mono text-[11px] text-text-secondary/60">
-                <span>&lt;production_architecture /&gt;</span>
-                <span className="w-8 h-[1px] bg-border-custom" />
-                <span>v2.0.26</span>
-              </div>
 
-              {/* Stacked Oversized Editorial Typography */}
-              <div className="font-display font-black tracking-tighter uppercase leading-[0.88] select-none">
-                <div className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] text-text-primary">
-                  ENGINEER
+              {/* Headline with Scramble Effect */}
+              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.88] select-none text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem]">
+                <div className="text-text-primary">
+                  <ScrambleWord
+                    text="ENGINEER"
+                    isTouchDevice={isTouchDevice}
+                    shouldReduceMotion={shouldReduceMotion}
+                  />
                 </div>
-                <div className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] text-accent">
-                  BUILDER
+                <div className="text-accent">
+                  <ScrambleWord
+                    text="BUILDER"
+                    isTouchDevice={isTouchDevice}
+                    shouldReduceMotion={shouldReduceMotion}
+                  />
                 </div>
-                <div className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] text-text-primary">
-                  PROBLEM
+                <div className="text-text-primary">
+                  <ScrambleWord
+                    text="PROBLEM"
+                    isTouchDevice={isTouchDevice}
+                    shouldReduceMotion={shouldReduceMotion}
+                  />
                 </div>
-                <div className="text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem] text-text-primary">
-                  SOLVER
+                <div className="text-text-primary">
+                  <ScrambleWord
+                    text="SOLVER"
+                    isTouchDevice={isTouchDevice}
+                    shouldReduceMotion={shouldReduceMotion}
+                  />
                 </div>
-              </div>
+              </h1>
 
-              {/* Attribution Title & Reference Mission Content */}
-              <div className="mt-8 max-w-xl">
+              {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
+              <div className="mt-7 sm:mt-8 max-w-xl">
                 <h2 className="text-lg md:text-xl font-bold text-text-primary font-display">
-                  {heroData.name} — {heroData.currentRole}
+                  Dhruv Vawhle — Software Engineer
                 </h2>
                 <p className="mt-3 text-base md:text-lg text-text-secondary leading-relaxed">
-                  {heroData.tagline}
+                  Final-year Information Technology undergraduate specializing in{" "}
+                  <span
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                      activeSpecialty === 0
+                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                        : "text-text-primary"
+                    }`}
+                  >
+                    full-stack web development
+                  </span>
+                  ,{" "}
+                  <span
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                      activeSpecialty === 1
+                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                        : "text-text-primary"
+                    }`}
+                  >
+                    applied machine learning
+                  </span>
+                  , and{" "}
+                  <span
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                      activeSpecialty === 2
+                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                        : "text-text-primary"
+                    }`}
+                  >
+                    AI security
+                  </span>
+                  .
                 </p>
               </div>
             </motion.div>
 
-            {/* Action Dock & Telemetry */}
+            {/* CTA Buttons: Shimmer on Primary, Magnetic Lean toward Cursor */}
             <motion.div
               variants={itemVariants}
-              className="pt-6 border-t border-border-custom/50 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+              className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4"
             >
-              <div className="flex flex-row items-center gap-[16px] w-auto">
-                <Button
-                  variant="primary"
-                  href={heroData.ctaButtons.primary.href}
-                  className="group/btn w-auto h-[52px] min-h-[52px] px-[32px] rounded-full text-[16px] font-semibold leading-none whitespace-nowrap shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-[12px]"
+              {/* Primary: Explore Featured Projects */}
+              <MagneticButton
+                isTouchDevice={isTouchDevice}
+                shouldReduceMotion={shouldReduceMotion}
+              >
+                <a
+                  href="#projects"
+                  className="group/btn relative overflow-hidden w-full sm:w-auto h-[50px] min-h-[48px] px-8 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-accent text-white shadow-md hover:shadow-lg hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-2.5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
-                  <span>{heroData.ctaButtons.primary.label}</span>
+                  {/* Continuous subtle shimmer streak */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 -translate-x-full animate-[shimmer_2.8s_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
+                  />
+                  <span className="relative z-10">Explore Featured Projects</span>
                   <ArrowRightIcon />
-                </Button>
-                <Button
-                  variant="secondary"
-                  href={heroData.resume.url}
-                  download="Dhruv_Vawhle_Resume.pdf"
-                  external
-                  aria-label={`Download ${heroData.name} Resume`}
-                  className="w-auto h-[52px] min-h-[52px] px-[28px] rounded-full text-[16px] font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-neutral-300 dark:hover:border-neutral-600 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-300 inline-flex items-center justify-center"
-                >
-                  <span>📄 {heroData.ctaButtons.secondary.label}</span>
-                </Button>
-              </div>
+                </a>
+              </MagneticButton>
 
-              {/* Minimal API Flow Motif block */}
-              <div className="hidden xl:block">
-                <ApiFlowMotif />
-              </div>
+              {/* Secondary: View Resume (Normal <a> link to /resume.pdf, opens new tab) */}
+              <MagneticButton
+                isTouchDevice={isTouchDevice}
+                shouldReduceMotion={shouldReduceMotion}
+              >
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto h-[50px] min-h-[48px] px-7 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-accent hover:text-accent shadow-xs hover:shadow-md transition-all duration-300 inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-accent"
+                >
+                  <ResumeIcon />
+                  <span>View Resume</span>
+                </a>
+              </MagneticButton>
             </motion.div>
           </div>
 
-          {/* RIGHT ZONE: Architectural Grayscale Portrait Frame (5 cols) */}
+          {/* RIGHT ZONE: Portrait with 3D Tilt, Glare, Beam, Chip, Info Card, Dock (5 cols) */}
           <motion.div variants={itemVariants} className="lg:col-span-5 relative z-20">
-            {/* Subtle Mouse Parallax Frame wrapper */}
-            <motion.div
-              style={
-                shouldReduceMotion
-                  ? undefined
-                  : { x: parallaxX, y: parallaxY }
-              }
-              className="relative"
+
+            {/* 3D Tilt Container */}
+            <div
+              ref={portraitCardRef}
+              onMouseMove={handlePortraitMouseMove}
+              onMouseLeave={handlePortraitMouseLeave}
+              style={{
+                perspective: 1000,
+              }}
+              className="w-full"
             >
-              {/* Top Architectural Badge Tag above Portrait */}
-              <div className="flex items-center justify-between mb-3 px-1 font-mono text-xs text-text-secondary">
-                <span>PORTRAIT // ARCHITECTURE</span>
-                <span className="text-accent font-semibold">GRASSROOTS SCALE</span>
-              </div>
+              <motion.div
+                animate={
+                  isTouchDevice || shouldReduceMotion
+                    ? { rotateX: 0, rotateY: 0 }
+                    : {
+                        rotateX: tilt.rotateX,
+                        rotateY: tilt.rotateY,
+                      }
+                }
+                transition={{
+                  type: "spring",
+                  stiffness: 280,
+                  damping: 24,
+                }}
+                tabIndex={0}
+                role="region"
+                aria-label="Dhruv Vawhle portrait, turns to color on hover or focus"
+                onClick={handlePortraitTap}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handlePortraitTap();
+                  }
+                }}
+                className={`relative w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-[22px] overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group cursor-pointer focus-visible:outline-2 focus-visible:outline-accent select-none ${
+                  isTouchColorActive ? "touch-color-active" : ""
+                }`}
+              >
+                {/* Image Component */}
+                <Image
+                  src="/images/profile/dhruv-vawhle.jpg"
+                  alt="Dhruv Vawhle – AI Security Specialist Portrait"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
+                  className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${
+                    isTouchColorActive ? "!grayscale-0" : ""
+                  }`}
+                  style={{ objectPosition: "50% 20%" }}
+                />
 
-              {/* Portrait Container wrapped in 3D TiltCard */}
-              <TiltCard maxTilt={7} className="w-full">
-                <div className="relative w-full max-w-[300px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group">
-                  <Image
-                    src={heroData.profileImage}
-                    alt={`${heroData.name} – ${heroData.currentRole} Portrait`}
-                    fill
-                    priority
-                    quality={100}
-                    sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-                    className="object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
+                {/* Glare effect on mouse move */}
+                {!isTouchDevice && !shouldReduceMotion && (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300 rounded-[22px]"
+                    style={{
+                      opacity: tilt.isHovering ? 0.35 : 0,
+                      background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255, 255, 255, 0.6) 0%, transparent 60%)`,
+                    }}
                   />
+                )}
 
-                  {/* Top Corner Git Graph Motif Overlay */}
-                  <div className="absolute top-4 right-4 p-2.5 rounded-xl bg-bg-surface/80 backdrop-blur-md border border-border-custom/60 hidden sm:block">
-                    <GitGraphMotif />
+                {/* Animated Border Beam */}
+                <svg
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-20 rounded-[22px] overflow-hidden"
+                  fill="none"
+                >
+                  <defs>
+                    <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="transparent" />
+                      <stop offset="50%" stopColor="var(--accent)" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <motion.rect
+                    x="1"
+                    y="1"
+                    width="calc(100% - 2px)"
+                    height="calc(100% - 2px)"
+                    rx="21"
+                    stroke="url(#beamGradient)"
+                    strokeWidth="2"
+                    strokeDasharray="100 380"
+                    animate={
+                      shouldReduceMotion
+                        ? undefined
+                        : {
+                            strokeDashoffset: [0, -480],
+                          }
+                    }
+                    transition={{
+                      duration: 4.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                </svg>
+
+
+                {/* Animated Node-Graph Chip Top Right */}
+                <div className="absolute top-3.5 right-3.5 z-20">
+                  <NodeGraphChip />
+                </div>
+
+                {/* Info Card inside Portrait */}
+                <div className="absolute inset-x-3.5 bottom-3.5 z-20 p-5 sm:p-6 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5 transition-all duration-300">
+                  <div>
+                    <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
+                      Dhruv Vawhle
+                    </h3>
+                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
+                      AI Security Specialist
+                    </p>
                   </div>
-
-                  {/* Bottom Structured Portrait Hierarchy Inside Card */}
-                  <div className="absolute inset-x-4 bottom-4 p-6 sm:p-7 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-3 transition-all duration-300">
-                    <div>
-                      <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
-                        {heroData.name}
-                      </h3>
-                      <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium min-h-[16px]">
-                        {heroData.roles[roleIndex]}
-                      </p>
-                    </div>
-                    <div className="pt-3 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                      <span>B.Tech IT · {heroData.location}</span>
-                      <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>{heroData.availabilityStatus}</span>
-                      </div>
+                  <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
+                    <span>B.Tech IT - Mumbai, Maharashtra, India</span>
+                    <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Available for Roles</span>
                     </div>
                   </div>
                 </div>
-              </TiltCard>
+              </motion.div>
+            </div>
 
-              {/* Floating Social Bar alongside Portrait Grid */}
-              <div className="mt-4 flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-bg-surface border border-border-custom shadow-sm">
-                <span className="font-mono text-xs text-text-secondary font-medium">
-                  DIRECT CONTACT CHANNELS
-                </span>
-                <div className="flex items-center gap-2">
-                  {socialLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.label === "Resume" ? `Open ${heroData.name} Resume` : link.label}
-                      id={`hero-social-${link.icon}`}
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-all focus-visible:outline-2 focus-visible:outline-accent"
-                    >
-                      <SocialIcon icon={link.icon} />
-                    </a>
-                  ))}
+            {/* Direct Contact Channels Dock alongside Portrait */}
+            <div className="mt-4 flex items-center justify-between p-2.5 sm:p-3 max-w-[340px] sm:max-w-md lg:max-w-none mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-xs">
+              <div className="flex items-center pl-2 sm:pl-3">
+                <div className="flex flex-col">
+                  <span className="font-mono text-xs font-bold text-text-primary leading-tight">
+                    Profiles &amp; Resume
+                  </span>
+                  <span className="hidden sm:inline font-mono text-[11px] text-text-secondary leading-tight mt-0.5">
+                    Quick Connect
+                  </span>
                 </div>
               </div>
-            </motion.div>
+              <DirectContactDock
+                isTouchDevice={isTouchDevice}
+                shouldReduceMotion={shouldReduceMotion}
+              />
+            </div>
           </motion.div>
         </div>
 
-        {/* ── 3. PRODUCTION CREDIBILITY MATRIX ALONG GRID BASE ────────── */}
+        {/* ── 3. CREDIBILITY ROW ─────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
-          className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border-custom/60"
+          className="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-border-custom/60"
         >
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
-            <span className="font-mono text-xs text-text-secondary uppercase tracking-widest font-semibold">
-              Production Credibility &amp; Ownership
-            </span>
-            <span className="font-mono text-xs text-text-secondary/70">
-              Grassroots Verified Deployments
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {hero.trustSignals.map((signal, i) => (
-              <div
-                key={signal.label}
-                data-cursor-text="VERIFIED"
-                className="p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-4 group"
-              >
-                <div className="w-11 h-11 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                  {trustIcons[i]}
-                </div>
-                <div>
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
-                    {i === 0
-                      ? "LEGAL OWNERSHIP"
-                      : i === 1
-                        ? "SYSTEMS ARCHITECTURE"
-                        : "PRODUCTION SCALE"}
-                  </div>
-                  <div className="text-xs sm:text-sm font-semibold text-text-primary leading-snug mt-0.5">
-                    {signal.label}
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CredibilityCard
+              category="Legal ownership"
+              title="Copyright-Filed Software"
+              icon={<ShieldIcon />}
+              isTouchDevice={isTouchDevice}
+            />
+            <CredibilityCard
+              category="Systems architecture"
+              title="Full-Stack & Applied AI Systems"
+              icon={<DatabaseIcon />}
+              isTouchDevice={isTouchDevice}
+            />
           </div>
         </motion.div>
       </motion.div>

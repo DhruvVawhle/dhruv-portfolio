@@ -90,9 +90,6 @@ export default function ProjectDetailSheet({
             {/* Sheet Header */}
             <div className="flex items-center justify-between p-6 pb-4 border-b border-border-custom/80">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent">
-                  {project.tag}
-                </span>
                 <span className="font-mono text-xs text-text-secondary">
                   Status: {project.status}
                 </span>

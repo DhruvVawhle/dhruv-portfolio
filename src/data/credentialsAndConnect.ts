@@ -76,8 +76,7 @@ export const CONNECT_PROFILES: VerifiedProfile[] = [
   },
 ];
 
-// EMAIL_ADDRESS: TODO (Leave placeholder when not provided)
-export const EMAIL_ADDRESS: string | null = null;
+export const EMAIL_ADDRESS: string = "dhruvvawhle@gmail.com";
 
 export interface NavLink {
   label: string;

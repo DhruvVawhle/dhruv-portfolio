@@ -77,16 +77,9 @@ export default function About() {
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-12 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-                01 · PROFILE &amp; PHILOSOPHY
-              </span>
-              <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-accent/60" />
-              <span className="font-mono text-xs text-text-secondary">
-                Software Engineering
+                Profile &amp; Philosophy
               </span>
             </div>
-            <span className="font-mono text-xs text-text-secondary">
-              Dhruv Vawhle · Software Engineer
-            </span>
           </div>
         </ScrollReveal>
 
@@ -94,9 +87,6 @@ export default function About() {
         {/* 2. Engineering With Intent */}
         <ScrollReveal>
           <div className="p-8 sm:p-10 rounded-3xl bg-bg-surface border border-border-custom shadow-sm mb-16">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-accent block mb-3">
-              Engineering with intent
-            </span>
 
             <blockquote className="border-l-4 border-accent pl-4 sm:pl-6 my-4">
               <p className="font-display font-bold text-xl sm:text-2xl text-text-primary leading-snug italic">
@@ -127,9 +117,6 @@ export default function About() {
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <div>
-              <span className="font-mono text-xs font-semibold uppercase tracking-wider text-accent block mb-1">
-                Engineering Execution Pipeline
-              </span>
               <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-text-primary tracking-tight">
                 How I build software
               </h3>

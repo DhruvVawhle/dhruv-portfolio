@@ -133,9 +133,6 @@ export default function Skills() {
     setIsExpanded((prev) => !prev);
   };
 
-  const handleBuildingWithClick = (techName: string, e?: React.MouseEvent) => {
-    handleNodeClick(techName, e);
-  };
 
   // Inject hardware-accelerated CSS keyframes for rotation that supports instant animation-play-state toggling
   useEffect(() => {
@@ -459,16 +456,9 @@ export default function Skills() {
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-[#3B82F6] tracking-widest uppercase flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
-                06 · TECHNICAL ARCHITECTURE
-              </span>
-              <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-              <span className="font-mono text-xs text-white/70">
-                Production Stack &amp; System Capabilities
+                Technical Architecture
               </span>
             </div>
-            <span className="font-mono text-xs text-white/70 bg-white/5 px-3 py-1 rounded-full border border-white/10">
-              {activeTech ? `Active Inspection: ${activeTech}` : "Interactive Orbital Navigation"}
-            </span>
           </div>
 
           <div className="max-w-3xl mb-12">
@@ -476,7 +466,7 @@ export default function Skills() {
               Engineering Ecosystem
             </h2>
             <p className="mt-4 text-base sm:text-lg text-white/70 leading-relaxed font-sans">
-              Explore the technologies I use to design, build and deploy production-ready software systems.
+              Interactive technology orbit mapping core engineering domains, frameworks, and database systems.
             </p>
           </div>
         </ScrollReveal>
@@ -615,45 +605,6 @@ export default function Skills() {
           </AnimatePresence>
         </div>
 
-        {/* ── CURRENTLY BUILDING WITH (Interactive Pills) ── */}
-        <div className="my-12 flex flex-col items-center w-full">
-          <span className="font-mono text-xs uppercase tracking-wider text-white/70 mb-4 font-semibold flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-            CURRENTLY BUILDING WITH
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 max-w-3xl px-4">
-            {[
-              "React.js",
-              "Next.js",
-              "TypeScript",
-              "Python",
-              "Gemini API",
-              "MongoDB",
-              "Tailwind CSS",
-              "Firebase Firestore",
-            ].map((tech) => {
-              const isChipSelected = selectedNode === tech;
-              return (
-                <button
-                  key={tech}
-                  type="button"
-                  onClick={(e) => handleBuildingWithClick(tech, e)}
-                  className={`group inline-flex items-center gap-2.5 px-4 py-2.5 min-h-[48px] rounded-[16px] border font-mono text-xs sm:text-sm transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform cursor-pointer shadow-lg ${
-                    isChipSelected
-                      ? "bg-[#1C2333] text-white border-[#3B82F6] font-bold shadow-[0_0_28px_rgba(59,130,246,0.85)] scale-105 ring-2 ring-[#3B82F6]/40 -translate-y-0.5"
-                      : "bg-[#161B22] border-white/10 text-white/90 hover:border-[#3B82F6] hover:bg-[#1C2333] hover:shadow-[0_0_20px_rgba(59,130,246,0.35)] hover:-translate-y-0.5"
-                  }`}
-                >
-                  <TechIcon name={tech} size="sm" />
-                  <span>{tech}</span>
-                  <span className="text-[#3B82F6] opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-0.5 font-bold">
-                    ↗
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
         {/* ── EXPAND BUTTON (`Explore Technical Architecture`) ── */}
         <div className="flex flex-col items-center justify-center my-8">
@@ -672,11 +623,6 @@ export default function Skills() {
               ▼
             </span>
           </Button>
-          <span className="font-mono text-xs text-white/60 mt-3 tracking-wide">
-            {isExpanded
-              ? "Showing complete categorized engineering architecture below"
-              : "Click above to expand all 6 domain architecture categories with deep blueprints."}
-          </span>
         </div>
 
         {/* ── TECHNICAL CARDS (`ENGINEERING_STACK` Categories & Cards) ── */}
@@ -762,7 +708,7 @@ export default function Skills() {
                                   {category.technologies.map((tech) => (
                                     <div
                                       key={`mobile-tech-${tech.name}`}
-                                      onClick={(e) => handleBuildingWithClick(tech.name, e)}
+                                      onClick={(e) => handleNodeClick(tech.name, e)}
                                       className="p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu will-change-transform"
                                     >
                                       <div className="w-10 h-10 min-h-[48px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
