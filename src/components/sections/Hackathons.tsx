@@ -36,10 +36,12 @@ export default function Hackathons() {
   const BentoTile = ({
     children,
     className = "",
+    innerClassName = "",
     isWarm = false,
   }: {
     children: React.ReactNode;
     className?: string;
+    innerClassName?: string;
     isWarm?: boolean;
   }) => {
     const tileRef = useRef<HTMLDivElement>(null);
@@ -58,12 +60,15 @@ export default function Hackathons() {
       mouseY.set(-500);
     };
 
+    const hasCustomPadding = className.includes("p-");
+    const defaultPadding = hasCustomPadding ? "" : "p-6 sm:p-8";
+
     return (
       <div
         ref={tileRef}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
-        className={`relative rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-8 overflow-hidden group shadow-sm transition-all duration-300 ${className}`}
+        className={`relative rounded-3xl bg-bg-surface border border-border-custom ${defaultPadding} overflow-hidden group shadow-sm transition-all duration-300 ${className}`}
       >
         {/* Spotlight Radial Glow following cursor */}
         <motion.div
@@ -77,7 +82,7 @@ export default function Hackathons() {
             isWarm ? "bg-amber-500/20" : "bg-accent/15"
           }`}
         />
-        <div className="relative z-10 h-full flex flex-col justify-between">
+        <div className={`relative z-10 ${innerClassName || "h-full flex flex-col justify-between"}`}>
           {children}
         </div>
       </div>
@@ -113,10 +118,10 @@ export default function Hackathons() {
 
         {/* ── BENTO GRID (12 Columns Desktop, 1 Column Mobile) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-16">
-          {/* 1. HERO TILE (7 Cols, 2 Rows) with Warm Orange Border Beam */}
+          {/* 1. HERO TILE (7 Cols) with Warm Orange Border Beam */}
           <div
             ref={heroSectionRef}
-            className="lg:col-span-7 lg:row-span-2 relative rounded-3xl bg-bg-surface border-2 border-amber-500/40 p-6 sm:p-8 overflow-hidden shadow-md flex flex-col justify-between group"
+            className="lg:col-span-7 relative rounded-3xl bg-bg-surface border-2 border-amber-500/40 p-6 sm:p-8 overflow-hidden shadow-md flex flex-col justify-between group"
           >
             {/* Animated Magic UI-style Border Beam in warm orange */}
             {!prefersReducedMotion && (
@@ -157,73 +162,81 @@ export default function Hackathons() {
             </div>
           </div>
 
-          {/* 2. STATS TILE (5 Cols) with Magic UI Number Ticker */}
-          <BentoTile className="lg:col-span-5" isWarm={true}>
-            <div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-bg border border-border-custom">
-                  <div className="font-display font-black text-2xl sm:text-3xl text-amber-600 dark:text-amber-400">
+          {/* Side Column: STATS & KEY FACTS CARDS (5 Cols Desktop, Stacked Mobile) */}
+          <div className="lg:col-span-5 flex flex-col gap-4 lg:h-full">
+            {/* 2. STATS TILE */}
+            <BentoTile className="p-5 lg:flex-none" isWarm={true} innerClassName="flex flex-col">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-[14px] border border-border-custom p-4 min-h-[104px] flex flex-col gap-1.5 bg-bg">
+                  <div className="font-display text-3xl font-bold text-amber-600 dark:text-amber-400 leading-none">
                     Top 30
                   </div>
-                  <span className="font-mono text-[11px] text-text-secondary mt-1 block">
+                  <span className="font-mono text-[11px] text-text-secondary mt-auto block leading-tight">
                     SIH 2025 college finalists
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-bg border border-border-custom">
-                  <div className="font-display font-black text-2xl sm:text-3xl text-text-primary">
+                <div className="rounded-[14px] border border-border-custom p-4 min-h-[104px] flex flex-col gap-1.5 bg-bg">
+                  <div className="font-display text-3xl font-bold text-text-primary leading-none">
                     6
                   </div>
-                  <span className="font-mono text-[11px] text-text-secondary mt-1 block">
+                  <span className="font-mono text-[11px] text-text-secondary mt-auto block leading-tight">
                     Team MediMitra members
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-bg border border-border-custom">
-                  <div className="font-display font-black text-2xl sm:text-3xl text-accent">
+                <div className="rounded-[14px] border border-border-custom p-4 min-h-[104px] flex flex-col gap-1.5 bg-bg">
+                  <div className="font-display text-3xl font-bold text-accent leading-none">
                     24 hr
                   </div>
-                  <span className="font-mono text-[11px] text-text-secondary mt-1 block">
+                  <span className="font-mono text-[11px] text-text-secondary mt-auto block leading-tight">
                     Analytix 2026 Datathon
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-bg border border-border-custom">
-                  <div className="font-display font-black text-2xl sm:text-3xl text-accent">
+                <div className="rounded-[14px] border border-border-custom p-4 min-h-[104px] flex flex-col gap-1.5 bg-bg">
+                  <div className="font-display text-3xl font-bold text-accent leading-none">
                     12 hr
                   </div>
-                  <span className="font-mono text-[11px] text-text-secondary mt-1 block">
+                  <span className="font-mono text-[11px] text-text-secondary mt-auto block leading-tight">
                     Buildathon, Team Edith
                   </span>
                 </div>
               </div>
-            </div>
-          </BentoTile>
+            </BentoTile>
 
-          {/* 3. FACTS TILE (5 Cols) */}
-          <BentoTile className="lg:col-span-5">
-            <div>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-3">
-                Key Facts
-              </span>
+            {/* 3. KEY FACTS TILE */}
+            <BentoTile className="p-5 lg:flex-1 flex flex-col" innerClassName="flex flex-col h-full lg:flex-1">
+              <div className="flex flex-col h-full lg:flex-1 justify-between">
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-3">
+                  KEY FACTS
+                </span>
 
-              <div className="space-y-3 text-xs sm:text-sm">
-                <p className="text-text-primary leading-relaxed">
-                  <strong className="font-bold text-text-primary">Role: </strong>
-                  Team Lead and AI Architect. Designed the n8n workflow automation and multilingual Gemini NLU pipeline.
-                </p>
-                <p className="text-text-primary leading-relaxed">
-                  <strong className="font-bold text-text-primary">Outcome: </strong>
-                  Selected as college finalists for Smart India Hackathon software-track submission.
-                </p>
-                <p className="text-text-primary leading-relaxed">
-                  <strong className="font-bold text-text-primary">Time constraint: </strong>
-                  SIH National Software Sprint.
-                </p>
+                <dl className="lg:flex-1 lg:flex lg:flex-col lg:justify-between text-xs sm:text-sm">
+                  <div className="py-3 border-t-0 pt-0 grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
+                    <dt className="font-bold text-text-primary">Role:</dt>
+                    <dd className="text-text-secondary leading-relaxed m-0">
+                      Team Lead and AI Architect. Designed the n8n workflow automation and multilingual Gemini NLU pipeline.
+                    </dd>
+                  </div>
+
+                  <div className="py-3 border-t border-border-custom grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
+                    <dt className="font-bold text-text-primary">Outcome:</dt>
+                    <dd className="text-text-secondary leading-relaxed m-0">
+                      Selected as college finalists for Smart India Hackathon software-track submission.
+                    </dd>
+                  </div>
+
+                  <div className="py-3 border-t border-border-custom pb-0 grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
+                    <dt className="font-bold text-text-primary">Time constraint:</dt>
+                    <dd className="text-text-secondary leading-relaxed m-0">
+                      SIH National Software Sprint.
+                    </dd>
+                  </div>
+                </dl>
               </div>
-            </div>
-          </BentoTile>
+            </BentoTile>
+          </div>
 
           {/* 4. STACK TILE (Full Width, 12 Cols) with Live Interactive n8n Workflow */}
           <BentoTile className="lg:col-span-12 p-2 sm:p-4">
