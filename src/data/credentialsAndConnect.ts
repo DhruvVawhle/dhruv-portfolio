@@ -84,7 +84,6 @@ export interface NavLink {
 }
 
 export const FOOTER_NAV_LINKS: NavLink[] = [
-  { label: "Top", href: "#top" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },

@@ -38,11 +38,13 @@ export default function Hackathons() {
     className = "",
     innerClassName = "",
     isWarm = false,
+    padding = "",
   }: {
     children: React.ReactNode;
     className?: string;
     innerClassName?: string;
     isWarm?: boolean;
+    padding?: string;
   }) => {
     const tileRef = useRef<HTMLDivElement>(null);
     const mouseX = useMotionValue(-500);
@@ -60,8 +62,7 @@ export default function Hackathons() {
       mouseY.set(-500);
     };
 
-    const hasCustomPadding = className.includes("p-");
-    const defaultPadding = hasCustomPadding ? "" : "p-6 sm:p-8";
+    const defaultPadding = padding || (className.includes("p-") ? "" : "p-6 sm:p-8");
 
     return (
       <div
@@ -163,7 +164,7 @@ export default function Hackathons() {
           </div>
 
           {/* Side Column: STATS & KEY FACTS CARDS (5 Cols Desktop, Stacked Mobile) */}
-          <div className="lg:col-span-5 flex flex-col gap-4 lg:h-full">
+          <div className="lg:col-span-5 flex flex-col gap-4 items-start">
             {/* 2. STATS TILE */}
             <BentoTile className="p-5 lg:flex-none" isWarm={true} innerClassName="flex flex-col">
               <div className="grid grid-cols-2 gap-3">
@@ -206,35 +207,33 @@ export default function Hackathons() {
             </BentoTile>
 
             {/* 3. KEY FACTS TILE */}
-            <BentoTile className="p-5 lg:flex-1 flex flex-col" innerClassName="flex flex-col h-full lg:flex-1">
-              <div className="flex flex-col h-full lg:flex-1 justify-between">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-3">
-                  KEY FACTS
-                </span>
+            <BentoTile className="p-5 self-start w-full" innerClassName=" ">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-3">
+                KEY FACTS
+              </span>
 
-                <dl className="lg:flex-1 lg:flex lg:flex-col lg:justify-between text-xs sm:text-sm">
-                  <div className="py-3 border-t-0 pt-0 grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
-                    <dt className="font-bold text-text-primary">Role:</dt>
-                    <dd className="text-text-secondary leading-relaxed m-0">
-                      Team Lead and AI Architect. Designed the n8n workflow automation and multilingual Gemini NLU pipeline.
-                    </dd>
-                  </div>
+              <dl className="space-y-0 text-xs sm:text-sm">
+                <div className="py-3 grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-4 items-baseline">
+                  <dt className="font-bold text-text-primary sm:whitespace-nowrap">Role:</dt>
+                  <dd className="text-text-secondary leading-relaxed m-0">
+                    Team Lead and AI Architect. Designed the n8n workflow automation and multilingual Gemini NLU pipeline.
+                  </dd>
+                </div>
 
-                  <div className="py-3 border-t border-border-custom grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
-                    <dt className="font-bold text-text-primary">Outcome:</dt>
-                    <dd className="text-text-secondary leading-relaxed m-0">
-                      Selected as college finalists for Smart India Hackathon software-track submission.
-                    </dd>
-                  </div>
+                <div className="py-3 border-t border-border-custom grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-4 items-baseline">
+                  <dt className="font-bold text-text-primary sm:whitespace-nowrap">Outcome:</dt>
+                  <dd className="text-text-secondary leading-relaxed m-0">
+                    Selected as college finalists for Smart India Hackathon software-track submission.
+                  </dd>
+                </div>
 
-                  <div className="py-3 border-t border-border-custom pb-0 grid grid-cols-1 min-[420px]:grid-cols-[92px_1fr] gap-1 min-[420px]:gap-3.5 items-baseline">
-                    <dt className="font-bold text-text-primary">Time constraint:</dt>
-                    <dd className="text-text-secondary leading-relaxed m-0">
-                      SIH National Software Sprint.
-                    </dd>
-                  </div>
-                </dl>
-              </div>
+                <div className="py-3 border-t border-border-custom grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-y-1 sm:gap-x-4 items-baseline">
+                  <dt className="font-bold text-text-primary sm:whitespace-nowrap">Time constraint:</dt>
+                  <dd className="text-text-secondary leading-relaxed m-0">
+                    SIH National Software Sprint.
+                  </dd>
+                </div>
+              </dl>
             </BentoTile>
           </div>
 
@@ -245,14 +244,14 @@ export default function Hackathons() {
             </div>
           </BentoTile>
 
-          {/* 5. CONTRIBUTION TILE (5 Cols) with Key Areas Badge */}
-          <BentoTile className="lg:col-span-5">
-            <div>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-4">
-                Contributions
+          {/* 5. CONTRIBUTION TILE (5 Cols) with 2-Column Responsive Tiles */}
+          <BentoTile className="lg:col-span-5 p-5 lg:h-full" padding="p-5" innerClassName="flex flex-col lg:h-full">
+            <div className="flex flex-col lg:h-full">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-3">
+                CONTRIBUTIONS
               </span>
 
-              <ul className="space-y-2 text-xs sm:text-sm text-text-secondary">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 content-start">
                 {[
                   "Team Lead",
                   "AI Workflow Design",
@@ -264,12 +263,15 @@ export default function Hackathons() {
                   "Technical Documentation",
                   "Smart India Hackathon Submission",
                 ].map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2.5 rounded-[10px] border border-border-custom bg-bg/60 dark:bg-bg/40 px-3 py-2.5 text-[13px] text-text-primary"
+                  >
                     <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                    <span className="text-text-primary">{item}</span>
-                  </li>
+                    <span className="font-medium leading-snug">{item}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           </BentoTile>
 
