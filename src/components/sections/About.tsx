@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { Layers, Brain, Sprout, Bot, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { WORKFLOW_STEPS } from "@/data/engineeringWorkflow";
 import VSCodeEditor from "@/components/sections/VSCodeEditor";
 import ScrollReveal from "@/components/effects/ScrollReveal";
@@ -16,6 +17,7 @@ const PHILOSOPHY_BULLETS = [
 
 export default function About() {
   const [activeStepCount, setActiveStepCount] = useState<number>(1);
+  const shouldReduceMotion = useReducedMotion();
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -83,33 +85,153 @@ export default function About() {
           </div>
         </ScrollReveal>
 
-
-        {/* 2. Engineering With Intent */}
+        {/* 2. Engineering With Intent (Balanced Two-Column Card) */}
         <ScrollReveal>
           <div className="p-8 sm:p-10 rounded-3xl bg-bg-surface border border-border-custom shadow-sm mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 items-stretch">
+              {/* Left Column: Quote, Intro & Stretched Bullets */}
+              <div className="flex flex-col">
+                <blockquote className="border-l-4 border-accent pl-4 sm:pl-6 my-2">
+                  <p className="font-display font-bold text-[17px] lg:text-[22px] leading-snug text-text-primary italic">
+                    &ldquo;Great software isn&apos;t measured by the number of features it has, but by how effectively it solves real problems.&rdquo;
+                  </p>
+                </blockquote>
 
-            <blockquote className="border-l-4 border-accent pl-4 sm:pl-6 my-4">
-              <p className="font-display font-bold text-xl sm:text-2xl text-text-primary leading-snug italic">
-                &ldquo;Great software isn&apos;t measured by the number of features it has, but by how effectively it solves real problems.&rdquo;
-              </p>
-            </blockquote>
+                <p className="mt-5 mb-4 text-sm text-text-secondary font-medium">
+                  Every project I build follows a simple philosophy:
+                </p>
 
-            <p className="mt-6 text-base text-text-secondary font-medium">
-              Every project I build follows a simple philosophy:
-            </p>
+                <ul className="flex flex-col justify-between gap-3 flex-1">
+                  {PHILOSOPHY_BULLETS.map((bullet, idx) => (
+                    <li
+                      key={idx}
+                      className="flex-1 flex items-center gap-3 border-b border-border-custom pb-3 last:border-b-0 last:pb-0"
+                    >
+                      <span className="w-[18px] h-[18px] min-w-[18px] min-h-[18px] rounded-full bg-accent/10 border border-accent/20 text-accent font-mono text-[10px] flex items-center justify-center flex-shrink-0">
+                        ✓
+                      </span>
+                      <span className="text-[14.5px] text-text-primary leading-relaxed">
+                        {bullet}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <ul className="mt-4 space-y-3">
-              {PHILOSOPHY_BULLETS.map((bullet, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-accent/10 border border-accent/20 text-accent font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
-                    ✓
-                  </span>
-                  <span className="text-sm sm:text-base text-text-primary leading-relaxed">
-                    {bullet}
-                  </span>
-                </li>
-              ))}
-            </ul>
+              {/* Right Column: Focus areas & Currently building panel */}
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="lg:border-l lg:border-border-custom lg:pl-12 flex flex-col"
+              >
+                <div className="rounded-xl border border-blue-100 dark:border-border-custom bg-blue-50/70 dark:bg-white/[0.03] p-5 sm:p-6 h-full flex flex-col justify-between gap-6">
+                  {/* Section 1: Focus areas */}
+                  <div>
+                    <div className="font-mono text-xs uppercase tracking-wider text-text-secondary font-semibold mb-1">
+                      Focus areas
+                    </div>
+                    <div className="divide-y divide-border-custom">
+                      <div className="flex items-center gap-3 py-3 first:pt-2">
+                        <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                          <Layers className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-text-primary">
+                            Full-stack development
+                          </div>
+                          <div className="text-[12.5px] text-text-secondary leading-normal">
+                            Next.js, TypeScript and Tailwind front ends with API backends.
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 py-3 last:pb-0">
+                        <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                          <Brain className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-text-primary">
+                            AI / ML engineering
+                          </div>
+                          <div className="text-[12.5px] text-text-secondary leading-normal">
+                            LLM security, detection models and applied AI products.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 2: Currently building */}
+                  <div>
+                    <div className="font-mono text-xs uppercase tracking-wider text-text-secondary font-semibold mb-1">
+                      Currently building
+                    </div>
+                    <div className="divide-y divide-border-custom">
+                      {/* KrishiSaathi */}
+                      <a
+                        href="#krishisaathi"
+                        className="group flex items-center justify-between gap-3 py-3 first:pt-2 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                            <Sprout className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
+                              KrishiSaathi
+                            </div>
+                            <div className="text-[12.5px] text-text-secondary leading-normal">
+                              Farming assistant app.
+                            </div>
+                          </div>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
+                      </a>
+
+                      {/* CampusAI */}
+                      <a
+                        href="#campusai"
+                        className="group flex items-center justify-between gap-3 py-3 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                            <Bot className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
+                              CampusAI
+                            </div>
+                            <div className="text-[12.5px] text-text-secondary leading-normal">
+                              Reception kiosk for college visitors.
+                            </div>
+                          </div>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
+                      </a>
+
+                      {/* SecurePromptAI (non-link row) */}
+                      <div className="flex items-center justify-between gap-3 py-3 last:pb-0">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                            <ShieldCheck className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-text-primary">
+                              SecurePromptAI
+                            </div>
+                            <div className="text-[12.5px] text-text-secondary leading-normal">
+                              Prompt injection detection for LLMs.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </ScrollReveal>
 

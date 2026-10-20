@@ -64,6 +64,7 @@ export default function CoverflowCard({
 
   return (
     <motion.div
+      id={project.id}
       onMouseEnter={() => {
         if (isFront) setIsHovered(true);
       }}
