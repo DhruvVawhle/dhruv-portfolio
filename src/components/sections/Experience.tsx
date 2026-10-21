@@ -34,7 +34,22 @@ export default function Experience() {
       setActiveDots(newActive);
     };
 
+    let isNearViewport = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isNearViewport = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          onScroll();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    const sectionEl = document.getElementById("experience");
+    if (sectionEl) observer.observe(sectionEl);
+
     const handleScroll = () => {
+      if (!isNearViewport) return;
       cancelAnimationFrame(animId);
       animId = requestAnimationFrame(onScroll);
     };
@@ -43,6 +58,7 @@ export default function Experience() {
     onScroll();
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(animId);
     };

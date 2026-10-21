@@ -74,12 +74,27 @@ const getTechDetail = (name: string): TechDetailInfo => {
 export default function Skills() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [isOrbitPaused, setIsOrbitPaused] = useState<boolean>(false);
+  const [isSectionVisible, setIsSectionVisible] = useState<boolean>(true);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>("frontend");
   const [isMobileAccordionSectionOpen, setIsMobileAccordionSectionOpen] = useState(false);
 
   const orbitContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Pause orbital animation when offscreen
+  useEffect(() => {
+    const el = orbitContainerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSectionVisible(entry.isIntersecting);
+      },
+      { rootMargin: "100px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Active technology being inspected (clicked node)
   const activeTech = selectedNode;
@@ -276,7 +291,7 @@ export default function Skills() {
                 animationDuration: `${ring.duration}s`,
                 animationTimingFunction: "linear",
                 animationIterationCount: "infinite",
-                animationPlayState: isOrbitPaused ? "paused" : "running",
+                animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
                 willChange: "transform",
               }}
             >
@@ -306,7 +321,7 @@ export default function Skills() {
                         animationDuration: `${ring.duration}s`,
                         animationTimingFunction: "linear",
                         animationIterationCount: "infinite",
-                        animationPlayState: isOrbitPaused ? "paused" : "running",
+                        animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
                         willChange: "transform",
                       }}
                     >

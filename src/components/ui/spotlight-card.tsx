@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, ReactNode } from "react";
+import React, { useRef, ReactNode } from "react";
 
 interface GlowCardProps {
   children?: ReactNode;
@@ -36,72 +36,23 @@ export const GlowCard: React.FC<GlowCardProps> = ({
   customSize = false,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisibleRef = useRef(true);
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch" || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    cardRef.current.style.setProperty("--x", `${x.toFixed(1)}px`);
+    cardRef.current.style.setProperty("--y", `${y.toFixed(1)}px`);
+    cardRef.current.style.setProperty("--xp", (x / rect.width).toFixed(2));
+    cardRef.current.style.setProperty("--yp", (y / rect.height).toFixed(2));
+  };
 
-    // Only calculate styles when card is visible in viewport
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { rootMargin: "100px" }
-    );
-    observer.observe(card);
-
-    let rafId: number | null = null;
-    let pendingX = 0;
-    let pendingY = 0;
-
-    const applyCoordinates = () => {
-      if (cardRef.current && isVisibleRef.current) {
-        cardRef.current.style.setProperty("--x", `${pendingX.toFixed(1)}px`);
-        cardRef.current.style.setProperty("--xp", (pendingX / window.innerWidth).toFixed(2));
-        cardRef.current.style.setProperty("--y", `${pendingY.toFixed(1)}px`);
-        cardRef.current.style.setProperty("--yp", (pendingY / window.innerHeight).toFixed(2));
-      }
-      rafId = null;
-    };
-
-    const scheduleUpdate = (x: number, y: number) => {
-      pendingX = x;
-      pendingY = y;
-      if (!rafId) {
-        rafId = requestAnimationFrame(applyCoordinates);
-      }
-    };
-
-    const handlePointerMove = (e: PointerEvent) => {
-      if (e.pointerType === "touch") return; // Touch handled separately
-      scheduleUpdate(e.clientX, e.clientY);
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches && e.touches.length > 0) {
-        scheduleUpdate(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches && e.touches.length > 0) {
-        scheduleUpdate(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, []);
+  const handlePointerLeave = () => {
+    if (!cardRef.current) return;
+    cardRef.current.style.setProperty("--x", "50%");
+    cardRef.current.style.setProperty("--y", "50%");
+  };
 
   const { base, spread } = glowColorMap[glowColor];
 
@@ -128,6 +79,8 @@ export const GlowCard: React.FC<GlowCardProps> = ({
     <div
       ref={cardRef}
       data-glow
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       style={inlineStyles}
       className={`
         ${getSizeClasses()}
@@ -148,14 +101,12 @@ export const GlowCard: React.FC<GlowCardProps> = ({
           className="absolute inset-0"
           style={{
             background: `radial-gradient(var(--spotlight-size) var(--spotlight-size) at var(--x, 50%) var(--y, 50%), hsl(var(--hue, 210) 90% 65% / 0.12), transparent 75%)`,
-            backgroundAttachment: "fixed",
           }}
         />
         <div
           className="absolute inset-0 rounded-[inherit] p-[1px]"
           style={{
             background: `radial-gradient(calc(var(--spotlight-size) * 0.8) calc(var(--spotlight-size) * 0.8) at var(--x, 50%) var(--y, 50%), hsl(var(--hue, 210) 95% 60% / 0.4), transparent 80%)`,
-            backgroundAttachment: "fixed",
             mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             maskComposite: "exclude",
             WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",

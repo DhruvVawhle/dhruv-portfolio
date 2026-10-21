@@ -105,24 +105,29 @@ export default function Navbar() {
     }
   }, []);
 
-  // Scroll listener: update active section
+  // Scroll listener: update active section (throttled to 120ms to prevent layout thrashing)
   useEffect(() => {
-    let ticking = false;
+    let lastCall = 0;
+    let rafId: number | null = null;
 
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          determineActiveSection();
-          ticking = false;
-        });
-        ticking = true;
-      }
+      const now = performance.now();
+      if (now - lastCall < 120) return;
+      lastCall = now;
+
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => {
+        determineActiveSection();
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
     determineActiveSection();
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [determineActiveSection]);
 
   // Synchronize on hash changes

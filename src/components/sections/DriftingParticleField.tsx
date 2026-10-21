@@ -19,6 +19,9 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
       if (prefersReduced) return;
     }
 
+    // Skip heavy WebGL on mobile devices (<768px) to preserve buttery 120fps scrolling
+    if (window.innerWidth < 768) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -29,15 +32,15 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.z = 150;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     rendererRef.current = renderer;
 
     container.appendChild(renderer.domElement);
 
     // Create subtle particles
-    const particleCount = 65;
+    const particleCount = 45;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const speeds = new Float32Array(particleCount * 3);
@@ -69,26 +72,28 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
     const posAttr = geometry.attributes.position as THREE.BufferAttribute;
 
     const animate = () => {
-      if (!paused) {
-        const array = posAttr.array as Float32Array;
-        for (let i = 0; i < particleCount * 3; i += 3) {
-          array[i + 1] += speeds[i + 1];
-          array[i] += speeds[i];
+      if (paused) return;
 
-          // Wrap boundaries
-          if (array[i + 1] > 120) array[i + 1] = -120;
-          if (array[i] > 180) array[i] = -180;
-          if (array[i] < -180) array[i] = 180;
-        }
-        posAttr.needsUpdate = true;
-        particles.rotation.y += 0.0006;
+      const array = posAttr.array as Float32Array;
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        array[i + 1] += speeds[i + 1];
+        array[i] += speeds[i];
+
+        // Wrap boundaries
+        if (array[i + 1] > 120) array[i + 1] = -120;
+        if (array[i] > 180) array[i] = -180;
+        if (array[i] < -180) array[i] = 180;
       }
+      posAttr.needsUpdate = true;
+      particles.rotation.y += 0.0006;
 
       renderer.render(scene, camera);
       animFrameId.current = requestAnimationFrame(animate);
     };
 
-    animFrameId.current = requestAnimationFrame(animate);
+    if (!paused) {
+      animFrameId.current = requestAnimationFrame(animate);
+    }
 
     const handleResize = () => {
       if (!container || !renderer) return;

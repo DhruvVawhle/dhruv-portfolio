@@ -38,21 +38,27 @@ export default function CubertoCursor() {
       setIsVisible(false);
     };
 
+    let hoverTicking = false;
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      // Check if hovering interactive element
-      const interactiveEl = target.closest(
-        'a, button, [role="button"], input, textarea, [data-cursor], [data-interactive]'
-      ) as HTMLElement | null;
+      if (hoverTicking) return;
+      hoverTicking = true;
+      requestAnimationFrame(() => {
+        hoverTicking = false;
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+        const interactiveEl = target.closest(
+          'a, button, [role="button"], input, textarea, [data-cursor], [data-interactive]'
+        ) as HTMLElement | null;
 
-      if (interactiveEl) {
-        setIsHovered(true);
-        const customLabel = interactiveEl.getAttribute("data-cursor-text");
-        setHoverText(customLabel || null);
-      } else {
-        setIsHovered(false);
-        setHoverText(null);
-      }
+        if (interactiveEl) {
+          setIsHovered(true);
+          const customLabel = interactiveEl.getAttribute("data-cursor-text");
+          setHoverText(customLabel || null);
+        } else {
+          setIsHovered(false);
+          setHoverText(null);
+        }
+      });
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });

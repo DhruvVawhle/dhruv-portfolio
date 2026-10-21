@@ -44,7 +44,22 @@ export default function About() {
       setActiveStepCount(highestPassed);
     };
 
+    let isNearViewport = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isNearViewport = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          checkScrollProgress();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    const sectionEl = document.getElementById("about");
+    if (sectionEl) observer.observe(sectionEl);
+
     const handleScroll = () => {
+      if (!isNearViewport) return;
       cancelAnimationFrame(animId);
       animId = requestAnimationFrame(checkScrollProgress);
     };
@@ -53,6 +68,7 @@ export default function About() {
     checkScrollProgress();
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(animId);
     };

@@ -19,10 +19,11 @@ export default function HeroNodeNetwork() {
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
 
-    // Use fewer nodes on mobile to optimize performance
-    const isMobile = window.innerWidth < 768;
-    const nodeCount = isMobile ? 32 : 70;
-    const connectionDist = isMobile ? 42 : 54;
+    // Skip WebGL canvas on mobile screens (<768px) to guarantee smooth 60-120fps touch scrolling
+    if (window.innerWidth < 768) return;
+
+    const nodeCount = 50;
+    const connectionDist = 50;
     const connectionDistSq = connectionDist * connectionDist;
 
     const scene = new THREE.Scene();
@@ -33,7 +34,7 @@ export default function HeroNodeNetwork() {
     try {
       renderer = new THREE.WebGLRenderer({
         alpha: true,
-        antialias: true,
+        antialias: false,
         powerPreference: "low-power",
       });
     } catch {
@@ -41,7 +42,7 @@ export default function HeroNodeNetwork() {
     }
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     container.appendChild(renderer.domElement);
 
     // Node coordinates and velocities
@@ -67,7 +68,7 @@ export default function HeroNodeNetwork() {
 
     const pointsMaterial = new THREE.PointsMaterial({
       color: 0x3b82f6,
-      size: isMobile ? 2.2 : 2.8,
+      size: 2.6,
       transparent: true,
       opacity: 0.35,
       blending: THREE.AdditiveBlending,
@@ -99,71 +100,80 @@ export default function HeroNodeNetwork() {
     const linesPosAttr = linesGeometry.attributes.position as THREE.BufferAttribute;
 
     const animate = () => {
-      if (isVisibleRef.current) {
-        const pArray = pointsPosAttr.array as Float32Array;
-        const lArray = linesPosAttr.array as Float32Array;
-        let lineVertexIndex = 0;
+      if (!isVisibleRef.current) return;
 
-        // Update node positions and wrap boundaries
-        for (let i = 0; i < nodeCount * 3; i += 3) {
-          pArray[i] += velocities[i];
-          pArray[i + 1] += velocities[i + 1];
-          pArray[i + 2] += velocities[i + 2];
+      const pArray = pointsPosAttr.array as Float32Array;
+      const lArray = linesPosAttr.array as Float32Array;
+      let lineVertexIndex = 0;
 
-          if (pArray[i] > 140) pArray[i] = -140;
-          if (pArray[i] < -140) pArray[i] = 140;
-          if (pArray[i + 1] > 95) pArray[i + 1] = -95;
-          if (pArray[i + 1] < -95) pArray[i + 1] = 95;
-        }
-        pointsPosAttr.needsUpdate = true;
+      // Update node positions and wrap boundaries
+      for (let i = 0; i < nodeCount * 3; i += 3) {
+        pArray[i] += velocities[i];
+        pArray[i + 1] += velocities[i + 1];
+        pArray[i + 2] += velocities[i + 2];
 
-        // Build dynamic connections between nearby nodes
-        for (let i = 0; i < nodeCount; i++) {
-          const i3 = i * 3;
-          const x1 = pArray[i3];
-          const y1 = pArray[i3 + 1];
-          const z1 = pArray[i3 + 2];
+        if (pArray[i] > 140) pArray[i] = -140;
+        if (pArray[i] < -140) pArray[i] = 140;
+        if (pArray[i + 1] > 95) pArray[i + 1] = -95;
+        if (pArray[i + 1] < -95) pArray[i + 1] = 95;
+      }
+      pointsPosAttr.needsUpdate = true;
 
-          for (let j = i + 1; j < nodeCount; j++) {
-            const j3 = j * 3;
-            const dx = x1 - pArray[j3];
-            const dy = y1 - pArray[j3 + 1];
-            const dz = z1 - pArray[j3 + 2];
-            const distSq = dx * dx + dy * dy + dz * dz;
+      // Build dynamic connections between nearby nodes
+      for (let i = 0; i < nodeCount; i++) {
+        const i3 = i * 3;
+        const x1 = pArray[i3];
+        const y1 = pArray[i3 + 1];
+        const z1 = pArray[i3 + 2];
 
-            if (distSq < connectionDistSq) {
-              lArray[lineVertexIndex++] = x1;
-              lArray[lineVertexIndex++] = y1;
-              lArray[lineVertexIndex++] = z1;
-              lArray[lineVertexIndex++] = pArray[j3];
-              lArray[lineVertexIndex++] = pArray[j3 + 1];
-              lArray[lineVertexIndex++] = pArray[j3 + 2];
-            }
+        for (let j = i + 1; j < nodeCount; j++) {
+          const j3 = j * 3;
+          const dx = x1 - pArray[j3];
+          const dy = y1 - pArray[j3 + 1];
+          const dz = z1 - pArray[j3 + 2];
+          const distSq = dx * dx + dy * dy + dz * dz;
+
+          if (distSq < connectionDistSq) {
+            lArray[lineVertexIndex++] = x1;
+            lArray[lineVertexIndex++] = y1;
+            lArray[lineVertexIndex++] = z1;
+            lArray[lineVertexIndex++] = pArray[j3];
+            lArray[lineVertexIndex++] = pArray[j3 + 1];
+            lArray[lineVertexIndex++] = pArray[j3 + 2];
           }
         }
-
-        linesGeometry.setDrawRange(0, lineVertexIndex / 3);
-        linesPosAttr.needsUpdate = true;
-
-        pointCloud.rotation.y += 0.0003;
-        lineSegments.rotation.y += 0.0003;
-
-        renderer.render(scene, camera);
       }
 
+      linesGeometry.setDrawRange(0, lineVertexIndex / 3);
+      linesPosAttr.needsUpdate = true;
+
+      pointCloud.rotation.y += 0.0003;
+      lineSegments.rotation.y += 0.0003;
+
+      renderer.render(scene, camera);
       animFrameId.current = requestAnimationFrame(animate);
     };
 
-    animFrameId.current = requestAnimationFrame(animate);
-
-    // Pause Three.js loop when off screen
+    // Pause Three.js loop when off screen to eliminate scroll frame drops
     const observer = new IntersectionObserver(
       ([entry]) => {
+        const wasVisible = isVisibleRef.current;
         isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && !wasVisible) {
+          if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
+          animFrameId.current = requestAnimationFrame(animate);
+        } else if (!entry.isIntersecting && animFrameId.current) {
+          cancelAnimationFrame(animFrameId.current);
+          animFrameId.current = null;
+        }
       },
-      { threshold: 0.05 }
+      { threshold: 0.02 }
     );
     observer.observe(container);
+
+    if (isVisibleRef.current) {
+      animFrameId.current = requestAnimationFrame(animate);
+    }
 
     const handleResize = () => {
       if (!container || !renderer) return;

@@ -142,10 +142,11 @@ export default function N8nLiveWorkflow() {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [cycleType, setCycleType] = useState<"normal" | "emergency">("normal");
   const [cycleCount, setCycleCount] = useState<number>(1);
+  const [isInView, setIsInView] = useState<boolean>(true);
 
-  // Single rock-solid, paced execution lifecycle
+  // Single rock-solid, paced execution lifecycle (pauses automatically when scrolled offscreen)
   useEffect(() => {
-    if (!isRunning || shouldReduceMotion) return;
+    if (!isRunning || shouldReduceMotion || !isInView) return;
 
     const durations: Record<number, number> = {
       0: 1800, // Webhook receives incoming message
@@ -171,7 +172,7 @@ export default function N8nLiveWorkflow() {
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [isRunning, shouldReduceMotion, currentStep]);
+  }, [isRunning, shouldReduceMotion, currentStep, isInView]);
 
   // Derived execution states for pure determinism
   const activeNodeId = useMemo(() => {
@@ -279,11 +280,20 @@ export default function N8nLiveWorkflow() {
     const ro = new ResizeObserver(() => updatePortPositions());
     if (stageRef.current) ro.observe(stageRef.current);
 
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    if (stageRef.current) io.observe(stageRef.current);
+
     const timer = setTimeout(updatePortPositions, 60);
 
     return () => {
       window.removeEventListener("resize", handleResize);
       ro.disconnect();
+      io.disconnect();
       clearTimeout(timer);
     };
   }, [zoomLevel, activeTab]);
