@@ -64,7 +64,7 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="py-[var(--section-padding-y)] bg-bg section-alt relative"
+      className="py-[var(--section-padding-y)] bg-bg section-alt relative scroll-mt-20 sm:scroll-mt-24"
       aria-label="Experience Section"
     >
       <div className="content-width">

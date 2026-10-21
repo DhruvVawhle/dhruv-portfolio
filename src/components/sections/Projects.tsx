@@ -119,7 +119,7 @@ export default function Projects() {
     <section
       id="projects"
       ref={sectionRef}
-      className="py-[var(--section-padding-y)] bg-bg relative overflow-hidden"
+      className="py-[var(--section-padding-y)] bg-bg relative overflow-hidden scroll-mt-20 sm:scroll-mt-24"
       aria-label="Projects Section"
     >
       {/* Three.js subtle drifting particles behind the stage */}

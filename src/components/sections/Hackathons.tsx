@@ -93,7 +93,7 @@ export default function Hackathons() {
   return (
     <section
       id="hackathons"
-      className="py-[var(--section-padding-y)] bg-bg relative"
+      className="py-[var(--section-padding-y)] bg-bg relative scroll-mt-20 sm:scroll-mt-24"
       aria-label="Competitive Engineering Section"
     >
       <div className="content-width">

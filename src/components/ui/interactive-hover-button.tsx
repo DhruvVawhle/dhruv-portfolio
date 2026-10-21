@@ -28,14 +28,20 @@ const InteractiveHoverButton = React.forwardRef<
         <span>{content}</span>
       </span>
 
-      {/* Hover State: Revealed as the circle expands */}
-      <div className="absolute inset-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-1.5 text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 whitespace-nowrap px-3">
+      {/* Hover State: Revealed as the circle expands (hidden from screen readers to prevent duplicate text) */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-10 flex h-full w-full translate-x-12 items-center justify-center gap-1.5 text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 whitespace-nowrap px-3 pointer-events-none"
+      >
         <span>{content}</span>
         {icon || <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />}
       </div>
 
       {/* Expanding Ripple Circle */}
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent transition-all duration-300 ease-out group-hover:left-0 group-hover:top-0 group-hover:translate-y-0 group-hover:h-full group-hover:w-full group-hover:rounded-none z-0"></div>
+      <div
+        aria-hidden="true"
+        className="absolute left-3 top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent transition-all duration-300 ease-out group-hover:left-0 group-hover:top-0 group-hover:translate-y-0 group-hover:h-full group-hover:w-full group-hover:rounded-none z-0 pointer-events-none"
+      />
     </button>
   );
 });

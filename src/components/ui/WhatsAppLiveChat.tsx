@@ -164,13 +164,25 @@ export default function WhatsAppLiveChat() {
     };
   }, [isDemoRunning, shouldReduceMotion, scriptIndex, isUserInteracting]);
 
-  // Handle user sending an interactive message
-  const handleSendMessage = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const trimmed = inputValue.trim();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    const isTouch =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(hover: none)").matches ||
+        window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window);
+    setIsTouchDevice(isTouch);
+  }, []);
+
+  const sendPromptMessage = (textToSend: string) => {
+    const trimmed = textToSend.trim();
     if (!trimmed) return;
 
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setIsDemoRunning(false);
     setIsUserInteracting(true);
+
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: "user",
@@ -182,7 +194,7 @@ export default function WhatsAppLiveChat() {
     setMessages((prev) => [...prev, userMsg]);
     setInputValue("");
 
-    // Simulate realistic bot response
+    // Simulate realistic bot triage response
     setIsBotTyping(true);
     setTimeout(() => {
       setIsBotTyping(false);
@@ -190,12 +202,14 @@ export default function WhatsAppLiveChat() {
       const lower = trimmed.toLowerCase();
       if (lower.includes("cough") || lower.includes("cold")) {
         replyText = "For cold and mild cough, warm fluids, steam inhalation, and throat lozenges are commonly recommended. Seek a doctor if high fever persists.";
-      } else if (lower.includes("chest pain") || lower.includes("emergency") || lower.includes("breath")) {
+      } else if (lower.includes("chest") || lower.includes("emergency") || lower.includes("breath")) {
         replyText = "⚠️ URGENT ADVISORY: Potential emergency warning signs detected. Please immediately contact emergency medical helpline (108/112) or visit the nearest hospital emergency care.";
       } else if (lower.includes("hindi") || lower.includes("हिंदी")) {
         replyText = "नमस्ते! मैं आपकी स्वास्थ्य जानकारी और प्राथमिक मार्गदर्शन में सहायता कर सकता हूँ। कृपया अपने लक्षण बताएं।";
       } else if (lower.includes("marathi") || lower.includes("मराठी")) {
         replyText = "नमस्कार! मी तुम्हाला आरोग्य विषयक माहिती आणि लक्षण मार्गदर्शन देऊ शकतो. कृपया तुमची लक्षणे सांगा.";
+      } else if (lower.includes("headache") || lower.includes("fever")) {
+        replyText = "I understand. A headache with mild fever can have several common causes.\n\nGeneral care:\n• Rest and monitor body temperature.\n• Stay hydrated with water or electrolyte fluids.\n• Consult a qualified doctor if fever exceeds 101°F or lasts >48h.";
       }
 
       setMessages((prev) => [
@@ -207,13 +221,20 @@ export default function WhatsAppLiveChat() {
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
-    }, 1600);
+    }, 1200);
+  };
+
+  // Handle user sending an interactive message
+  const handleSendMessage = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    sendPromptMessage(inputValue);
   };
 
   const handleToggleDemo = () => {
     if (isDemoRunning) {
       if (timerRef.current) clearTimeout(timerRef.current);
       setIsDemoRunning(false);
+      setIsBotTyping(false);
     } else {
       setIsDemoRunning(true);
       setIsUserInteracting(false);
@@ -424,6 +445,29 @@ export default function WhatsAppLiveChat() {
           <div ref={messagesEndRef} />
         </div>
 
+        {/* ── Quick Simulated Interaction Chips ── */}
+        <div className="bg-[#F0F2F5]/95 dark:bg-[#202C33]/95 px-3 py-1.5 border-t border-[#E9EDEF] dark:border-[#222E35] flex items-center gap-1.5 overflow-x-auto scrollbar-none z-20">
+          <span className="text-[10px] font-mono text-[#8696A0] uppercase tracking-wider flex-shrink-0 mr-1">
+            Tap to test:
+          </span>
+          {[
+            "English",
+            "Headache & mild fever",
+            "Emergency advisory",
+            "हिंदी",
+            "मराठी",
+          ].map((prompt) => (
+            <button
+              key={prompt}
+              type="button"
+              onClick={() => sendPromptMessage(prompt)}
+              className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-white dark:bg-[#2A3942] text-[#111B21] dark:text-[#E9EDEF] border border-[#E9EDEF] dark:border-[#222E35] shadow-2xs hover:bg-[#E9EDEF] dark:hover:bg-[#32424b] transition-colors whitespace-nowrap cursor-pointer flex-shrink-0"
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
+
         {/* ── WhatsApp Authentic Composer / Input Bar ── */}
         <form
           onSubmit={handleSendMessage}
@@ -456,7 +500,9 @@ export default function WhatsAppLiveChat() {
                 setInputValue(e.target.value);
                 if (!isUserInteracting) setIsUserInteracting(true);
               }}
-              placeholder="Type a message..."
+              readOnly={isTouchDevice}
+              inputMode={isTouchDevice ? "none" : "text"}
+              placeholder={isTouchDevice ? "Tap quick options above..." : "Type a message..."}
               className="w-full bg-transparent text-xs sm:text-sm text-[#111B21] dark:text-[#E9EDEF] placeholder:text-[#8696A0] focus:outline-none"
             />
             {!inputValue.trim() && (

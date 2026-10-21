@@ -189,7 +189,7 @@ export default function CoverflowCard({
           {project.isGitHubCard ? (
             <div className="my-auto p-4 rounded-2xl bg-accent/5 border border-accent/20 text-center">
               <p className="font-mono text-xs text-text-secondary leading-relaxed">
-                The rest of my work lives on my GitHub profile.
+                Explore open-source repositories, experiments, and research prototypes.
               </p>
               <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-text-primary text-bg font-mono text-xs font-semibold shadow-xs">
                 <span>View All Repositories ↗</span>

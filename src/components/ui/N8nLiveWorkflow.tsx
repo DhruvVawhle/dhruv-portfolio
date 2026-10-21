@@ -213,14 +213,14 @@ export default function N8nLiveWorkflow() {
   const selectedNode = selectedNodeId ? WORKFLOW_NODES[selectedNodeId] : null;
 
   /* ─── DYNAMIC NODE PORT MEASUREMENTS FOR PIXEL-PERFECT WIRES ─── */
-  const stageRef = useRef<HTMLDivElement>(null);
-  const webhookRef = useRef<HTMLDivElement>(null);
-  const normalizeRef = useRef<HTMLDivElement>(null);
-  const geminiRef = useRef<HTMLDivElement>(null);
-  const safetyCheckRef = useRef<HTMLDivElement>(null);
-  const mongodbRef = useRef<HTMLDivElement>(null);
-  const urgentReplyRef = useRef<HTMLDivElement>(null);
-  const whatsappOutRef = useRef<HTMLDivElement>(null);
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const webhookRef = React.useRef<HTMLDivElement>(null);
+  const normalizeRef = React.useRef<HTMLDivElement>(null);
+  const geminiRef = React.useRef<HTMLDivElement>(null);
+  const safetyCheckRef = React.useRef<HTMLDivElement>(null);
+  const mongodbRef = React.useRef<HTMLDivElement>(null);
+  const urgentReplyRef = React.useRef<HTMLDivElement>(null);
+  const whatsappOutRef = React.useRef<HTMLDivElement>(null);
 
   const [portPositions, setPortPositions] = useState<{
     webhook_out: { x: number; y: number };
@@ -493,7 +493,7 @@ export default function N8nLiveWorkflow() {
             </div>
 
             {/* ── Dotted Workflow Canvas Stage ─────────────────────────── */}
-            <div className="relative flex-1 bg-[radial-gradient(ellipse_at_center,_var(--color-bg-surface)_0%,_var(--color-bg)_100%)] overflow-x-auto min-h-[460px] flex items-center p-4 sm:p-6 lg:p-8">
+            <div className="relative flex-1 bg-[radial-gradient(ellipse_at_center,_var(--color-bg-surface)_0%,_var(--color-bg)_100%)] overflow-x-auto touch-pan-y overscroll-x-contain min-h-[460px] flex items-center p-4 sm:p-6 lg:p-8">
               
               {/* Subtle Canvas Dot Grid */}
               <div

@@ -217,7 +217,7 @@ export default function Skills() {
 
   // Reusable Orbit Ring Renderer
   const renderOrbitalEcosystem = (isMobile: boolean) => {
-    const boxSizePx = isMobile ? 340 : 600;
+    const boxSizePx = isMobile ? 290 : 600;
 
     return (
       <div
@@ -255,7 +255,7 @@ export default function Skills() {
         {/* Orbit Rings & Revolving Nodes */}
         {ORBIT_RINGS.map((ring) => {
           const count = ring.skills.length;
-          const ringRadiusPx = isMobile ? ring.mobileRadiusPx : ring.radiusPx;
+          const ringRadiusPx = isMobile ? Math.min(ring.mobileRadiusPx, ring.id === "outer" ? 116 : ring.id === "middle" ? 82 : 48) : ring.radiusPx;
           const diameterPx = ringRadiusPx * 2;
           const isRingActive = activeTech && ring.skills.includes(activeTech);
 
@@ -315,7 +315,9 @@ export default function Skills() {
                         onClick={(e) => handleNodeClick(skill, e)}
                         aria-label={`Inspect ${skill} engineering capabilities`}
                         aria-pressed={isNodeActive}
-                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] w-12 h-12 sm:w-14 sm:h-14 ${
+                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${
+                          isMobile ? "w-9 h-9" : "w-12 h-12 sm:w-14 sm:h-14"
+                        } ${
                           isNodeActive
                             ? "bg-[#161B22] border-2 border-[#3B82F6] shadow-[0_0_38px_rgba(59,130,246,0.95)] scale-125 z-50 ring-4 ring-[#3B82F6]/30"
                             : isConnected
@@ -333,7 +335,7 @@ export default function Skills() {
                           <span className="absolute -inset-1.5 rounded-full border border-[#10B981] animate-pulse pointer-events-none z-30 opacity-60" />
                         )}
 
-                        <TechIcon name={skill} size="md" />
+                        <TechIcon name={skill} size={isMobile ? "sm" : "md"} />
                       </button>
                     </div>
                   </div>
@@ -431,7 +433,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="py-[var(--section-padding-y)] bg-[#111318] text-white border-y border-white/10 relative overflow-hidden transition-colors duration-300"
+      className="py-[var(--section-padding-y)] bg-[#111318] text-white border-y border-white/10 relative overflow-hidden transition-colors duration-300 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Engineering Ecosystem and Technical Capabilities"
     >
       {/* Soft Ambient Blue & Purple Gradients + CSS Particles */}
@@ -486,8 +488,41 @@ export default function Skills() {
             }`}
           >
             {/* Mobile Orbit (< sm) */}
-            <div className="flex sm:hidden py-6 min-h-[360px] items-center justify-center w-full">
+            <div className="flex flex-col sm:hidden py-4 items-center justify-center w-full">
               {renderOrbitalEcosystem(true)}
+
+              {/* Quick Mobile Technology Chips Selector */}
+              <div className="mt-4 w-full px-2 text-center">
+                <span className="font-mono text-[10px] text-text-secondary uppercase tracking-wider block mb-2">
+                  Tap to inspect technology:
+                </span>
+                <div className="flex flex-wrap justify-center gap-1.5 max-w-sm mx-auto">
+                  {[
+                    "React.js",
+                    "Next.js",
+                    "TypeScript",
+                    "Node.js",
+                    "Python",
+                    "MongoDB",
+                    "Firebase Firestore",
+                    "AWS",
+                    "Docker",
+                  ].map((tech) => (
+                    <button
+                      key={tech}
+                      type="button"
+                      onClick={(e) => handleNodeClick(tech, e)}
+                      className={`px-2.5 py-1 rounded-full text-xs font-mono font-medium border transition-colors ${
+                        activeTech === tech
+                          ? "bg-accent text-white border-accent shadow-xs"
+                          : "bg-white/5 border-white/15 text-white/80 hover:text-white"
+                      }`}
+                    >
+                      {tech}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             {/* Tablet & Desktop Orbit (>= sm) */}
             <div className="hidden sm:flex py-6 min-h-[620px] items-center justify-center w-full">

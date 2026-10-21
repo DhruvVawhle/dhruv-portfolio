@@ -329,7 +329,7 @@ function DirectContactDock({
               onMouseLeave={() => setHoveredIndex(null)}
               animate={{ scale: isTouchDevice || shouldReduceMotion ? 1 : scale }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent"
             >
               {item.icon}
             </motion.a>
@@ -484,7 +484,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 bg-bg border-b border-border-custom/40"
+      className="relative overflow-hidden pt-16 pb-12 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Portfolio Introduction"
     >
       {/* ── 1. Single WebGL Canvas: Three.js Node Network Background ── */}
@@ -521,7 +521,7 @@ export default function Hero() {
         {/* ── TOP STRIP ──────────────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-wrap items-center justify-between gap-4 pb-4 sm:pb-5 mb-8 sm:mb-12 border-b border-border-custom/60"
+          className="flex flex-wrap items-center justify-between gap-4 pb-3 sm:pb-5 mb-5 sm:mb-12 border-b border-border-custom/60"
         >
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
@@ -537,13 +537,13 @@ export default function Hero() {
         </motion.div>
 
         {/* ── MAIN HERO GRID ─────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT ZONE: Stacked Typography, Bio, CTA Buttons (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col space-y-7 sm:space-y-8">
+          <div className="lg:col-span-7 flex flex-col space-y-5 sm:space-y-8">
             <motion.div variants={itemVariants}>
 
               {/* Headline with Scramble Effect */}
-              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.88] select-none text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem]">
+              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.92] sm:leading-[0.88] select-none text-[2.75rem] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem]">
                 <div className="text-text-primary">
                   <ScrambleWord
                     text="ENGINEER"
@@ -575,11 +575,11 @@ export default function Hero() {
               </h1>
 
               {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
-              <div className="mt-7 sm:mt-8 max-w-xl">
-                <h2 className="text-lg md:text-xl font-bold text-text-primary font-display">
+              <div className="mt-4 sm:mt-8 max-w-xl">
+                <h2 className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
                   Dhruv Vawhle — Software Engineer
                 </h2>
-                <p className="mt-3 text-base md:text-lg text-text-secondary leading-relaxed">
+                <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
                   Final-year Information Technology undergraduate specializing in{" "}
                   <span
                     className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
@@ -618,7 +618,7 @@ export default function Hero() {
             {/* CTA Buttons: Shimmer on Primary, Magnetic Lean toward Cursor */}
             <motion.div
               variants={itemVariants}
-              className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4"
+              className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
             >
               {/* Primary: Explore Featured Projects */}
               <MagneticButton

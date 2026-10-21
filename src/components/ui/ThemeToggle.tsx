@@ -26,12 +26,12 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center gap-2 cursor-pointer group"
+      className="flex items-center gap-1.5 sm:gap-2 cursor-pointer group min-h-[44px] sm:min-h-[48px] px-1 py-1"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       id="theme-toggle"
       type="button"
     >
-      {/* Sun Icon */}
+      {/* Sun Icon (hidden on narrow screens to prevent navbar crowding) */}
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -42,7 +42,7 @@ export default function ThemeToggle() {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="transition-colors duration-300"
+        className="hidden sm:block transition-colors duration-300"
         animate={{
           color: isDark ? "var(--color-text-secondary)" : "var(--color-accent)",
           scale: isDark ? 0.85 : 1,
@@ -62,11 +62,11 @@ export default function ThemeToggle() {
       </motion.svg>
 
       {/* Toggle Track */}
-      <div className="relative w-14 h-7 rounded-full bg-text-primary/90 transition-colors duration-300 shadow-inner">
+      <div className="relative w-12 sm:w-14 h-6 sm:h-7 rounded-full bg-text-primary/90 transition-colors duration-300 shadow-inner flex items-center">
         {/* Sliding Knob */}
         <motion.div
-          className="absolute top-1 left-1 w-5 h-5 rounded-full bg-bg shadow-md"
-          animate={{ x: isDark ? 28 : 0 }}
+          className="absolute left-0.5 sm:left-1 w-5 h-5 rounded-full bg-bg shadow-md flex items-center justify-center text-[10px]"
+          animate={{ x: isDark ? 24 : 0 }}
           transition={{
             type: "spring",
             stiffness: 500,
@@ -75,7 +75,7 @@ export default function ThemeToggle() {
         />
       </div>
 
-      {/* Moon Icon */}
+      {/* Moon Icon (hidden on narrow screens to prevent navbar crowding) */}
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -86,7 +86,7 @@ export default function ThemeToggle() {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="transition-colors duration-300"
+        className="hidden sm:block transition-colors duration-300"
         animate={{
           color: isDark ? "var(--color-accent)" : "var(--color-text-secondary)",
           scale: isDark ? 1 : 0.85,

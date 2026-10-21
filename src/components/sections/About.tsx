@@ -70,7 +70,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="py-[var(--section-padding-y)] bg-bg section-alt relative"
+      className="py-[var(--section-padding-y)] bg-bg section-alt relative scroll-mt-20 sm:scroll-mt-24"
       aria-label="About and Engineering Philosophy Section"
     >
       <div className="content-width">
@@ -171,7 +171,7 @@ export default function About() {
                     <div className="divide-y divide-border-custom">
                       {/* KrishiSaathi */}
                       <a
-                        href="#krishisaathi"
+                        href="#projects"
                         className="group flex items-center justify-between gap-3 py-3 first:pt-2 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
                       >
                         <div className="flex items-center gap-3 min-w-0">
@@ -192,7 +192,7 @@ export default function About() {
 
                       {/* CampusAI */}
                       <a
-                        href="#campusai"
+                        href="#projects"
                         className="group flex items-center justify-between gap-3 py-3 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
                       >
                         <div className="flex items-center gap-3 min-w-0">

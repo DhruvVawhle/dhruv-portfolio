@@ -170,7 +170,7 @@ export default function Certifications() {
   return (
     <section
       id="certifications"
-      className="py-[var(--section-padding-y)] bg-bg section-alt relative overflow-hidden"
+      className="py-[var(--section-padding-y)] bg-bg section-alt relative overflow-hidden scroll-mt-20 sm:scroll-mt-24"
       aria-label="Credentials & Certifications Section"
     >
       {/* Background Ambience Glow */}

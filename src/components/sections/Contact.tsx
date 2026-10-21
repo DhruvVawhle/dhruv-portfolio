@@ -47,7 +47,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-[var(--section-padding-y)] bg-bg" aria-label="Connect Section">
+    <section id="contact" className="py-[var(--section-padding-y)] bg-bg scroll-mt-20 sm:scroll-mt-24" aria-label="Connect Section">
       <div className="content-width">
         {/* Header */}
         <ScrollReveal>

@@ -17,7 +17,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "pram-educate",
     role: "Software Quality Testing Assurance Intern",
     company: "PRAM Educate IT Software LLP",
-    period: "Aug 2026 - Oct 2026",
+    period: "Aug 2026 – Oct 2026",
     status: "Completed",
     bullets: [
       "Completed 150+ hours of on-the-job training in technical and functional testing.",
@@ -33,7 +33,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "codsoft",
     role: "Web Development Intern",
     company: "CodSoft",
-    period: "Dec 2025 - Jan 2026",
+    period: "Dec 2025 – Jan 2026",
     status: "Completed",
     bullets: [
       "Built and deployed responsive web apps and UI components (calculator, landing pages) using HTML, CSS, JavaScript, Git, and GitHub Pages."
@@ -48,7 +48,7 @@ export const EXPERIENCES_DATA: ExperienceItem[] = [
     id: "compozent",
     role: "Software Development Engineer (Web) Intern",
     company: "Compozent",
-    period: "Dec 2024 - Jan 2025",
+    period: "Dec 2024 – Jan 2025",
     status: "Completed",
     bullets: [
       "Developed and enhanced production-level features using React and Node.js within an Agile environment.",
