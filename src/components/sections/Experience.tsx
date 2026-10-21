@@ -230,9 +230,9 @@ export default function Experience() {
                                 className="w-full h-full object-cover object-top group-hover/thumb:scale-[1.02] transition-transform duration-300"
                               />
 
-                              {/* Minimal Bottom Bar */}
-                              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-bg-surface/95 via-bg-surface/70 to-transparent flex items-center justify-between">
-                                <div className="min-w-0 pr-2">
+                              {/* Bottom Certificate Meta Bar */}
+                              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-bg-surface/95 via-bg-surface/70 to-transparent flex items-center justify-between pointer-events-none">
+                                <div className="min-w-0">
                                   <p className="font-display font-semibold text-xs sm:text-sm text-text-primary truncate leading-tight">
                                     {exp.credential.title}
                                   </p>
@@ -240,13 +240,18 @@ export default function Experience() {
                                     {exp.company} · Official Certificate
                                   </span>
                                 </div>
-                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg/80 backdrop-blur-sm border border-border-custom text-text-secondary group-hover/thumb:text-accent font-mono text-[11px] transition-colors flex-shrink-0">
-                                  <span>View</span>
-                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
+                              </div>
+
+                              {/* Restored Hover Overlay with "View Certificate" Pill */}
+                              <div className="absolute inset-0 bg-black/45 opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bg-surface text-text-primary font-sans text-xs font-semibold shadow-xl border border-border-custom group-hover/thumb:scale-105 transition-transform duration-200">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
                                   </svg>
+                                  <span>View Certificate</span>
                                 </span>
                               </div>
                             </div>

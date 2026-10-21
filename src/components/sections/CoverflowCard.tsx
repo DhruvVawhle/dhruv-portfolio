@@ -115,22 +115,18 @@ export default function CoverflowCard({
             }`}
           >
             <div
-              className={`flex flex-col items-center gap-3 transition-all duration-300 ${
+              className={`flex flex-col items-center gap-2.5 transition-all duration-300 ${
                 isHovered ? "translate-y-0 scale-100 opacity-100" : "translate-y-3 scale-95 opacity-0"
               }`}
             >
-              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-accent shadow-2xl backdrop-blur-sm">
-                <Eye className="w-7 h-7 text-white" />
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-white font-sans text-sm font-bold shadow-xl shadow-accent/30 border border-white/20">
+                <Eye className="w-4 h-4 text-white" />
+                <span>{project.isGitHubCard ? "Open Repository" : "View Project Details"}</span>
+                <ExternalLink className="w-3.5 h-3.5 opacity-80" />
               </div>
-              <div className="flex flex-col items-center gap-1.5">
-                <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-accent text-white font-sans text-sm font-bold shadow-xl shadow-accent/25">
-                  <span>{project.isGitHubCard ? "Showcase Repository" : "Showcase Project"}</span>
-                  <ExternalLink className="w-4 h-4" />
-                </span>
-                <span className="font-mono text-xs text-white/90 font-medium">
-                  Click anywhere to view full case study & details
-                </span>
-              </div>
+              <span className="font-mono text-xs text-white/85 font-medium">
+                Click anywhere to view full case study
+              </span>
             </div>
           </div>
         )}
