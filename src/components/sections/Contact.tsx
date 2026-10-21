@@ -82,7 +82,7 @@ export default function Contact() {
               <div className="flex flex-wrap justify-center gap-2 mb-5">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Available for 2027 engineering roles</span>
+                  <span>Graduating 2027 · Open to Engineering Roles</span>
                 </div>
 
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono">

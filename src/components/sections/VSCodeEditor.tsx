@@ -246,7 +246,7 @@ export default function VSCodeEditor({
           {/* Code Lines with Line Numbers & Caret */}
           <div
             ref={editorBodyRef}
-            className="flex-1 overflow-y-auto overflow-x-auto min-w-0 touch-pan-y overscroll-contain p-2 text-[#d4d4d4] font-mono leading-relaxed"
+            className="flex-1 overflow-y-auto overflow-x-auto min-w-0 max-w-full touch-pan-y overscroll-contain p-2 text-[#d4d4d4] font-mono leading-relaxed scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
           >
             {displayedLines.map((line, idx) => {
               const isCurrentLine = idx === displayedLines.length - 1;
@@ -260,7 +260,7 @@ export default function VSCodeEditor({
                   <span className="w-8 text-right pr-3 select-none text-[#5c6370] text-[11px] flex-shrink-0">
                     {idx + 1}
                   </span>
-                  <span className="flex-1 whitespace-pre-wrap break-all text-[11px] min-w-0">
+                  <span className="flex-1 whitespace-pre-wrap break-words text-[11px] min-w-0">
                     {renderHighlightedLine(line)}
                     {isCurrentLine && isTypingActive && !prefersReducedMotion && (
                       <span className="inline-block w-1.5 h-3.5 ml-0.5 bg-[#007acc] animate-pulse align-middle" />
@@ -272,7 +272,7 @@ export default function VSCodeEditor({
           </div>
 
           {/* Terminal Output Panel */}
-          <div className="h-28 sm:h-32 bg-[#181818] border-t border-[#333333] flex flex-col min-w-0">
+          <div className="h-28 sm:h-32 bg-[#181818] border-t border-[#333333] flex flex-col min-w-0 max-w-full">
             <div className="h-6 px-3 bg-[#252526] flex items-center justify-between text-[10px] text-[#969696] flex-shrink-0">
               <div className="flex items-center gap-3">
                 <span className="text-white font-semibold border-b border-[#007acc] pb-0.5">
@@ -284,7 +284,7 @@ export default function VSCodeEditor({
             </div>
             <div
               aria-live="polite"
-              className="flex-1 overflow-y-auto overflow-x-auto min-w-0 touch-pan-y overscroll-contain p-2 text-[10px] font-mono text-[#cccccc] space-y-0.5"
+              className="flex-1 overflow-y-auto overflow-x-auto min-w-0 max-w-full touch-pan-y overscroll-contain p-2 text-[10px] font-mono text-[#cccccc] space-y-0.5 scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
             >
               {terminalLogs.length === 0 ? (
                 <span className="text-[#555555]">
@@ -296,13 +296,13 @@ export default function VSCodeEditor({
                 terminalLogs.map((log, idx) => (
                   <div
                     key={idx}
-                    className={
+                    className={`break-words ${
                       log.startsWith("ERR")
                         ? "text-red-400 font-semibold"
                         : log.startsWith("✓")
                         ? "text-emerald-400 font-semibold"
                         : "text-[#9cdcfe]"
-                    }
+                    }`}
                   >
                     {log}
                   </div>

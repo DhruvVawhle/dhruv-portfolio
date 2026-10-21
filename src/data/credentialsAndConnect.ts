@@ -87,6 +87,7 @@ export const FOOTER_NAV_LINKS: NavLink[] = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
+  { label: "Hackathons", href: "#hackathons" },
   { label: "Skills", href: "#skills" },
   { label: "Credentials", href: "#certifications" },
   { label: "Contact", href: "#contact" },

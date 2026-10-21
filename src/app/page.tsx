@@ -1,14 +1,16 @@
+import dynamic from "next/dynamic";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
-import Projects from "@/components/sections/Projects";
-import Experience from "@/components/sections/Experience";
-import Hackathons from "@/components/sections/Hackathons";
-import Skills from "@/components/sections/Skills";
-import Certifications from "@/components/sections/Certifications";
-import Contact from "@/components/sections/Contact";
+
+const Projects = dynamic(() => import("@/components/sections/Projects"));
+const Experience = dynamic(() => import("@/components/sections/Experience"));
+const Hackathons = dynamic(() => import("@/components/sections/Hackathons"));
+const Skills = dynamic(() => import("@/components/sections/Skills"));
+const Certifications = dynamic(() => import("@/components/sections/Certifications"));
+const Contact = dynamic(() => import("@/components/sections/Contact"));
 
 export default function Home() {
   return (

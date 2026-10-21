@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "motion",
+      "framer-motion",
+    ],
+  },
   images: {
     // Trim deviceSizes to avoid upscaling the 1366×768 hero source.
     // Default includes 2048 & 3840 which cause blurry upscaled variants.

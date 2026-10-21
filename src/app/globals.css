@@ -6,7 +6,7 @@
   --bg: #fafaf9;
   --bg-surface: #ffffff;
   --text-primary: #111827;
-  --text-secondary: #6b7280;
+  --text-secondary: #4b5563;
   --accent: #2563eb;
   --border-custom: #e5e7eb;
 
@@ -56,6 +56,18 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fallback smooth scroll when Lenis is not active */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html:not(.lenis) {
+    scroll-behavior: auto !important;
+  }
 }
 
 body {

@@ -22,9 +22,9 @@ export const WORKFLOW_HEADER_CODE = [
   "}",
   "",
   "const problem: Problem = {",
-  '  domain: "Agriculture & Mandi Marketplace",',
-  '  bottleneck: "Farmer margin lost to intermediaries",',
-  '  targetImpact: "Direct trade & algorithmic price discovery"',
+  '  domain: "Agriculture & Mandi",',
+  '  bottleneck: "Farmer margin lost to middlemen",',
+  '  targetImpact: "Direct trade & fair price discovery"',
   "};",
   ""
 ];

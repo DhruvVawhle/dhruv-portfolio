@@ -6,7 +6,6 @@ import { CREDENTIALS_DATA, CredentialItem } from "@/data/credentialsAndConnect";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import PreviewDialog from "@/components/ui/PreviewDialog";
 import { useSimpleToast, copyToClipboard } from "@/components/ui/SimpleToast";
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { 
   Award, 
   FileCheck, 
@@ -267,6 +266,8 @@ export default function Certifications() {
                               <img
                                 src={issuerMeta.logoSrc}
                                 alt={issuerMeta.alt}
+                                loading="lazy"
+                                decoding="async"
                                 className="h-7 w-auto max-w-[110px] object-contain"
                               />
                             </div>
@@ -314,17 +315,16 @@ export default function Certifications() {
                             >
                               <img
                                 src={cert.image}
-                                alt={cert.title}
-                                className="w-full h-full object-cover object-top group-hover/cert:scale-105 transition-transform duration-500"
+                                alt={`${cert.title} Certificate issued by ${cert.issuer}`}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-full object-cover object-top group-hover/cert:scale-[1.02] transition-transform duration-300"
                               />
 
-
-                              {/* Hover Glass Veil */}
-                              <div className="absolute inset-0 bg-black/45 opacity-0 group-hover/cert:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bg-surface text-text-primary font-sans text-xs font-semibold shadow-xl border border-border-custom">
-                                  <Eye className="w-3.5 h-3.5 text-accent" />
-                                  <span>View Certificate</span>
-                                </span>
+                              {/* Subtle Corner Badge */}
+                              <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-bg/85 backdrop-blur-md border border-border-custom text-text-primary font-mono text-[11px] flex items-center gap-1.5 opacity-80 group-hover/cert:opacity-100 transition-opacity">
+                                <Eye className="w-3 h-3 text-accent" />
+                                <span>Preview</span>
                               </div>
                             </div>
                           ) : (
@@ -338,14 +338,10 @@ export default function Certifications() {
                       </div>
 
                       {/* Interactive Card Footer Bar */}
-                      <div className="pt-4 border-t border-border-custom/80 flex flex-wrap items-center justify-between gap-2.5 mt-auto">
-                        {cert.hasImage && cert.image && (
-                          <InteractiveHoverButton
-                            text="View Certificate"
-                            onClick={() => openPreview(cert)}
-                            className="text-xs py-1.5 px-3.5"
-                          />
-                        )}
+                      <div className="pt-4 border-t border-border-custom/80 flex items-center justify-between gap-2.5 mt-auto">
+                        <span className="font-mono text-[11px] text-text-secondary">
+                          {cert.issuer} Verified
+                        </span>
 
                         {cert.credentialId && (
                           <button

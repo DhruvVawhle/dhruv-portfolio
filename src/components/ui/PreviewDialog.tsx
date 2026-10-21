@@ -129,7 +129,9 @@ export default function PreviewDialog({
                 <div className="relative w-full aspect-[4/3] max-h-[65vh] rounded-2xl overflow-hidden border border-border-custom bg-black/10 flex items-center justify-center">
                   <img
                     src={imageSrc}
-                    alt={title}
+                    alt={subtitle ? `${title} – ${subtitle}` : `${title} document preview`}
+                    loading="lazy"
+                    decoding="async"
                     onError={() => setImgError(true)}
                     className="w-full h-full object-contain"
                   />
@@ -158,28 +160,16 @@ export default function PreviewDialog({
 
             {/* Footer */}
             <div className="p-4 border-t border-border-custom/80 flex items-center justify-between font-mono text-xs text-text-secondary">
-              <span>Verified Candidate Record</span>
-              <div className="flex items-center gap-3">
-                {pdfSrc && (
-                  <a
-                    href={pdfSrc}
-                    download
-                    className="text-text-secondary hover:text-text-primary transition-colors"
-                  >
-                    Download PDF ↓
-                  </a>
-                )}
-                {(pdfSrc || imageSrc) && (
-                  <a
-                    href={pdfSrc || imageSrc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:underline font-semibold"
-                  >
-                    Open full resolution ↗
-                  </a>
-                )}
-              </div>
+              <span>Official Credential Document</span>
+              {pdfSrc && (
+                <a
+                  href={pdfSrc}
+                  download
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg border border-border-custom text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Download PDF ↓
+                </a>
+              )}
             </div>
           </motion.div>
         </div>

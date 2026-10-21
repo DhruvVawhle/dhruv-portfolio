@@ -9,7 +9,12 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import HeroNodeNetwork from "@/components/effects/HeroNodeNetwork";
+import dynamic from "next/dynamic";
+
+const HeroNodeNetwork = dynamic(
+  () => import("@/components/effects/HeroNodeNetwork"),
+  { ssr: false }
+);
 
 /* ─── Engineering Icons ─────────────────────────────────────────── */
 const ShieldIcon = () => (
@@ -150,12 +155,8 @@ function ScrambleWord({
   }, [text, isTouchDevice, shouldReduceMotion]);
 
   useEffect(() => {
-    if (!isTouchDevice && !shouldReduceMotion) {
-      scramble();
-    } else {
-      setDisplayText(text);
-    }
-  }, [scramble, isTouchDevice, shouldReduceMotion, text]);
+    setDisplayText(text);
+  }, [text]);
 
   return (
     <span
@@ -459,23 +460,22 @@ export default function Hero() {
   };
 
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.1,
-        delayChildren: shouldReduceMotion ? 0 : 0.05,
+        staggerChildren: shouldReduceMotion ? 0 : 0.08,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
+    hidden: { opacity: 1, y: 0 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: [0.16, 1, 0.3, 1] as const,
       },
     },
@@ -484,7 +484,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden pt-16 pb-12 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
+      className="relative overflow-hidden pt-24 xs:pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Portfolio Introduction"
     >
       {/* ── 1. Single WebGL Canvas: Three.js Node Network Background ── */}
@@ -521,7 +521,7 @@ export default function Hero() {
         {/* ── TOP STRIP ──────────────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-wrap items-center justify-between gap-4 pb-3 sm:pb-5 mb-5 sm:mb-12 border-b border-border-custom/60"
+          className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 xs:gap-4 pb-3 sm:pb-5 mb-5 sm:mb-10 border-b border-border-custom/60"
         >
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
@@ -539,11 +539,12 @@ export default function Hero() {
         {/* ── MAIN HERO GRID ─────────────────────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT ZONE: Stacked Typography, Bio, CTA Buttons (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col space-y-5 sm:space-y-8">
+          <div className="lg:col-span-7 flex flex-col space-y-4 sm:space-y-7">
             <motion.div variants={itemVariants}>
 
               {/* Headline with Scramble Effect */}
-              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.92] sm:leading-[0.88] select-none text-[2.75rem] xs:text-5xl sm:text-7xl md:text-8xl lg:text-[6.25rem]">
+              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.95] sm:leading-[0.88] select-none text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[5.75rem]">
+                <span className="sr-only">Dhruv Vawhle — Software Engineer &amp; AI Security Specialist</span>
                 <div className="text-text-primary">
                   <ScrambleWord
                     text="ENGINEER"
@@ -575,10 +576,10 @@ export default function Hero() {
               </h1>
 
               {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
-              <div className="mt-4 sm:mt-8 max-w-xl">
-                <h2 className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
+              <div className="mt-4 sm:mt-6 max-w-xl">
+                <p className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
                   Dhruv Vawhle — Software Engineer
-                </h2>
+                </p>
                 <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
                   Final-year Information Technology undergraduate specializing in{" "}
                   <span
@@ -589,8 +590,7 @@ export default function Hero() {
                     }`}
                   >
                     full-stack web development
-                  </span>
-                  ,{" "}
+                  </span>,{" "}
                   <span
                     className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
                       activeSpecialty === 1
@@ -599,8 +599,7 @@ export default function Hero() {
                     }`}
                   >
                     applied machine learning
-                  </span>
-                  , and{" "}
+                  </span>, and{" "}
                   <span
                     className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
                       activeSpecialty === 2
@@ -609,8 +608,7 @@ export default function Hero() {
                     }`}
                   >
                     AI security
-                  </span>
-                  .
+                  </span>.
                 </p>
               </div>
             </motion.div>
@@ -618,7 +616,7 @@ export default function Hero() {
             {/* CTA Buttons: Shimmer on Primary, Magnetic Lean toward Cursor */}
             <motion.div
               variants={itemVariants}
-              className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
+              className="pt-4 sm:pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4.5"
             >
               {/* Primary: Explore Featured Projects */}
               <MagneticButton
@@ -700,9 +698,10 @@ export default function Hero() {
                 {/* Image Component */}
                 <Image
                   src="/images/profile/dhruv-vawhle.jpg"
-                  alt="Dhruv Vawhle – AI Security Specialist Portrait"
+                  alt="Dhruv Vawhle – Software Engineer & AI Security Specialist Portrait"
                   fill
                   priority
+                  fetchPriority="high"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
                   className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${
                     isTouchColorActive ? "!grayscale-0" : ""
@@ -760,8 +759,8 @@ export default function Hero() {
                 </svg>
 
 
-                {/* Animated Node-Graph Chip Top Right */}
-                <div className="absolute top-3.5 right-3.5 z-20">
+                {/* Animated Node-Graph Chip Top Right (Hidden on mobile < sm to prevent overlapping portrait) */}
+                <div className="hidden sm:block absolute top-3.5 right-3.5 z-20">
                   <NodeGraphChip />
                 </div>
 
@@ -776,7 +775,7 @@ export default function Hero() {
                     </p>
                   </div>
                   <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                    <span>B.Tech IT - Mumbai, Maharashtra, India</span>
+                    <span>B.Tech IT (Graduating 2027) · Mumbai, India</span>
                     <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                       <span>Available for Roles</span>

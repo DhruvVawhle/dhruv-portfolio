@@ -303,18 +303,13 @@ export default function Hackathons() {
                 <div className="relative w-full aspect-[16/9] max-h-48 rounded-xl border border-border-custom bg-black/5 dark:bg-black/40 overflow-hidden mb-3">
                   <img
                     src="/images/hackathons/medimitra-case-study-preview.png"
-                    alt="MediMitra AI Healthcare Case Study Preview"
+                    alt="MediMitra AI Healthcare Case Study – Multilingual Triage & n8n Architecture Presentation"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top group-hover/study:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/study:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bg-surface text-text-primary font-mono text-xs font-bold shadow-lg">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                      <span>Click to View Presentation / PDF ↗</span>
-                    </span>
+                  <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-bg/85 backdrop-blur-md border border-border-custom text-text-primary font-mono text-[11px] flex items-center gap-1.5 opacity-80 group-hover/study:opacity-100 transition-opacity">
+                    <span>PDF Preview</span>
                   </div>
                 </div>
 
@@ -404,38 +399,15 @@ export default function Hackathons() {
                     >
                       <img
                         src={comp.certificateImage}
-                        alt={`${comp.title} Certificate`}
-                        className="w-full h-full object-cover object-top group-hover/cardthumb:scale-105 transition-transform duration-500"
+                        alt={`${comp.title} Certificate – Hackathon & Competition Recognition`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top group-hover/cardthumb:scale-[1.02] transition-transform duration-300"
                       />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/cardthumb:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bg-surface text-text-primary font-mono text-xs font-bold shadow-lg">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <circle cx="11" cy="11" r="8" />
-                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                            <line x1="11" y1="8" x2="11" y2="14" />
-                            <line x1="8" y1="11" x2="14" y2="11" />
-                          </svg>
-                          <span>Click to Enlarge</span>
-                        </span>
+                      <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-bg/85 backdrop-blur-md border border-border-custom text-text-primary font-mono text-[11px] flex items-center gap-1.5 opacity-80 group-hover/cardthumb:opacity-100 transition-opacity">
+                        <span>Preview</span>
                       </div>
                     </div>
-                  )}
-
-                  {comp.certificateImage && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setDialogState({
-                          isOpen: true,
-                          title: comp.title,
-                          imageSrc: comp.certificateImage,
-                          subtitle: `${comp.period} · ${comp.team}`,
-                        })
-                      }
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-accent/10 hover:bg-accent/20 text-accent font-mono text-xs font-semibold border border-accent/20 transition-colors cursor-pointer"
-                    >
-                      <span>View certificate ↗</span>
-                    </button>
                   )}
                 </div>
               );

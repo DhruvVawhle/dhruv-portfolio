@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
+import "lenis/dist/lenis.css";
 
 declare global {
   interface Window {
@@ -13,33 +14,37 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Respect prefers-reduced-motion
+    // Respect prefers-reduced-motion and use native smooth touch scroll on mobile (<768px)
     if (typeof window !== "undefined") {
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) return;
+      const isMobile = window.innerWidth < 768;
+      if (prefersReduced || isMobile) return;
     }
 
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 1.5,
-      infinite: false,
+    let isMounted = true;
+
+    import("lenis").then(({ default: Lenis }) => {
+      if (!isMounted) return;
+      const lenis = new Lenis({
+        autoRaf: true,
+        anchors: { offset: -70 },
+        duration: 1.15,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 1.5,
+        wheelMultiplier: 1.0,
+        infinite: false,
+      });
+
+      lenisRef.current = lenis;
+      window.__lenis = lenis;
     });
 
-    lenisRef.current = lenis;
-    window.__lenis = lenis;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    const rafId = requestAnimationFrame(raf);
-
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      delete window.__lenis;
+      isMounted = false;
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        delete window.__lenis;
+      }
     };
   }, []);
 

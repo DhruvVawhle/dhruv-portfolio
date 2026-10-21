@@ -172,7 +172,7 @@ export default function KrishiSaathiGallery() {
               {!imageErrors[activeShot.src] ? (
                 <Image
                   src={activeShot.src}
-                  alt={activeShot.caption}
+                  alt={`KrishiSaathi ${activeShot.caption}`}
                   fill
                   sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
                   className="object-contain transition-transform duration-500 group-hover:scale-[1.01]"

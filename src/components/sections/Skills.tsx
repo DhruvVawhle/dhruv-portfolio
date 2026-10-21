@@ -502,45 +502,72 @@ export default function Skills() {
               activeTech && activeDetail ? "w-full lg:w-auto flex-1" : "w-full"
             }`}
           >
-            {/* Mobile Orbit (< sm) */}
-            <div className="flex flex-col sm:hidden py-4 items-center justify-center w-full">
-              {renderOrbitalEcosystem(true)}
-
-              {/* Quick Mobile Technology Chips Selector */}
-              <div className="mt-4 w-full px-2 text-center">
-                <span className="font-mono text-[10px] text-text-secondary uppercase tracking-wider block mb-2">
-                  Tap to inspect technology:
+            {/* Mobile Touch-Optimized Interactive Stack Grid (< md) */}
+            <div className="flex flex-col md:hidden py-4 w-full">
+              <div className="text-center mb-4 px-2">
+                <span className="font-mono text-xs font-semibold text-accent uppercase tracking-wider block">
+                  Interactive Technology Ecosystem
                 </span>
-                <div className="flex flex-wrap justify-center gap-1.5 max-w-sm mx-auto">
-                  {[
-                    "React.js",
-                    "Next.js",
-                    "TypeScript",
-                    "Node.js",
-                    "Python",
-                    "MongoDB",
-                    "Firebase Firestore",
-                    "AWS",
-                    "Docker",
-                  ].map((tech) => (
-                    <button
-                      key={tech}
-                      type="button"
-                      onClick={(e) => handleNodeClick(tech, e)}
-                      className={`px-2.5 py-1 rounded-full text-xs font-mono font-medium border transition-colors ${
-                        activeTech === tech
-                          ? "bg-accent text-white border-accent shadow-xs"
-                          : "bg-white/5 border-white/15 text-white/80 hover:text-white"
-                      }`}
+                <p className="text-xs text-text-secondary mt-1">
+                  Tap any technology to inspect architectural connections, proficiency, and use cases.
+                </p>
+              </div>
+
+              {/* Grouped by Core Rings for Clear Architecture */}
+              <div className="space-y-4 px-1 max-w-lg mx-auto w-full">
+                {ORBIT_RINGS.map((ring, ringIdx) => {
+                  const ringLabels = [
+                    "Core Application & Language",
+                    "Frameworks & Databases",
+                    "Cloud, DevOps & Tools",
+                  ];
+                  return (
+                    <div
+                      key={ring.id}
+                      className="p-3.5 rounded-2xl bg-bg-surface/90 border border-border-custom/80 shadow-xs"
                     >
-                      {tech}
-                    </button>
-                  ))}
-                </div>
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="font-mono text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
+                          {ringLabels[ringIdx] || `Layer ${ringIdx + 1}`}
+                        </span>
+                        <span className="font-mono text-[10px] text-accent/80 font-bold">
+                          {ring.skills.length} techs
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
+                        {ring.skills.map((skill) => {
+                          const isNodeActive = activeTech === skill;
+                          const isConnected = connectedTechs.includes(skill);
+
+                          return (
+                            <button
+                              key={skill}
+                              type="button"
+                              onClick={(e) => handleNodeClick(skill, e)}
+                              aria-label={`Inspect ${skill} capabilities`}
+                              aria-pressed={isNodeActive}
+                              className={`min-h-[46px] px-3 py-2 rounded-xl text-xs font-mono font-medium border flex items-center gap-2 transition-all cursor-pointer touch-manipulation text-left ${
+                                isNodeActive
+                                  ? "bg-accent/15 border-accent text-accent shadow-xs font-bold ring-2 ring-accent/30"
+                                  : isConnected
+                                  ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold"
+                                  : "bg-bg border-border-custom/80 text-text-primary hover:border-accent/40"
+                              }`}
+                            >
+                              <TechIcon name={skill} size="sm" />
+                              <span className="truncate">{skill}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            {/* Tablet & Desktop Orbit (>= sm) */}
-            <div className="hidden sm:flex py-6 min-h-[620px] items-center justify-center w-full">
+
+            {/* Desktop Cinematic Orbit (>= md) */}
+            <div className="hidden md:flex py-6 min-h-[620px] items-center justify-center w-full">
               {renderOrbitalEcosystem(false)}
             </div>
           </div>

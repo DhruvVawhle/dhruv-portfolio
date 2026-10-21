@@ -166,7 +166,9 @@ export default function CoverflowCard({
                 {project.image ? (
                   <img
                     src={project.image}
-                    alt={`${project.title} preview`}
+                    alt={project.imageAlt || `${project.title} – ${project.subtitle}`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";

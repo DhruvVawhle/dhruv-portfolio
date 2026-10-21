@@ -20,6 +20,7 @@ export interface ShowcaseProject {
   metrics: ProjectMetric[];
   stack: string[];
   image: string;
+  imageAlt?: string;
   githubUrl: string;
   liveUrl?: string;
   extraLinks?: ExtraLink[];
@@ -51,6 +52,7 @@ export const SHOWCASE_PROJECTS: ShowcaseProject[] = [
       "OmniRoute",
     ],
     image: "/images/projects/promptshield.png",
+    imageAlt: "PromptShield LLM prompt injection detection and prevention gateway security interface preview",
     // TODO: Update PromptShield GitHub repository URL if distinct from profile
     githubUrl: "https://github.com/DhruvVawhle/PromptShield",
     liveUrl: "https://dhruvvawhle.vercel.app",
@@ -78,6 +80,7 @@ export const SHOWCASE_PROJECTS: ShowcaseProject[] = [
       "REST APIs",
     ],
     image: "/images/projects/campusai.png",
+    imageAlt: "CampusAI multilingual voice-enabled 3D college reception kiosk touchscreen interface",
     // TODO: Update CampusAI GitHub repository URL if distinct from profile
     githubUrl: "https://github.com/DhruvVawhle/CampusAI",
     extraLinks: [
@@ -114,6 +117,7 @@ export const SHOWCASE_PROJECTS: ShowcaseProject[] = [
       "OAuth",
     ],
     image: "/images/projects/krishisaathi-marketplace.png",
+    imageAlt: "KrishiSaathi farm-to-market agricultural marketplace and ARIMA commodity price forecasting dashboard",
     // TODO: Update KrishiSaathi GitHub repository URL if distinct from profile
     githubUrl: "https://github.com/DhruvVawhle/KrishiSaathi",
     liveUrl: "https://krishisaathi-web.vercel.app/",
@@ -144,6 +148,7 @@ export const SHOWCASE_PROJECTS: ShowcaseProject[] = [
       "NumPy",
     ],
     image: "/images/projects/imdb-sentiment-analysis.png",
+    imageAlt: "IMDB movie review sentiment classification and NLP machine learning benchmarking dashboard",
     // TODO: Update IMDB Sentiment GitHub repository URL if distinct from profile
     githubUrl: "https://github.com/DhruvVawhle/IMDB-Movie-Review-Sentiment-Analysis",
   },

@@ -5,8 +5,13 @@ import { motion, AnimatePresence } from "motion/react";
 import { SHOWCASE_PROJECTS, ShowcaseProject } from "@/data/showcaseProjects";
 import CoverflowCard from "@/components/sections/CoverflowCard";
 import ProjectDetailSheet from "@/components/sections/ProjectDetailSheet";
-import DriftingParticleField from "@/components/sections/DriftingParticleField";
+import dynamic from "next/dynamic";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+
+const DriftingParticleField = dynamic(
+  () => import("@/components/sections/DriftingParticleField"),
+  { ssr: false }
+);
 
 const FILTER_CHIPS = ["All", "Web", "AI", "Machine Learning", "NLP", "Cloud"] as const;
 type FilterChip = (typeof FILTER_CHIPS)[number];
@@ -145,17 +150,17 @@ export default function Projects() {
             </p>
           </div>
 
-          {/* Filter Chips */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+          {/* Filter Chips (WCAG 2.5.5 touch target >= 44x44px with comfortable spacing) */}
+          <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 mb-8 scrollbar-none py-1">
             {FILTER_CHIPS.map((chip) => {
               const isActive = activeFilter === chip;
               return (
                 <button
                   key={chip}
                   onClick={() => setActiveFilter(chip)}
-                  className={`h-9 px-4 rounded-xl font-mono text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
+                  className={`min-h-[44px] h-11 px-4 sm:px-5 rounded-xl font-mono text-xs sm:text-sm font-semibold whitespace-nowrap transition-all border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent ${
                     isActive
-                      ? "bg-accent/15 border-accent text-accent shadow-xs"
+                      ? "bg-accent/15 border-accent text-accent shadow-xs font-bold"
                       : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
                   }`}
                 >

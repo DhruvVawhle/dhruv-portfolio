@@ -92,12 +92,21 @@ export default function About() {
       <div className="content-width">
         {/* Section Header */}
         <ScrollReveal>
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-12 border-b border-border-custom/60">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
                 Profile &amp; Philosophy
               </span>
             </div>
+          </div>
+
+          <div className="max-w-3xl mb-12">
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
+              Engineering with intent and problem-first focus.
+            </h2>
+            <p className="mt-3 text-base sm:text-lg text-text-secondary leading-relaxed">
+              Transforming complex algorithmic challenges into accessible, high-performance web applications and secure AI solutions.
+            </p>
           </div>
         </ScrollReveal>
 

@@ -121,7 +121,9 @@ export default function ProjectDetailSheet({
                   <div className="mt-4 relative w-full h-56 sm:h-64 rounded-2xl border border-border-custom bg-bg/40 overflow-hidden flex items-center justify-center">
                     <img
                       src={project.image}
-                      alt={`${project.title} screenshot`}
+                      alt={project.imageAlt || `${project.title} – ${project.subtitle}`}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.target as HTMLElement).style.display = "none";

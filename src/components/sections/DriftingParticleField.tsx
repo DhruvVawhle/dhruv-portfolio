@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  BufferGeometry,
+  BufferAttribute,
+  PointsMaterial,
+  Points,
+  AdditiveBlending,
+} from "three";
 
 interface ParticleFieldProps {
   paused?: boolean;
@@ -10,7 +19,7 @@ interface ParticleFieldProps {
 export default function DriftingParticleField({ paused = false }: ParticleFieldProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameId = useRef<number | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const rendererRef = useRef<WebGLRenderer | null>(null);
 
   useEffect(() => {
     // Respect prefers-reduced-motion
@@ -28,11 +37,11 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || 500;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.z = 150;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
+    const renderer = new WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
     rendererRef.current = renderer;
@@ -41,7 +50,7 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
 
     // Create subtle particles
     const particleCount = 45;
-    const geometry = new THREE.BufferGeometry();
+    const geometry = new BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const speeds = new Float32Array(particleCount * 3);
 
@@ -55,21 +64,21 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
       speeds[i + 2] = (Math.random() - 0.5) * 0.05;
     }
 
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("position", new BufferAttribute(positions, 3));
 
     // Particle material adapting to accent blue
-    const material = new THREE.PointsMaterial({
+    const material = new PointsMaterial({
       color: 0x3b82f6,
       size: 2.5,
       transparent: true,
       opacity: 0.35,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
     });
 
-    const particles = new THREE.Points(geometry, material);
+    const particles = new Points(geometry, material);
     scene.add(particles);
 
-    const posAttr = geometry.attributes.position as THREE.BufferAttribute;
+    const posAttr = geometry.attributes.position as BufferAttribute;
 
     const animate = () => {
       if (paused) return;

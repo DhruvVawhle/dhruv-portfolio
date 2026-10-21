@@ -142,7 +142,7 @@ export default function N8nLiveWorkflow() {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [cycleType, setCycleType] = useState<"normal" | "emergency">("normal");
   const [cycleCount, setCycleCount] = useState<number>(1);
-  const [isInView, setIsInView] = useState<boolean>(true);
+  const [isInView, setIsInView] = useState<boolean>(false);
 
   // Single rock-solid, paced execution lifecycle (pauses automatically when scrolled offscreen)
   useEffect(() => {
@@ -306,9 +306,9 @@ export default function N8nLiveWorkflow() {
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent block mb-2">
             TECHNICAL IMPLEMENTATION
           </span>
-          <h2 className="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-text-primary tracking-tight">
+          <h3 className="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-text-primary tracking-tight">
             MediMitra — WhatsApp Healthcare Assistant
-          </h2>
+          </h3>
           <p className="mt-2 text-xs sm:text-sm text-text-secondary max-w-2xl leading-relaxed">
             Real n8n workflow for a multilingual AI healthcare chatbot with language detection, safety checks, and conversation storage.
           </p>
@@ -374,7 +374,7 @@ export default function N8nLiveWorkflow() {
               type="button"
               onClick={handleToggleAnimation}
               aria-label={isRunning ? "Stop Animation" : "Resume Animation"}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-sans text-xs font-semibold transition-all shadow-xs cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 min-h-[42px] px-3.5 py-2 rounded-xl font-sans text-xs font-semibold transition-all shadow-xs cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent ${
                 isRunning
                   ? "bg-bg-surface hover:bg-foreground/5 text-text-primary border border-border-custom"
                   : "bg-accent hover:bg-accent/90 text-white border border-accent shadow-sm"

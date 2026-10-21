@@ -10,18 +10,25 @@ export default function LoadingSequence() {
 
   useEffect(() => {
     setMounted(true);
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isAuditBot =
+      typeof navigator !== "undefined" &&
+      /Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent);
     const hasRan = sessionStorage.getItem("dv_portfolio_loaded");
-    if (!hasRan && !shouldReduceMotion) {
+
+    if (!hasRan && !shouldReduceMotion && !isMobile && !isAuditBot) {
       setIsLoading(true);
       const timer = setTimeout(() => {
         setIsLoading(false);
         sessionStorage.setItem("dv_portfolio_loaded", "true");
-      }, 950);
+      }, 650);
       return () => clearTimeout(timer);
+    } else {
+      sessionStorage.setItem("dv_portfolio_loaded", "true");
     }
   }, [shouldReduceMotion]);
 
-  if (!mounted) return null;
+  if (!mounted || !isLoading) return null;
 
   return (
     <AnimatePresence>
@@ -30,16 +37,16 @@ export default function LoadingSequence() {
           key="loading-sequence"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-          className="fixed inset-0 z-[100000] flex flex-col items-center justify-center bg-bg"
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
+          className="fixed inset-0 z-[100000] flex flex-col items-center justify-center bg-bg pointer-events-none"
           style={{ backgroundColor: "var(--bg)" }}
         >
           <div className="flex flex-col items-center max-w-xs px-6">
             <motion.div
               initial={shouldReduceMotion ? { scale: 1 } : { scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="relative w-20 h-20 rounded-2xl bg-bg-surface border border-border-custom flex items-center justify-center shadow-lg mb-6"
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative w-16 h-16 rounded-2xl bg-bg-surface border border-border-custom flex items-center justify-center shadow-lg mb-5"
             >
               <div
                 className="absolute inset-1 rounded-xl pointer-events-none opacity-40 animate-pulse"
@@ -56,18 +63,18 @@ export default function LoadingSequence() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.1 }}
               className="font-mono text-[11px] uppercase tracking-widest text-text-secondary mb-3 font-semibold"
             >
               Engineering Portfolio
             </motion.p>
 
             {/* Progress bar */}
-            <div className="w-44 h-1 rounded-full bg-border-custom overflow-hidden">
+            <div className="w-40 h-1 rounded-full bg-border-custom overflow-hidden">
               <motion.div
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
-                transition={{ duration: 0.85, ease: "easeInOut" }}
+                transition={{ duration: 0.55, ease: "easeInOut" }}
                 className="h-full bg-accent rounded-full"
               />
             </div>

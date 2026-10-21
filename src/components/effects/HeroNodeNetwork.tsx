@@ -1,7 +1,18 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  BufferGeometry,
+  BufferAttribute,
+  PointsMaterial,
+  Points,
+  LineBasicMaterial,
+  LineSegments,
+  AdditiveBlending,
+} from "three";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function HeroNodeNetwork() {
@@ -26,13 +37,13 @@ export default function HeroNodeNetwork() {
     const connectionDist = 50;
     const connectionDistSq = connectionDist * connectionDist;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(60, width / height, 0.1, 1000);
     camera.position.z = 140;
 
-    let renderer: THREE.WebGLRenderer;
+    let renderer: WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({
+      renderer = new WebGLRenderer({
         alpha: true,
         antialias: false,
         powerPreference: "low-power",
@@ -60,44 +71,44 @@ export default function HeroNodeNetwork() {
     }
 
     // 1. Points Geometry
-    const pointsGeometry = new THREE.BufferGeometry();
+    const pointsGeometry = new BufferGeometry();
     pointsGeometry.setAttribute(
       "position",
-      new THREE.BufferAttribute(positions, 3)
+      new BufferAttribute(positions, 3)
     );
 
-    const pointsMaterial = new THREE.PointsMaterial({
+    const pointsMaterial = new PointsMaterial({
       color: 0x3b82f6,
       size: 2.6,
       transparent: true,
       opacity: 0.35,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
     });
 
-    const pointCloud = new THREE.Points(pointsGeometry, pointsMaterial);
+    const pointCloud = new Points(pointsGeometry, pointsMaterial);
     scene.add(pointCloud);
 
     // 2. Line Segments Geometry (pre-allocate maximum possible lines)
     const maxLines = (nodeCount * (nodeCount - 1)) / 2;
     const linePositions = new Float32Array(maxLines * 6);
-    const linesGeometry = new THREE.BufferGeometry();
+    const linesGeometry = new BufferGeometry();
     linesGeometry.setAttribute(
       "position",
-      new THREE.BufferAttribute(linePositions, 3)
+      new BufferAttribute(linePositions, 3)
     );
 
-    const linesMaterial = new THREE.LineBasicMaterial({
+    const linesMaterial = new LineBasicMaterial({
       color: 0x3b82f6,
       transparent: true,
       opacity: 0.14,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
     });
 
-    const lineSegments = new THREE.LineSegments(linesGeometry, linesMaterial);
+    const lineSegments = new LineSegments(linesGeometry, linesMaterial);
     scene.add(lineSegments);
 
-    const pointsPosAttr = pointsGeometry.attributes.position as THREE.BufferAttribute;
-    const linesPosAttr = linesGeometry.attributes.position as THREE.BufferAttribute;
+    const pointsPosAttr = pointsGeometry.attributes.position as BufferAttribute;
+    const linesPosAttr = linesGeometry.attributes.position as BufferAttribute;
 
     const animate = () => {
       if (!isVisibleRef.current) return;

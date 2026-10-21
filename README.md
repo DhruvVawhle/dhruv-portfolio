@@ -5,13 +5,14 @@
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Motion](https://img.shields.io/badge/Motion-Framer-FF4154?style=for-the-badge&logo=framer&logoColor=white)](https://motion.dev/)
+[![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://dhruvvawhle.vercel.app)
 
-**A high-performance, editorial software engineering portfolio showcasing production full-stack systems, applied AI architectures, and verified deployments.**
+**A high-performance, editorial software engineering portfolio showcasing production full-stack systems, applied AI security architectures, n8n automations, and verified engineering credentials.**
 
-[🚀 Live Preview](https://dhruvvawhle.vercel.app) · [📄 View Resume](https://dhruvvawhle.vercel.app/documents/Dhruv_Resume_Updated_07-08-2026_.pdf) · [📬 Connect](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8)
+[🚀 Live Preview](https://dhruvvawhle.vercel.app) · [📄 View Resume](https://dhruvvawhle.vercel.app/resume.pdf) · [📬 LinkedIn](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8) · [💻 GitHub](https://github.com/DhruvVawhle)
 
 </div>
 
@@ -19,26 +20,35 @@
 
 ## 🌟 Key Features
 
-- **🎨 Architectural Editorial Design**: Apple Spatial and Cuberto-inspired typography, custom dark-mode aesthetics, glassmorphic HUD overlays, and micro-animations.
-- **⚡ Hardware-Accelerated 120 FPS Spotlight**: Frame-throttled (`requestAnimationFrame`) dynamic spotlight glow cards with full touch support (`touchAction: 'pan-y'`) for stutter-free mobile momentum scrolling.
-- **🪐 Dynamic Skill Ecosystem**: Interactive 3D orbiting skill rings and mapped relational node networks visualizing full-stack proficiency.
-- **🔍 Deep-Dive Technical Case Studies**: Interactive modals detailing architecture diagrams, technical trade-offs, bundle optimizations, and real metrics for flagship projects.
-- **🏆 Verified Proof & Credentials**: High-resolution certificate previews with interactive lightbox modal for internship completion and national hackathons.
-- **📱 Responsive & Accessible**: 100% responsive across mobile, tablet, and ultra-wide displays with `prefers-reduced-motion` compliance.
-- **📋 One-Click Contact Dock**: Instant email copying with custom clipboard toast feedback, social links, and direct resume downloads.
+- **🎨 Editorial Engineering Design**: Spatial typography (Plus Jakarta Sans, Space Grotesk, JetBrains Mono), custom dark-mode token palette, and glassmorphic HUD overlays.
+- **⚡ High-Performance Core Web Vitals**:
+  - Tree-shaken Three.js node network and particle fields with `IntersectionObserver` pause mechanisms.
+  - Zero-runtime inline SVG icon system eliminating heavy icon package parsing overhead.
+  - Native lazy loading (`loading="lazy"`, `decoding="async"`) across all below-the-fold media.
+  - Unblocked First Contentful Paint (FCP) with streaming server-rendered HTML.
+- **🤖 Applied AI & Architecture Showcases**:
+  - **PromptShield**: High-throughput LLM gateway detecting adversarial prompt injections, jailbreaks, and sensitive data leakage.
+  - **MediMitra**: Multilingual AI healthcare triage assistant powered by n8n workflows and Google Gemini APIs.
+  - **KrishiSaathi**: Agri-tech crop disease classification, pest diagnostic engine, and fair marketplace.
+  - **CampusAI**: Full-stack campus assistant platform with verified academic and student workflows.
+- **📜 Minimalist Document & Credential Previews**: Single-click modal preview for verified internship certificates and hackathon credentials with optional direct PDF download.
+- **🌊 Fluid Desktop Smooth Scroll & Microphysics**: Desktop Lenis smooth scrolling with auto-fallback to native momentum touch scroll on mobile screens (<768px).
+- **♿ Accessibility & Reduced Motion**: Full compliance with `prefers-reduced-motion`, semantic heading hierarchy, ARIA labels, and skip-to-content navigation.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 | :--- | :--- |
-| **Framework** | Next.js 16 (App Router with React Server Components) |
-| **UI Library** | React 19 + TypeScript (Strict Type Safety) |
-| **Styling** | Tailwind CSS + CSS Custom Properties Design Tokens |
-| **Animations** | Motion (`motion/react`) + Custom Canvas & SVG Graphics |
-| **Data Layer** | Centralized, decoupled JSON stores (`/src/data/`) |
-| **Deployment** | Vercel Edge Network CI/CD |
+| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, Turbopack, React Server Components) |
+| **UI Library** | [React 19](https://react.dev/) + [TypeScript 5](https://www.typescriptlang.org/) (Strict Mode) |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) + CSS Custom Properties Design Tokens |
+| **Animations** | [Motion](https://motion.dev/) (`motion/react`) |
+| **3D & Canvas** | [Three.js](https://threejs.org/) (WebGL Node Graph & Drifting Particles) |
+| **Smooth Scroll** | [Lenis](https://lenis.darkroom.engineering/) (Dynamic Desktop-Only Hydration) |
+| **Icons** | Curated SVG Vector Components + Lucide React |
+| **Deployment** | [Vercel](https://vercel.com/) Edge Network CI/CD |
 
 ---
 
@@ -47,25 +57,36 @@
 ```tree
 portfolio-site/
 ├── public/
-│   ├── documents/         # Synced resume PDFs
-│   └── images/            # Optimized project thumbnails & certificates
+│   ├── documents/             # Official case studies & presentations
+│   ├── images/
+│   │   ├── profile/           # Optimized profile portraits
+│   │   ├── projects/          # High-resolution application screenshots
+│   │   ├── hackathons/        # Case study & competition visuals
+│   │   └── certificates/      # Verified internship & course credentials
+│   └── resume.pdf             # Curated technical resume
 ├── src/
-│   ├── app/               # Next.js App Router (layout, page, metadata)
+│   ├── app/
+│   │   ├── globals.css        # Tailwind v4 theme tokens & typography
+│   │   ├── layout.tsx         # Root layout with SEO JSON-LD structured data
+│   │   ├── page.tsx           # Assembled portfolio sections with dynamic splits
+│   │   ├── template.tsx       # Unblocked SSR page wrapper
+│   │   ├── robots.ts          # Search engine crawler directives
+│   │   └── sitemap.ts         # Dynamic XML sitemap generator
 │   ├── components/
-│   │   ├── effects/       # AnimatedBackground, ScrollReveal, TiltCard
-│   │   ├── layout/        # Navbar, Footer, Floating Dock
-│   │   ├── sections/      # Hero, About, Projects, Experience, Skills, Hackathons, Contact
-│   │   └── ui/            # GlowCard, Button, Badge, LightboxModal, CaseStudyModal
-│   ├── data/              # Centralized JSON data records
-│   │   ├── profile.json
-│   │   ├── projects.json
-│   │   ├── experience.json
-│   │   ├── skills.json
-│   │   ├── achievements.json
-│   │   ├── certificates.json
-│   │   └── socials.json
-│   └── lib/               # TypeScript interfaces & data routers
-└── tailwind.config.ts     # Design tokens & color system
+│   │   ├── effects/           # HeroNodeNetwork, DriftingParticleField, ClientEffects
+│   │   ├── layout/            # Navbar, Footer, ScrollProgress
+│   │   ├── sections/          # Hero, About, Projects, Experience, Hackathons, Skills, Certifications, Contact
+│   │   └── ui/                # SpotlightCard, PreviewDialog, TechIcon, InteractiveHoverButton
+│   ├── data/                  # Decoupled TypeScript & JSON data models
+│   │   ├── showcaseProjects.ts
+│   │   ├── experienceAndCompetitions.ts
+│   │   ├── credentialsAndConnect.ts
+│   │   ├── engineeringWorkflow.ts
+│   │   └── skills.json
+│   └── lib/                   # Utility helpers (cn, formatters)
+├── next.config.ts             # Image optimization & package bundling rules
+├── package.json               # Dependencies & build scripts
+└── tsconfig.json              # Strict TypeScript compiler options
 ```
 
 ---
@@ -74,7 +95,7 @@ portfolio-site/
 
 ### Prerequisites
 
-Ensure you have **Node.js 18+** installed:
+Ensure you have **Node.js 18.18+** (or **Node.js 20+** recommended) and npm installed:
 
 ```bash
 node -v
@@ -94,7 +115,7 @@ npm -v
    npm install
    ```
 
-3. Start the local development server:
+3. Start the development server with Turbopack:
    ```bash
    npm run dev
    ```
@@ -103,7 +124,7 @@ npm -v
 
 ---
 
-## 📦 Build & Deployment
+## 📦 Production Build & Testing
 
 To generate an optimized production bundle:
 
@@ -117,15 +138,11 @@ To run the production build locally:
 npm run start
 ```
 
-### Deploying to Vercel
-
-The easiest way to deploy is through the [Vercel Platform](https://vercel.com/):
+To run the linter:
 
 ```bash
-npx vercel --prod
+npm run lint
 ```
-
-Or connect the GitHub repository directly to Vercel for automatic CI/CD on every push to the `main` branch.
 
 ---
 
