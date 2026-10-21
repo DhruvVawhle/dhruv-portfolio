@@ -1,9 +1,13 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { EXPERIENCES_DATA, ExperienceItem } from "@/data/experienceAndCompetitions";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import PreviewDialog from "@/components/ui/PreviewDialog";
+
+const PreviewDialog = dynamic(() => import("@/components/ui/PreviewDialog"), {
+  ssr: false,
+});
 
 export default function Experience() {
   const [activeDots, setActiveDots] = useState<boolean[]>([false, false, false]);
@@ -54,7 +58,6 @@ export default function Experience() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    onScroll();
 
     return () => {
       observer.disconnect();

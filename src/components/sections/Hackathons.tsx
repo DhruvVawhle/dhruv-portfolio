@@ -4,9 +4,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { OTHER_COMPETITIONS, HackathonCard } from "@/data/experienceAndCompetitions";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import PreviewDialog from "@/components/ui/PreviewDialog";
-import N8nLiveWorkflow from "@/components/ui/N8nLiveWorkflow";
-import WhatsAppLiveChat from "@/components/ui/WhatsAppLiveChat";
+import dynamic from "next/dynamic";
+
+const PreviewDialog = dynamic(() => import("@/components/ui/PreviewDialog"), {
+  ssr: false,
+});
+const N8nLiveWorkflow = dynamic(() => import("@/components/ui/N8nLiveWorkflow"), {
+  ssr: false,
+});
+const WhatsAppLiveChat = dynamic(() => import("@/components/ui/WhatsAppLiveChat"), {
+  ssr: false,
+});
 
 export default function Hackathons() {
   const [dialogState, setDialogState] = useState<{

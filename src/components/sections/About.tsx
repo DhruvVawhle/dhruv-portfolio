@@ -3,9 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Layers, Brain, ShieldCheck, ArrowUpRight } from "lucide-react";
+import dynamic from "next/dynamic";
 import { WORKFLOW_STEPS } from "@/data/engineeringWorkflow";
-import VSCodeEditor from "@/components/sections/VSCodeEditor";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+
+const VSCodeEditor = dynamic(() => import("@/components/sections/VSCodeEditor"), {
+  ssr: false,
+});
 
 const PHILOSOPHY_BULLETS = [
   "Solve real user problems before writing code.",
@@ -65,7 +69,6 @@ export default function About() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    checkScrollProgress();
 
     return () => {
       observer.disconnect();

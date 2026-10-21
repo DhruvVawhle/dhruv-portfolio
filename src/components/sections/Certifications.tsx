@@ -3,9 +3,13 @@
 import React, { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import { CREDENTIALS_DATA, CredentialItem } from "@/data/credentialsAndConnect";
+import dynamic from "next/dynamic";
 import ScrollReveal from "@/components/effects/ScrollReveal";
-import PreviewDialog from "@/components/ui/PreviewDialog";
 import { useSimpleToast, copyToClipboard } from "@/components/ui/SimpleToast";
+
+const PreviewDialog = dynamic(() => import("@/components/ui/PreviewDialog"), {
+  ssr: false,
+});
 import { 
   Award, 
   FileCheck, 

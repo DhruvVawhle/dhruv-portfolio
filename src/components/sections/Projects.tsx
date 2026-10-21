@@ -4,9 +4,13 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { SHOWCASE_PROJECTS, ShowcaseProject } from "@/data/showcaseProjects";
 import CoverflowCard from "@/components/sections/CoverflowCard";
-import ProjectDetailSheet from "@/components/sections/ProjectDetailSheet";
 import dynamic from "next/dynamic";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+
+const ProjectDetailSheet = dynamic(
+  () => import("@/components/sections/ProjectDetailSheet"),
+  { ssr: false }
+);
 
 const DriftingParticleField = dynamic(
   () => import("@/components/sections/DriftingParticleField"),
@@ -128,7 +132,7 @@ export default function Projects() {
       aria-label="Projects Section"
     >
       {/* Three.js subtle drifting particles behind the stage */}
-      <DriftingParticleField paused={!isSectionVisible} />
+      {isSectionVisible && <DriftingParticleField paused={!isSectionVisible} />}
 
       <div className="content-width relative z-10">
         {/* Editorial Chapter Header */}

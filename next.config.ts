@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  compress: true,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
@@ -14,6 +16,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     qualities: [100, 75],
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2592000,
   },
 };
 

@@ -131,7 +131,7 @@ const jsonLd = {
     },
   ],
 };
-import { Plus_Jakarta_Sans, Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import ThemeInitializer from "@/components/ui/ThemeInitializer";
 import "./globals.css";
 import "devicon/devicon.min.css";
@@ -150,13 +150,6 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["700"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600"],
-});
-
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
@@ -165,7 +158,6 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 import ClientEffects from "@/components/effects/ClientEffects";
-import ClipboardToast from "@/components/ui/ClipboardToast";
 import SmoothScrollProvider from "@/components/effects/SmoothScrollProvider";
 import { SimpleToastProvider } from "@/components/ui/SimpleToast";
 
@@ -178,7 +170,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="dark"
-      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -192,7 +184,6 @@ export default function RootLayout({
           <SimpleToastProvider>
             <ThemeInitializer />
             <ClientEffects />
-            <ClipboardToast />
             <a href="#main-content" className="skip-to-content">
               Skip to content
             </a>

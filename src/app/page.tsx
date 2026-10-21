@@ -3,8 +3,8 @@ import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
 
+const About = dynamic(() => import("@/components/sections/About"));
 const Projects = dynamic(() => import("@/components/sections/Projects"));
 const Experience = dynamic(() => import("@/components/sections/Experience"));
 const Hackathons = dynamic(() => import("@/components/sections/Hackathons"));

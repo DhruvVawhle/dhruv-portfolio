@@ -87,19 +87,10 @@ function NodeGraphChip() {
         <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.5" className="animate-ping" />
 
         {/* Traveling signal */}
-        <motion.circle
+        <circle
           r="1.8"
           fill="#ffffff"
-          animate={{
-            cx: [8, 28, 48],
-            cy: [13, 6, 13],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: 2.2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          className="animate-traveling-signal"
         />
       </svg>
     </div>
@@ -432,6 +423,20 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [shouldReduceMotion]);
 
+  // Defer Three.js WebGL node network to idle time on desktop only (>=768px)
+  const [mountNetwork, setMountNetwork] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768 && !shouldReduceMotion) {
+      if ("requestIdleCallback" in window) {
+        const handle = (window as any).requestIdleCallback(() => setMountNetwork(true), { timeout: 2000 });
+        return () => (window as any).cancelIdleCallback?.(handle);
+      } else {
+        const timer = setTimeout(() => setMountNetwork(true), 1200);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [shouldReduceMotion]);
+
   // Handle 3D Tilt & Glare on Portrait (Mouse only)
   const handlePortraitMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isTouchDevice || shouldReduceMotion || !portraitCardRef.current) return;
@@ -487,8 +492,8 @@ export default function Hero() {
       className="relative overflow-hidden pt-24 xs:pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Portfolio Introduction"
     >
-      {/* ── 1. Single WebGL Canvas: Three.js Node Network Background ── */}
-      <HeroNodeNetwork />
+      {/* ── 1. Single WebGL Canvas: Three.js Node Network Background (Deferred Desktop Only) ── */}
+      {mountNetwork && <HeroNodeNetwork />}
 
       {/* ── Subtle Architectural Grid Line Overlay ── */}
       <div className="absolute inset-0 pointer-events-none">
@@ -734,7 +739,7 @@ export default function Hero() {
                       <stop offset="100%" stopColor="transparent" />
                     </linearGradient>
                   </defs>
-                  <motion.rect
+                  <rect
                     x="1"
                     y="1"
                     width="calc(100% - 2px)"
@@ -743,18 +748,7 @@ export default function Hero() {
                     stroke="url(#beamGradient)"
                     strokeWidth="2"
                     strokeDasharray="100 380"
-                    animate={
-                      shouldReduceMotion
-                        ? undefined
-                        : {
-                            strokeDashoffset: [0, -480],
-                          }
-                    }
-                    transition={{
-                      duration: 4.5,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+                    className={shouldReduceMotion ? undefined : "animate-border-beam"}
                   />
                 </svg>
 
