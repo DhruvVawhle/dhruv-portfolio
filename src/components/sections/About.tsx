@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Layers, Brain, Sprout, Bot, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { Layers, Brain, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { WORKFLOW_STEPS } from "@/data/engineeringWorkflow";
 import VSCodeEditor from "@/components/sections/VSCodeEditor";
 import ScrollReveal from "@/components/effects/ScrollReveal";
@@ -185,64 +185,26 @@ export default function About() {
                       Currently building
                     </div>
                     <div className="divide-y divide-border-custom">
-                      {/* KrishiSaathi */}
+                      {/* PromptShield */}
                       <a
                         href="#projects"
-                        className="group flex items-center justify-between gap-3 py-3 first:pt-2 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
+                        className="group flex items-center justify-between gap-3 py-3 first:pt-2 last:pb-0 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
                       >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
-                            <Sprout className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
-                              KrishiSaathi
-                            </div>
-                            <div className="text-[12.5px] text-text-secondary leading-normal">
-                              Farming assistant app.
-                            </div>
-                          </div>
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
-                      </a>
-
-                      {/* CampusAI */}
-                      <a
-                        href="#projects"
-                        className="group flex items-center justify-between gap-3 py-3 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
-                            <Bot className="w-4 h-4" />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
-                              CampusAI
-                            </div>
-                            <div className="text-[12.5px] text-text-secondary leading-normal">
-                              Reception kiosk for college visitors.
-                            </div>
-                          </div>
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
-                      </a>
-
-                      {/* SecurePromptAI (non-link row) */}
-                      <div className="flex items-center justify-between gap-3 py-3 last:pb-0">
                         <div className="flex items-center gap-3 min-w-0">
                           <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
                             <ShieldCheck className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
-                            <div className="text-sm font-semibold text-text-primary">
-                              SecurePromptAI
+                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
+                              PromptShield
                             </div>
                             <div className="text-[12.5px] text-text-secondary leading-normal">
                               Prompt injection detection for LLMs.
                             </div>
                           </div>
                         </div>
-                      </div>
+                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
+                      </a>
                     </div>
                   </div>
                 </div>
