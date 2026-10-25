@@ -471,9 +471,9 @@ export default function WhatsAppLiveChat() {
               className="flex justify-start w-full"
             >
               <div className="bg-white dark:bg-[#202C33] border border-black/[0.04] dark:border-white/[0.04] px-4 py-2.5 rounded-2xl rounded-tl-none shadow-xs flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-bounce [animation-delay:-0.32s]" />
-                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-bounce [animation-delay:-0.16s]" />
-                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-bounce" />
+                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-chat-pulse [animation-delay:-0.32s]" />
+                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-chat-pulse [animation-delay:-0.16s]" />
+                <span className="w-2 h-2 rounded-full bg-[#8696A0] animate-chat-pulse" />
               </div>
             </motion.div>
           )}

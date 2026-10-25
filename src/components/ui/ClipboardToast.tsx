@@ -39,7 +39,7 @@ export default function ClipboardToast() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 15, scale: 0.95 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100000] px-4 py-2.5 rounded-full bg-neutral-900 border border-white/10 text-white font-mono text-xs sm:text-sm shadow-xl flex items-center gap-2 select-none pointer-events-none"
+          className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1rem))] left-1/2 -translate-x-1/2 z-[100000] px-4 py-2.5 rounded-full bg-neutral-900 border border-white/10 text-white font-mono text-xs sm:text-sm shadow-xl flex items-center gap-2 select-none pointer-events-none"
         >
           <span className="text-emerald-500 font-bold">✓</span>
           <span>{toast}</span>

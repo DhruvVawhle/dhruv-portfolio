@@ -4,6 +4,8 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { FOOTER_NAV_LINKS, FOOTER_SOCIAL_LINKS, EMAIL_ADDRESS } from "@/data/credentialsAndConnect";
 import { FileText, Mail } from "lucide-react";
+import ScrollReveal from "@/components/effects/ScrollReveal";
+
 
 const LinkedinIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 448 512" fill="currentColor">
@@ -281,7 +283,7 @@ function BackToTop() {
         whileTap={{ scale: 0.94 }}
         transition={{ type: "spring", stiffness: 400, damping: 20, duration: 0.3 }}
         className={`
-          flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-[13px]
+          flex items-center gap-2 rounded-full border min-h-[44px] px-4.5 py-2.5 font-mono text-[13px]
           bg-bg
           transition-colors duration-200
           focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none
@@ -313,55 +315,58 @@ export default function Footer() {
         <BackToTop />
 
         {/* Main 3-column row */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 pt-20 pb-14">
-          {/* Left: Identity */}
-          <div className="text-left">
-            <p className="font-display font-bold text-[30px] leading-tight text-text-primary tracking-tight">
-              Dhruv Vawhle.
-            </p>
-            <p className="mt-1.5 text-sm text-text-secondary font-mono">
-              Software Engineer
-            </p>
-            <p className="mt-1 text-xs text-text-secondary max-w-[30ch]">
-              Mumbai, Maharashtra, India.
-            </p>
+        <ScrollReveal direction="up" delay={0.05}>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 pt-20 pb-14">
+            {/* Left: Identity */}
+            <div className="text-left">
+              <p className="font-display font-bold text-[30px] leading-tight text-text-primary tracking-tight">
+                Dhruv Vawhle.
+              </p>
+              <p className="mt-1.5 text-sm text-text-secondary font-mono">
+                Software Engineer
+              </p>
+              <p className="mt-1 text-xs text-text-secondary max-w-[30ch]">
+                Mumbai, Maharashtra, India.
+              </p>
+            </div>
+
+            {/* Center: Navigation */}
+            <nav
+              aria-label="Footer Section Navigation"
+              className="flex flex-wrap lg:justify-center gap-x-7 gap-y-3 text-[14px] font-mono font-medium text-text-secondary"
+            >
+              {FOOTER_NAV_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Right: Profile Icons */}
+            <div className="flex gap-2.5 lg:justify-self-end">
+              {PROFILE_ICONS.map((item, i) => (
+                <ProfileIconButton
+                  key={item.label}
+                  item={item}
+                  idx={i}
+                  total={PROFILE_ICONS.length}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Center: Navigation */}
-          <nav
-            aria-label="Footer Section Navigation"
-            className="flex flex-wrap lg:justify-center gap-x-7 gap-y-3 text-[14px] font-mono font-medium text-text-secondary"
-          >
-            {FOOTER_NAV_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Right: Profile Icons */}
-          <div className="flex gap-2.5 lg:justify-self-end">
-            {PROFILE_ICONS.map((item, i) => (
-              <ProfileIconButton
-                key={item.label}
-                item={item}
-                idx={i}
-                total={PROFILE_ICONS.length}
-              />
-            ))}
+          {/* Bottom Bar */}
+          <div className="border-t border-border-custom/60 pt-8 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1rem))] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-secondary text-center sm:text-left">
+            <p>© 2026 Dhruv Vawhle. All rights reserved.</p>
+            <p>Crafted with Next.js, Tailwind CSS &amp; Framer Motion.</p>
           </div>
-        </div>
-
-        {/* Bottom Bar (unchanged) */}
-        <div className="border-t border-border-custom/60 pt-8 pb-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-secondary text-center sm:text-left">
-          <p>© 2026 Dhruv Vawhle. All rights reserved.</p>
-          <p>Crafted with Next.js, Tailwind CSS &amp; Framer Motion.</p>
-        </div>
+        </ScrollReveal>
       </div>
     </footer>
+
   );
 }

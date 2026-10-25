@@ -246,7 +246,7 @@ export default function Certifications() {
         {/* Dynamic Credentials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           <AnimatePresence mode="popLayout">
-            {filteredCredentials.map((cert) => {
+            {filteredCredentials.map((cert, idx) => {
               const hasCopiedThis = copiedId === cert.credentialId;
               const issuerMeta = ISSUER_REAL_LOGOS[cert.issuerIcon];
 
@@ -254,13 +254,19 @@ export default function Certifications() {
                 <motion.div
                   key={cert.id}
                   layout
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
                   exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.28 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: (idx % 2) * 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   className="h-full flex flex-col"
                 >
                   <SpotlightCard className="h-full">
+
                     <div className="relative z-10 flex flex-col h-full justify-between">
                       <div>
                         {/* Top Meta Bar: Prominent Official Real Logo + Issuer Details */}

@@ -227,16 +227,19 @@ export default function About() {
 
         {/* 3. How I Build Software (Interactive Sticky VS Code Window) */}
         <div>
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-            <div>
-              <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-text-primary tracking-tight">
-                How I build software
-              </h3>
+          <ScrollReveal>
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+              <div>
+                <h3 className="font-display font-extrabold text-2xl sm:text-4xl text-text-primary tracking-tight">
+                  How I build software
+                </h3>
+              </div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 font-mono text-xs font-bold text-accent">
+                <span>{activeStepCount} / 7 steps built</span>
+              </div>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 font-mono text-xs font-bold text-accent">
-              <span>{activeStepCount} / 7 steps built</span>
-            </div>
-          </div>
+          </ScrollReveal>
+
 
           {/* Dual-column sticky container: Steps on Left, Sticky Editor on Right */}
           <div ref={containerRef} className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -268,9 +271,11 @@ export default function About() {
                       className="relative pl-14"
                     >
                       {/* Step Status Icon / Self-drawing Check */}
-                      <div
+                      <button
+                        type="button"
                         onClick={() => scrollToStep(idx)}
-                        className={`absolute left-0 top-4 w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 cursor-pointer shadow-sm ${
+                        aria-label={`Scroll to step ${step.id}: ${step.fnName}`}
+                        className={`absolute left-0 top-4 w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 cursor-pointer shadow-sm focus-visible:outline-2 focus-visible:outline-accent ${
                           isDone
                             ? "bg-accent border-accent text-white"
                             : "bg-bg-surface border-border-custom text-text-secondary"
@@ -299,7 +304,7 @@ export default function About() {
                             {step.id}
                           </span>
                         )}
-                      </div>
+                      </button>
 
                       {/* Step Card with Accessible Button Trigger */}
                       <button
@@ -338,11 +343,14 @@ export default function About() {
 
             {/* Right Column: Sticky VS Code Window */}
             <div className="lg:col-span-6 sticky top-20 z-20">
-              <VSCodeEditor
-                activeStepCount={activeStepCount}
-                isTyping={false}
-              />
+              <ScrollReveal direction="left" delay={0.2} scale={0.97} blur>
+                <VSCodeEditor
+                  activeStepCount={activeStepCount}
+                  isTyping={false}
+                />
+              </ScrollReveal>
             </div>
+
           </div>
         </div>
       </div>

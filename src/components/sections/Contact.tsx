@@ -58,14 +58,17 @@ export default function Contact() {
               </span>
             </div>
           </div>
+        </ScrollReveal>
 
-          {/* Minimal Centred Connect Card (Option C) */}
+        {/* Minimal Centred Connect Card (Option C) */}
+        <ScrollReveal direction="up" delay={0.15} scale={0.97} blur>
           <div
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             className="relative rounded-[22px] border border-border-custom bg-bg-surface hover:border-accent/50 shadow-xl overflow-hidden group transition-all duration-500 px-6 py-10 sm:px-8 sm:py-11 text-center flex flex-col items-center"
           >
+
             {/* Cursor-following blue glow */}
             <motion.div
               style={{

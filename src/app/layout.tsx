@@ -8,6 +8,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: "cover",
 };
 
 const metaTitle = "Dhruv Vawhle | Software Engineer & AI Security Specialist in Mumbai";

@@ -162,6 +162,10 @@ export default function Skills() {
       @keyframes orbit-counter-middle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       @keyframes orbit-rotate-outer { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       @keyframes orbit-counter-outer { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+      @keyframes orbit-signal-flow {
+        from { stroke-dashoffset: 20; }
+        to { stroke-dashoffset: 0; }
+      }
     `;
     document.head.appendChild(styleEl);
   }, []);
@@ -170,7 +174,7 @@ export default function Skills() {
   const renderConnectionLines = (isMobile: boolean) => {
     if (!activeTech) return null;
 
-    // Helper to calculate exact coordinates (percentage) for a given skill on its ring
+    // Helper to calculate exact coordinates for a given skill on its ring
     const getCoordinates = (skill: string) => {
       for (const ring of ORBIT_RINGS) {
         const idx = ring.skills.indexOf(skill);
@@ -178,9 +182,10 @@ export default function Skills() {
           const count = ring.skills.length;
           const angleDeg = (360 / count) * idx;
           const angleRad = (angleDeg * Math.PI) / 180;
-          const radius = isMobile ? ring.mobileRadiusPx : ring.radiusPx;
-          // Orbit box center is at radius + buffer (e.g., 300px desktop half-width, 160px mobile half-width)
-          const centerPx = isMobile ? 160 : 300;
+          const radius = isMobile
+            ? Math.min(ring.mobileRadiusPx, ring.id === "outer" ? 116 : ring.id === "middle" ? 82 : 48)
+            : ring.radiusPx;
+          const centerPx = isMobile ? 145 : 300;
           const x = centerPx + Math.cos(angleRad) * radius;
           const y = centerPx + Math.sin(angleRad) * radius;
           return { x, y };
@@ -192,38 +197,76 @@ export default function Skills() {
     const activeCoords = getCoordinates(activeTech);
     if (!activeCoords) return null;
 
-    const centerPx = isMobile ? 160 : 300;
+    const centerPx = isMobile ? 145 : 300;
 
     return (
       <svg className="absolute inset-0 pointer-events-none z-25 overflow-visible w-full h-full">
-        {/* Ray from Center to Active Technology */}
+        <defs>
+          <filter id="glow-accent" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#3B82F6" floodOpacity="0.7" />
+          </filter>
+          <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="2" floodColor="#10B981" floodOpacity="0.7" />
+          </filter>
+        </defs>
+
+        {/* Ambient Underlay Ray from Center to Active Technology */}
         <line
           x1={centerPx}
           y1={centerPx}
           x2={activeCoords.x}
           y2={activeCoords.y}
-          stroke="#3B82F6"
-          strokeWidth={isMobile ? "1.5" : "2"}
-          strokeDasharray="4 4"
-          className="animate-pulse"
+          stroke="var(--color-accent, #3B82F6)"
+          strokeWidth={isMobile ? "1" : "1.5"}
+          strokeOpacity="0.25"
         />
+
+        {/* Animated Flowing Ray from Center to Active Technology */}
+        <line
+          x1={centerPx}
+          y1={centerPx}
+          x2={activeCoords.x}
+          y2={activeCoords.y}
+          stroke="var(--color-accent, #3B82F6)"
+          strokeWidth={isMobile ? "1.5" : "2"}
+          strokeDasharray="5 5"
+          filter="url(#glow-accent)"
+          style={{
+            animation: !shouldReduceMotion ? "orbit-signal-flow 1.2s linear infinite" : "none",
+          }}
+        />
+
         {/* Rays from Active Technology to Connected Technologies */}
         {connectedTechs.map((connSkill) => {
           const connCoords = getCoordinates(connSkill);
           if (!connCoords) return null;
           return (
-            <line
-              key={connSkill}
-              x1={activeCoords.x}
-              y1={activeCoords.y}
-              x2={connCoords.x}
-              y2={connCoords.y}
-              stroke="#10B981"
-              strokeWidth={isMobile ? "1.2" : "1.8"}
-              strokeOpacity="0.8"
-              strokeDasharray="6 4"
-              className="animate-pulse"
-            />
+            <g key={connSkill}>
+              {/* Underlay Line */}
+              <line
+                x1={activeCoords.x}
+                y1={activeCoords.y}
+                x2={connCoords.x}
+                y2={connCoords.y}
+                stroke="#10B981"
+                strokeWidth={isMobile ? "0.8" : "1.2"}
+                strokeOpacity="0.25"
+              />
+              {/* Traveling Signal Line */}
+              <line
+                x1={activeCoords.x}
+                y1={activeCoords.y}
+                x2={connCoords.x}
+                y2={connCoords.y}
+                stroke="#10B981"
+                strokeWidth={isMobile ? "1.2" : "1.8"}
+                strokeDasharray="6 4"
+                filter="url(#glow-emerald)"
+                style={{
+                  animation: !shouldReduceMotion ? "orbit-signal-flow 1.5s linear infinite" : "none",
+                }}
+              />
+            </g>
           );
         })}
       </svg>
@@ -292,7 +335,6 @@ export default function Skills() {
                 animationTimingFunction: "linear",
                 animationIterationCount: "infinite",
                 animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
-                willChange: "transform",
               }}
             >
               {ring.skills.map((skill, i) => {
@@ -322,7 +364,6 @@ export default function Skills() {
                         animationTimingFunction: "linear",
                         animationIterationCount: "infinite",
                         animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
-                        willChange: "transform",
                       }}
                     >
                       <button
@@ -330,8 +371,8 @@ export default function Skills() {
                         onClick={(e) => handleNodeClick(skill, e)}
                         aria-label={`Inspect ${skill} engineering capabilities`}
                         aria-pressed={isNodeActive}
-                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${
-                          isMobile ? "w-9 h-9" : "w-12 h-12 sm:w-14 sm:h-14"
+                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${
+                          isMobile ? "w-11 h-11 min-w-[44px] min-h-[44px]" : "w-12 h-12 sm:w-14 sm:h-14 min-w-[48px] min-h-[48px]"
                         } ${
                           isNodeActive
                             ? "bg-[#161B22] border-2 border-[#3B82F6] shadow-[0_0_38px_rgba(59,130,246,0.95)] scale-125 z-50 ring-4 ring-[#3B82F6]/30"
@@ -489,13 +530,15 @@ export default function Skills() {
         </ScrollReveal>
 
         {/* ── ORBITAL CENTERPIECE + FLOATING INFORMATION PANEL ── */}
-        <div
-          className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${
-            activeTech && activeDetail
-              ? "lg:justify-between gap-10 sm:gap-12"
-              : "justify-center gap-0"
-          }`}
-        >
+        <ScrollReveal direction="up" delay={0.12} scale={0.96} blur>
+          <div
+            className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${
+              activeTech && activeDetail
+                ? "lg:justify-between gap-10 sm:gap-12"
+                : "justify-center gap-0"
+            }`}
+          >
+
           {/* Orbit System Container (Pure CSS GPU transition, smoothly glides between center and left) */}
           <div
             className={`flex justify-center items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${
@@ -783,15 +826,17 @@ export default function Skills() {
                               >
                                 <div className="px-5 pb-6 pt-2 border-t border-white/10 grid grid-cols-1 gap-3">
                                   {category.technologies.map((tech) => (
-                                    <div
+                                    <button
+                                      type="button"
                                       key={`mobile-tech-${tech.name}`}
                                       onClick={(e) => handleNodeClick(tech.name, e)}
-                                      className="p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu will-change-transform"
+                                      aria-label={`Inspect ${tech.name} architecture details`}
+                                      className="w-full text-left p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu focus-visible:outline-2 focus-visible:outline-[#3B82F6]"
                                     >
-                                      <div className="w-10 h-10 min-h-[48px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                                      <div className="w-10 h-10 min-h-[40px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
                                         <TechIcon name={tech.name} size="md" />
                                       </div>
-                                      <div>
+                                      <div className="flex-1 min-w-0">
                                         <h5 className="font-display font-bold text-base text-white flex items-center gap-2 justify-between">
                                           <span>{tech.name}</span>
                                           {tech.proficiency && (
@@ -814,7 +859,7 @@ export default function Skills() {
                                           </div>
                                         )}
                                       </div>
-                                    </div>
+                                    </button>
                                   ))}
                                 </div>
                               </motion.div>
@@ -924,7 +969,9 @@ export default function Skills() {
             )}
           </AnimatePresence>
         </div>
-      </div>
-    </section>
-  );
+      </ScrollReveal>
+    </div>
+  </section>
+);
+
 }

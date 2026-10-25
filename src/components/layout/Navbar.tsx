@@ -315,7 +315,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.24, ease: "easeOut" }}
-            className="fixed inset-0 z-40 md:hidden bg-bg/95 dark:bg-bg/98 backdrop-blur-2xl flex flex-col justify-between px-6 pt-24 pb-8 overflow-y-auto h-dvh min-h-dvh"
+            className="fixed inset-0 z-40 md:hidden bg-bg/95 dark:bg-bg/98 backdrop-blur-2xl flex flex-col justify-between px-6 pt-[max(5rem,calc(env(safe-area-inset-top,0px)+4.5rem))] pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1rem))] overflow-y-auto h-dvh min-h-dvh"
           >
             {/* Centered Navigation Links */}
             <div className="flex-1 flex flex-col items-center justify-center my-auto w-full max-w-sm mx-auto space-y-1.5">

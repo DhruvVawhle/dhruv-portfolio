@@ -19,6 +19,7 @@ export default function ProjectDetailSheet({
 }: ProjectDetailSheetProps) {
   const [mounted, setMounted] = useState(false);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -47,11 +48,33 @@ export default function ProjectDetailSheet({
     };
   }, [isOpen]);
 
-  // Handle ESC key
+  // Handle ESC and Tab focus trapping
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (!isOpen) return;
+      if (e.key === "Escape") {
         onClose();
+        return;
+      }
+      if (e.key === "Tab" && sheetRef.current) {
+        const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -81,6 +104,7 @@ export default function ProjectDetailSheet({
 
           {/* Modal / Sheet Content with Spring Animation */}
           <motion.div
+            ref={sheetRef}
             initial={{ y: "100%", opacity: 0.8 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0 }}
@@ -187,7 +211,7 @@ export default function ProjectDetailSheet({
             </div>
 
             {/* Sheet Footer with Action Buttons */}
-            <div className="p-6 pt-4 border-t border-border-custom/80 bg-bg/50 flex flex-wrap items-center gap-3">
+            <div className="p-6 pt-4 pb-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1rem))] sm:pb-6 border-t border-border-custom/80 bg-bg/50 flex flex-wrap items-center gap-3">
               <a
                 href={project.githubUrl}
                 target="_blank"

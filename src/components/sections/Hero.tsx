@@ -7,9 +7,12 @@ import {
   useSpring,
   useMotionValue,
   useReducedMotion,
+  useScroll,
+  useTransform,
   type Variants,
 } from "motion/react";
 import dynamic from "next/dynamic";
+
 
 const HeroNodeNetwork = dynamic(
   () => import("@/components/effects/HeroNodeNetwork"),
@@ -404,6 +407,16 @@ export default function Hero() {
   const portraitCardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, isHovering: false });
 
+  // Scroll parallax for Hero section
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroSectionRef,
+    offset: ["start start", "end start"],
+  });
+  const heroContentOpacity = useTransform(heroScrollProgress, [0, 0.85], [1, 0.2]);
+  const heroContentY = useTransform(heroScrollProgress, [0, 1], [0, 36]);
+
+
   // Detect touch capability
   useEffect(() => {
     const isTouch =
@@ -488,6 +501,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={heroSectionRef}
       id="hero"
       className="relative overflow-hidden pt-24 xs:pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Portfolio Introduction"
@@ -521,8 +535,13 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        style={{
+          opacity: shouldReduceMotion ? 1 : heroContentOpacity,
+          y: shouldReduceMotion ? 0 : heroContentY,
+        }}
         className="content-width relative z-10"
       >
+
         {/* ── TOP STRIP ──────────────────────────────────────────────── */}
         <motion.div
           variants={itemVariants}
@@ -819,7 +838,35 @@ export default function Hero() {
             />
           </div>
         </motion.div>
+
+        {/* ── 4. SCROLL TO EXPLORE INDICATOR ── */}
+        <motion.div
+          variants={itemVariants}
+          className="mt-10 sm:mt-12 flex flex-col items-center justify-center"
+        >
+          <a
+            href="#about"
+            aria-label="Scroll to explore About section"
+            className="group inline-flex flex-col items-center gap-2 text-text-secondary hover:text-accent transition-colors duration-300 select-none focus-visible:outline-2 focus-visible:outline-accent rounded-lg p-2"
+          >
+            <span className="font-mono text-[11px] font-medium tracking-widest uppercase opacity-70 group-hover:opacity-100 transition-opacity">
+              Scroll to explore
+            </span>
+            <div className="w-5 h-8 rounded-full border-2 border-border-custom group-hover:border-accent p-1 flex justify-center transition-colors">
+              <motion.div
+                animate={shouldReduceMotion ? { y: 0 } : { y: [0, 11, 0] }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="w-1 h-2 rounded-full bg-accent"
+              />
+            </div>
+          </a>
+        </motion.div>
       </motion.div>
     </section>
+
   );
 }

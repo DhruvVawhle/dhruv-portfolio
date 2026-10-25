@@ -30,7 +30,7 @@ export function SimpleToastProvider({ children }: { children: React.ReactNode })
       <div
         role="status"
         aria-live="polite"
-        className="fixed bottom-6 right-6 z-[150] pointer-events-none"
+        className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1rem))] right-6 z-[150] pointer-events-none"
       >
         <AnimatePresence>
           {toastMessage && (
