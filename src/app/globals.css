@@ -24,6 +24,20 @@
   }
 }
 
+/* System dark mode fallback before script execution */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #0a0a0c;
+    --foreground: #f9fafb;
+    --bg: #0a0a0c;
+    --bg-surface: #131418;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --accent: #3b82f6;
+    --border-custom: rgba(255, 255, 255, 0.09);
+  }
+}
+
 [data-theme="dark"] {
   --background: #0a0a0c;
   --foreground: #f9fafb;
@@ -33,6 +47,17 @@
   --text-secondary: #9ca3af;
   --accent: #3b82f6;
   --border-custom: rgba(255, 255, 255, 0.09);
+}
+
+[data-theme="light"] {
+  --background: #fafaf9;
+  --foreground: #111827;
+  --bg: #fafaf9;
+  --bg-surface: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --accent: #2563eb;
+  --border-custom: #e5e7eb;
 }
 
 @theme inline {
@@ -213,8 +238,18 @@ main > section[id] {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .section-alt {
+    background-color: rgba(19, 20, 24, 0.5);
+  }
+}
+
 [data-theme="dark"] .section-alt {
   background-color: rgba(19, 20, 24, 0.5);
+}
+
+[data-theme="light"] .section-alt {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 /* Global Focus-Visible Ring Standards */
@@ -235,3 +270,4 @@ button:focus-visible,
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Cache bust: force dev server CSS recompilation */

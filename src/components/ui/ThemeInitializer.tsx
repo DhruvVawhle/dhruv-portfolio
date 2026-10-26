@@ -1,24 +1,15 @@
-"use client";
-
-import { useLayoutEffect } from "react";
-
 /**
- * Initializes the data-theme attribute synchronously before the browser paints.
- * This replaces inline <script> tags in app/layout.tsx which React 19 / Next.js 16
- * flag with: "Encountered a script tag while rendering React component."
+ * Renders a synchronous inline script in <head> to set data-theme before first paint.
+ * Prevents FOUC (Flash of Unstyled Content / Flash of Incorrect Theme).
  */
 export default function ThemeInitializer() {
-  useLayoutEffect(() => {
-    try {
-      const stored = localStorage.getItem("theme");
-      const theme =
-        stored ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      document.documentElement.setAttribute("data-theme", theme);
-    } catch (e) {}
-  }, []);
+  const scriptContent = `(function(){try{var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var t=s||(d?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
 
-  return null;
+  return (
+    <script
+      id="theme-initializer"
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: scriptContent }}
+    />
+  );
 }
