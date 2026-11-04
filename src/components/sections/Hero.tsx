@@ -787,11 +787,11 @@ export default function Hero() {
                       AI Security Specialist
                     </p>
                   </div>
-                  <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs font-mono text-text-secondary">
-                    <span>B.Tech IT (Graduating 2027) · Mumbai, India</span>
-                    <div className="flex items-center gap-1.5 text-emerald-500 font-semibold">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Available for Roles</span>
+                  <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs text-text-secondary font-body">
+                    <span>B.Tech IT (2027) · Mumbai</span>
+                    <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span>Available for roles</span>
                     </div>
                   </div>
                 </div>

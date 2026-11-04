@@ -81,26 +81,19 @@ export default function Contact() {
             />
 
             <div className="relative z-10 flex flex-col items-center w-full max-w-2xl mx-auto">
-              {/* 1. Badges row */}
-              <div className="flex flex-wrap justify-center gap-2 mb-5">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono font-medium">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Graduating 2027 · Open to Engineering Roles</span>
-                </div>
-
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  <span>Mumbai, Maharashtra, India</span>
-                </div>
-
+              {/* 1. Status & Location metadata */}
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-text-secondary mb-6 font-body">
+                <span className="inline-flex items-center gap-1.5 font-medium text-text-primary">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  Graduating 2027 · Open to Engineering Roles
+                </span>
+                <span className="text-border-custom hidden sm:inline">•</span>
+                <span>Mumbai, India</span>
                 {istTime && (
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-foreground/5 border border-border-custom text-text-secondary text-xs font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                    <span>{istTime}</span>
-                  </div>
+                  <>
+                    <span className="text-border-custom hidden sm:inline">•</span>
+                    <span className="tabular-nums">{istTime}</span>
+                  </>
                 )}
               </div>
 

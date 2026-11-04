@@ -173,11 +173,11 @@ export default function CoverRingCard({
               <span className="font-mono text-[10px] sm:text-[11px] font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/25 text-accent tracking-wide uppercase">
                 {project.tag}
               </span>
-              <span className="font-mono text-[11px] text-text-secondary flex items-center gap-1.5">
+              <span className="text-xs text-text-secondary flex items-center gap-1.5">
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${
                     project.status === "Live"
-                      ? "bg-emerald-500 shadow-xs shadow-emerald-500/50 animate-pulse"
+                      ? "bg-emerald-500"
                       : "bg-amber-500"
                   }`}
                 />
@@ -188,7 +188,7 @@ export default function CoverRingCard({
             <h3 className="font-display font-extrabold text-xl sm:text-2xl text-text-primary tracking-tight leading-tight group-hover:text-accent transition-colors">
               {project.title}
             </h3>
-            <p className="mt-1 font-mono text-xs text-text-secondary line-clamp-2 leading-relaxed">
+            <p className="mt-1 text-xs text-text-secondary line-clamp-2 leading-relaxed">
               {project.subtitle}
             </p>
 

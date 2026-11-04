@@ -283,11 +283,11 @@ export default function Projects() {
                         <div>
                           {/* Top Status & Metrics */}
                           <div className="flex items-center justify-between gap-2 mb-3">
-                            <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent">
+                            <span className="text-xs font-medium px-2.5 py-0.5 rounded-md bg-accent/10 text-accent">
                               {project.status}
                             </span>
                             {primaryMetric && (
-                              <span className="font-mono text-[11px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums">
                                 {primaryMetric.value} {primaryMetric.label}
                               </span>
                             )}
