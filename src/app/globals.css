@@ -270,4 +270,19 @@ button:focus-visible,
   scrollbar-width: none;  /* Firefox */
 }
 
+/* ─── Browser Surface Theming ─── */
+::selection {
+  background-color: var(--accent);
+  color: #ffffff;
+}
+
+input, textarea {
+  caret-color: var(--accent);
+}
+
+/* Tabular figures for metrics, dates, and data */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Cache bust: force dev server CSS recompilation */

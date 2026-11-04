@@ -144,12 +144,6 @@ export default function Experience() {
                         <span className="font-mono text-xs font-bold px-3 py-1.5 rounded-full bg-bg-surface border border-border-custom text-accent inline-block">
                           {exp.period}
                         </span>
-                        <div className={`mt-2 ${isEven ? "flex justify-end" : "flex justify-start"}`}>
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 font-mono text-[11px] font-semibold border border-emerald-500/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Completed Internship
-                          </span>
-                        </div>
                         {exp.status === "Certificate pending" && (
                           <div className="font-mono text-xs text-text-secondary mt-1.5">
                             <span className="text-amber-500 font-medium">Certificate pending</span>
@@ -182,10 +176,6 @@ export default function Experience() {
                       <div className="sm:hidden mb-2.5 flex flex-wrap items-center gap-2">
                         <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-bg-surface border border-border-custom text-accent inline-block">
                           {exp.period}
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 font-mono text-[10px] font-semibold border border-emerald-500/20">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          Completed Internship
                         </span>
                       </div>
 
