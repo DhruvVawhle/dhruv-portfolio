@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { SHOWCASE_PROJECTS, ShowcaseProject } from "@/data/showcaseProjects";
-import CoverflowCard from "@/components/sections/CoverflowCard";
+import CoverRing from "@/components/sections/CoverRing";
 import dynamic from "next/dynamic";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+import TechIcon from "@/components/ui/TechIcon";
 
 const ProjectDetailSheet = dynamic(
   () => import("@/components/sections/ProjectDetailSheet"),
@@ -27,10 +28,9 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<ShowcaseProject | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isSectionVisible, setIsSectionVisible] = useState(true);
-  const [viewMode, setViewMode] = useState<"showcase" | "grid">("showcase");
+  const [viewMode, setViewMode] = useState<"cover-ring" | "grid">("cover-ring");
 
   const sectionRef = useRef<HTMLElement>(null);
-  const dragStartX = useRef<number | null>(null);
 
   // Filter projects based on active chip
   const filteredProjects = useMemo(() => {
@@ -71,9 +71,9 @@ export default function Projects() {
       if (isSheetOpen) return;
 
       if (e.key === "ArrowLeft") {
-        setActiveIndex((prev) => Math.max(0, prev - 1));
+        setActiveIndex((prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length);
       } else if (e.key === "ArrowRight") {
-        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
+        setActiveIndex((prev) => (prev + 1) % filteredProjects.length);
       }
     };
 
@@ -81,49 +81,10 @@ export default function Projects() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [filteredProjects.length, isSheetOpen]);
 
-  // Drag / swipe handlers with touch-action: pan-y
-  const handleTouchStart = (e: React.TouchEvent) => {
-    dragStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (dragStartX.current === null) return;
-    const diff = dragStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) {
-        // Swiped left -> next
-        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
-      } else {
-        // Swiped right -> prev
-        setActiveIndex((prev) => Math.max(0, prev - 1));
-      }
-    }
-    dragStartX.current = null;
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    dragStartX.current = e.clientX;
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (dragStartX.current === null) return;
-    const diff = dragStartX.current - e.clientX;
-    if (Math.abs(diff) > 45) {
-      if (diff > 0) {
-        setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1));
-      } else {
-        setActiveIndex((prev) => Math.max(0, prev - 1));
-      }
-    }
-    dragStartX.current = null;
-  };
-
   const openProjectSheet = (project: ShowcaseProject) => {
     setSelectedProject(project);
     setIsSheetOpen(true);
   };
-
-  const currentFrontProject = filteredProjects[activeIndex];
 
   return (
     <section
@@ -165,11 +126,10 @@ export default function Projects() {
                   <button
                     key={chip}
                     onClick={() => setActiveFilter(chip)}
-                    className={`min-h-[44px] h-11 px-4 sm:px-5 rounded-xl font-mono text-xs sm:text-sm font-semibold whitespace-nowrap transition-all border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent ${
-                      isActive
+                    className={`min-h-[44px] h-11 px-4 sm:px-5 rounded-xl font-mono text-xs sm:text-sm font-semibold whitespace-nowrap transition-all border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent ${isActive
                         ? "bg-accent/15 border-accent text-accent shadow-xs font-bold"
                         : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
-                    }`}
+                      }`}
                   >
                     {chip}
                   </button>
@@ -177,20 +137,19 @@ export default function Projects() {
               })}
             </div>
 
-            {/* View Mode Segmented Switch: 3D Showcase vs Grid Matrix */}
+            {/* View Mode Segmented Switch: 3D Cover Ring vs Grid Matrix */}
             <div className="relative flex items-center p-1 rounded-2xl bg-bg-surface border border-border-custom shadow-xs self-start md:self-auto flex-shrink-0">
               <button
                 type="button"
-                onClick={() => setViewMode("showcase")}
-                aria-label="3D Coverflow Showcase View"
-                aria-pressed={viewMode === "showcase"}
-                className={`relative min-h-[40px] px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent z-10 ${
-                  viewMode === "showcase"
+                onClick={() => setViewMode("cover-ring")}
+                aria-label="3D Cover Ring Carousel View"
+                aria-pressed={viewMode === "cover-ring"}
+                className={`relative min-h-[40px] px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent z-10 ${viewMode === "cover-ring"
                     ? "text-white font-bold"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
-                {viewMode === "showcase" && (
+                {viewMode === "cover-ring" && (
                   <motion.div
                     layoutId="viewModePill"
                     className="absolute inset-0 bg-accent rounded-xl shadow-xs -z-10"
@@ -201,12 +160,12 @@ export default function Projects() {
                     }
                   />
                 )}
+                {/* 3D Ring Orbit Icon */}
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="m21 16-9 5-9-5V8l9-5 9 5v8Z" />
-                  <path d="M3.27 6.96 12 12.01l8.73-5.05" />
-                  <path d="M12 22.08V12" />
+                  <ellipse cx="12" cy="12" rx="10" ry="5" transform="rotate(-15 12 12)" />
+                  <circle cx="12" cy="12" r="3" />
                 </svg>
-                <span>3D Showcase</span>
+                <span>Cover Ring</span>
               </button>
 
               <button
@@ -214,11 +173,10 @@ export default function Projects() {
                 onClick={() => setViewMode("grid")}
                 aria-label="Engineering Grid Matrix View"
                 aria-pressed={viewMode === "grid"}
-                className={`relative min-h-[40px] px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent z-10 ${
-                  viewMode === "grid"
+                className={`relative min-h-[40px] px-3.5 py-1.5 rounded-xl font-mono text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent z-10 ${viewMode === "grid"
                     ? "text-white font-bold"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
                 {viewMode === "grid" && (
                   <motion.div
@@ -244,101 +202,35 @@ export default function Projects() {
         </ScrollReveal>
 
         <AnimatePresence mode="wait">
-          {viewMode === "showcase" ? (
+          {viewMode === "cover-ring" ? (
             <motion.div
-              key="showcase-mode"
+              key="cover-ring-mode"
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -12 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* ── Mode 1: 3D Coverflow Stage ── */}
-              <ScrollReveal direction="up" delay={0.1} scale={0.96} blur>
-                <div
-                  style={{
-                    perspective: "1100px",
-                    touchAction: "pan-y",
-                  }}
-                  onTouchStart={handleTouchStart}
-                  onTouchEnd={handleTouchEnd}
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  className="relative w-full h-[520px] sm:h-[540px] flex items-center justify-center overflow-visible"
+              {/* ── Mode 1: Animos-Inspired 3D Cover Ring Stage ── */}
+              <ScrollReveal direction="up" delay={0.1} scale={0.97} blur>
+                <CoverRing
+                  projects={filteredProjects}
+                  activeIndex={activeIndex}
+                  setActiveIndex={setActiveIndex}
+                  onOpenDetail={openProjectSheet}
+                  shouldReduceMotion={shouldReduceMotion ?? false}
+                />
+              </ScrollReveal>
+
+              {/* Quick Link to Rapid Grid */}
+              <div className="mt-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className="font-mono text-xs text-text-secondary hover:text-accent underline underline-offset-4 cursor-pointer transition-colors"
                 >
-                  {filteredProjects.map((project, idx) => {
-                    const offset = idx - activeIndex;
-                    const isFront = offset === 0;
-
-                    return (
-                      <CoverflowCard
-                        key={project.id}
-                        project={project}
-                        isFront={isFront}
-                        offset={offset}
-                        onSelect={() => setActiveIndex(idx)}
-                        onOpenDetail={() => openProjectSheet(project)}
-                      />
-                    );
-                  })}
-                </div>
-              </ScrollReveal>
-
-              {/* Carousel Navigation Bar (Prev / Next & Dots with >=44px Touch Targets) */}
-              <ScrollReveal direction="up" delay={0.15}>
-                <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setActiveIndex((prev) => Math.max(0, prev - 1))}
-                      disabled={activeIndex === 0}
-                      aria-label="Previous project card"
-                      className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-text-primary transition-colors cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M15 18l-6-6 6-6" />
-                      </svg>
-                    </button>
-
-                    {/* Pagination Dots with Accessible 44px Touch Targets */}
-                    <div className="flex items-center gap-1">
-                      {filteredProjects.map((_, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => setActiveIndex(idx)}
-                          aria-label={`Go to slide ${idx + 1}`}
-                          className="min-w-[36px] sm:min-w-[40px] min-h-[44px] flex items-center justify-center p-1.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent rounded-full"
-                        >
-                          <span
-                            className={`h-2 rounded-full transition-all duration-300 pointer-events-none ${
-                              activeIndex === idx ? "w-7 bg-accent" : "w-2 bg-border-custom hover:bg-neutral-400"
-                            }`}
-                          />
-                        </button>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={() => setActiveIndex((prev) => Math.min(filteredProjects.length - 1, prev + 1))}
-                      disabled={activeIndex === filteredProjects.length - 1}
-                      aria-label="Next project card"
-                      className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-text-primary transition-colors cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 18l6-6-6-6" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Quick Toggle to Grid */}
-                  <button
-                    type="button"
-                    onClick={() => setViewMode("grid")}
-                    className="font-mono text-xs text-text-secondary hover:text-accent underline underline-offset-4 cursor-pointer transition-colors"
-                  >
-                    Switch to rapid-scan grid view
-                  </button>
-                </div>
-              </ScrollReveal>
+                  Switch to rapid-scan grid view
+                </button>
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -413,9 +305,10 @@ export default function Projects() {
                             {project.stack.slice(0, 5).map((t) => (
                               <span
                                 key={t}
-                                className="px-2.5 py-1 rounded-lg bg-bg font-mono text-[11px] text-text-secondary border border-border-custom"
+                                className="px-2.5 py-1 rounded-lg bg-bg font-mono text-[11px] text-text-secondary border border-border-custom inline-flex items-center gap-1"
                               >
-                                {t}
+                                <TechIcon name={t} size="sm" />
+                                <span>{t}</span>
                               </span>
                             ))}
                           </div>
