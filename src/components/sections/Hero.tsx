@@ -21,14 +21,14 @@ const HeroNodeNetwork = dynamic(
 
 /* ─── Engineering Icons ─────────────────────────────────────────── */
 const ShieldIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
     <path d="m9 12 2 2 4-4" />
   </svg>
 );
 
 const DatabaseIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <ellipse cx="12" cy="5" rx="9" ry="3" />
     <path d="M3 5V19A9 3 0 0 0 21 19V5" />
     <path d="M3 12A9 3 0 0 0 21 12" />
@@ -37,33 +37,33 @@ const DatabaseIcon = () => (
 
 
 const GithubIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
   </svg>
 );
 
 const LinkedinIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 );
 
 const ResumeIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
     <polyline points="14 2 14 8 20 8" />
   </svg>
 );
 
 const ArrowRightIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-1 transition-transform duration-200">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-1 transition-transform duration-200" aria-hidden="true">
     <path d="M5 12h14" />
     <path d="m12 5 7 7-7 7" />
   </svg>
 );
 
 const MessageIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <rect width="20" height="16" x="2" y="4" rx="2" />
     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
@@ -73,7 +73,7 @@ const MessageIcon = () => (
 function NodeGraphChip() {
   return (
     <div className="p-2 sm:p-2.5 rounded-xl bg-bg-surface/85 backdrop-blur-md border border-border-custom/80 shadow-md">
-      <svg width="56" height="26" viewBox="0 0 56 26" fill="none" className="overflow-visible select-none pointer-events-none">
+      <svg width="56" height="26" viewBox="0 0 56 26" fill="none" className="overflow-visible select-none pointer-events-none" aria-hidden="true">
         {/* Connection lines */}
         <line x1="8" y1="13" x2="28" y2="6" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
         <line x1="8" y1="13" x2="28" y2="20" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
@@ -537,13 +537,13 @@ export default function Hero() {
           className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 xs:gap-4 pb-3 sm:pb-5 mb-5 sm:mb-10 border-b border-border-custom/60"
         >
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
+            <span className="text-xs font-medium text-text-secondary">
               Dhruv Vawhle
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="font-mono text-xs text-text-secondary">
+            <span className="text-xs text-text-secondary font-normal">
               AI Security Specialist
             </span>
           </div>
@@ -557,7 +557,7 @@ export default function Hero() {
 
               {/* Headline with Scramble Effect */}
               <h1 className="font-display font-black tracking-tighter uppercase leading-[0.95] sm:leading-[0.88] select-none text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[5.75rem]">
-                <span className="sr-only">Dhruv Vawhle — Software Engineer &amp; AI Security Specialist</span>
+                <span className="sr-only">Dhruv Vawhle, Software Engineer</span>
                 <div className="text-text-primary">
                   <ScrambleWord
                     text="ENGINEER"
@@ -591,12 +591,12 @@ export default function Hero() {
               {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
               <div className="mt-4 sm:mt-6 max-w-xl">
                 <p className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
-                  Dhruv Vawhle — Software Engineer
+                  Dhruv Vawhle, Software Engineer
                 </p>
                 <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
                   Final-year Information Technology undergraduate specializing in{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
                       activeSpecialty === 0
                         ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
                         : "text-text-primary"
@@ -605,7 +605,7 @@ export default function Hero() {
                     full-stack web development
                   </span>,{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
                       activeSpecialty === 1
                         ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
                         : "text-text-primary"
@@ -614,7 +614,7 @@ export default function Hero() {
                     applied machine learning
                   </span>, and{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-all duration-500 ${
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
                       activeSpecialty === 2
                         ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
                         : "text-text-primary"
@@ -638,14 +638,14 @@ export default function Hero() {
               >
                 <a
                   href="#projects"
-                  className="group/btn relative overflow-hidden w-full sm:w-auto h-[50px] min-h-[48px] px-8 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-accent text-white shadow-md hover:shadow-lg hover:bg-accent-hover transition-all duration-300 inline-flex items-center justify-center gap-2.5 focus-visible:outline-2 focus-visible:outline-accent"
+                  className="group/btn relative overflow-hidden w-full sm:w-auto h-[50px] min-h-[48px] px-8 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-accent text-white shadow-md hover:shadow-lg hover:bg-accent-hover transition-colors duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2.5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   {/* Continuous subtle shimmer streak */}
                   <span
                     aria-hidden="true"
                     className="absolute inset-0 -translate-x-full animate-[shimmer_2.8s_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
                   />
-                  <span className="relative z-10">Explore Featured Projects</span>
+                  <span className="relative z-10">Explore Projects</span>
                   <ArrowRightIcon />
                 </a>
               </MagneticButton>
@@ -659,7 +659,7 @@ export default function Hero() {
                   href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto h-[50px] min-h-[48px] px-7 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-accent hover:text-accent shadow-xs hover:shadow-md transition-all duration-300 inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-accent"
+                  className="w-full sm:w-auto h-[50px] min-h-[48px] px-7 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-accent hover:text-accent shadow-xs hover:shadow-sm transition-colors duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   <ResumeIcon />
                   <span>View Resume</span>
@@ -767,19 +767,18 @@ export default function Hero() {
                 </div>
 
                 {/* Info Card inside Portrait */}
-                <div className="absolute inset-x-3.5 bottom-3.5 z-20 p-5 sm:p-6 rounded-2xl bg-bg-surface/95 backdrop-blur-xl border border-border-custom shadow-lg space-y-2.5 transition-all duration-300">
+                <div className="absolute inset-x-3.5 bottom-3.5 z-20 p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom shadow-md space-y-2.5 transition-colors duration-200">
                   <div>
                     <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
                       Dhruv Vawhle
                     </h3>
-                    <p className="font-mono text-xs sm:text-sm text-accent mt-1.5 font-medium">
+                    <p className="text-xs sm:text-sm text-accent mt-1.5 font-medium">
                       AI Security Specialist
                     </p>
                   </div>
                   <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs text-text-secondary font-body">
-                    <span>B.Tech IT (2027) · Mumbai</span>
+                    <span>B.Tech IT (2027), Mumbai</span>
                     <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                       <span>Available for roles</span>
                     </div>
                   </div>
@@ -791,11 +790,11 @@ export default function Hero() {
             <div className="mt-4 flex items-center justify-between p-2.5 sm:p-3 max-w-[340px] sm:max-w-md lg:max-w-none mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-xs">
               <div className="flex items-center pl-2 sm:pl-3">
                 <div className="flex flex-col">
-                  <span className="font-mono text-xs font-bold text-text-primary leading-tight">
-                    Profiles &amp; Resume
+                  <span className="text-xs font-semibold text-text-primary leading-tight">
+                    Profiles &amp; resume
                   </span>
-                  <span className="hidden sm:inline font-mono text-[11px] text-text-secondary leading-tight mt-0.5">
-                    Quick Connect
+                  <span className="hidden sm:inline text-[11px] text-text-secondary leading-tight mt-0.5">
+                    Quick connect
                   </span>
                 </div>
               </div>
@@ -840,7 +839,7 @@ export default function Hero() {
             aria-label="Scroll to explore About section"
             className="group inline-flex flex-col items-center gap-2 text-text-secondary hover:text-accent transition-colors duration-300 select-none focus-visible:outline-2 focus-visible:outline-accent rounded-lg p-2"
           >
-            <span className="font-mono text-[11px] font-medium tracking-widest uppercase opacity-70 group-hover:opacity-100 transition-opacity">
+            <span className="text-[11px] font-medium text-text-secondary opacity-70 group-hover:opacity-100 transition-opacity">
               Scroll to explore
             </span>
             <div className="w-5 h-8 rounded-full border-2 border-border-custom group-hover:border-accent p-1 flex justify-center transition-colors">
