@@ -530,7 +530,7 @@ export default function Skills() {
         </ScrollReveal>
 
         {/* ── ORBITAL CENTERPIECE + FLOATING INFORMATION PANEL ── */}
-        <ScrollReveal direction="up" delay={0.12} scale={0.96} blur>
+        <ScrollReveal direction="up" delay={0.06} distance={16}>
           <div
             className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${
               activeTech && activeDetail
@@ -589,7 +589,8 @@ export default function Skills() {
                               onClick={(e) => handleNodeClick(skill, e)}
                               aria-label={`Inspect ${skill} capabilities`}
                               aria-pressed={isNodeActive}
-                              className={`min-h-[46px] px-3 py-2 rounded-xl text-xs font-mono font-medium border flex items-center gap-2 transition-all cursor-pointer touch-manipulation text-left ${
+                              className={`min-h-[48px] h-12 px-3.5 py-2.5 rounded-xl text-xs font-mono font-medium border flex items-center gap-2.5 transition-colors cursor-pointer touch-manipulation text-left focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
+
                                 isNodeActive
                                   ? "bg-accent/15 border-accent text-accent shadow-xs font-bold ring-2 ring-accent/30"
                                   : isConnected

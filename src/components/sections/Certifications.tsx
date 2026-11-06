@@ -52,7 +52,7 @@ function SpotlightCard({ children, className = "", onClick }: SpotlightCardProps
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
-      className={`relative rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-7 flex flex-col justify-between overflow-hidden group shadow-xs hover:border-accent/50 hover:shadow-lg transition-all duration-300 ${className}`}
+      className={`relative rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-7 flex flex-col justify-between overflow-hidden group shadow-xs hover:border-accent/50 hover:shadow-lg transition-[border-color,box-shadow] duration-300 ${className}`}
     >
       {/* Subtle radial cursor glow */}
       <motion.div
@@ -188,7 +188,7 @@ export default function Certifications() {
               <div className="w-8 h-8 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent shadow-xs">
                 <Award className="w-4 h-4" />
               </div>
-              <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
+              <span className="text-xs font-semibold text-accent">
                 Credentials
               </span>
             </div>
@@ -205,7 +205,7 @@ export default function Certifications() {
 
 
           {/* Filter Pills with Icons and Animated Slider */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+          <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-4 mb-8 no-scrollbar">
             {(["All", "AI & ML", "Cloud", "Data Science"] as CategoryFilter[]).map((cat) => {
               const isSelected = selectedFilter === cat;
               return (
@@ -213,7 +213,8 @@ export default function Certifications() {
                   key={cat}
                   onClick={() => setSelectedFilter(cat)}
                   aria-pressed={isSelected}
-                  className={`relative h-10 px-4 sm:px-5 rounded-full font-mono text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer flex items-center gap-2 z-10 focus-visible:outline-2 focus-visible:outline-accent ${
+                  className={`relative min-h-[48px] h-12 px-4 sm:px-5 rounded-full font-mono text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer flex items-center gap-2 z-10 focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation ${
+
                     isSelected
                       ? "text-background border-transparent"
                       : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
@@ -321,14 +322,14 @@ export default function Certifications() {
                                 }
                               }}
                               aria-label={`Open certificate preview: ${cert.title}`}
-                              className="relative w-full rounded-2xl border border-border-custom bg-black/5 dark:bg-black/40 overflow-hidden cursor-pointer group/cert hover:border-accent/60 transition-all shadow-xs aspect-[16/9] max-h-52"
+                              className="relative w-full rounded-2xl border border-border-custom bg-black/5 dark:bg-black/40 overflow-hidden cursor-pointer group/cert hover:border-accent/60 transition-colors shadow-xs aspect-[16/9] max-h-52"
                             >
                               <img
                                 src={cert.image}
                                 alt={`${cert.title} Certificate issued by ${cert.issuer}`}
                                 loading="lazy"
                                 decoding="async"
-                                className="w-full h-full object-cover object-top group-hover/cert:scale-[1.02] transition-transform duration-300"
+                                className="w-full h-full object-cover object-top motion-safe:group-hover/cert:scale-[1.02] transition-transform duration-300"
                               />
 
                               {/* Subtle Corner Badge */}
@@ -358,7 +359,7 @@ export default function Certifications() {
                             type="button"
                             onClick={() => handleCopyId(cert.credentialId!)}
                             aria-label={`Copy credential ID ${cert.credentialId}`}
-                            className={`inline-flex items-center gap-1.5 font-sans text-xs px-3 py-2 rounded-xl border transition-all cursor-pointer ${
+                            className={`inline-flex items-center gap-1.5 font-sans text-xs px-3 py-2 rounded-xl border transition-colors cursor-pointer ${
                               hasCopiedThis
                                 ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-semibold"
                                 : "bg-bg hover:bg-foreground/5 border-border-custom text-text-secondary hover:text-text-primary"

@@ -113,14 +113,14 @@ export default function Projects() {
           </div>
 
           {/* Filter Chips */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-x-auto pb-2 scrollbar-none py-1 mb-6 sm:mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-2.5 scrollbar-none py-1 mb-6 sm:mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
             {FILTER_CHIPS.map((chip) => {
               const isActive = activeFilter === chip;
               return (
                 <button
                   key={chip}
                   onClick={() => setActiveFilter(chip)}
-                  className={`min-h-[44px] h-11 px-4 sm:px-5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-colors duration-150 border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`min-h-[48px] h-12 px-4 sm:px-5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-colors duration-150 border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
                     isActive
                       ? "bg-accent/15 border-accent text-accent shadow-xs font-semibold"
                       : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"

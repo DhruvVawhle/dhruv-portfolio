@@ -324,7 +324,7 @@ function DirectContactDock({
               onMouseLeave={() => setHoveredIndex(null)}
               animate={{ scale: isTouchDevice || shouldReduceMotion ? 1 : scale }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent"
+              className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation"
             >
               {item.icon}
             </motion.a>
@@ -540,7 +540,7 @@ export default function Hero() {
             <span className="text-sm font-semibold text-text-primary tracking-tight">
               Dhruv Vawhle
             </span>
-            <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/30 text-blue-700 dark:text-blue-300 shadow-2xs">
               Software Engineer
             </span>
           </div>
@@ -555,11 +555,11 @@ export default function Hero() {
         {/* ── MAIN HERO GRID ─────────────────────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT ZONE: Stacked Typography, Bio, CTA Buttons (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col space-y-4 sm:space-y-7">
+          <div className="lg:col-span-7 flex flex-col space-y-3.5 sm:space-y-6">
             <motion.div variants={itemVariants}>
 
               {/* Headline with Scramble Effect */}
-              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.95] sm:leading-[0.88] select-none text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[5.75rem]">
+              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.92] sm:leading-[0.88] select-none text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem]">
                 <span className="sr-only">Dhruv Vawhle, Software Engineer</span>
                 <div className="text-text-primary">
                   <ScrambleWord
@@ -592,7 +592,7 @@ export default function Hero() {
               </h1>
 
               {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
-              <div className="mt-4 sm:mt-6 max-w-xl">
+              <div className="mt-3 sm:mt-5 max-w-xl">
                 <p className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
                   Dhruv Vawhle, Software Engineer
                 </p>
@@ -632,7 +632,7 @@ export default function Hero() {
             {/* CTA Buttons: Shimmer on Primary, Magnetic Lean toward Cursor */}
             <motion.div
               variants={itemVariants}
-              className="pt-4 sm:pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4.5"
+              className="pt-3 sm:pt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
             >
               {/* Primary: Explore Featured Projects */}
               <MagneticButton
@@ -722,7 +722,7 @@ export default function Hero() {
                   className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${
                     isTouchColorActive ? "!grayscale-0" : ""
                   }`}
-                  style={{ objectPosition: "50% 20%" }}
+                  style={{ objectPosition: "50% 15%" }}
                 />
 
                 {/* Glare effect on mouse move */}
