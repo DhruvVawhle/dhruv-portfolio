@@ -102,14 +102,14 @@ export default function Hackathons() {
     <section
       id="hackathons"
       className="py-[var(--section-padding-y)] bg-bg relative scroll-mt-20 sm:scroll-mt-24"
-      aria-label="Competitive Engineering Section"
+      aria-label="Competitive engineering Section"
     >
       <div className="content-width">
         {/* Section Header */}
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-12 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
+              <span className="text-xs font-medium text-accent">
                 Competitive Engineering
               </span>
             </div>
@@ -250,7 +250,7 @@ export default function Hackathons() {
           </ScrollReveal>
 
           {/* 4. STACK TILE (Full Width, 12 Cols) with Live Interactive n8n Workflow */}
-          <ScrollReveal direction="up" delay={0.12} scale={0.98} blur className="lg:col-span-12">
+          <ScrollReveal direction="up" delay={0.08} distance={16} className="lg:col-span-12">
             <BentoTile className="w-full p-2 sm:p-4">
               <div className="w-full">
                 <N8nLiveWorkflow />
