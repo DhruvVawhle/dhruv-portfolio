@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Play, Pause, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause, RotateCcw, Eye } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import CoverRingCard from "./CoverRingCard";
 
@@ -43,6 +43,14 @@ export default function CoverRing({
   const dragVelocityRef = useRef(0);
   const lastDragTimeRef = useRef(0);
   const lastDragXRef = useRef(0);
+
+  // Robust pointer & tap tracking
+  const stageRef = useRef<HTMLDivElement>(null);
+  const pointerDownPosRef = useRef({ x: 0, y: 0, time: 0 });
+  const hasDraggedRef = useRef(false);
+  const isPointerDownRef = useRef(false);
+  const activePointerIdRef = useRef<number | null>(null);
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto orbit
   const [isAutoOrbit, setIsAutoOrbit] = useState(true);
@@ -93,6 +101,15 @@ export default function CoverRing({
     targetRotationRef.current = currentRotationRef.current + deltaAngle;
   }, [activeIndex, stepAngle]);
 
+  // Cleanup resume timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Smooth animation frame loop for rotation spring physics and auto-orbit
   useEffect(() => {
     if (shouldReduceMotion) return;
@@ -123,20 +140,31 @@ export default function CoverRing({
     return () => cancelAnimationFrame(animId);
   }, [isAutoOrbit, isHovered, isPaused, shouldReduceMotion, stepAngle, total, setActiveIndex]);
 
-  // Pointer drag gestures
+  // Pointer drag gestures with non-intrusive tap detection
   const handlePointerDown = (e: React.PointerEvent) => {
-    isDraggingRef.current = true;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+
+    pointerDownPosRef.current = { x: e.clientX, y: e.clientY, time: performance.now() };
     dragStartXRef.current = e.clientX;
     dragStartRotRef.current = currentRotationRef.current;
     lastDragXRef.current = e.clientX;
     lastDragTimeRef.current = performance.now();
     dragVelocityRef.current = 0;
+    hasDraggedRef.current = false;
+    isDraggingRef.current = false;
+    isPointerDownRef.current = true;
+    activePointerIdRef.current = e.pointerId;
 
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    // Temporarily pause auto-orbit while user touches or drags
+    setIsHovered(true);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (containerRef.current) {
+    // Parallax mouse tilt (desktop mouse only)
+    if (containerRef.current && e.pointerType === "mouse") {
       const rect = containerRef.current.getBoundingClientRect();
       const relX = (e.clientX - rect.left) / rect.width - 0.5;
       const relY = (e.clientY - rect.top) / rect.height - 0.5;
@@ -146,10 +174,27 @@ export default function CoverRing({
       });
     }
 
+    if (!isPointerDownRef.current || activePointerIdRef.current !== e.pointerId) return;
+
+    const deltaX = e.clientX - pointerDownPosRef.current.x;
+    const deltaY = e.clientY - pointerDownPosRef.current.y;
+
+    // Only engage drag if horizontal movement exceeds drag threshold (8px)
+    if (!hasDraggedRef.current) {
+      if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        hasDraggedRef.current = true;
+        isDraggingRef.current = true;
+        // Capture pointer to stage now that user is genuinely dragging horizontally
+        stageRef.current?.setPointerCapture?.(e.pointerId);
+      } else {
+        return;
+      }
+    }
+
     if (!isDraggingRef.current) return;
 
     const currentX = e.clientX;
-    const deltaX = currentX - dragStartXRef.current;
+    const moveX = currentX - dragStartXRef.current;
     const now = performance.now();
     const dt = now - lastDragTimeRef.current;
 
@@ -160,22 +205,50 @@ export default function CoverRing({
     lastDragTimeRef.current = now;
 
     const sensitivity = 0.32;
-    const newRot = dragStartRotRef.current - deltaX * sensitivity;
+    const newRot = dragStartRotRef.current - moveX * sensitivity;
     currentRotationRef.current = newRot;
     setRotation(newRot);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-    (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+    if (!isPointerDownRef.current || activePointerIdRef.current !== e.pointerId) return;
+    isPointerDownRef.current = false;
+    activePointerIdRef.current = null;
 
-    const finalRot = currentRotationRef.current - dragVelocityRef.current * 80;
-    const rawIndex = Math.round(finalRot / stepAngle);
-    targetRotationRef.current = rawIndex * stepAngle;
+    if (hasDraggedRef.current && isDraggingRef.current) {
+      isDraggingRef.current = false;
+      hasDraggedRef.current = false;
+      stageRef.current?.releasePointerCapture?.(e.pointerId);
 
-    const normalizedIndex = ((rawIndex % total) + total) % total;
-    setActiveIndex(normalizedIndex);
+      const finalRot = currentRotationRef.current - dragVelocityRef.current * 80;
+      const rawIndex = Math.round(finalRot / stepAngle);
+      targetRotationRef.current = rawIndex * stepAngle;
+
+      const normalizedIndex = ((rawIndex % total) + total) % total;
+      setActiveIndex(normalizedIndex);
+    } else {
+      isDraggingRef.current = false;
+      hasDraggedRef.current = false;
+    }
+
+    // On touch devices, resume auto-orbit after a short pause if not interacting
+    if (e.pointerType !== "mouse") {
+      resumeTimeoutRef.current = setTimeout(() => {
+        setIsHovered(false);
+      }, 4000);
+    }
+  };
+
+  const handlePointerCancel = (e: React.PointerEvent) => {
+    if (activePointerIdRef.current === e.pointerId) {
+      if (hasDraggedRef.current) {
+        stageRef.current?.releasePointerCapture?.(e.pointerId);
+      }
+      isPointerDownRef.current = false;
+      isDraggingRef.current = false;
+      hasDraggedRef.current = false;
+      activePointerIdRef.current = null;
+    }
   };
 
   const handleWheel = useCallback(
@@ -236,10 +309,11 @@ export default function CoverRing({
     >
       {/* 3D Stage Viewport */}
       <div
+        ref={stageRef}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         style={{
           perspective: "1350px",
           height: `${stageHeight}px`,
@@ -365,18 +439,50 @@ export default function CoverRing({
             {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
           <span className="text-border-custom">/</span>
-          <span className="text-accent font-medium truncate max-w-[200px]">
-            {activeProject?.title}
-          </span>
+          {activeProject && (
+            <button
+              type="button"
+              onClick={() => {
+                if (activeProject.isGitHubCard) {
+                  window.open(activeProject.githubUrl, "_blank", "noopener,noreferrer");
+                } else {
+                  onOpenDetail(activeProject);
+                }
+              }}
+              aria-label={`View ${activeProject.title} project`}
+              className="text-accent font-semibold truncate max-w-[200px] hover:underline cursor-pointer flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-accent rounded-sm"
+            >
+              <span>{activeProject.title}</span>
+              <Eye className="w-3 h-3 flex-shrink-0" />
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
+          {activeProject && (
+            <button
+              type="button"
+              onClick={() => {
+                if (activeProject.isGitHubCard) {
+                  window.open(activeProject.githubUrl, "_blank", "noopener,noreferrer");
+                } else {
+                  onOpenDetail(activeProject);
+                }
+              }}
+              aria-label={`View ${activeProject.title} case study`}
+              className="min-h-[44px] h-11 px-4 py-2 rounded-full text-xs font-semibold bg-accent text-white flex items-center gap-1.5 shadow-md shadow-accent/20 hover:bg-accent/90 active:scale-95 cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent"
+            >
+              <Eye className="w-3.5 h-3.5 text-white" />
+              <span>{activeProject.isGitHubCard ? "Open GitHub" : "View Case Study"}</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => setIsAutoOrbit((prev) => !prev)}
             aria-label={isAutoOrbit ? "Pause auto-orbit" : "Enable continuous 3D auto-orbit"}
             aria-pressed={isAutoOrbit}
-            className={`min-h-[40px] px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 ${
+            className={`min-h-[44px] h-11 px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 touch-manipulation ${
               isAutoOrbit
                 ? "bg-accent/15 border-accent text-accent"
                 : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/40"
@@ -400,7 +506,7 @@ export default function CoverRing({
             onClick={() => rotateToIndex(0)}
             title="Reset ring to first card"
             aria-label="Reset ring to first card"
-            className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full border border-border-custom bg-bg-surface text-text-secondary hover:text-text-primary hover:border-accent flex items-center justify-center transition-colors cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface text-text-secondary hover:text-text-primary hover:border-accent flex items-center justify-center transition-colors cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent touch-manipulation active:scale-95"
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>

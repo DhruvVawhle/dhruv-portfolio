@@ -692,17 +692,19 @@ export default function Skills() {
 
                 {/* Used In Project References */}
                 <div className="pt-3 border-t border-white/10">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-white/60 block mb-2 font-semibold">
-                    Used In Production Projects
+                  <span className="text-[11px] text-white/60 block mb-2 font-semibold">
+                    Used in production projects
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {activeDetail.projectsList.map((proj, idx) => (
-                      <span
+                      <a
                         key={idx}
-                        className="px-3 py-1 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 font-mono text-xs font-semibold text-white/95"
+                        href="#projects"
+                        className="px-3 py-1.5 min-h-[36px] inline-flex items-center gap-1.5 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 font-mono text-xs font-semibold text-white/95 hover:bg-[#3B82F6]/30 hover:border-[#3B82F6]/50 transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
                       >
-                        ◆ {proj}
-                      </span>
+                        <span className="text-accent">◆</span>
+                        <span>{proj}</span>
+                      </a>
                     ))}
                   </div>
                 </div>

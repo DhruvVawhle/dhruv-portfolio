@@ -31,28 +31,22 @@ export default function CoverRingCard({
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isFront) {
-      if (project.isGitHubCard) {
-        window.open(project.githubUrl, "_blank", "noopener,noreferrer");
-      } else {
-        onOpenDetail();
-      }
-    } else {
-      onSelect();
+    if (project.isGitHubCard) {
+      window.open(project.githubUrl, "_blank", "noopener,noreferrer");
+      return;
     }
+    onSelect();
+    onOpenDetail();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      if (isFront) {
-        if (project.isGitHubCard) {
-          window.open(project.githubUrl, "_blank", "noopener,noreferrer");
-        } else {
-          onOpenDetail();
-        }
+      if (project.isGitHubCard) {
+        window.open(project.githubUrl, "_blank", "noopener,noreferrer");
       } else {
         onSelect();
+        onOpenDetail();
       }
     }
   };
@@ -62,14 +56,14 @@ export default function CoverRingCard({
   return (
     <div
       role="button"
-      tabIndex={isFront ? 0 : -1}
-      aria-label={`${project.title}. ${isFront ? "Click to view architectural case study." : "Click to rotate into focus."}`}
+      tabIndex={0}
+      aria-label={`${project.title}. Click to view architectural case study.`}
       aria-current={isFront ? "true" : undefined}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => isFront && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none ${
+      className={`relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none touch-manipulation active:scale-[0.99] ${
         isFront ? "focus-visible:ring-2 focus-visible:ring-accent" : ""
       }`}
     >
@@ -259,13 +253,12 @@ export default function CoverRingCard({
               )}
             </div>
 
-            <div className="pt-2.5 border-t border-border-custom/70 flex items-center justify-between text-xs text-text-secondary">
-              <span className="font-medium text-text-primary group-hover:text-accent transition-colors duration-150">
-                {isFront
-                  ? project.isGitHubCard
-                    ? "Open GitHub profile"
-                    : "Inspect case study"
-                  : "Bring to front"}
+            <div className="pt-2.5 border-t border-border-custom/70 flex items-center justify-between text-xs">
+              <span className="font-semibold text-accent flex items-center gap-1.5 transition-colors duration-150">
+                <Eye className="w-3.5 h-3.5" />
+                <span>
+                  {project.isGitHubCard ? "Open GitHub repository" : "Inspect case study"}
+                </span>
               </span>
               <span className="text-accent transition-transform duration-150 motion-safe:group-hover:translate-x-0.5">
                 {project.isGitHubCard ? (
