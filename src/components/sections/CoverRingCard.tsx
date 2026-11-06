@@ -69,7 +69,7 @@ export default function CoverRingCard({
       onKeyDown={handleKeyDown}
       onMouseEnter={() => isFront && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative w-[300px] sm:w-[350px] md:w-[370px] h-[480px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none ${
+      className={`relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none ${
         isFront ? "focus-visible:ring-2 focus-visible:ring-accent" : ""
       }`}
     >
@@ -161,7 +161,7 @@ export default function CoverRingCard({
         )}
 
         {/* Card Content Body */}
-        <div className="relative z-10 flex flex-col h-full justify-between p-5 sm:p-6">
+        <div className="relative z-10 flex flex-col h-full justify-between p-4 xs:p-5 sm:p-6">
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
               <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent">
@@ -179,7 +179,7 @@ export default function CoverRingCard({
 
             {/* Project Preview Image / Terminal Slot */}
             {!project.isGitHubCard ? (
-              <div className="mt-3 relative w-full h-28 sm:h-32 rounded-2xl border border-border-custom bg-bg/60 overflow-hidden flex items-center justify-center group">
+              <div className="mt-2.5 sm:mt-3 relative w-full h-24 xs:h-28 sm:h-32 rounded-2xl border border-border-custom bg-bg/60 overflow-hidden flex items-center justify-center group">
                 {project.image ? (
                   <img
                     src={project.image}

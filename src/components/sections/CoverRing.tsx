@@ -55,9 +55,12 @@ export default function CoverRing({
   useEffect(() => {
     const updateDimensions = () => {
       const width = window.innerWidth;
-      if (width < 640) {
-        setRadius(240);
-        setStageHeight(520);
+      if (width < 380) {
+        setRadius(185);
+        setStageHeight(480);
+      } else if (width < 640) {
+        setRadius(225);
+        setStageHeight(500);
       } else if (width < 1024) {
         setRadius(340);
         setStageHeight(540);
@@ -300,7 +303,7 @@ export default function CoverRing({
       </div>
 
       {/* Ring Controls Bar */}
-      <div className="w-full max-w-4xl mt-4 px-4 flex flex-col sm:flex-row items-center justify-between gap-4 z-20">
+      <div className="w-full max-w-4xl mt-3 sm:mt-4 px-2 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 z-20">
         <div className="flex items-center gap-3">
           <button
             type="button"

@@ -767,7 +767,7 @@ export default function Hero() {
                 </div>
 
                 {/* Info Card inside Portrait */}
-                <div className="absolute inset-x-3.5 bottom-3.5 z-20 p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom shadow-md space-y-2.5 transition-colors duration-200">
+                <div className="absolute inset-x-2.5 xs:inset-x-3.5 bottom-2.5 xs:bottom-3.5 z-20 p-3.5 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-bg-surface border border-border-custom shadow-md space-y-2 transition-colors duration-200">
                   <div>
                     <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
                       Dhruv Vawhle
@@ -787,7 +787,7 @@ export default function Hero() {
             </div>
 
             {/* Direct Contact Channels Dock alongside Portrait */}
-            <div className="mt-4 flex items-center justify-between p-2.5 sm:p-3 max-w-[340px] sm:max-w-md lg:max-w-none mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-xs">
+            <div className="mt-4 flex items-center justify-between p-2.5 sm:p-3 w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-xs">
               <div className="flex items-center pl-2 sm:pl-3">
                 <div className="flex flex-col">
                   <span className="text-xs font-semibold text-text-primary leading-tight">

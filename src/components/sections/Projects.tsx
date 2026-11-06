@@ -104,7 +104,7 @@ export default function Projects() {
           </div>
 
           <div className="max-w-3xl mb-8">
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
+            <h2 className="font-display font-extrabold text-2xl xs:text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
               Engineering systems built for production scale.
             </h2>
             <p className="mt-3 text-base sm:text-lg text-text-secondary leading-relaxed">
@@ -113,7 +113,7 @@ export default function Projects() {
           </div>
 
           {/* Filter Chips */}
-          <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-2 scrollbar-none py-1 mb-8">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-x-auto pb-2 scrollbar-none py-1 mb-6 sm:mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
             {FILTER_CHIPS.map((chip) => {
               const isActive = activeFilter === chip;
               return (
