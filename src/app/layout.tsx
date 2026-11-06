@@ -93,12 +93,51 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "ProfilePage",
+      "@id": "https://dhruvvawhle.vercel.app/#profilepage",
+      url: "https://dhruvvawhle.vercel.app",
+      name: metaTitle,
+      description: metaDescription,
+      mainEntity: {
+        "@id": "https://dhruvvawhle.vercel.app/#person",
+      },
+    },
+    {
       "@type": "Person",
       "@id": "https://dhruvvawhle.vercel.app/#person",
       name: "Dhruv Vawhle",
+      alternateName: ["Dhruv", "dhruvvawhle"],
       jobTitle: "Software Engineer",
       url: "https://dhruvvawhle.vercel.app",
       image: "https://dhruvvawhle.vercel.app/images/profile/dhruv-vawhle.jpg",
+      email: "mailto:dhruvvawhle@gmail.com",
+      gender: "https://schema.org/Male",
+      nationality: {
+        "@type": "Country",
+        name: "India",
+      },
+      homeLocation: {
+        "@type": "Place",
+        name: "Mumbai, Maharashtra, India",
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Mumbai",
+        addressRegion: "Maharashtra",
+        addressCountry: "IN",
+      },
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "Bachelor of Technology in Information Technology",
+        description: "Graduation Class of 2027",
+      },
+      hasOccupation: {
+        "@type": "Occupation",
+        name: "Software Engineer",
+        occupationalCategory: "15-1252.00",
+        skills:
+          "Full-Stack Web Development, TypeScript, React, Next.js, Node.js, Python, FastAPI, Docker, n8n automation, Machine Learning, AI Security",
+      },
       sameAs: [
         "https://github.com/DhruvVawhle",
         "https://linkedin.com/in/dhruv-vawhle-277b2b2b8",
@@ -107,16 +146,18 @@ const jsonLd = {
       knowsAbout: [
         "Software Engineering",
         "Full-Stack Web Development",
-        "AI Security",
+        "AI Security & LLM Guardrails",
         "Machine Learning",
-        "n8n Workflows",
+        "n8n Automation Workflows",
         "React",
         "Next.js",
         "TypeScript",
         "Node.js",
         "Python",
-        "PromptShield",
         "FastAPI",
+        "Docker",
+        "PostgreSQL",
+        "MongoDB",
         "Firebase",
       ],
     },
@@ -130,6 +171,107 @@ const jsonLd = {
         "@id": "https://dhruvvawhle.vercel.app/#person",
       },
       inLanguage: "en-US",
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://dhruvvawhle.vercel.app/#projects-list",
+      name: "Featured Engineering Projects by Dhruv Vawhle",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          item: {
+            "@type": "SoftwareApplication",
+            name: "MediMitra AI",
+            applicationCategory: "HealthApplication",
+            operatingSystem: "Web",
+            description:
+              "AI healthcare triage system and automated n8n workflow engine connecting patients to real-time doctor routing with 40% latency reduction.",
+            url: "https://medimitra-ai.vercel.app",
+            author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          item: {
+            "@type": "SoftwareApplication",
+            name: "PromptShield",
+            applicationCategory: "SecurityApplication",
+            operatingSystem: "Web, Cloud",
+            description:
+              "AI Security Gateway and LLM prompt injection detection firewall with 99.2% accuracy and sub-45ms latency overhead.",
+            codeRepository: "https://github.com/DhruvVawhle/PromptShield",
+            author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          item: {
+            "@type": "SoftwareApplication",
+            name: "KrishiSaathi",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            description:
+              "Smart agri-tech marketplace platform connecting farmers directly to commercial buyers with ML yield prediction and zero intermediary fees.",
+            codeRepository: "https://github.com/DhruvVawhle/KrishiSaathi",
+            author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          item: {
+            "@type": "SoftwareApplication",
+            name: "CampusAI",
+            applicationCategory: "EducationalApplication",
+            operatingSystem: "Web",
+            description:
+              "Autonomous smart campus management assistant automating administrative workflows, timetables, and department communication via n8n.",
+            codeRepository: "https://github.com/DhruvVawhle/CampusAI",
+            author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
+          },
+        },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://dhruvvawhle.vercel.app/#faq",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Who is Dhruv Vawhle?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Dhruv Vawhle is a Software Engineer and B.Tech Information Technology student (graduating in 2027) based in Mumbai, India. He specializes in full-stack web architectures, applied machine learning systems, automated n8n workflows, and AI security gateways.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What technologies and frameworks does Dhruv Vawhle specialize in?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Dhruv's core technical stack includes TypeScript, Next.js, React, Node.js, Python, FastAPI, Docker, Tailwind CSS, PostgreSQL, MongoDB, Firebase, and n8n workflow automation.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What key software projects has Dhruv Vawhle developed?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Dhruv has developed MediMitra (an AI healthcare triage platform with automated n8n routing), PromptShield (an adversarial prompt injection security gateway for LLMs), KrishiSaathi (an agri-tech marketplace with ML yield forecasting), and CampusAI (an autonomous campus assistant).",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How can engineering recruiters and teams hire or contact Dhruv Vawhle?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "You can reach Dhruv directly via email at dhruvvawhle@gmail.com, on LinkedIn at linkedin.com/in/dhruv-vawhle-277b2b2b8, or explore his open-source code repositories on GitHub at github.com/DhruvVawhle.",
+          },
+        },
+      ],
     },
   ],
 };

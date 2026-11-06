@@ -1,0 +1,88 @@
+# Dhruv Vawhle — Software Engineer Portfolio
+
+> Software Engineer and B.Tech Information Technology student (graduating Class of 2027) based in Mumbai, Maharashtra, India. Specializes in full-stack web applications, automated n8n workflows, applied machine learning systems, and AI security gateways.
+
+## Developer Profile & Metadata
+- **Full Name**: Dhruv Vawhle
+- **Professional Title**: Software Engineer
+- **Academic Degree**: Bachelor of Technology (B.Tech) in Information Technology
+- **Graduation Year**: 2027
+- **Location**: Mumbai, Maharashtra, India
+- **Primary Website**: https://dhruvvawhle.vercel.app
+- **GitHub**: https://github.com/DhruvVawhle
+- **LinkedIn**: https://linkedin.com/in/dhruv-vawhle-277b2b2b8
+- **Resume**: https://dhruvvawhle.vercel.app/resume.pdf
+- **Email**: dhruvvawhle@gmail.com
+
+---
+
+## Core Engineering Competencies
+
+### 1. Full-Stack Web Development & System Architecture
+- **Frontend**: Next.js 16 (App Router, Turbopack, React Server Components), React 19, TypeScript, Tailwind CSS, Framer Motion, Three.js, Lucide Icons.
+- **Backend & APIs**: Node.js, Express, Python, FastAPI, RESTful API Design, WebSockets, Serverless Functions.
+- **Databases & ORM**: PostgreSQL, MongoDB, Firebase Firestore, Supabase, Redis, Prisma.
+- **DevOps & Infrastructure**: Docker, Git, GitHub Actions, Vercel, Netlify, Linux/Bash.
+
+### 2. AI Systems, Machine Learning & Automation
+- **Frameworks & Libraries**: PyTorch, Scikit-Learn, TensorFlow, Hugging Face Transformers, OpenCV, NumPy, Pandas.
+- **Workflow Automation**: n8n (self-hosted and cloud), Webhook routing, autonomous AI agent pipelines, multi-step LLM chains.
+- **AI Security & Guardrails**: LLM prompt injection detection (PromptShield), semantic boundary validation, threat signature analysis, latency-optimized inference gateways.
+
+---
+
+## Featured Production Projects
+
+### 1. MediMitra — AI Healthcare Triage & Workflow Automation
+- **Overview**: Intelligent medical triage and hospital operational routing platform built to reduce emergency intake bottlenecks.
+- **Architecture**: Next.js frontend, FastAPI backend, automated n8n workflow engine integrating patient symptom analysis, severity scoring, and emergency doctor dispatch.
+- **Impact & Metrics**: 40% reduction in preliminary triage latency; zero patient drop-off in hospital simulation tests.
+- **Live Demo**: https://medimitra-ai.vercel.app
+- **Source Code**: https://github.com/DhruvVawhle/MediMitra-AI
+
+### 2. PromptShield — AI Security & LLM Prompt Injection Firewall
+- **Overview**: Real-time edge gateway that inspects, sanitizes, and neutralizes jailbreak attempts and adversarial prompt injections before reaching underlying foundation models.
+- **Architecture**: Python, FastAPI, Hugging Face transformer models, ONNX Runtime, and Redis caching.
+- **Impact & Metrics**: 99.2% adversarial prompt detection rate; sub-45ms average inspection overhead; 42% reduction in false positives.
+- **Source Code**: https://github.com/DhruvVawhle/PromptShield
+
+### 3. KrishiSaathi — Smart Agri-Tech E-Commerce & ML Yield Forecasting
+- **Overview**: Full-stack agricultural commerce ecosystem connecting regional farmers directly with commercial buyers, featuring ML crop advisory and market price forecasting.
+- **Architecture**: React, Node.js, Express, MongoDB, Python Flask ML service, Razorpay payment gateway.
+- **Impact & Metrics**: Enabled 150+ simulated farmer-to-buyer transactions with zero intermediary fees; 88% yield prediction accuracy across 12 crop varieties.
+- **Source Code**: https://github.com/DhruvVawhle/KrishiSaathi
+
+### 4. CampusAI — Smart Campus Management & Notification System
+- **Overview**: Autonomous campus administrative assistant facilitating real-time timetable updates, room allocations, student announcements, and department ticket routing.
+- **Architecture**: Next.js, Firebase Authentication, Cloud Firestore, n8n WhatsApp/Telegram bot integrations.
+- **Source Code**: https://github.com/DhruvVawhle/CampusAI
+
+### 5. CineSense — NLP Sentiment Analysis & Review Intelligence Engine
+- **Overview**: Large-scale movie review sentiment classification and topic extraction pipeline built on the 50,000-review IMDb benchmark.
+- **Architecture**: Python, Scikit-Learn, TF-IDF vectorization, Logistic Regression / Bi-LSTM comparative models, Streamlit interactive dashboard.
+- **Impact & Metrics**: 89.4% classification accuracy on out-of-sample review test sets.
+- **Source Code**: https://github.com/DhruvVawhle/CineSense-IMDB-Sentiment-Analysis
+
+---
+
+## Technical Credentials & Certifications
+- **Cisco**: Data Science & Analytics Certified (Credential verification on Cisco NetAcad)
+- **Google Cloud**: Generative AI & Machine Learning Foundations
+- **Google Cloud**: Data Transformation & Cloud Architecture
+- **Infosys Springboard**: Python Programming & Algorithmic Problem Solving
+- **Edunet Foundation & IBM**: Applied AI & Machine Learning Specialization
+
+---
+
+## Honors & Hackathon Achievements
+- **Analytix Datathon Finalist**: Ranked in top percentile among 200+ teams for predictive machine learning model accuracy and real-world deployment architecture.
+- **Edith Hackathon**: Engineered an autonomous disaster management coordination tool under 24 hours using Next.js and real-time mapping APIs.
+
+---
+
+## Contact & Hire Inquiries
+- **Availability**: Open for Software Engineering internships, co-ops, and full-time software engineering roles.
+- **Direct Email**: dhruvvawhle@gmail.com
+- **LinkedIn**: https://linkedin.com/in/dhruv-vawhle-277b2b2b8
+- **GitHub**: https://github.com/DhruvVawhle
+- **Portfolio**: https://dhruvvawhle.vercel.app
