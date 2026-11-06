@@ -74,27 +74,26 @@ export default function CoverRingCard({
       }`}
     >
       <div
-        className={`relative w-full h-full rounded-3xl bg-bg-surface border flex flex-col justify-between overflow-hidden transition-all duration-300 ${
+        className={`relative w-full h-full rounded-3xl bg-bg-surface border flex flex-col justify-between overflow-hidden transition-colors duration-200 ${
           isFront
             ? isHovered
-              ? "border-accent ring-2 ring-accent/30 shadow-2xl shadow-accent/15"
-              : "border-accent/50 shadow-xl shadow-black/10 hover:border-accent"
-            : "border-border-custom/80 shadow-md shadow-black/5 hover:border-accent/40"
+              ? "border-accent shadow-xl shadow-accent/10"
+              : "border-accent/40 shadow-md shadow-black/5 hover:border-accent"
+            : "border-border-custom/80 shadow-xs hover:border-accent/30"
         }`}
       >
         {/* Animos Back-Fade Depth Overlay */}
         <div
-          className="pointer-events-none absolute inset-0 z-30 rounded-3xl transition-opacity duration-300"
+          className="pointer-events-none absolute inset-0 z-30 rounded-3xl bg-bg transition-opacity duration-200"
           style={{
-            backgroundColor: "#000",
-            opacity: depthRatio * 0.55,
+            opacity: depthRatio * 0.65,
           }}
           aria-hidden="true"
         />
 
         {/* Ambient Top Glow Line */}
         <div
-          className={`absolute top-0 inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-accent/60 to-transparent transition-opacity duration-300 ${
+          className={`absolute top-0 inset-x-8 h-px bg-accent/30 transition-opacity duration-200 ${
             isFront ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden="true"
@@ -103,13 +102,13 @@ export default function CoverRingCard({
         {/* Front Hover Overlay with Quick Action Buttons */}
         {isFront && (
           <div
-            className={`pointer-events-none absolute inset-0 z-40 rounded-3xl bg-neutral-950/70 dark:bg-neutral-950/80 backdrop-blur-md transition-all duration-300 flex flex-col items-center justify-center p-6 text-center ${
+            className={`pointer-events-none absolute inset-0 z-40 rounded-3xl bg-neutral-950/60 transition-opacity duration-200 flex flex-col items-center justify-center p-6 text-center ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           >
             <div
-              className={`flex flex-col items-center gap-3 transition-all duration-300 ${
-                isHovered ? "translate-y-0 scale-100 opacity-100" : "translate-y-4 scale-95 opacity-0"
+              className={`flex flex-col items-center gap-3 transition-transform duration-200 motion-reduce:transform-none ${
+                isHovered ? "scale-100 opacity-100" : "scale-95 opacity-0"
               }`}
             >
               <button
@@ -122,14 +121,13 @@ export default function CoverRingCard({
                     onOpenDetail();
                   }
                 }}
-                className="pointer-events-auto inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-white font-mono text-xs font-bold shadow-xl shadow-accent/30 border border-white/20 hover:bg-accent/90 cursor-pointer transition-transform active:scale-95"
+                className="pointer-events-auto inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-white text-xs font-semibold shadow-lg shadow-accent/20 hover:bg-accent/90 cursor-pointer transition-colors active:scale-95 disabled:opacity-50"
               >
                 <Eye className="w-4 h-4 text-white" />
-                <span>{project.isGitHubCard ? "Open Repository" : "Inspect Architecture"}</span>
+                <span>{project.isGitHubCard ? "Open repository" : "Inspect architecture"}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
 
-              {/* Direct Link Shortcuts */}
               {!project.isGitHubCard && (
                 <div className="pointer-events-auto flex items-center gap-2 mt-1">
                   {project.liveUrl && (
@@ -138,10 +136,10 @@ export default function CoverRingCard({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-mono text-[11px] font-medium border border-white/15 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium border border-white/15 transition-colors cursor-pointer"
                     >
                       <ExternalLink className="w-3 h-3" />
-                      <span>Live Demo</span>
+                      <span>Live demo</span>
                     </a>
                   )}
                   {project.githubUrl && (
@@ -150,7 +148,7 @@ export default function CoverRingCard({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-mono text-[11px] font-medium border border-white/15 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium border border-white/15 transition-colors cursor-pointer"
                     >
                       <GithubIcon className="w-3 h-3" />
                       <span>Source</span>
@@ -158,10 +156,6 @@ export default function CoverRingCard({
                   )}
                 </div>
               )}
-
-              <span className="font-mono text-[11px] text-white/75 mt-1">
-                Click anywhere to open full case study
-              </span>
             </div>
           </div>
         )}
@@ -170,19 +164,10 @@ export default function CoverRingCard({
         <div className="relative z-10 flex flex-col h-full justify-between p-5 sm:p-6">
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
-              <span className="font-mono text-[10px] sm:text-[11px] font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/25 text-accent tracking-wide uppercase">
+              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent">
                 {project.tag}
               </span>
-              <span className="text-xs text-text-secondary flex items-center gap-1.5">
-                <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    project.status === "Live"
-                      ? "bg-emerald-500"
-                      : "bg-amber-500"
-                  }`}
-                />
-                <span className="font-medium">{project.status}</span>
-              </span>
+              <span className="text-xs text-text-secondary font-medium">{project.status}</span>
             </div>
 
             <h3 className="font-display font-extrabold text-xl sm:text-2xl text-text-primary tracking-tight leading-tight group-hover:text-accent transition-colors">
@@ -199,17 +184,18 @@ export default function CoverRingCard({
                   <img
                     src={project.image}
                     alt={project.imageAlt || `${project.title} preview`}
-                    loading="lazy"
+                    loading={isFront ? "eager" : "lazy"}
                     decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    fetchPriority={isFront ? "high" : "auto"}
+                    className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";
                     }}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center p-3 text-center">
-                    <Activity className="w-5 h-5 text-accent mb-1 animate-pulse" />
-                    <span className="font-mono text-[10px] text-accent">Architecture Ready</span>
+                    <Activity className="w-5 h-5 text-accent mb-1" />
+                    <span className="text-[11px] text-accent font-medium">Architecture ready</span>
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-surface/70 via-transparent to-transparent pointer-events-none" />
@@ -219,10 +205,10 @@ export default function CoverRingCard({
                 <div className="w-9 h-9 rounded-xl bg-accent/15 text-accent flex items-center justify-center mb-2">
                   <Terminal className="w-4 h-4" />
                 </div>
-                <span className="font-mono text-xs font-semibold text-text-primary">
+                <span className="text-xs font-semibold text-text-primary">
                   GitHub Open Source
                 </span>
-                <span className="font-mono text-[10px] text-text-secondary mt-0.5">
+                <span className="text-[11px] text-text-secondary mt-0.5">
                   Repositories, prototypes & microservices
                 </span>
               </div>
@@ -232,21 +218,20 @@ export default function CoverRingCard({
           {/* Metric Highlight */}
           {project.isGitHubCard ? (
             <div className="my-2 p-3 rounded-2xl bg-accent/5 border border-accent/15 text-center">
-              <span className="font-mono text-xs text-accent font-semibold flex items-center justify-center gap-1.5">
+              <span className="text-xs text-accent font-medium flex items-center justify-center gap-1.5">
                 <GithubIcon className="w-3.5 h-3.5" />
-                <span>github.com/DhruvVawhle ↗</span>
+                <span>github.com/DhruvVawhle</span>
+                <ExternalLink className="w-3 h-3" />
               </span>
             </div>
           ) : (
             primaryMetric && (
               <div className="my-2 p-3 rounded-2xl bg-accent/[0.06] border border-accent/20">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-text-secondary block font-semibold">
-                  {primaryMetric.label}
-                </span>
-                <div className="mt-0.5 font-display font-black text-2xl text-accent">
+                <span className="text-xs text-text-secondary block font-medium">{primaryMetric.label}</span>
+                <div className="mt-0.5 font-display font-bold text-2xl text-accent">
                   {primaryMetric.value}{" "}
                   {primaryMetric.suffix && (
-                    <span className="text-xs font-mono font-medium text-text-secondary">
+                    <span className="text-xs text-text-secondary font-normal">
                       {primaryMetric.suffix}
                     </span>
                   )}
@@ -274,16 +259,20 @@ export default function CoverRingCard({
               )}
             </div>
 
-            <div className="pt-2.5 border-t border-border-custom/70 flex items-center justify-between font-mono text-xs text-text-secondary">
-              <span className="font-medium text-text-primary group-hover:text-accent transition-colors">
+            <div className="pt-2.5 border-t border-border-custom/70 flex items-center justify-between text-xs text-text-secondary">
+              <span className="font-medium text-text-primary group-hover:text-accent transition-colors duration-150">
                 {isFront
                   ? project.isGitHubCard
-                    ? "Open GitHub Profile"
-                    : "Inspect Case Study"
-                  : "Click to bring forward"}
+                    ? "Open GitHub profile"
+                    : "Inspect case study"
+                  : "Bring to front"}
               </span>
-              <span className="text-accent transition-transform duration-200">
-                {project.isGitHubCard ? "↗" : "→"}
+              <span className="text-accent transition-transform duration-150 motion-safe:group-hover:translate-x-0.5">
+                {project.isGitHubCard ? (
+                  <ExternalLink className="w-3.5 h-3.5" />
+                ) : (
+                  <ArrowRight className="w-3.5 h-3.5" />
+                )}
               </span>
             </div>
           </div>

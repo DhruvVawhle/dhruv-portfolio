@@ -12,7 +12,12 @@
       "role": "Team Lead & AI Architect — designed the n8n workflow automation and multilingual Gemini NLU pipeline.",
       "timeConstraint": "SIH National Software Sprint",
       "outcome": "Selected among Top 30 college finalists for Smart India Hackathon software-track submission.",
-      "techStack": ["WhatsApp API", "n8n", "Gemini API", "MongoDB"],
+      "techStack": [
+        "WhatsApp API",
+        "n8n",
+        "Gemini API",
+        "MongoDB"
+      ],
       "image": "/images/hackathons/medimitra-chatbot.png"
     },
     {
@@ -27,7 +32,13 @@
       "role": "Data Pipeline & Visualization Lead — performed Python/Pandas cleaning and statistical modeling.",
       "timeConstraint": "24-Hour Datathon Sprint",
       "outcome": "High-signal analytical dashboards surfacing reliable operational insights.",
-      "techStack": ["Python", "Pandas", "Matplotlib", "Seaborn", "AI Agent"],
+      "techStack": [
+        "Python",
+        "Pandas",
+        "Matplotlib",
+        "Seaborn",
+        "AI Agent"
+      ],
       "image": "/images/hackathons/analytrix-datathon-certificate.jpg"
     },
     {
@@ -42,11 +53,21 @@
       "role": "Full-Stack AI Engineer — integrated Telegram Bot API with automated conversational workflows.",
       "timeConstraint": "12-Hour Intensive Buildathon",
       "outcome": "Fully functioning AI agent solution processing real-time conversational workflows.",
-      "techStack": ["n8n", "Gemini API", "Telegram Bot API", "Python"],
+      "techStack": [
+        "n8n",
+        "Gemini API",
+        "Telegram Bot API",
+        "Python"
+      ],
       "image": "/images/hackathons/edith-hackathon-participation.jpg"
     }
   ],
   "awards": [
+    {
+      "title": "Government of India Software Copyright Registration",
+      "date": "29 Oct 2026",
+      "description": "Copyright registered with the Copyright Office, Government of India for KrishiSaathi (Certificate No. SW-2026024057; issued 29 Oct 2026)."
+    },
     {
       "title": "Smart India Hackathon Software Finalist",
       "date": "2025",

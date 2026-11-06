@@ -248,6 +248,34 @@ const ICON_MAP: Record<string, IconConfig> = {
     icon: RagSvg,
     colorClass: "text-[#06B6D4]",
   },
+  "Grad-CAM": {
+    type: "react-icon",
+    icon: RagSvg,
+    colorClass: "text-[#EC4899]",
+  },
+  ResNet18: {
+    type: "react-icon",
+    icon: RagSvg,
+    colorClass: "text-[#3B82F6]",
+  },
+  MobileNetV3: {
+    type: "react-icon",
+    icon: RagSvg,
+    colorClass: "text-[#10B981]",
+  },
+  Torchvision: { type: "devicon", className: "devicon-pytorch-original colored" },
+  PyTorch: { type: "devicon", className: "devicon-pytorch-original colored" },
+  Streamlit: { type: "devicon", className: "devicon-streamlit-plain colored" },
+  LIME: {
+    type: "react-icon",
+    icon: RagSvg,
+    colorClass: "text-[#F59E0B]",
+  },
+  "TMDB API": {
+    type: "react-icon",
+    icon: RestApiSvg,
+    colorClass: "text-[#01B4E4]",
+  },
   "scikit-learn": { type: "devicon", className: "devicon-scikitlearn-plain colored" },
   "TensorFlow/Keras": { type: "devicon", className: "devicon-tensorflow-line colored" },
   "ARIMA Forecasting": {

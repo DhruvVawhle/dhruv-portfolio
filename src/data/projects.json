@@ -44,9 +44,21 @@
     "approach": "Built a comprehensive full-stack Next.js 16 / TypeScript security gateway enforcing a two-layer defense: an immediate client-side pattern guard combined with an authenticated server-side proxy routing through an OpenAI-compatible gateway (OmniRoute). Configured a policy engine that evaluates multi-vector threat scores to allow, warn, sanitize, or block queries dynamically.",
     "architecture": "Full-stack Next.js 16 App Router architecture in TypeScript with Tailwind CSS. Firebase Admin SDK verifies ID tokens with strict revocation checks and server-only credentials. Requests pass through a dual inspection pipeline (pattern heuristics + server proxy) before forwarding to upstream LLMs via OmniRoute. Firestore security rules protect multi-tenant audit logs, incident reports, and real-time security analytics.",
     "metrics": [
-      { "label": "Threat Risk Scoring", "value": "0–100", "suffix": " Scale" },
-      { "label": "Defense Architecture", "value": "2", "suffix": " Layers" },
-      { "label": "Enforcement Actions", "value": "4", "suffix": " (Allow/Warn/Sanitize/Block)" }
+      {
+        "label": "Threat Risk Scoring",
+        "value": "0–100",
+        "suffix": " Scale"
+      },
+      {
+        "label": "Defense Architecture",
+        "value": "2",
+        "suffix": " Layers"
+      },
+      {
+        "label": "Enforcement Actions",
+        "value": "4",
+        "suffix": " (Allow/Warn/Sanitize/Block)"
+      }
     ]
   },
   {
@@ -95,9 +107,21 @@
     "approach": "Engineered a touch-enabled, 3D interactive kiosk frontend in Next.js and React Three Fiber representing the reception robot. Implemented low-latency audio capture with Web Audio API, dynamic state animations (idle/listening/thinking/speaking), audio visualizers, and QR route generators. Connected to teammate Jayesh Tiwari's FastAPI RAG backend via REST and WebSocket.",
     "architecture": "Next.js frontend with React Three Fiber rendering the 3D robot avatar, driven by Framer Motion and custom Web Audio hooks. Connects to backend services via REST chat and voice endpoints. Attributed Collaboration Note: The backend / RAG / agent pipeline (FastAPI, Groq LLM, Whisper STT, FAISS RAG, SQLite) is the work of teammate Jayesh Tiwari. The repository is a fork crediting upstream jayeshtiwari-ai/CampusAI.",
     "metrics": [
-      { "label": "Supported Languages", "value": "4", "suffix": " (EN, HI, MR, Hinglish)" },
-      { "label": "Interactive 3D States", "value": "4", "suffix": " (Idle/Listen/Think/Speak)" },
-      { "label": "Departments Involved", "value": "2", "suffix": " (IT & EXTC)" }
+      {
+        "label": "Supported Languages",
+        "value": "4",
+        "suffix": " (EN, HI, MR, Hinglish)"
+      },
+      {
+        "label": "Interactive 3D States",
+        "value": "4",
+        "suffix": " (Idle/Listen/Think/Speak)"
+      },
+      {
+        "label": "Departments Involved",
+        "value": "2",
+        "suffix": " (IT & EXTC)"
+      }
     ],
     "attribution": {
       "frontend": "Dhruv Vawhle (Next.js, TypeScript, Tailwind, Framer Motion, React Three Fiber kiosk interface)",
@@ -144,7 +168,7 @@
       "Full-stack marketplace connecting farmers directly with buyers (18,300+ commodity price records) with an ARIMA model trained on AGMARKNET mandi price data to forecast prices.",
       "Hybrid Firestore and MongoDB architecture with real-time cart sync and role-based farmer and buyer dashboards.",
       "Google, Facebook, and Apple OAuth, Razorpay payments, and 8-language commodity search; bundle size cut 69% (2.9MB to 900KB) via code splitting.",
-      "Filed for copyright registration, Indian Copyright Office (Diary No. SW-21662/2026-CO), currently in re-scrutiny."
+      "Copyright registered with the Copyright Office, Government of India (Certificate No. SW-2026024057; issued 29 Oct 2026)."
     ],
     "features": [
       "Real-time cart synchronization",
@@ -157,56 +181,95 @@
     "approach": "Built a full-stack marketplace with a price-prediction engine trained on government data. Designed a hybrid database architecture combining Firestore's real-time sync with MongoDB's flexibility for complex commodity queries. Implemented role-based dashboards for farmers and buyers with multi-language search support.",
     "architecture": "Hybrid Firestore + MongoDB architecture — Firestore handles real-time cart sync and user sessions, while MongoDB manages the commodity catalog and price history. ARIMA-based price prediction model trained on 18,300+ rows of AGMARKNET government mandi data. React frontend with code-split routes, Node.js/Express API layer, Razorpay payment integration, and OAuth via Google/Facebook/Apple.",
     "metrics": [
-      { "label": "Commodity Records", "value": "18300", "suffix": "+" },
-      { "label": "Bundle Size Cut", "value": "69", "suffix": "%" },
-      { "label": "Search Languages", "value": "8", "suffix": "" }
+      {
+        "label": "Commodity Records",
+        "value": "18300",
+        "suffix": "+"
+      },
+      {
+        "label": "Bundle Size Cut",
+        "value": "69",
+        "suffix": "%"
+      },
+      {
+        "label": "Search Languages",
+        "value": "8",
+        "suffix": ""
+      }
     ],
     "copyrightFiled": {
       "diaryNumber": "SW-21662/2026-CO",
-      "status": "Filed with Indian Copyright Office (Currently in re-scrutiny)"
+      "certificateNumber": "SW-2026024057",
+      "issuedDate": "29 Oct 2026",
+      "status": "Copyright registered with the Copyright Office, Government of India (Certificate No. SW-2026024057; issued 29 Oct 2026)"
     }
   },
   {
     "id": "imdbsentiment",
-    "title": "IMDB Movie Review Sentiment",
-    "subtitle": "NLP Sentiment Classifier for 50,000 IMDB Reviews",
-    "description": "Natural language processing classifier evaluating Logistic Regression, Naïve Bayes, and Bidirectional LSTM models on 50,000 reviews.",
+    "title": "CineSense",
+    "subtitle": "Movie Review Intelligence & Multi-Model NLP Sentiment Platform",
+    "description": "Art-directed cinema intelligence dashboard and multi-model NLP sentiment classification platform evaluating Logistic Regression (89.78%), Naïve Bayes (86.90%), and PyTorch BiLSTM (83.30%) with real-time LIME token explainability.",
     "category": "Machine Learning",
-    "thumbnail": "/images/projects/imdb-sentiment-analysis.png",
+    "thumbnail": "/images/projects/cinesense-preview.png",
     "screenshots": [
-      "/images/projects/imdb-sentiment-analysis.png"
+      "/images/projects/cinesense-preview.png"
     ],
     "technologies": [
       "Python",
-      "TF-IDF",
-      "Logistic Regression",
-      "Naïve Bayes",
-      "Bidirectional LSTM",
+      "Streamlit",
+      "PyTorch",
       "Scikit-learn",
-      "TensorFlow/Keras"
+      "LIME",
+      "TF-IDF",
+      "Bidirectional LSTM",
+      "NLTK",
+      "TMDB API",
+      "Pandas"
     ],
     "githubRepository": "https://github.com/DhruvVawhle/IMDB-Movie-Review-Sentiment-Analysis",
-    "liveDemo": null,
+    "liveDemo": "https://cinesense-review.streamlit.app/",
     "datasetLink": "https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews",
-    "duration": "Jan 2026 – May 2026",
-    "status": "Archived",
-    "featured": false,
-    "isArchived": true,
+    "duration": "Jan 2026 – Nov 2026",
+    "status": "Live",
+    "featured": true,
+    "isArchived": false,
     "highlights": [
-      "Built an NLP sentiment classifier for 50,000 IMDB reviews using TF-IDF feature extraction.",
-      "Evaluated Logistic Regression, Naïve Bayes, and Bidirectional LSTM models on accuracy and F1-score.",
-      "Implemented comprehensive text preprocessing and comparative performance evaluation."
+      "Engineered multi-model sentiment inference benchmarking Logistic Regression (89.78% acc, 0.9634 ROC-AUC), Multinomial Naive Bayes (86.90%), and PyTorch Bidirectional LSTM (83.30%) on 10,000 held-out stratified reviews.",
+      "Integrated real-time Explainable AI using LIME feature attribution with color-coded token weights and delta scoring.",
+      "Built Letterboxd-style community reviews, personal watched diary with persistent JSON tracking, and 3x3 TMDB theatrical discovery grid.",
+      "Authored comprehensive test suite with 49 unit and integration tests across data, preprocessing, prediction, and UI services."
     ],
     "features": [
-      "TF-IDF numerical feature extraction pipeline",
-      "Multi-model comparison: Logistic Regression, Naïve Bayes, Bidirectional LSTM",
-      "Accuracy and F1-score evaluation metrics"
+      "Multi-model real-time inference (Logistic Regression, Multinomial Naive Bayes, PyTorch BiLSTM)",
+      "Explainable AI token attribution via LIME with inline visual weighting",
+      "Interactive Letterboxd-style review feed with era filters (Latest 2020s vs. Golden Classics)",
+      "TMDB-powered theatrical movie explorer and personal watched diary",
+      "Corpus explorer & 4-stage lexical preprocessing pipeline audit"
     ],
-    "problem": "Manual review classification is inefficient and error-prone, requiring automated natural language understanding pipelines to accurately determine sentiment in movie reviews.",
-    "approach": "Developed an end-to-end NLP and machine learning pipeline to preprocess raw IMDB text data, extract TF-IDF features, and train supervised classifiers with extensive evaluation.",
-    "architecture": "Python NLP pipeline utilizing Scikit-learn (Logistic Regression, Naive Bayes) and TensorFlow/Keras neural network models for binary classification.",
+    "problem": "Unstructured film reviews contain rich qualitative opinions that are challenging to quantify and synthesize manually. While baseline ML models achieve high accuracy on benchmark datasets, standard academic submissions often stop at static Jupyter notebooks without interactive inference or explainability.",
+    "approach": "Engineered CineSense as an art-directed cinema intelligence dashboard merging production NLP architectures (Scikit-learn, PyTorch) with real-time LIME explainability, live TMDB film discovery, Letterboxd-style community reviews, and 49 passing automated tests.",
+    "architecture": "Modular multi-tier architecture: Services layer for preprocessing, prediction, LIME explainability, TMDB integration, and review storage; UI tabs layer for Home, Movies, Analyzer, Overview, Dataset, Benchmarks, and Pipeline; and models directory hosting serialized vectorizers and PyTorch weights.",
     "metrics": [
-      { "label": "Reviews Analyzed", "value": "50000", "suffix": "+" }
+      {
+        "label": "Top Accuracy",
+        "value": "89.78",
+        "suffix": "%"
+      },
+      {
+        "label": "ROC-AUC",
+        "value": "0.9634",
+        "suffix": ""
+      },
+      {
+        "label": "Held-Out Test Set",
+        "value": "10000",
+        "suffix": " Reviews"
+      },
+      {
+        "label": "Automated Tests",
+        "value": "49",
+        "suffix": " Passing"
+      }
     ]
   },
   {
@@ -248,7 +311,79 @@
     "approach": "Built a voice-enabled AI chatbot powered by Google Gemini API for medical query understanding, with Google Cloud Speech-to-Text and Text-to-Speech for voice interactions.",
     "architecture": "Python/Flask backend serving a RESTful API with Google Gemini API for natural language understanding and Google Cloud STT/TTS for voice processing.",
     "metrics": [
-      { "label": "Availability", "value": "24", "suffix": "/7" }
+      {
+        "label": "Availability",
+        "value": "24",
+        "suffix": "/7"
+      }
+    ]
+  },
+  {
+    "id": "braintumordetection",
+    "title": "Brain Tumor Detection (XAI)",
+    "subtitle": "Deep Learning MRI Classification with Grad-CAM Explainability",
+    "description": "Multi-class brain tumor classification from axial MRI scans benchmarking Custom CNN, MobileNetV3 (93.94%), and ResNet18 (94.75% accuracy) with PyTorch Grad-CAM visual saliency maps.",
+    "category": "Deep Learning & Vision",
+    "thumbnail": "/images/projects/brain-tumor-detection.png",
+    "screenshots": [
+      "/images/projects/brain-tumor-detection.png",
+      "/images/projects/brain-tumor-model-comparison.png"
+    ],
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Torchvision",
+      "Streamlit",
+      "Grad-CAM",
+      "ResNet18",
+      "MobileNetV3",
+      "Scikit-learn",
+      "NumPy"
+    ],
+    "githubRepository": "https://github.com/DhruvVawhle/brain-tumor-detection",
+    "liveDemo": "https://brain-tumor-detection-xai.streamlit.app",
+    "datasetLink": "https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset",
+    "duration": "Sep 2026 – Oct 2026",
+    "status": "Live",
+    "featured": true,
+    "isArchived": false,
+    "highlights": [
+      "Engineered multi-class convolutional neural networks in PyTorch classifying axial MRI scans into Glioma, Meningioma, Pituitary, and No Tumor.",
+      "Benchmarked Custom CNN, MobileNetV3 (93.94%), and ResNet18 (94.75% test accuracy, 0.9462 macro F1) across 1,600 balanced held-out test scans.",
+      "Implemented Gradient-weighted Class Activation Mapping (Grad-CAM) with PyTorch forward/backward hooks to produce clinical saliency heatmaps.",
+      "Deployed interactive Streamlit clinical web app for real-time MRI upload, inference, probability distribution bars, and XAI inspection."
+    ],
+    "features": [
+      "Multi-model inference across ResNet18, MobileNetV3, and Custom 4-block CNN",
+      "Real-time Grad-CAM saliency heatmap generation for visual interpretability",
+      "Multi-class detection across 4 categories: Glioma, Meningioma, Pituitary, and Healthy Scans",
+      "Interactive Streamlit application with single and batch MRI upload modes",
+      "Dynamic model comparison dashboards and per-class precision/recall analysis"
+    ],
+    "problem": "Manual radiologist inspection of axial brain MRI scans is time-intensive and subject to inter-observer variability. Black-box deep learning systems frequently fail clinical adoption because medical practitioners cannot verify which anatomical regions drove a diagnosis.",
+    "approach": "Developed an end-to-end deep learning pipeline combining transfer learning backbones with Grad-CAM visual explainability. Forward and backward hooks capture spatial activations at the final convolutional layers to generate transparent heatmaps overlaid on axial MRI scans.",
+    "architecture": "PyTorch deep learning architecture: Torchvision data augmentation and normalization pipeline feeding into ResNet18 and MobileNetV3 backbones. Grad-CAM module captures final convolutional gradients via hooks and computes global average pooled weights. Streamlit frontend provides real-time model switching, file upload, inference bars, and blended heatmap overlays.",
+    "metrics": [
+      {
+        "label": "Test Accuracy",
+        "value": "94.75",
+        "suffix": "%"
+      },
+      {
+        "label": "Macro F1-Score",
+        "value": "0.9462",
+        "suffix": ""
+      },
+      {
+        "label": "Test MRI Scans",
+        "value": "1600",
+        "suffix": ""
+      },
+      {
+        "label": "Diagnostic Classes",
+        "value": "4",
+        "suffix": " Types"
+      }
     ]
   }
 ]

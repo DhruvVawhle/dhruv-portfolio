@@ -61,6 +61,14 @@ const PROJECT_THEMES: Record<string, ProjectTheme> = {
     primaryBtn:
       "bg-blue-500 hover:bg-blue-600 text-white font-mono font-bold shadow-md",
   },
+  braintumordetection: {
+    name: "rose",
+    badgeBg: "bg-rose-500/20 text-rose-300 border border-rose-500/30",
+    glowBg: "from-rose-500/10 via-transparent to-transparent",
+    dotColor: "bg-rose-400",
+    accentText: "text-rose-300",
+    primaryBtn: "bg-rose-500 hover:bg-rose-600 text-white font-mono font-bold shadow-md",
+  },
   imdbsentiment: {
     name: "orange",
     badgeBg: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
@@ -175,13 +183,29 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
       caption: "AI Chatbot UI — Multilingual voice healthcare assistant",
     },
   ],
+  braintumordetection: [
+    {
+      src: "/images/projects/brain-tumor-detection.png",
+      title: "Grad-CAM Saliency & Tumor Localization",
+      description:
+        "Visual interpretability heatmaps highlighting the exact pathological regions influencing model predictions.",
+      caption: "Grad-CAM Explainability — Axial MRI scan with blended activation heatmap",
+    },
+    {
+      src: "/images/projects/brain-tumor-model-comparison.png",
+      title: "Model Architecture Benchmark",
+      description:
+        "Comparative evaluation across Custom CNN, ResNet18, and MobileNetV3 across 1,600 held-out test scans.",
+      caption: "Benchmark Analytics — ResNet18 leading with 94.75% test accuracy and 0.9462 F1-score",
+    },
+  ],
   imdbsentiment: [
     {
-      src: "/images/projects/imdb-sentiment-analysis.png",
-      title: "Sentiment Analysis Dashboard",
+      src: "/images/projects/cinesense-preview.png",
+      title: "CineSense Sentiment Analysis & Discovery",
       description:
-        "Visualizing positive and negative sentiment distributions on IMDB movie reviews.",
-      caption: "Main Dashboard — Sentiment metrics and text classification stats",
+        "Real-time sentiment inference across Logistic Regression, Naive Bayes, and PyTorch BiLSTM with explainable AI word highlighting.",
+      caption: "CineSense Dashboard — Real-time multi-model sentiment inference and LIME word attribution",
     },
   ],
 };
@@ -191,6 +215,7 @@ const PROJECT_DISPLAY_MODES: Record<string, "desktop" | "mobile"> = {
   campusai: "desktop",
   krishisaathi: "desktop",
   medtalk: "desktop",
+  braintumordetection: "desktop",
   imdbsentiment: "desktop",
 };
 
@@ -204,7 +229,7 @@ const PROJECT_LEARNINGS: Record<string, string> = {
   medtalk:
     "Building a medical assistant for underserved rural communities underscored the necessity of voice-first multilingual UX design and rigorous input sanitization when transcribing speech-to-text medical queries.",
   imdbsentiment:
-    "Building this NLP workflow demonstrated the critical role of data cleaning and tokenization strategies in reducing noise before training. I learned to balance model complexity against inference latency, comparing classic statistical models with Deep Learning architectures.",
+    "Benchmarking Logistic Regression against a PyTorch Bidirectional LSTM demonstrated that TF-IDF with linear regularization achieved superior accuracy (89.78%) and ROC-AUC (0.9634) over deep sequence models on benchmark sentiment data while avoiding heavy latency. Incorporating LIME token explainability made classification boundaries transparent, while modularizing Streamlit tabs into isolated services enabled reliable automated testing with 49 passing pytests.",
 };
 
 const ShieldIcon = () => (
@@ -376,23 +401,92 @@ const MEDTALK_FOLDERS: FolderNode[] = [
   { name: "requirements.txt", type: "file" }
 ];
 
-const IMDBSENTIMENT_FOLDERS: FolderNode[] = [
+const BRAINTUMOR_FOLDERS: FolderNode[] = [
+  {
+    name: "models",
+    type: "folder",
+    children: [
+      { name: "custom_cnn.py", type: "file" },
+      { name: "resnet18.pth", type: "file" },
+      { name: "mobilenetv3.pth", type: "file" },
+      { name: "class_names.json", type: "file" }
+    ]
+  },
   {
     name: "notebooks",
     type: "folder",
+    children: [{ name: "brain_tumor_detection.ipynb", type: "file" }]
+  },
+  {
+    name: "screenshots",
+    type: "folder",
     children: [
-      { name: "sentiment_analysis.ipynb", type: "file" }
+      { name: "gradcam_explanation.png", type: "file" },
+      { name: "model_performance_comparison.png", type: "file" }
+    ]
+  },
+  { name: "app.py", type: "file" },
+  { name: "gradcam.py", type: "file" },
+  { name: "requirements.txt", type: "file" },
+  { name: "README.md", type: "file" }
+];
+
+const IMDBSENTIMENT_FOLDERS: FolderNode[] = [
+  {
+    name: "services",
+    type: "folder",
+    children: [
+      { name: "prediction_service.py", type: "file" },
+      { name: "explainability_service.py", type: "file" },
+      { name: "preprocessing.py", type: "file" },
+      { name: "evaluation_service.py", type: "file" },
+      { name: "tmdb_service.py", type: "file" },
+      { name: "review_storage_service.py", type: "file" },
+      { name: "data_service.py", type: "file" }
     ]
   },
   {
-    name: "src",
+    name: "ui",
     type: "folder",
     children: [
-      { name: "preprocessing.py", type: "file" },
-      { name: "model.py", type: "file" },
-      { name: "utils.py", type: "file" }
+      {
+        name: "tabs",
+        type: "folder",
+        children: [
+          { name: "analyzer.py", type: "file" },
+          { name: "benchmarks.py", type: "file" },
+          { name: "dataset.py", type: "file" },
+          { name: "home.py", type: "file" },
+          { name: "movies.py", type: "file" },
+          { name: "overview.py", type: "file" },
+          { name: "pipeline.py", type: "file" }
+        ]
+      },
+      { name: "components.py", type: "file" },
+      { name: "theme.py", type: "file" }
     ]
   },
+  {
+    name: "models",
+    type: "folder",
+    children: [
+      { name: "logistic_regression.joblib", type: "file" },
+      { name: "naive_bayes.joblib", type: "file" },
+      { name: "bilstm_model.pt", type: "file" },
+      { name: "tfidf_vectorizer.joblib", type: "file" }
+    ]
+  },
+  {
+    name: "tests",
+    type: "folder",
+    children: [
+      { name: "test_prediction.py", type: "file" },
+      { name: "test_preprocessing.py", type: "file" },
+      { name: "test_evaluation_service.py", type: "file" },
+      { name: "test_ui_tabs.py", type: "file" }
+    ]
+  },
+  { name: "app.py", type: "file" },
   { name: "requirements.txt", type: "file" },
   { name: "README.md", type: "file" }
 ];
@@ -540,7 +634,9 @@ export default function CaseStudyModal({
             animate={{ opacity: 1, scale: 1, y: 0, clipPath: "inset(0% 0% 0% 0% round 24px)" }}
             exit={{ opacity: 0, scale: 0.95, y: 20, clipPath: "inset(5% 5% 5% 5% round 32px)" }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#111318] border border-border-custom text-white shadow-2xl z-10 scrollbar-thin"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl bg-[#111318] border border-border-custom text-white shadow-2xl z-10 scrollbar-thin"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Subtle top glow bar */}
@@ -597,7 +693,7 @@ export default function CaseStudyModal({
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 font-mono text-xs border border-white/20">
                       <ShieldIcon />
                       <span>
-                        Copyright Registered · Diary No. {project.copyrightFiled.diaryNumber}
+                        Copyright Registered · Cert. No. {project.copyrightFiled.certificateNumber || "SW-2026024057"} (Govt. of India)
                       </span>
                     </div>
                   )}

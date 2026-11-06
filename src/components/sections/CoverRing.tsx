@@ -11,6 +11,7 @@ interface CoverRingProps {
   setActiveIndex: (index: number) => void;
   onOpenDetail: (project: ShowcaseProject) => void;
   shouldReduceMotion?: boolean;
+  isPaused?: boolean;
 }
 
 export default function CoverRing({
@@ -19,6 +20,7 @@ export default function CoverRing({
   setActiveIndex,
   onOpenDetail,
   shouldReduceMotion = false,
+  isPaused = false,
 }: CoverRingProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +42,7 @@ export default function CoverRing({
   const lastDragXRef = useRef(0);
 
   // Auto orbit
-  const [isAutoOrbit, setIsAutoOrbit] = useState(false);
+  const [isAutoOrbit, setIsAutoOrbit] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
   // Mouse parallax tilt
@@ -73,7 +75,12 @@ export default function CoverRing({
   // When activeIndex changes externally (e.g. filter or dots), rotate to it
   useEffect(() => {
     if (isDraggingRef.current) return;
-    targetRotationRef.current = activeIndex * stepAngle;
+    const currentNorm = ((currentRotationRef.current % 360) + 360) % 360;
+    const targetNorm = activeIndex * stepAngle;
+    let deltaAngle = targetNorm - currentNorm;
+    if (deltaAngle > 180) deltaAngle -= 360;
+    if (deltaAngle < -180) deltaAngle += 360;
+    targetRotationRef.current = currentRotationRef.current + deltaAngle;
   }, [activeIndex, stepAngle]);
 
   // Smooth animation frame loop for rotation spring physics and auto-orbit
@@ -83,7 +90,7 @@ export default function CoverRing({
     let animId: number;
 
     const animate = () => {
-      if (isAutoOrbit && !isHovered && !isDraggingRef.current) {
+      if (isAutoOrbit && !isHovered && !isDraggingRef.current && !isPaused) {
         targetRotationRef.current += 0.12; // Gentle orbit speed
         const normalizedTarget = ((targetRotationRef.current % 360) + 360) % 360;
         const nearestIdx = Math.round(normalizedTarget / stepAngle) % total;
@@ -162,16 +169,17 @@ export default function CoverRing({
 
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
-        e.preventDefault();
-        const delta = e.shiftKey ? e.deltaY : e.deltaX;
-        targetRotationRef.current += delta * 0.25;
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) > 3) {
+        targetRotationRef.current += delta * 0.18;
         const normalized = ((targetRotationRef.current % 360) + 360) % 360;
         const nearestIdx = Math.round(normalized / stepAngle) % total;
-        setActiveIndex(nearestIdx);
+        if (nearestIdx !== activeIndex) {
+          setActiveIndex(nearestIdx);
+        }
       }
     },
-    [stepAngle, total, setActiveIndex]
+    [stepAngle, total, activeIndex, setActiveIndex]
   );
 
   const rotateToIndex = (targetIdx: number) => {
@@ -207,6 +215,7 @@ export default function CoverRing({
         setIsHovered(false);
         setMouseTilt({ x: 0, y: 0 });
       }}
+      data-lenis-prevent="true"
       className="relative w-full flex flex-col items-center select-none"
     >
       {/* 3D Stage Viewport */}
@@ -232,7 +241,7 @@ export default function CoverRing({
           }}
           className="pointer-events-none absolute rounded-full border border-accent/25 transition-transform duration-500 ease-out flex items-center justify-center"
         >
-          <div className="absolute inset-0 rounded-full bg-radial from-accent/15 via-accent/5 to-transparent blur-2xl" />
+          <div className="absolute inset-0 rounded-full border border-accent/10" />
           <div className="w-[82%] h-[82%] rounded-full border border-dashed border-accent/20" />
           <div className="w-[60%] h-[60%] rounded-full border border-accent/15" />
           <div className="absolute bottom-4 w-40 h-10 rounded-full bg-accent/25 blur-lg" />
@@ -297,7 +306,7 @@ export default function CoverRing({
             type="button"
             onClick={handlePrev}
             aria-label="Rotate ring to previous project"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent hover:text-accent flex items-center justify-center text-text-primary transition-all cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent hover:text-accent flex items-center justify-center text-text-primary transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -314,7 +323,7 @@ export default function CoverRing({
                   className="min-w-[28px] min-h-[36px] flex items-center justify-center p-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent rounded-full transition-transform active:scale-90"
                 >
                   <span
-                    className={`h-2 rounded-full transition-all duration-300 pointer-events-none ${
+                    className={`h-2 rounded-full transition-colors duration-200 pointer-events-none ${
                       isActive
                         ? "w-7 bg-accent shadow-xs shadow-accent/50"
                         : "w-2 bg-border-custom hover:bg-text-secondary/50"
@@ -329,7 +338,7 @@ export default function CoverRing({
             type="button"
             onClick={handleNext}
             aria-label="Rotate ring to next project"
-            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent hover:text-accent flex items-center justify-center text-text-primary transition-all cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom bg-bg-surface hover:border-accent hover:text-accent flex items-center justify-center text-text-primary transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -339,7 +348,7 @@ export default function CoverRing({
           <span className="font-semibold text-text-primary">
             {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
-          <span className="text-border-custom">•</span>
+          <span className="text-border-custom">/</span>
           <span className="text-accent font-medium truncate max-w-[200px]">
             {activeProject?.title}
           </span>
@@ -351,7 +360,7 @@ export default function CoverRing({
             onClick={() => setIsAutoOrbit((prev) => !prev)}
             aria-label={isAutoOrbit ? "Pause auto-orbit" : "Enable continuous 3D auto-orbit"}
             aria-pressed={isAutoOrbit}
-            className={`min-h-[40px] px-3.5 py-1.5 rounded-full font-mono text-xs font-semibold flex items-center gap-2 border transition-all cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${
+            className={`min-h-[40px] px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 ${
               isAutoOrbit
                 ? "bg-accent/15 border-accent text-accent"
                 : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/40"
@@ -359,7 +368,7 @@ export default function CoverRing({
           >
             {isAutoOrbit ? (
               <>
-                <Pause className="w-3.5 h-3.5 text-accent animate-pulse" />
+                <Pause className="w-3.5 h-3.5 text-accent" />
                 <span>Orbiting</span>
               </>
             ) : (

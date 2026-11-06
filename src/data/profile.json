@@ -23,14 +23,40 @@
     "live": "https://dhruvvawhle.vercel.app"
   },
   "statistics": [
-    { "label": "Data Rows Processed", "value": "18300", "suffix": "+" },
-    { "label": "Bundle Size Cut", "value": "69", "suffix": "%" },
-    { "label": "Languages Supported", "value": "8", "suffix": "" }
+    {
+      "label": "Data Rows Processed",
+      "value": "18300",
+      "suffix": "+"
+    },
+    {
+      "label": "Bundle Size Cut",
+      "value": "69",
+      "suffix": "%"
+    },
+    {
+      "label": "Languages Supported",
+      "value": "8",
+      "suffix": ""
+    }
   ],
   "trustSignals": [
-    { "icon": "shield", "label": "Copyright-Filed Software" },
-    { "icon": "database", "label": "Full-Stack & Applied AI Systems" },
-    { "icon": "rocket", "label": "Production Deployments" }
+    {
+      "icon": "shield",
+      "label": "Copyright-Registered Software",
+      "detail": "Certificate No. SW-2026024057 · Issued 29 Oct 2026 (Govt. of India)",
+      "badge": "Cert. SW-2026024057"
+    },
+    {
+      "icon": "database",
+      "label": "Full-Stack & Applied AI Systems",
+      "detail": "5+ Live Production Deployments",
+      "badge": "5+ Deployed Apps"
+    },
+    {
+      "icon": "rocket",
+      "label": "Production Deployments",
+      "detail": "Web, Vision & AI Automation"
+    }
   ],
   "ctaButtons": {
     "primary": {

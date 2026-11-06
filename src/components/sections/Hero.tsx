@@ -335,65 +335,54 @@ function DirectContactDock({
   );
 }
 
-/* ─── Credibility Spotlight Card ────────────────────────────────── */
+/* ─── Credibility Card ─────────────────────────────────────────── */
 function CredibilityCard({
   category,
   title,
+  detail,
   icon,
-  isTouchDevice,
+  href,
 }: {
   category: string;
   title: string;
+  detail?: string;
   icon: React.ReactNode;
-  isTouchDevice: boolean;
+  href?: string;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, active: false });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isTouchDevice || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setSpotlight({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      active: true,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setSpotlight((prev) => ({ ...prev, active: false }));
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 overflow-hidden group select-none"
-    >
-      {/* Radial Cursor Spotlight */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-        style={{
-          opacity: spotlight.active ? 1 : 0,
-          background: `radial-gradient(220px circle at ${spotlight.x}px ${spotlight.y}px, rgba(59, 130, 246, 0.14), transparent 80%)`,
-        }}
-      />
-
-      <div className="w-11 h-11 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+  const content = (
+    <div className="relative p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-xs hover:shadow-sm transition-colors duration-150 flex items-start gap-4 select-none h-full group">
+      <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 mt-0.5">
         {icon}
       </div>
 
-      <div className="relative z-10">
-        <div className="font-mono text-[10px] uppercase tracking-wider text-accent font-semibold">
+      <div className="flex-1 min-w-0">
+        <div className="text-xs text-text-secondary font-normal leading-normal">
           {category}
         </div>
-        <div className="text-xs sm:text-sm font-semibold text-text-primary leading-snug mt-0.5">
+        <div className="text-sm sm:text-base font-semibold text-text-primary tracking-tight leading-snug mt-1 group-hover:text-accent transition-colors duration-150">
           {title}
         </div>
+        {detail && (
+          <div className="text-xs text-text-secondary font-normal leading-normal mt-1">
+            {detail}
+          </div>
+        )}
       </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.99] transition-transform duration-150"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
 }
 
 /* ─── Hero Section Component ────────────────────────────────────── */
@@ -825,16 +814,18 @@ export default function Hero() {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <CredibilityCard
-              category="Legal ownership"
-              title="Copyright-Filed Software"
+              category="Government of India"
+              title="Copyright-Registered Software"
+              detail="Certificate SW-2026024057, issued 29 Oct 2026"
               icon={<ShieldIcon />}
-              isTouchDevice={isTouchDevice}
+              href="#projects"
             />
             <CredibilityCard
-              category="Systems architecture"
+              category="Production engineering"
               title="Full-Stack & Applied AI Systems"
+              detail="5 deployed systems across Web, Vision and Cloud"
               icon={<DatabaseIcon />}
-              isTouchDevice={isTouchDevice}
+              href="#projects"
             />
           </div>
         </motion.div>

@@ -179,7 +179,7 @@
       "category": "Languages",
       "categoryColor": "#A855F7",
       "role": "Applied ML & Backend Services",
-      "projectsList": ["KrishiSaathi", "IMDB Sentiment", "MedTalk"],
+      "projectsList": ["KrishiSaathi", "CineSense", "Brain Tumor Detection (XAI)", "MedTalk"],
       "useCases": ["Time-Series Modeling", "Data Processing", "NLP Classification"],
       "architecture": "Powers predictive analytics, ML training pipelines, and REST backend services.",
       "keyPatterns": ["ARIMA Modeling", "NLP Preprocessing", "REST Endpoints"]
@@ -350,7 +350,7 @@
       "category": "Machine Learning and Security",
       "categoryColor": "#06B6D4",
       "role": "Applied Modeling",
-      "projectsList": ["KrishiSaathi", "IMDB Sentiment"],
+      "projectsList": ["KrishiSaathi", "CineSense", "Brain Tumor Detection (XAI)"],
       "useCases": ["Predictive Modeling", "Feature Engineering", "Model Evaluation"],
       "architecture": "End-to-end applied ML pipelines from data preprocessing to model inference.",
       "keyPatterns": ["Feature Extraction", "Cross-Validation", "Evaluation Metrics"]
@@ -359,7 +359,7 @@
       "category": "Machine Learning and Security",
       "categoryColor": "#F59E0B",
       "role": "Machine Learning Library",
-      "projectsList": ["IMDB Sentiment"],
+      "projectsList": ["CineSense"],
       "useCases": ["Classifiers", "TF-IDF Vectorization", "Hyperparameter Tuning"],
       "architecture": "Python library powering classic ML algorithms and preprocessing utilities.",
       "keyPatterns": ["Pipeline Objects", "TF-IDF Vectorizer", "Classifier Training"]
@@ -368,7 +368,7 @@
       "category": "Machine Learning and Security",
       "categoryColor": "#FF6F00",
       "role": "Deep Learning Framework",
-      "projectsList": ["IMDB Sentiment"],
+      "projectsList": ["CineSense"],
       "useCases": ["Bidirectional LSTM", "Sequence Modeling", "Neural Networks"],
       "architecture": "Deep learning framework for building neural network models.",
       "keyPatterns": ["Sequential Models", "LSTM Layers", "Loss Optimization"]

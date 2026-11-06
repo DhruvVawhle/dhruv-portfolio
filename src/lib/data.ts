@@ -22,7 +22,9 @@ export interface Project {
   techStack: string[];
   links: { label: string; url: string; icon: "github" | "external" | "doc" }[];
   copyrightFiled?: {
-    diaryNumber: string;
+    diaryNumber?: string;
+    certificateNumber?: string;
+    issuedDate?: string;
     status: string;
   };
   image?: string;
