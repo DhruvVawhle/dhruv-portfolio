@@ -11,9 +11,9 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const metaTitle = "Dhruv Vawhle | Software Engineer & AI Security Specialist in Mumbai";
+const metaTitle = "Dhruv Vawhle | Software Engineer Portfolio";
 const metaDescription =
-  "Explore the portfolio of Dhruv Vawhle, a Software Engineer and AI Security Specialist specializing in full-stack web applications, n8n workflows, and applied ML.";
+  "Explore the portfolio of Dhruv Vawhle, a Software Engineer and B.Tech IT undergraduate specializing in full-stack web applications, n8n workflows, and applied ML.";
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
   keywords: [
     "Dhruv Vawhle",
     "Software Engineer",
-    "AI Security Specialist",
+    "Full-Stack Web Development",
+    "AI Systems",
     "Mumbai Software Engineer",
     "Full-Stack Web Development",
     "Applied Machine Learning",
@@ -95,7 +96,7 @@ const jsonLd = {
       "@type": "Person",
       "@id": "https://dhruvvawhle.vercel.app/#person",
       name: "Dhruv Vawhle",
-      jobTitle: "Software Engineer & AI Security Specialist",
+      jobTitle: "Software Engineer",
       url: "https://dhruvvawhle.vercel.app",
       image: "https://dhruvvawhle.vercel.app/images/profile/dhruv-vawhle.jpg",
       sameAs: [

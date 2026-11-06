@@ -536,15 +536,18 @@ export default function Hero() {
           variants={itemVariants}
           className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 xs:gap-4 pb-3 sm:pb-5 mb-5 sm:mb-10 border-b border-border-custom/60"
         >
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-medium text-text-secondary">
+          <div className="flex items-center gap-2.5">
+            <span className="text-sm font-semibold text-text-primary tracking-tight">
               Dhruv Vawhle
+            </span>
+            <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent">
+              Software Engineer
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             <span className="text-xs text-text-secondary font-normal">
-              AI Security Specialist
+              B.Tech IT (Graduating 2027)
             </span>
           </div>
         </motion.div>
@@ -773,7 +776,7 @@ export default function Hero() {
                       Dhruv Vawhle
                     </h3>
                     <p className="text-xs sm:text-sm text-accent mt-1.5 font-medium">
-                      AI Security Specialist
+                      Software Engineer
                     </p>
                   </div>
                   <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs text-text-secondary font-body">
