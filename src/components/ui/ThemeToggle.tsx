@@ -62,58 +62,16 @@ export default function ThemeToggle() {
 
       {/* Toggle Track */}
       <div className="relative w-12 h-6 rounded-full bg-text-primary/90 transition-colors duration-300 shadow-inner flex items-center">
-        {/* Sliding Knob with Inner Active Icon */}
+        {/* Sliding Knob */}
         <motion.div
-          className="absolute left-0.5 w-5 h-5 rounded-full bg-bg shadow-sm flex items-center justify-center text-[10px]"
+          className="absolute left-0.5 w-5 h-5 rounded-full bg-bg shadow-sm"
           animate={{ x: isDark ? 24 : 0 }}
           transition={{
             type: "spring",
             stiffness: 500,
             damping: 30,
           }}
-        >
-          {isDark ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-accent"
-              aria-hidden="true"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-amber-500"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2" />
-              <path d="M12 20v2" />
-              <path d="m4.93 4.93 1.41 1.41" />
-              <path d="m17.66 17.66 1.41 1.41" />
-              <path d="M2 12h2" />
-              <path d="M20 12h2" />
-              <path d="m6.34 17.66-1.41 1.41" />
-              <path d="m19.07 4.93-1.41 1.41" />
-            </svg>
-          )}
-        </motion.div>
+        />
       </div>
 
       {/* Moon Icon (Visible on both mobile and desktop) */}
