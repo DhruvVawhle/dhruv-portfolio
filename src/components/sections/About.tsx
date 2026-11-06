@@ -97,9 +97,7 @@ export default function About() {
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-border-custom/60">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-semibold text-accent tracking-widest uppercase">
-                Profile &amp; Philosophy
-              </span>
+              <span className="text-xs font-medium text-accent">Profile &amp; philosophy</span>
             </div>
           </div>
 
@@ -157,9 +155,7 @@ export default function About() {
                 <div className="rounded-xl border border-blue-100 dark:border-border-custom bg-blue-50/70 dark:bg-white/[0.03] p-5 sm:p-6 h-full flex flex-col justify-between gap-6">
                   {/* Section 1: Focus areas */}
                   <div>
-                    <div className="font-mono text-xs uppercase tracking-wider text-text-secondary font-semibold mb-1">
-                      Focus areas
-                    </div>
+                    <div className="text-xs font-medium text-text-secondary mb-1">Focus areas</div>
                     <div className="divide-y divide-border-custom">
                       <div className="flex items-center gap-3 py-3 first:pt-2">
                         <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
@@ -193,9 +189,7 @@ export default function About() {
 
                   {/* Section 2: Currently building */}
                   <div>
-                    <div className="font-mono text-xs uppercase tracking-wider text-text-secondary font-semibold mb-1">
-                      Currently building
-                    </div>
+                    <div className="text-xs font-medium text-text-secondary mb-1">Currently building</div>
                     <div className="divide-y divide-border-custom">
                       {/* PromptShield */}
                       <a
@@ -254,7 +248,7 @@ export default function About() {
                   style={{
                     height: `${(Math.max(0, activeStepCount - 1) / 6) * 100}%`,
                   }}
-                  className="w-full bg-accent transition-all duration-300"
+                  className="w-full bg-accent transition-[height] duration-300"
                 />
               </div>
 
@@ -275,7 +269,8 @@ export default function About() {
                         type="button"
                         onClick={() => scrollToStep(idx)}
                         aria-label={`Scroll to step ${step.id}: ${step.fnName}`}
-                        className={`absolute left-0 top-4 w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 cursor-pointer shadow-sm focus-visible:outline-2 focus-visible:outline-accent ${
+                        className={`absolute left-0 top-4 w-12 h-12 rounded-2xl flex items-center justify-center border transition-colors duration-200 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${
+
                           isDone
                             ? "bg-accent border-accent text-white"
                             : "bg-bg-surface border-border-custom text-text-secondary"
@@ -294,7 +289,7 @@ export default function About() {
                           >
                             <polyline
                               points="20 6 9 17 4 12"
-                              className="animate-[stroke-draw_0.4s_ease-out_forwards]"
+                              className="motion-safe:animate-[stroke-draw_0.4s_ease-out_forwards]"
                               strokeDasharray="24"
                               strokeDashoffset="0"
                             />
@@ -310,7 +305,8 @@ export default function About() {
                       <button
                         type="button"
                         onClick={() => scrollToStep(idx)}
-                        className={`w-full text-left p-6 rounded-2xl border transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                        className={`w-full text-left p-5 sm:p-6 rounded-2xl border transition-[colors,opacity] duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-[0.99] ${
+
                           isDone
                             ? "bg-bg-surface border-border-custom opacity-100 shadow-sm"
                             : "bg-bg-surface/50 border-border-custom/50 opacity-40 hover:opacity-75"
@@ -342,7 +338,7 @@ export default function About() {
             </div>
 
             {/* Right Column: Sticky VS Code Window */}
-            <div className="lg:col-span-6 sticky top-20 z-20">
+            <div className="lg:col-span-6 lg:sticky lg:top-24 z-20">
               <ScrollReveal direction="left" delay={0.2} scale={0.97} blur>
                 <VSCodeEditor
                   activeStepCount={activeStepCount}

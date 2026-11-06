@@ -145,7 +145,7 @@ export default function VSCodeEditor({
   return (
     <div
       aria-label="Interactive VS Code editor simulating the engineering execution pipeline"
-      className="@container flex flex-col w-full h-[540px] sm:h-[580px] lg:h-[620px] rounded-2xl bg-[#1e1e1e] border border-[#333333] shadow-2xl overflow-hidden text-xs font-mono select-none"
+      className="@container flex flex-col w-full h-[360px] xs:h-[400px] sm:h-[500px] lg:h-[620px] rounded-2xl bg-[#1e1e1e] border border-[#333333] overflow-hidden text-xs font-mono select-none touch-pan-y"
     >
       {/* 1. Title Bar */}
       <div className="h-8.5 bg-[#323233] border-b border-[#252526] px-3 flex items-center justify-between text-[#cccccc]">
@@ -156,7 +156,7 @@ export default function VSCodeEditor({
             <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
           </div>
           <span className="ml-2 text-[11px] text-[#969696] hidden @[400px]:inline">
-            solve.ts — portfolio-engine
+            solve.ts: portfolio-engine
           </span>
         </div>
         <div className="text-[11px] text-[#858585] font-sans">Visual Studio Code</div>
@@ -189,9 +189,7 @@ export default function VSCodeEditor({
 
         {/* Explorer Sidebar (Hidden on narrow screens via container query) */}
         <div className="w-40 bg-[#252526] border-r border-[#1e1e1e] p-2 text-[#cccccc] hidden @[640px]:block">
-          <div className="text-[10px] uppercase font-bold text-[#bbbbbb] tracking-wider mb-2">
-            PORTFOLIO
-          </div>
+          <div className="text-[10px] font-semibold text-[#bbbbbb] mb-2">Portfolio</div>
           <div className="space-y-1 text-[11px]">
             <div className="flex items-center gap-1.5 text-[#cccccc]">
               <span>▼</span>
@@ -211,9 +209,7 @@ export default function VSCodeEditor({
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#333333] text-[10px] uppercase font-bold text-[#858585]">
-            OUTLINE
-          </div>
+          <div className="mt-4 pt-3 border-t border-[#333333] text-[10px] font-semibold text-[#858585]">Outline</div>
           <div className="mt-1 space-y-0.5 text-[10px] text-[#858585]">
             {WORKFLOW_STEPS.slice(0, activeStepCount).map((s) => (
               <div key={s.id} className="truncate">
@@ -246,7 +242,7 @@ export default function VSCodeEditor({
           {/* Code Lines with Line Numbers & Caret */}
           <div
             ref={editorBodyRef}
-            className="flex-1 overflow-y-auto overflow-x-auto min-w-0 max-w-full touch-pan-y overscroll-contain p-2 text-[#d4d4d4] font-mono leading-relaxed scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
+            className="flex-1 overflow-y-hidden lg:overflow-y-auto overflow-x-hidden lg:overflow-x-auto min-w-0 max-w-full p-2 text-[#d4d4d4] font-mono leading-relaxed pointer-events-none lg:pointer-events-auto lg:touch-pan-y scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
           >
             {displayedLines.map((line, idx) => {
               const isCurrentLine = idx === displayedLines.length - 1;
@@ -272,7 +268,7 @@ export default function VSCodeEditor({
           </div>
 
           {/* Terminal Output Panel */}
-          <div className="h-28 sm:h-32 bg-[#181818] border-t border-[#333333] flex flex-col min-w-0 max-w-full">
+          <div className="h-24 sm:h-28 lg:h-32 bg-[#181818] border-t border-[#333333] flex flex-col min-w-0 max-w-full">
             <div className="h-6 px-3 bg-[#252526] flex items-center justify-between text-[10px] text-[#969696] flex-shrink-0">
               <div className="flex items-center gap-3">
                 <span className="text-white font-semibold border-b border-[#007acc] pb-0.5">
@@ -284,7 +280,7 @@ export default function VSCodeEditor({
             </div>
             <div
               aria-live="polite"
-              className="flex-1 overflow-y-auto overflow-x-auto min-w-0 max-w-full touch-pan-y overscroll-contain p-2 text-[10px] font-mono text-[#cccccc] space-y-0.5 scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
+              className="flex-1 overflow-y-hidden lg:overflow-y-auto overflow-x-hidden lg:overflow-x-auto min-w-0 max-w-full p-2 text-[10px] font-mono text-[#cccccc] space-y-0.5 pointer-events-none lg:pointer-events-auto lg:touch-pan-y scrollbar-thin scrollbar-thumb-neutral-700/60 scrollbar-track-transparent"
             >
               {terminalLogs.length === 0 ? (
                 <span className="text-[#555555]">
@@ -321,6 +317,7 @@ export default function VSCodeEditor({
       >
         <div className="flex items-center gap-3">
           <span>main*</span>
+          <span className="text-[10px] text-white/80 lg:hidden font-sans">Synced with steps</span>
         </div>
         <div className="flex items-center gap-3">
           <span>
