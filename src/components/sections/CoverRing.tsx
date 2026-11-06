@@ -35,6 +35,9 @@ export default function CoverRing({
 
   // Drag interaction state
   const isDraggingRef = useRef(false);
+  const activeIndexRef = useRef(activeIndex);
+  activeIndexRef.current = activeIndex;
+  const isInternalUpdateRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragStartRotRef = useRef(0);
   const dragVelocityRef = useRef(0);
@@ -78,6 +81,10 @@ export default function CoverRing({
   // When activeIndex changes externally (e.g. filter or dots), rotate to it
   useEffect(() => {
     if (isDraggingRef.current) return;
+    if (isInternalUpdateRef.current) {
+      isInternalUpdateRef.current = false;
+      return;
+    }
     const currentNorm = ((currentRotationRef.current % 360) + 360) % 360;
     const targetNorm = activeIndex * stepAngle;
     let deltaAngle = targetNorm - currentNorm;
@@ -97,7 +104,8 @@ export default function CoverRing({
         targetRotationRef.current += 0.12; // Gentle orbit speed
         const normalizedTarget = ((targetRotationRef.current % 360) + 360) % 360;
         const nearestIdx = Math.round(normalizedTarget / stepAngle) % total;
-        if (nearestIdx !== activeIndex) {
+        if (nearestIdx !== activeIndexRef.current) {
+          isInternalUpdateRef.current = true;
           setActiveIndex(nearestIdx);
         }
       }
@@ -113,7 +121,7 @@ export default function CoverRing({
 
     animId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animId);
-  }, [isAutoOrbit, isHovered, shouldReduceMotion, stepAngle, total, activeIndex, setActiveIndex]);
+  }, [isAutoOrbit, isHovered, isPaused, shouldReduceMotion, stepAngle, total, setActiveIndex]);
 
   // Pointer drag gestures
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -172,17 +180,23 @@ export default function CoverRing({
 
   const handleWheel = useCallback(
     (e: React.WheelEvent) => {
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (Math.abs(delta) > 3) {
-        targetRotationRef.current += delta * 0.18;
-        const normalized = ((targetRotationRef.current % 360) + 360) % 360;
-        const nearestIdx = Math.round(normalized / stepAngle) % total;
-        if (nearestIdx !== activeIndex) {
-          setActiveIndex(nearestIdx);
+      // Only capture wheel when user intends horizontal ring navigation or holds Shift
+      const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5;
+      if (e.shiftKey || isHorizontalScroll) {
+        const delta = isHorizontalScroll ? e.deltaX : e.deltaY;
+        if (Math.abs(delta) > 3) {
+          targetRotationRef.current += delta * 0.18;
+          const normalized = ((targetRotationRef.current % 360) + 360) % 360;
+          const nearestIdx = Math.round(normalized / stepAngle) % total;
+          if (nearestIdx !== activeIndexRef.current) {
+            isInternalUpdateRef.current = true;
+            setActiveIndex(nearestIdx);
+          }
         }
       }
+      // Vertical scroll passes through smoothly to window/Lenis
     },
-    [stepAngle, total, activeIndex, setActiveIndex]
+    [stepAngle, total, setActiveIndex]
   );
 
   const rotateToIndex = (targetIdx: number) => {
@@ -218,7 +232,6 @@ export default function CoverRing({
         setIsHovered(false);
         setMouseTilt({ x: 0, y: 0 });
       }}
-      data-lenis-prevent="true"
       className="relative w-full flex flex-col items-center select-none"
     >
       {/* 3D Stage Viewport */}
@@ -242,7 +255,7 @@ export default function CoverRing({
             width: `${radius * 2.2}px`,
             height: `${radius * 2.2}px`,
           }}
-          className="pointer-events-none absolute rounded-full border border-accent/25 transition-transform duration-500 ease-out flex items-center justify-center"
+          className="pointer-events-none absolute rounded-full border border-accent/25 motion-safe:transition-transform duration-500 ease-out flex items-center justify-center"
         >
           <div className="absolute inset-0 rounded-full border border-accent/10" />
           <div className="w-[82%] h-[82%] rounded-full border border-dashed border-accent/20" />

@@ -92,7 +92,7 @@ export default function Projects() {
       aria-label="Projects Section"
     >
       {/* Three.js subtle drifting particles behind the stage */}
-      {isSectionVisible && <DriftingParticleField paused={!isSectionVisible} />}
+      <DriftingParticleField paused={!isSectionVisible} />
 
       <div className="content-width relative z-10">
         {/* Editorial Chapter Header */}
@@ -134,7 +134,7 @@ export default function Projects() {
         </ScrollReveal>
 
         {/* 3D Auto-Orbiting Cover Ring Stage */}
-        <ScrollReveal direction="up" delay={0.1} scale={0.97} blur>
+        <ScrollReveal direction="up" delay={0.05} distance={16}>
           <CoverRing
             projects={filteredProjects}
             activeIndex={activeIndex}

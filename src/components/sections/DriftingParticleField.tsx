@@ -20,6 +20,20 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameId = useRef<number | null>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
+
+  const animateRef = useRef<(() => void) | null>(null);
+
+  // Resume or pause RAF loop when paused prop changes without tearing down WebGL
+  useEffect(() => {
+    if (!paused && animFrameId.current === null && animateRef.current) {
+      animFrameId.current = requestAnimationFrame(animateRef.current);
+    } else if (paused && animFrameId.current !== null) {
+      cancelAnimationFrame(animFrameId.current);
+      animFrameId.current = null;
+    }
+  }, [paused]);
 
   useEffect(() => {
     // Respect prefers-reduced-motion
@@ -81,7 +95,10 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
     const posAttr = geometry.attributes.position as BufferAttribute;
 
     const animate = () => {
-      if (paused) return;
+      if (pausedRef.current) {
+        animFrameId.current = null;
+        return;
+      }
 
       const array = posAttr.array as Float32Array;
       for (let i = 0; i < particleCount * 3; i += 3) {
@@ -100,7 +117,9 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
       animFrameId.current = requestAnimationFrame(animate);
     };
 
-    if (!paused) {
+    animateRef.current = animate;
+
+    if (!pausedRef.current) {
       animFrameId.current = requestAnimationFrame(animate);
     }
 
@@ -117,6 +136,8 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
 
     return () => {
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
+      animFrameId.current = null;
+      animateRef.current = null;
       window.removeEventListener("resize", handleResize);
       geometry.dispose();
       material.dispose();
@@ -125,7 +146,7 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
         container.removeChild(renderer.domElement);
       }
     };
-  }, [paused]);
+  }, []);
 
   return (
     <div
