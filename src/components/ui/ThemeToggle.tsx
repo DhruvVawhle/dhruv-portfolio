@@ -64,7 +64,7 @@ export default function ThemeToggle() {
       <div className="relative w-12 h-6 rounded-full bg-text-primary/90 transition-colors duration-300 shadow-inner flex items-center">
         {/* Sliding Knob */}
         <motion.div
-          className="absolute left-0.5 w-5 h-5 rounded-full bg-bg shadow-sm"
+          className="absolute top-[2px] left-[2px] w-5 h-5 rounded-full bg-bg shadow-sm pointer-events-none"
           animate={{ x: isDark ? 24 : 0 }}
           transition={{
             type: "spring",

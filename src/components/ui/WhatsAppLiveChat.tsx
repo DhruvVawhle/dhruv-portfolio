@@ -86,12 +86,16 @@ export default function WhatsAppLiveChat() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const botResponseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const autoResumeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const chipTouchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isChipScrollRef = useRef(false);
 
   // Clean up all timers on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       if (botResponseTimeoutRef.current) clearTimeout(botResponseTimeoutRef.current);
+      if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
     };
   }, []);
 
@@ -107,7 +111,7 @@ export default function WhatsAppLiveChat() {
       ([entry]) => {
         setIsInView(entry.isIntersecting);
       },
-      { threshold: 0.15 }
+      { threshold: 0.05 }
     );
 
     observer.observe(el);
@@ -195,7 +199,7 @@ export default function WhatsAppLiveChat() {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [isDemoRunning, shouldReduceMotion, scriptIndex, isUserInteracting]);
+  }, [isDemoRunning, shouldReduceMotion, scriptIndex, isUserInteracting, isInView]);
 
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -214,6 +218,7 @@ export default function WhatsAppLiveChat() {
 
     if (timerRef.current) clearTimeout(timerRef.current);
     if (botResponseTimeoutRef.current) clearTimeout(botResponseTimeoutRef.current);
+    if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
     setIsDemoRunning(false);
     setIsUserInteracting(true);
 
@@ -244,6 +249,8 @@ export default function WhatsAppLiveChat() {
         replyText = "नमस्कार! मी तुम्हाला आरोग्य विषयक माहिती आणि लक्षण मार्गदर्शन देऊ शकतो. कृपया तुमची लक्षणे सांगा.";
       } else if (lower.includes("headache") || lower.includes("fever")) {
         replyText = "I understand. A headache with mild fever can have several common causes.\n\nGeneral care:\n• Rest and monitor body temperature.\n• Stay hydrated with water or electrolyte fluids.\n• Consult a qualified doctor if fever exceeds 101°F or lasts >48h.";
+      } else if (lower.includes("english")) {
+        replyText = "Sure! How can I help you today? You can describe your symptoms or ask a general health question.";
       }
 
       setMessages((prev) => [
@@ -255,7 +262,40 @@ export default function WhatsAppLiveChat() {
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
       ]);
+
+      // Smart Auto-Resume: smoothly return to automated flow after 9 seconds of user inactivity
+      if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
+      autoResumeTimerRef.current = setTimeout(() => {
+        setIsUserInteracting(false);
+        setIsDemoRunning(true);
+      }, 9000);
     }, 1200);
+  };
+
+  // Accidental scroll detection on quick interaction chips
+  const handleChipTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length > 0) {
+      chipTouchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      isChipScrollRef.current = false;
+    }
+  };
+
+  const handleChipTouchMove = (e: React.TouchEvent) => {
+    if (!chipTouchStartRef.current || e.touches.length === 0) return;
+    const dx = e.touches[0].clientX - chipTouchStartRef.current.x;
+    const dy = e.touches[0].clientY - chipTouchStartRef.current.y;
+    // If user moved finger > 7px, they are scrolling the page or chip list, not tapping
+    if (Math.hypot(dx, dy) > 7) {
+      isChipScrollRef.current = true;
+    }
+  };
+
+  const handleChipClick = (prompt: string) => {
+    if (isChipScrollRef.current) {
+      isChipScrollRef.current = false;
+      return;
+    }
+    sendPromptMessage(prompt);
   };
 
   // Handle user sending an interactive message
@@ -302,7 +342,7 @@ export default function WhatsAppLiveChat() {
             }`} />
             <span>
               {isUserInteracting
-                ? "Interactive Mode"
+                ? "Interactive Mode (Auto-resumes)"
                 : isDemoRunning
                 ? "Auto-Demo Running"
                 : "Demo Paused"}
@@ -404,6 +444,7 @@ export default function WhatsAppLiveChat() {
         {/* ── WhatsApp Wallpaper Chat Messages Viewport ── */}
         <div
           ref={scrollContainerRef}
+          data-lenis-prevent="true"
           className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 relative scrollbar-thin scrollbar-thumb-black/10 dark:scrollbar-thumb-white/10"
           style={{
             backgroundImage: `radial-gradient(circle at 50% 50%, rgba(0,0,0,0.015) 1px, transparent 1px)`,
@@ -482,7 +523,10 @@ export default function WhatsAppLiveChat() {
         </div>
 
         {/* ── Quick Simulated Interaction Chips ── */}
-        <div className="bg-[#F0F2F5]/95 dark:bg-[#202C33]/95 px-3 py-1.5 border-t border-[#E9EDEF] dark:border-[#222E35] flex items-center gap-1.5 overflow-x-auto scrollbar-none z-20">
+        <div
+          style={{ touchAction: "pan-y" }}
+          className="bg-[#F0F2F5]/95 dark:bg-[#202C33]/95 px-3 py-1.5 border-t border-[#E9EDEF] dark:border-[#222E35] flex items-center gap-1.5 overflow-x-auto scrollbar-none z-20"
+        >
           <span className="text-[10px] font-mono text-[#8696A0] uppercase tracking-wider flex-shrink-0 mr-1">
             Tap to test:
           </span>
@@ -496,7 +540,9 @@ export default function WhatsAppLiveChat() {
             <button
               key={prompt}
               type="button"
-              onClick={() => sendPromptMessage(prompt)}
+              onTouchStart={handleChipTouchStart}
+              onTouchMove={handleChipTouchMove}
+              onClick={() => handleChipClick(prompt)}
               className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-white dark:bg-[#2A3942] text-[#111B21] dark:text-[#E9EDEF] border border-[#E9EDEF] dark:border-[#222E35] shadow-2xs hover:bg-[#E9EDEF] dark:hover:bg-[#32424b] transition-colors whitespace-nowrap cursor-pointer flex-shrink-0"
             >
               {prompt}
@@ -535,10 +581,17 @@ export default function WhatsAppLiveChat() {
               onChange={(e) => {
                 setInputValue(e.target.value);
                 if (!isUserInteracting) setIsUserInteracting(true);
+                if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
+                autoResumeTimerRef.current = setTimeout(() => {
+                  setIsUserInteracting(false);
+                  setIsDemoRunning(true);
+                }, 12000);
               }}
-              readOnly={isTouchDevice}
-              inputMode={isTouchDevice ? "none" : "text"}
-              placeholder={isTouchDevice ? "Tap quick options above..." : "Type a message..."}
+              onFocus={() => {
+                if (!isUserInteracting) setIsUserInteracting(true);
+                if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
+              }}
+              placeholder="Type a message or tap options above..."
               className="w-full bg-transparent text-xs sm:text-sm text-[#111B21] dark:text-[#E9EDEF] placeholder:text-[#8696A0] focus:outline-none"
             />
             {!inputValue.trim() && (

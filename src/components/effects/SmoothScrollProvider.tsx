@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import type Lenis from "lenis";
+import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
 declare global {
@@ -14,37 +14,44 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    // Respect prefers-reduced-motion and use native smooth touch scroll on mobile (<768px)
-    if (typeof window !== "undefined") {
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const isMobile = window.innerWidth < 768;
-      if (prefersReduced || isMobile) return;
-    }
+    if (typeof window === "undefined") return;
 
-    let isMounted = true;
+    // Respect prefers-reduced-motion for accessibility
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
 
-    import("lenis").then(({ default: Lenis }) => {
-      if (!isMounted) return;
-      const lenis = new Lenis({
-        autoRaf: true,
-        anchors: { offset: -70 },
-        duration: 1.15,
+    // Premium high-performance smooth scrolling across both desktop and mobile
+    const lenis = new Lenis({
+      autoRaf: true,
+      smoothWheel: true,
+      syncTouch: true,
+      syncTouchLerp: 0.08,
+      touchInertiaExponent: 1.6,
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.2,
+      anchors: {
+        offset: -70,
+        duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        touchMultiplier: 1.5,
-        wheelMultiplier: 1.0,
-        infinite: false,
-      });
-
-      lenisRef.current = lenis;
-      window.__lenis = lenis;
+      },
+      prevent: (node) => {
+        return (
+          node.hasAttribute("data-lenis-prevent") ||
+          Boolean(node.closest("[data-lenis-prevent]")) ||
+          Boolean(node.closest("#conversation-dialog, [role='dialog'], [role='menu']"))
+        );
+      },
     });
 
+    lenisRef.current = lenis;
+    window.__lenis = lenis;
+
     return () => {
-      isMounted = false;
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-        delete window.__lenis;
-      }
+      lenis.destroy();
+      lenisRef.current = null;
+      delete window.__lenis;
     };
   }, []);
 

@@ -57,12 +57,40 @@ export function useTheme() {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  const setTheme = useCallback((newTheme: Theme) => {
+  const applyTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
     try {
       localStorage.setItem("theme", newTheme);
     } catch (e) {}
     document.documentElement.setAttribute("data-theme", newTheme);
+  };
+
+  const setTheme = useCallback((newTheme: Theme) => {
+    if (typeof document === "undefined") return;
+
+    const doc = document as Document & {
+      startViewTransition?: (callback: () => void) => void;
+    };
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      applyTheme(newTheme);
+      return;
+    }
+
+    // Modern browser hardware-accelerated smooth cross-fade via View Transitions
+    if (typeof doc.startViewTransition === "function") {
+      doc.startViewTransition(() => {
+        applyTheme(newTheme);
+      });
+    } else {
+      // Synchronized smooth CSS transition fallback for seamless theme switching
+      doc.documentElement.classList.add("theme-transitioning");
+      applyTheme(newTheme);
+      window.setTimeout(() => {
+        doc.documentElement.classList.remove("theme-transitioning");
+      }, 320);
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {

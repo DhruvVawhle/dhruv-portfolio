@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Eye, ExternalLink, ArrowRight, Activity, Terminal } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
@@ -29,10 +29,53 @@ export default function CoverRingCard({
 }: CoverRingCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  // Gesture tracking to distinguish vertical page scroll from intentional card clicks
+  const pointerStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+  const isScrollOrDragRef = useRef(false);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY, time: performance.now() };
+    isScrollOrDragRef.current = false;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!pointerStartRef.current) return;
+    const dx = e.clientX - pointerStartRef.current.x;
+    const dy = e.clientY - pointerStartRef.current.y;
+    // Any movement beyond 6px in any direction confirms page scroll or orbital drag
+    if (Math.hypot(dx, dy) > 6) {
+      isScrollOrDragRef.current = true;
+    }
+  };
+
+  const handlePointerUp = () => {
+    if (pointerStartRef.current) {
+      const elapsed = performance.now() - pointerStartRef.current.time;
+      if (elapsed > 450) {
+        // Holding long without release is typically a scroll pause or hold
+        isScrollOrDragRef.current = true;
+      }
+    }
+  };
+
+  const handlePointerCancel = () => {
+    isScrollOrDragRef.current = true;
+  };
+
   const handleClick = (e: React.MouseEvent) => {
+    // Suppress accidental modal popups or rotations while the user was simply scrolling down the page
+    if (isScrollOrDragRef.current) {
+      isScrollOrDragRef.current = false;
+      return;
+    }
     e.stopPropagation();
     if (project.isGitHubCard) {
       window.open(project.githubUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (!isFront) {
+      // Rotating side cards to front without jarringly opening the full modal sheet
+      onSelect();
       return;
     }
     onSelect();
@@ -61,6 +104,11 @@ export default function CoverRingCard({
       aria-current={isFront ? "true" : undefined}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerCancel}
+      style={{ touchAction: "pan-y" }}
       onMouseEnter={() => isFront && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none touch-manipulation active:scale-[0.99] ${

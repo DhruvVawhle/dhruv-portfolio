@@ -157,9 +157,6 @@ export default function CoverRing({
     isDraggingRef.current = false;
     isPointerDownRef.current = true;
     activePointerIdRef.current = e.pointerId;
-
-    // Temporarily pause auto-orbit while user touches or drags
-    setIsHovered(true);
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -184,6 +181,7 @@ export default function CoverRing({
       if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) {
         hasDraggedRef.current = true;
         isDraggingRef.current = true;
+        setIsHovered(true);
         // Capture pointer to stage now that user is genuinely dragging horizontally
         stageRef.current?.setPointerCapture?.(e.pointerId);
       } else {
@@ -231,12 +229,10 @@ export default function CoverRing({
       hasDraggedRef.current = false;
     }
 
-    // On touch devices, resume auto-orbit after a short pause if not interacting
-    if (e.pointerType !== "mouse") {
-      resumeTimeoutRef.current = setTimeout(() => {
-        setIsHovered(false);
-      }, 4000);
-    }
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      setIsHovered(false);
+    }, 1000);
   };
 
   const handlePointerCancel = (e: React.PointerEvent) => {
@@ -248,6 +244,9 @@ export default function CoverRing({
       isDraggingRef.current = false;
       hasDraggedRef.current = false;
       activePointerIdRef.current = null;
+      // Page vertical scroll took over; immediately release hover so auto-orbit continues!
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      setIsHovered(false);
     }
   };
 
@@ -300,7 +299,11 @@ export default function CoverRing({
     <div
       ref={containerRef}
       onWheel={handleWheel}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+        if (typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
+          setIsHovered(true);
+        }
+      }}
       onMouseLeave={() => {
         setIsHovered(false);
         setMouseTilt({ x: 0, y: 0 });
