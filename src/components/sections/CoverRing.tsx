@@ -392,9 +392,40 @@ export default function CoverRing({
         </div>
       </div>
 
-      {/* Ring Controls Bar */}
-      <div className="w-full max-w-4xl mt-3 sm:mt-4 px-2 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 z-20">
-        <div className="flex items-center gap-3">
+      {/* ── Upper Hand: Active Project Indicator & Header ── */}
+      <div className="w-full flex items-center justify-center mt-3 sm:mt-4 mb-2 sm:mb-3 px-3 z-20">
+        <div className="inline-flex items-center gap-2 sm:gap-2.5 py-1.5 px-4 rounded-full bg-bg-surface/90 backdrop-blur-md border border-border-custom shadow-xs font-mono text-xs transition-colors duration-200">
+          <span className="font-semibold text-text-primary tracking-tight">
+            {String(activeIndex + 1).padStart(2, "0")} <span className="text-border-custom">/</span> {String(total).padStart(2, "0")}
+          </span>
+          <span className="text-border-custom" aria-hidden="true">/</span>
+          {activeProject && (
+            <button
+              type="button"
+              onClick={() => {
+                if (activeProject.isGitHubCard) {
+                  window.open(activeProject.githubUrl, "_blank", "noopener,noreferrer");
+                } else {
+                  onOpenDetail(activeProject);
+                }
+              }}
+              aria-label={`View ${activeProject.title} project`}
+              className="text-accent font-semibold truncate max-w-[200px] sm:max-w-[280px] hover:underline cursor-pointer flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-accent rounded-sm"
+            >
+              <span>{activeProject.title}</span>
+              <Eye className="w-3.5 h-3.5 flex-shrink-0" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ── Ground Controls Deck: Centered Navigation + Right Portion of Orbiting ── */}
+      <div className="w-full max-w-5xl px-2 sm:px-4 grid grid-cols-1 md:grid-cols-3 items-center gap-3.5 sm:gap-4 z-20">
+        {/* Left balance spacer to keep center column mathematically 100% centered on desktop */}
+        <div className="hidden md:block" aria-hidden="true" />
+
+        {/* Center: Scroll to Prev/Next & Pagination Dots */}
+        <div className="flex items-center justify-center gap-2.5 sm:gap-3 justify-self-center">
           <button
             type="button"
             onClick={handlePrev}
@@ -437,31 +468,8 @@ export default function CoverRing({
           </button>
         </div>
 
-        <div className="font-mono text-xs text-text-secondary flex items-center gap-2">
-          <span className="font-semibold text-text-primary">
-            {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
-          <span className="text-border-custom">/</span>
-          {activeProject && (
-            <button
-              type="button"
-              onClick={() => {
-                if (activeProject.isGitHubCard) {
-                  window.open(activeProject.githubUrl, "_blank", "noopener,noreferrer");
-                } else {
-                  onOpenDetail(activeProject);
-                }
-              }}
-              aria-label={`View ${activeProject.title} project`}
-              className="text-accent font-semibold truncate max-w-[200px] hover:underline cursor-pointer flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-accent rounded-sm"
-            >
-              <span>{activeProject.title}</span>
-              <Eye className="w-3 h-3 flex-shrink-0" />
-            </button>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2 flex-wrap justify-center">
+        {/* Right portion: View Case Study, Orbiting Toggle, and Camera Reset */}
+        <div className="flex items-center gap-2 flex-wrap justify-center md:justify-end justify-self-center md:justify-self-end">
           {activeProject && (
             <button
               type="button"
