@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Project } from "@/lib/data";
 import Badge from "@/components/ui/Badge";
 import TechIcon from "@/components/ui/TechIcon";
+import { getTechWebsite } from "@/lib/techUrls";
 import ProductShowcaseGallery, {
   ShowcaseSlide,
 } from "@/components/ui/ProductShowcaseGallery";
@@ -848,6 +849,37 @@ export default function CaseStudyModal({
                 onToggle={() => toggleSection("architecture")}
               >
                 <p className="text-sm text-gray-300 leading-relaxed">{project.architecture}</p>
+
+                {/* Technologies & Architecture Stack with Official Logos & Outbound Links */}
+                {project.techStack && project.techStack.length > 0 && (
+                  <div className="pt-3 pb-1 border-t border-white/10">
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="font-mono text-xs text-text-secondary uppercase tracking-wider font-bold">
+                        Technologies &amp; Architecture Stack
+                      </span>
+                      <span className="font-mono text-[10px] text-text-secondary">
+                        Click logo to visit website ↗
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {project.techStack.map((tech) => (
+                        <a
+                          key={tech}
+                          href={getTechWebsite(tech)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`Visit official ${tech} website (opens in new tab)`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 font-mono text-xs text-gray-200 hover:text-white transition-all duration-200 transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent"
+                        >
+                          <TechIcon name={tech} size="sm" />
+                          <span>{tech}</span>
+                          <span className="text-[10px] opacity-60">↗</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {slides.length > 0 && (
                   <div className="pt-2">
                     <ProductShowcaseGallery

@@ -182,6 +182,30 @@ const FallbackTechSvg = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const GroqSvg = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-label="Groq">
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 3.6c3.535 0 6.4 2.865 6.4 6.4s-2.865 6.4-6.4 6.4c-2.348 0-4.4-1.264-5.508-3.155l2.793-1.613C9.89 14.394 10.87 14.8 12 14.8c1.546 0 2.8-1.254 2.8-2.8s-1.254-2.8-2.8-2.8c-1.13 0-2.11.406-2.715 1.168L6.492 8.755C7.6 6.864 9.652 5.6 12 5.6z" />
+  </svg>
+);
+
+const AudioWaveSvg = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M2 10v4" />
+    <path d="M6 7v10" />
+    <path d="M10 4v16" />
+    <path d="M14 7v10" />
+    <path d="M18 10v4" />
+    <path d="M22 11v2" />
+  </svg>
+);
+
+const MotionSvg = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M3 17l6-6 4 4 8-8" />
+    <path d="M14 7h7v7" />
+  </svg>
+);
+
 type IconConfig =
   | { type: "devicon"; className: string; isDarkLogo?: boolean }
   | {
@@ -405,6 +429,35 @@ const ICON_MAP: Record<string, IconConfig> = {
     colorClass: "text-[#25D366]",
   },
   "C++": { type: "devicon", className: "devicon-cplusplus-plain colored" },
+
+  // Groq & AI Inference
+  Groq: { type: "react-icon", icon: GroqSvg, colorClass: "text-[#F55036]" },
+  "Groq LPU": { type: "react-icon", icon: GroqSvg, colorClass: "text-[#F55036]" },
+  "Groq Cloud": { type: "react-icon", icon: GroqSvg, colorClass: "text-[#F55036]" },
+  "Groq Cloud (Llama 3.3 70B)": { type: "react-icon", icon: GroqSvg, colorClass: "text-[#F55036]" },
+  "Groq Whisper": { type: "react-icon", icon: GroqSvg, colorClass: "text-[#F55036]" },
+
+  // Audio, Speech & Motion
+  "Edge-TTS": { type: "react-icon", icon: AudioWaveSvg, colorClass: "text-[#0078D4]" },
+  "Web Audio API": { type: "react-icon", icon: AudioWaveSvg, colorClass: "text-[#A855F7]" },
+  Lenis: { type: "react-icon", icon: MotionSvg, colorClass: "text-[#FF4D4D]" },
+  "Lenis & GSAP": { type: "react-icon", icon: MotionSvg, colorClass: "text-[#0AE448]" },
+  GSAP: { type: "react-icon", icon: MotionSvg, colorClass: "text-[#0AE448]" },
+
+  // 3D, WebGL & Specialized Libraries
+  "Three.js": { type: "devicon", className: "devicon-threejs-original colored" },
+  "React Three Fiber": { type: "devicon", className: "devicon-threejs-original colored" },
+  FastAPI: { type: "devicon", className: "devicon-fastapi-plain colored" },
+  fastapi: { type: "devicon", className: "devicon-fastapi-plain colored" },
+  Redis: { type: "devicon", className: "devicon-redis-plain colored" },
+  "Upstash Redis": { type: "devicon", className: "devicon-redis-plain colored" },
+  SQLite3: { type: "devicon", className: "devicon-sqlite-plain colored" },
+  NumPy: { type: "devicon", className: "devicon-numpy-plain colored" },
+  Numpy: { type: "devicon", className: "devicon-numpy-plain colored" },
+  "FAISS Vector RAG": { type: "react-icon", icon: VectorDbSvg, colorClass: "text-[#3B82F6]" },
+  FAISS: { type: "react-icon", icon: VectorDbSvg, colorClass: "text-[#3B82F6]" },
+  "CI/CD": { type: "devicon", className: "devicon-githubactions-plain colored" },
+  "Open Source": { type: "devicon", className: "devicon-git-plain colored" },
 };
 
 interface TechIconProps {
@@ -421,11 +474,38 @@ export default function TechIcon({
   withContainer = false,
 }: TechIconProps) {
   const lookupKey = name?.trim();
-  const config =
+  let config =
     ICON_MAP[lookupKey] ||
     Object.entries(ICON_MAP).find(
       ([k]) => k.toLowerCase() === lookupKey?.toLowerCase()
     )?.[1];
+
+  if (!config && lookupKey) {
+    // Strip trailing version numbers (e.g. "Next.js 16" -> "Next.js", "Python 3.11" -> "Python")
+    const stripped = lookupKey.replace(/\s+(v?\d+(\.\d+)*)$/i, "");
+    config =
+      ICON_MAP[stripped] ||
+      Object.entries(ICON_MAP).find(
+        ([k]) => k.toLowerCase() === stripped.toLowerCase()
+      )?.[1];
+  }
+
+  if (!config && lookupKey) {
+    const lower = lookupKey.toLowerCase();
+    if (lower.startsWith("next")) config = ICON_MAP["Next.js"];
+    else if (lower.startsWith("react three") || lower.startsWith("three")) config = ICON_MAP["React Three Fiber"] || ICON_MAP["Three.js"];
+    else if (lower.startsWith("react")) config = ICON_MAP["React"];
+    else if (lower.startsWith("tailwind")) config = ICON_MAP["Tailwind CSS"];
+    else if (lower.startsWith("groq")) config = ICON_MAP["Groq LPU"];
+    else if (lower.startsWith("fastapi")) config = ICON_MAP["FastAPI"];
+    else if (lower.startsWith("firebase")) config = ICON_MAP["Firebase"];
+    else if (lower.startsWith("firestore")) config = ICON_MAP["Firestore"];
+    else if (lower.startsWith("faiss")) config = ICON_MAP["FAISS Vector RAG"] || ICON_MAP["Vector Database"];
+    else if (lower.startsWith("sqlite")) config = ICON_MAP["SQLite"];
+    else if (lower.includes("redis")) config = ICON_MAP["Upstash Redis"] || ICON_MAP["Redis"];
+    else if (lower.startsWith("pytorch") || lower.startsWith("torch")) config = ICON_MAP["PyTorch"];
+    else if (lower.startsWith("lenis")) config = ICON_MAP["Lenis & GSAP"];
+  }
 
   const containerSize =
     size === "lg"

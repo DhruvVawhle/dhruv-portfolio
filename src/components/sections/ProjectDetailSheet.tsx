@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
+import { getTechWebsite } from "@/lib/techUrls";
 
 interface ProjectDetailSheetProps {
   project: ShowcaseProject | null;
@@ -198,21 +199,48 @@ export default function ProjectDetailSheet({
                 </div>
               )}
 
-              {/* Stack Chips */}
+              {/* Stack Chips with Official Logos and Outbound Website Links */}
               <div>
-                <h3 className="text-xs font-medium text-text-secondary mb-3">
-                  Technologies &amp; architecture
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-medium text-text-secondary">
+                    Technologies &amp; architecture
+                  </h3>
+                  <span className="font-mono text-[10px] text-text-secondary">
+                    Click logo to visit website ↗
+                  </span>
+                </div>
                 <div className="flex flex-wrap gap-2">
-                  {project.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg border border-border-custom font-mono text-xs text-text-primary"
-                    >
-                      <TechIcon name={tech} size="sm" />
-                      <span>{tech}</span>
-                    </span>
-                  ))}
+                  {project.stack.map((tech) => {
+                    const website = getTechWebsite(tech);
+                    return (
+                      <a
+                        key={tech}
+                        href={website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={`Visit official ${tech} website (opens in new tab)`}
+                        className="group/tech inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-xs text-text-primary hover:text-accent transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
+                      >
+                        <TechIcon name={tech} size="sm" />
+                        <span className="font-medium">{tech}</span>
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="text-text-secondary group-hover/tech:text-accent opacity-50 group-hover/tech:opacity-100 transition-all duration-200 group-hover/tech:translate-x-0.5 group-hover/tech:-translate-y-0.5"
+                          aria-hidden="true"
+                        >
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="7 7 17 7 17 17" />
+                        </svg>
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>

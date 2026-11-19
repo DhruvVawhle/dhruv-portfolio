@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { Eye, ExternalLink, ArrowRight, Activity, Terminal } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
+import { getTechWebsite } from "@/lib/techUrls";
 
 const GithubIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -286,13 +287,18 @@ export default function CoverRingCard({
           <div>
             <div className="flex flex-wrap gap-1.5 mb-3">
               {project.stack.slice(0, 4).map((tech) => (
-                <span
+                <a
                   key={tech}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg border border-border-custom font-mono text-[11px] text-text-secondary"
+                  href={getTechWebsite(tech)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  title={`Visit official ${tech} website (opens in new tab)`}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-[11px] text-text-secondary hover:text-accent transition-all duration-150 transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   <TechIcon name={tech} size="sm" />
                   <span>{tech}</span>
-                </span>
+                </a>
               ))}
               {project.stack.length > 4 && (
                 <span className="px-2 py-1 rounded-lg bg-bg border border-border-custom font-mono text-[11px] text-text-secondary font-medium">

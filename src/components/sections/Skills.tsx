@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import TechIcon from "@/components/ui/TechIcon";
 import Button from "@/components/ui/Button";
+import { getTechWebsite } from "@/lib/techUrls";
 
 import { orbitRings, relationshipsMap, engineeringStack, techDetailsMap } from "@/lib/data";
 
@@ -638,16 +639,28 @@ export default function Skills() {
                       <h3 className="font-display font-extrabold text-xl sm:text-2xl text-white">
                         {activeTech}
                       </h3>
-                      <span
-                        className="inline-block px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider mt-1 border"
-                        style={{
-                          backgroundColor: `${activeDetail.categoryColor}18`,
-                          color: activeDetail.categoryColor,
-                          borderColor: `${activeDetail.categoryColor}40`,
-                        }}
-                      >
-                        {activeDetail.category} Layer
-                      </span>
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                        <span
+                          className="inline-block px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider border"
+                          style={{
+                            backgroundColor: `${activeDetail.categoryColor}18`,
+                            color: activeDetail.categoryColor,
+                            borderColor: `${activeDetail.categoryColor}40`,
+                          }}
+                        >
+                          {activeDetail.category} Layer
+                        </span>
+                        <a
+                          href={getTechWebsite(activeTech)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`Visit official ${activeTech} documentation & website`}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[11px] text-[#3B82F6] hover:text-white bg-[#3B82F6]/10 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30 transition-colors"
+                        >
+                          <span>Official site</span>
+                          <span className="text-[10px]">↗</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <button
