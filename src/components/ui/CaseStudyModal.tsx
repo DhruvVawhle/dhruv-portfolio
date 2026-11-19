@@ -94,19 +94,19 @@ const PROJECT_SHOWCASE_SLIDES: Record<string, ShowcaseSlide[]> = {
   promptshield: [
     {
       src: "/images/projects/promptshield.png",
-      title: "PromptShield Architecture Specification",
+      title: "PromptShield Architecture & Threat Simulator",
       description:
-        "Two-layer defense with client-side pattern guard, Firebase Admin ID-token verification, and OpenAI-compatible gateway (OmniRoute).",
-      caption: "Architecture Blueprint — Pre-execution prompt risk evaluation (0–100)",
+        "High-throughput AI security gateway featuring sub-15ms inspection, morphological suffix-stripping heuristics, OWASP LLM Top 10 defense, and 2-line OpenAI SDK drop-in.",
+      caption: "Architecture Blueprint — Deterministic policy precedence & real-time risk scoring (0–100)",
     },
   ],
   campusai: [
     {
       src: "/images/projects/campusai.png",
-      title: "CampusAI Touchscreen Kiosk UI",
+      title: "CampusAI SLRTCE Touchscreen Kiosk UI",
       description:
-        "React Three Fiber 3D robot interface with idle, listening, thinking, and speaking states for multilingual voice assistance.",
-      caption: "Kiosk UI — Multilingual voice assistant (EN, HI, MR, Hinglish)",
+        "Autonomous college reception robot kiosk for SLRTCE Mumbai featuring a state-reactive 3D avatar (idle/listening/speaking), interactive SVG floor maps with mobile QR route handoffs, and 4-language voice loop.",
+      caption: "Kiosk UI — Multilingual voice assistant (EN, HI, MR, Hinglish) & indoor wayfinding",
     },
   ],
   krishisaathi: [
@@ -221,9 +221,9 @@ const PROJECT_DISPLAY_MODES: Record<string, "desktop" | "mobile"> = {
 
 const PROJECT_LEARNINGS: Record<string, string> = {
   promptshield:
-    "Designing a two-layer defense gateway demonstrated how client-side heuristics can drastically reduce unnecessary LLM invocation costs and latency by stopping blatant attacks early, while server-side OmniRoute proxies enforce comprehensive policy checks and token revocation.",
+    "Architecting an enterprise AI security gateway with sub-15ms latency on Next.js 16 demonstrated how combining deterministic morphological suffix-stripping heuristics with Groq LPU inference neutralizes adversarial jailbreaks before they reach LLM context windows. Enforcing strict policy precedence (ALLOW/WARN/SANITIZE/BLOCK) alongside HMAC-SHA256 audit logging ensures enterprise governance with zero friction on standard user interactions.",
   campusai:
-    "Developing a touchscreen kiosk with React Three Fiber taught me how to manage real-time Web Audio buffers and WebSocket synchronization across physical hardware. Working on a multi-department team with Jayesh Tiwari reinforced disciplined interface boundaries between the Next.js kiosk client and the FastAPI RAG backend.",
+    "Engineering an autonomous physical reception kiosk for Shree L. R. Tiwari College of Engineering taught me how to coordinate low-latency Web Audio buffers, reactive 3D robot avatar visual states, and interactive vector SVG indoor wayfinding under kiosk constraints. Collaborating with teammate Jayesh Tiwari reinforced disciplined interface boundaries between our Next.js frontend kiosk and FastAPI RAG backend.",
   krishisaathi:
     "Designing a hybrid Firestore + MongoDB architecture demonstrated how to decouple real-time session synchronization from high-throughput commodity catalog queries. Optimizing ARIMA inference on 18,300+ government market records highlighted the importance of edge-caching market forecasts to maintain sub-200ms API response times across regional rural networks.",
   medtalk:
@@ -282,20 +282,67 @@ const PROMPTSHIELD_FOLDERS: FolderNode[] = [
         name: "app",
         type: "folder",
         children: [
-          { name: "api", type: "folder", children: [{ name: "analyze", type: "folder" }, { name: "proxy", type: "folder" }] },
+          {
+            name: "(public)",
+            type: "folder",
+            children: [
+              { name: "page.tsx", type: "file" },
+              { name: "security", type: "folder", children: [{ name: "page.tsx", type: "file" }] },
+              { name: "architecture", type: "folder", children: [{ name: "page.tsx", type: "file" }] }
+            ]
+          },
+          {
+            name: "(dashboard)",
+            type: "folder",
+            children: [
+              { name: "dashboard", type: "folder" },
+              { name: "incidents", type: "folder" },
+              { name: "policies", type: "folder" },
+              { name: "audit-logs", type: "folder" },
+              { name: "users", type: "folder" },
+              { name: "system", type: "folder" }
+            ]
+          },
+          {
+            name: "api/v1",
+            type: "folder",
+            children: [
+              { name: "analyze", type: "folder", children: [{ name: "route.ts", type: "file" }] },
+              { name: "policies", type: "folder", children: [{ name: "route.ts", type: "file" }] },
+              { name: "audit-logs", type: "folder", children: [{ name: "route.ts", type: "file" }] },
+              { name: "system/status", type: "folder", children: [{ name: "route.ts", type: "file" }] },
+              { name: "incidents", type: "folder", children: [{ name: "route.ts", type: "file" }] }
+            ]
+          }
+        ]
+      },
+      {
+        name: "components",
+        type: "folder",
+        children: [
+          { name: "security", type: "folder", children: [{ name: "threat-simulator.tsx", type: "file" }] },
           { name: "dashboard", type: "folder" },
-          { name: "playground", type: "folder" },
-          { name: "incidents", type: "folder" }
+          { name: "ui", type: "folder" }
         ]
       },
       {
         name: "lib",
         type: "folder",
         children: [
-          { name: "firebase-admin.ts", type: "file" },
-          { name: "pattern-guard.ts", type: "file" },
-          { name: "policy-engine.ts", type: "file" },
-          { name: "omniroute-client.ts", type: "file" }
+          {
+            name: "server",
+            type: "folder",
+            children: [
+              { name: "security-engine.ts", type: "file" },
+              { name: "policy-evaluator.ts", type: "file" },
+              { name: "persistence.ts", type: "file" },
+              { name: "audit.ts", type: "file" },
+              { name: "rate-limiter.ts", type: "file" },
+              { name: "groq.ts", type: "file" }
+            ]
+          },
+          { name: "client", type: "folder" },
+          { name: "types", type: "folder", children: [{ name: "security.ts", type: "file" }] }
         ]
       }
     ]
@@ -307,34 +354,78 @@ const PROMPTSHIELD_FOLDERS: FolderNode[] = [
 
 const CAMPUSAI_FOLDERS: FolderNode[] = [
   {
-    name: "src",
+    name: "frontend",
     type: "folder",
     children: [
       {
-        name: "components",
-        type: "folder",
-        children: [
-          { name: "robot-3d", type: "folder" },
-          { name: "audio-visualizer", type: "folder" },
-          { name: "qr-route", type: "folder" }
-        ]
-      },
-      {
-        name: "hooks",
-        type: "folder",
-        children: [
-          { name: "useWebAudio.ts", type: "file" },
-          { name: "useWebSocket.ts", type: "file" }
-        ]
-      },
-      {
         name: "app",
         type: "folder",
-        children: [{ name: "kiosk", type: "folder" }]
-      }
+        children: [
+          { name: "layout.tsx", type: "file" },
+          { name: "page.tsx", type: "file" },
+          { name: "kiosk", type: "folder", children: [{ name: "page.tsx", type: "file" }] }
+        ]
+      },
+      {
+        name: "components/kiosk",
+        type: "folder",
+        children: [
+          { name: "kiosk-shell.tsx", type: "file" },
+          { name: "campus-robot.tsx", type: "file" },
+          { name: "rich-cards.tsx", type: "file" },
+          { name: "voice-indicator.tsx", type: "file" },
+          { name: "suggestion-chips.tsx", type: "file" },
+          { name: "language-selector.tsx", type: "file" }
+        ]
+      },
+      {
+        name: "lib/kiosk",
+        type: "folder",
+        children: [
+          { name: "campus-knowledge.ts", type: "file" },
+          { name: "translations.ts", type: "file" }
+        ]
+      },
+      { name: "package.json", type: "file" }
     ]
   },
-  { name: "package.json", type: "file" },
+  {
+    name: "backend",
+    type: "folder",
+    children: [
+      { name: "main.py", type: "file" },
+      {
+        name: "agents",
+        type: "folder",
+        children: [
+          { name: "router.py", type: "file" },
+          { name: "admission.py", type: "file" },
+          { name: "student.py", type: "file" },
+          { name: "faculty.py", type: "file" },
+          { name: "nav.py", type: "file" }
+        ]
+      },
+      {
+        name: "api",
+        type: "folder",
+        children: [
+          { name: "chat.py", type: "file" },
+          { name: "voice.py", type: "file" },
+          { name: "kiosk.py", type: "file" }
+        ]
+      },
+      {
+        name: "core",
+        type: "folder",
+        children: [
+          { name: "rag_retriever.py", type: "file" },
+          { name: "database.py", type: "file" },
+          { name: "tts_service.py", type: "file" }
+        ]
+      },
+      { name: "requirements.txt", type: "file" }
+    ]
+  },
   { name: "README.md", type: "file" }
 ];
 
@@ -787,30 +878,30 @@ export default function CaseStudyModal({
                   {project.id === "promptshield" ? (
                     <>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Two-Layer Defense (Pattern Guard + Server Proxy)</div>
+                        <div className="text-white font-bold mb-1">Choice: Morphological Root-Stemming Heuristic Engine (&lt;15ms Latency)</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Client-side pattern evaluation catches immediate heuristic signatures without server network hops, while server-side proxy routes via OmniRoute with Firebase Admin ID-token verification to prevent secret leakage.
+                          Zero-dependency normalization with morphological suffix-stripping (-ing, -ed, -ation, -ment) catches obfuscated adversarial prompt injections and jailbreaks before server invocation, reducing LLM token consumption and latency.
                         </div>
                       </div>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Configurable Policy Engine</div>
+                        <div className="text-white font-bold mb-1">Choice: Deterministic 4-Tier Policy Precedence &amp; HMAC Audit Trail</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Supports custom threat risk thresholds (0–100 scale) mapped to explicit enforcement actions: allow, warn, sanitize, or block queries prior to LLM forwarding.
+                          Enforces deterministic policy precedence (BLOCK &gt; SANITIZE &gt; WARN &gt; ALLOW) mapped to a 0–100 threat risk scale, backed by tamper-evident HMAC-SHA256 audit logging and a 2-line drop-in OpenAI SDK proxy.
                         </div>
                       </div>
                     </>
                   ) : project.id === "campusai" ? (
                     <>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: React Three Fiber for 3D Robot Avatar</div>
+                        <div className="text-white font-bold mb-1">Choice: Interactive SVG Floor Maps &amp; Mobile QR Wayfinding Handoff</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Renders a responsive 3D robot avatar capable of smoothly animating between idle, listening, thinking, and speaking states on touch kiosk hardware.
+                          Engineered step-by-step vector SVG indoor campus navigation for SLRTCE with instant smartphone QR code handoffs, allowing visitors to carry directions and checklists on their mobile devices to prevent kiosk queues.
                         </div>
                       </div>
                       <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                        <div className="text-white font-bold mb-1">Choice: Decoupled REST/WebSocket Integration</div>
+                        <div className="text-white font-bold mb-1">Choice: State-Reactive 3D Robot Avatar &amp; Multilingual Voice Loop</div>
                         <div className="text-gray-400 leading-relaxed">
-                          Cleanly separates the frontend touchscreen interface from teammate Jayesh Tiwari's FastAPI RAG backend, allowing independent scaling and testing.
+                          Rendered a reactive 3D avatar with synchronized Idle, Listening (pulsing halo + live STT transcription), and Speaking (bounce + neural TTS) states supporting English, Hindi, Marathi, and Hinglish.
                         </div>
                       </div>
                     </>
@@ -849,24 +940,24 @@ export default function CaseStudyModal({
                 <div className="space-y-4 font-mono text-xs sm:text-sm text-gray-300">
                   {project.id === "promptshield" ? (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                      <div className="text-red-400 font-bold mb-1">Challenge: Minimizing latency on pre-execution prompt evaluation</div>
+                      <div className="text-red-400 font-bold mb-1">Challenge: Catching zero-day adversarial jailbreak variants without incurring 500ms+ deep LLM latency</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Evaluating complex prompt injection patterns and jailbreak signatures before forwarding to LLMs can introduce noticeable interaction delays.
+                        Evaluating complex prompt injection patterns and jailbreak signatures before forwarding to foundation models can introduce significant latency spikes and degrade UX.
                       </div>
-                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Layered Heuristic Scoring &amp; Parallel Verification</div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Zero-Dependency Pipeline &amp; Groq LPU Speed</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Employed fast client-side pattern matching for obvious indicators, paired with streamlined server-side ID-token verification and caching.
+                        Engineered a deterministic 6-stage pipeline using regex normalization and morphological suffix-stripping to catch 95%+ of structural jailbreaks under 15ms, offloading deep classification to Groq LPU hardware.
                       </div>
                     </div>
                   ) : project.id === "campusai" ? (
                     <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                      <div className="text-red-400 font-bold mb-1">Challenge: Reliable Web Audio streaming and visualizer synchronization on touchscreen hardware</div>
+                      <div className="text-red-400 font-bold mb-1">Challenge: Preventing physical kiosk queues during peak campus admissions and handling noisy hall audio</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Hardware kiosks have variable audio hardware, leading to microphone dropouts and visualizer lag.
+                        Long voice queries cause bottleneck congestion at physical kiosks, while noisy ambient corridor acoustics degrade speech recognition accuracy.
                       </div>
-                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Custom Web Audio Lifecycle Hooks</div>
+                      <div className="text-emerald-400 font-bold mt-3 mb-1">Solution: Mobile QR Handoff &amp; Groq Whisper STT Pipeline</div>
                       <div className="text-gray-400 leading-relaxed">
-                        Engineered resilient custom hooks managing audio capture buffers, WebSocket reconnection protocols, and fallback REST voice uploads.
+                        Implemented instant smartphone QR code handoff so visitors transfer routes/checklists to their phones within 20 seconds. Ambient noise filtering on Groq Whisper (large-v3-turbo) ensures reliable speech transcription.
                       </div>
                     </div>
                   ) : (

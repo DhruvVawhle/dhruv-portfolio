@@ -40,10 +40,11 @@
 - **Live Demo**: https://medimitra-ai.vercel.app
 - **Source Code**: https://github.com/DhruvVawhle/MediMitra-AI
 
-### 2. PromptShield — AI Security & LLM Prompt Injection Firewall
-- **Overview**: Real-time edge gateway that inspects, sanitizes, and neutralizes jailbreak attempts and adversarial prompt injections before reaching underlying foundation models.
-- **Architecture**: Python, FastAPI, Hugging Face transformer models, ONNX Runtime, and Redis caching.
-- **Impact & Metrics**: 99.2% adversarial prompt detection rate; sub-45ms average inspection overhead; 42% reduction in false positives.
+### 2. PromptShield — AI Security Gateway & Threat Prevention Proxy
+- **Overview**: Real-time AI security gateway and reverse proxy defending foundation models against prompt injection, jailbreaks, and system prompt extraction under 15ms.
+- **Architecture**: Next.js 16 App Router, TypeScript, Tailwind CSS v4, Groq LPU inference, Firebase Admin SDK, Cloud Firestore, Upstash Redis. Features morphological suffix-stripping heuristic rule engine, 6-stage pipeline, deterministic 4-tier policy precedence (ALLOW, WARN, SANITIZE, BLOCK), and HMAC-SHA256 audit trails.
+- **Impact & Metrics**: Sub-15ms pipeline execution; OWASP LLM Top 10 coverage; 0–100 threat risk scoring; drop-in 2-line OpenAI SDK integration; 100% test pass across adversarial datasets.
+- **Live Demo**: https://promptshield-ai.vercel.app
 - **Source Code**: https://github.com/DhruvVawhle/PromptShield
 
 ### 3. KrishiSaathi — Smart Agri-Tech E-Commerce & ML Yield Forecasting
@@ -52,9 +53,11 @@
 - **Impact & Metrics**: Enabled 150+ simulated farmer-to-buyer transactions with zero intermediary fees; 88% yield prediction accuracy across 12 crop varieties.
 - **Source Code**: https://github.com/DhruvVawhle/KrishiSaathi
 
-### 4. CampusAI — Smart Campus Management & Notification System
-- **Overview**: Autonomous campus administrative assistant facilitating real-time timetable updates, room allocations, student announcements, and department ticket routing.
-- **Architecture**: Next.js, Firebase Authentication, Cloud Firestore, n8n WhatsApp/Telegram bot integrations.
+### 4. CampusAI — Multilingual AI Reception Robot & Campus Navigation Kiosk
+- **Overview**: Autonomous physical reception terminal and multilingual reception robot engineered for Shree L. R. Tiwari College of Engineering (SLRTCE), Mumbai.
+- **Architecture**: Next.js 16 App Router, TypeScript, Tailwind CSS v4, Framer Motion, React Three Fiber 3D robot avatar, vector SVG indoor floor maps with smartphone QR handoff (Frontend by Dhruv Vawhle). Paired with FastAPI, Groq Whisper (whisper-large-v3-turbo), Edge-TTS Indian accent neural voices, FAISS (multilingual-e5-small) RAG, and SQLite3 (Backend by Jayesh Tiwari).
+- **Impact & Metrics**: 4 languages supported (English, Hindi, Marathi, Hinglish); <20-second kiosk clearance via mobile QR wayfinding transfer; 45-second inactivity reset; 5-tap hidden technician diagnostics HUD.
+- **Upstream Repository**: https://github.com/jayeshtiwari-ai/CampusAI
 - **Source Code**: https://github.com/DhruvVawhle/CampusAI
 
 ### 5. CineSense — NLP Sentiment Analysis & Review Intelligence Engine

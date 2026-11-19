@@ -27,10 +27,10 @@
   - Native lazy loading (`loading="lazy"`, `decoding="async"`) across all below-the-fold media.
   - Unblocked First Contentful Paint (FCP) with streaming server-rendered HTML.
 - **🤖 Applied AI & Architecture Showcases**:
-  - **PromptShield**: High-throughput LLM gateway detecting adversarial prompt injections, jailbreaks, and sensitive data leakage.
+  - **PromptShield**: High-throughput AI security gateway & reverse proxy with sub-15ms latency, OWASP LLM Top 10 coverage, morphological root-stemming heuristic engine, deterministic policy enforcement (ALLOW/WARN/SANITIZE/BLOCK), and 2-line OpenAI SDK drop-in.
   - **MediMitra**: Multilingual AI healthcare triage assistant powered by n8n workflows and Google Gemini APIs.
   - **KrishiSaathi**: Agri-tech crop disease classification, pest diagnostic engine, and fair marketplace.
-  - **CampusAI**: Full-stack campus assistant platform with verified academic and student workflows.
+  - **CampusAI**: Multilingual AI reception terminal & robot kiosk for Shree L. R. Tiwari College of Engineering (SLRTCE), featuring a reactive 3D robot avatar, interactive SVG indoor wayfinding with mobile QR handoffs, and voice loop (EN, HI, MR, Hinglish) via Groq Whisper & Edge-TTS neural Indian accents.
 - **📜 Minimalist Document & Credential Previews**: Single-click modal preview for verified internship certificates and hackathon credentials with optional direct PDF download.
 - **🌊 Fluid Desktop Smooth Scroll & Microphysics**: Desktop Lenis smooth scrolling with auto-fallback to native momentum touch scroll on mobile screens (<768px).
 - **♿ Accessibility & Reduced Motion**: Full compliance with `prefers-reduced-motion`, semantic heading hierarchy, ARIA labels, and skip-to-content navigation.

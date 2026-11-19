@@ -90,12 +90,12 @@
     {
       "title": "PromptShield LLM Security Gateway",
       "url": "https://github.com/DhruvVawhle/PromptShield",
-      "description": "Two-layer prompt injection detection and prevention gateway."
+      "description": "Enterprise AI security gateway with sub-15ms latency, morphological suffix-stripping heuristic engine, and OWASP LLM Top 10 defense."
     },
     {
       "title": "CampusAI Reception Robot Kiosk",
       "url": "https://github.com/DhruvVawhle/CampusAI",
-      "description": "Next.js & React Three Fiber kiosk UI (fork of jayeshtiwari-ai/CampusAI)."
+      "description": "Multilingual AI reception robot & vector SVG navigation kiosk for SLRTCE Mumbai (frontend by Dhruv Vawhle; fork of jayeshtiwari-ai/CampusAI)."
     }
   ],
   "competitions": [

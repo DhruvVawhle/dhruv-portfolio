@@ -200,7 +200,7 @@ const jsonLd = {
             applicationCategory: "SecurityApplication",
             operatingSystem: "Web, Cloud",
             description:
-              "AI Security Gateway and LLM prompt injection detection firewall with 99.2% accuracy and sub-45ms latency overhead.",
+              "Enterprise AI security gateway and threat prevention proxy with sub-15ms pipeline latency, morphological suffix-stripping heuristic engine, and OWASP LLM Top 10 coverage.",
             codeRepository: "https://github.com/DhruvVawhle/PromptShield",
             author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
           },
@@ -228,7 +228,7 @@ const jsonLd = {
             applicationCategory: "EducationalApplication",
             operatingSystem: "Web",
             description:
-              "Autonomous smart campus management assistant automating administrative workflows, timetables, and department communication via n8n.",
+              "Autonomous multilingual AI reception robot and indoor navigation kiosk for Shree L. R. Tiwari College of Engineering (SLRTCE), featuring a reactive 3D avatar, vector SVG floor maps with mobile QR handoffs, and Groq Whisper voice loop.",
             codeRepository: "https://github.com/DhruvVawhle/CampusAI",
             author: { "@id": "https://dhruvvawhle.vercel.app/#person" },
           },

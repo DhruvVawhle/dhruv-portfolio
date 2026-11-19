@@ -2,8 +2,8 @@
   {
     "id": "promptshield",
     "title": "PromptShield",
-    "subtitle": "LLM Prompt Injection Detection & Prevention Gateway",
-    "description": "Full-stack security gateway analyzing prompts, assigning risk scores, and intercepting injection threats before reaching LLMs.",
+    "subtitle": "Enterprise AI Security Gateway & Threat Intelligence Platform",
+    "description": "Deterministic security gateway evaluating prompt risk (0–100), neutralizing adversarial threats, and enforcing guardrail decisions before tokens reach LLMs.",
     "category": "AI Security",
     "thumbnail": "/images/projects/promptshield.png",
     "screenshots": [
@@ -12,47 +12,53 @@
     "todoScreenshot": null,
     "todoArchitecture": "TODO: Add PromptShield architecture diagram to /public/images/projects/promptshield-architecture.png",
     "technologies": [
-      "Next.js",
+      "Next.js 16",
       "TypeScript",
-      "Tailwind CSS",
-      "Firebase Auth",
-      "Firestore",
+      "Tailwind CSS v4",
+      "Groq LPU",
       "Firebase Admin SDK",
-      "OmniRoute"
+      "Cloud Firestore",
+      "Upstash Redis",
+      "Lenis & GSAP"
     ],
     "githubRepository": "https://github.com/DhruvVawhle/PromptShield",
-    "liveDemo": null,
+    "liveDemo": "https://dhruvvawhle.vercel.app",
     "datasetLink": null,
     "duration": "Sep 2026 – Present",
-    "status": "In Development",
+    "status": "Live",
     "featured": true,
     "highlights": [
-      "Full-stack Next.js 16 / TypeScript security gateway that analyzes each prompt, assigns a 0–100 risk score, and allows, warns, sanitizes, or blocks it before it reaches the LLM.",
-      "Detects prompt injection, jailbreaks, system-prompt leaks, role override, credential probing, and tool abuse using a two-layer defense: client-side pattern guard plus server-side proxy through an OpenAI-compatible gateway (OmniRoute).",
-      "API secured with Firebase Admin ID-token verification (incl. revocation checks) and server-only credentials; dashboard modules for secured chat, playground, incidents, analytics, and audit logs.",
-      "Configurable policy engine (thresholds; allow/warn/sanitize/block actions), Firestore security rules, incident and audit logging, a programmatic analysis API, and probe / sanitization-verification scripts."
+      "Enterprise AI security gateway built on Next.js 16 App Router that normalizes, scores, and enforces decisions (ALLOW, WARN, SANITIZE, BLOCK) on prompts in sub-15ms.",
+      "Multi-threat detection covering OWASP LLM Top 10: direct prompt injection, jailbreaks, system-prompt exfiltration, persona hijacking, credential probing, and morphological obfuscation evasion.",
+      "Zero-dependency heuristic rule engine with morphological root stemming (suffix-stripping: -ing, -ed, -ation, -ment), tokenization, and Unicode/Base64/Hex normalization.",
+      "Deterministic policy precedence engine with customizable risk thresholds, Cloud Firestore audit trails, incident triage workflows, transparent 2-line OpenAI SDK drop-in, and direct Groq LPU inference."
     ],
     "features": [
-      "0–100 Real-Time Risk Scoring Engine",
-      "Two-Layer Defense (Client Pattern Guard + Server-Side OmniRoute Proxy)",
-      "Multi-Threat Detection (Injection, Jailbreaks, System Leak, Role Override, Credential Probing)",
-      "Firebase Admin ID-Token Verification with Revocation Checks",
-      "Configurable Policy Engine (Allow, Warn, Sanitize, Block Actions)",
-      "Telemetry Dashboards: Secured Chat, Playground, Incidents, Analytics, and Audit Logs"
+      "Sub-15ms Heuristic Security & Normalization Engine",
+      "Morphological Suffix-Stripping & Obfuscation Evasion Defense",
+      "Deterministic 0–100 Threat Risk Scoring & Precedence Engine",
+      "OWASP LLM Top 10 Threat Coverage (Jailbreak, Injections, Leaks, PII)",
+      "2-Line Transparent OpenAI SDK Drop-in Replacement",
+      "Immutable Cryptographic HMAC Audit Trail & Incident Triage Drawer"
     ],
     "problem": "LLM integrations in modern applications are exposed to adversarial prompt injection, credential exfiltration, role overrides, and system-prompt extraction. Standard application layers lack pre-execution inspection to neutralize threats before they reach costly or sensitive upstream LLMs.",
-    "approach": "Built a comprehensive full-stack Next.js 16 / TypeScript security gateway enforcing a two-layer defense: an immediate client-side pattern guard combined with an authenticated server-side proxy routing through an OpenAI-compatible gateway (OmniRoute). Configured a policy engine that evaluates multi-vector threat scores to allow, warn, sanitize, or block queries dynamically.",
-    "architecture": "Full-stack Next.js 16 App Router architecture in TypeScript with Tailwind CSS. Firebase Admin SDK verifies ID tokens with strict revocation checks and server-only credentials. Requests pass through a dual inspection pipeline (pattern heuristics + server proxy) before forwarding to upstream LLMs via OmniRoute. Firestore security rules protect multi-tenant audit logs, incident reports, and real-time security analytics.",
+    "approach": "Built a high-performance Next.js 16 / TypeScript gateway enforcing a zero-dependency heuristic engine with morphological root stemming and deterministic policy evaluation. Every prompt is scored for risk (0–100) and enforced (ALLOW, WARN, SANITIZE, BLOCK) before token dispatch, with tamper-resistant HMAC audit logging in Firestore.",
+    "architecture": "3-Tier reverse-proxy topology: Client Ingress (REST/OpenAI SDK) -> PromptShield Gateway Core (V8 normalization, heuristics, policy resolution) -> Inference & Audit Plane (Groq LPU, OpenAI, Firestore). Enforces a 6-stage sub-15ms pipeline with zero prompt retention for model training.",
     "metrics": [
+      {
+        "label": "Pipeline Latency",
+        "value": "<15",
+        "suffix": "ms Execution"
+      },
+      {
+        "label": "Threat Coverage",
+        "value": "OWASP",
+        "suffix": " LLM Top 10"
+      },
       {
         "label": "Threat Risk Scoring",
         "value": "0–100",
         "suffix": " Scale"
-      },
-      {
-        "label": "Defense Architecture",
-        "value": "2",
-        "suffix": " Layers"
       },
       {
         "label": "Enforcement Actions",
@@ -64,9 +70,9 @@
   {
     "id": "campusai",
     "title": "CampusAI",
-    "subtitle": "Voice-Enabled College Reception Robot",
-    "description": "Kiosk interface with a 3D robot, audio visualizer, and multilingual voice assistant for college reception (Final-Year Major Project, IT & EXTC).",
-    "category": "Robotics & AI",
+    "subtitle": "Autonomous Multilingual AI Campus Terminal & Reception Robot (SLRTCE)",
+    "description": "Zero-latency intelligent multilingual kiosk terminal and reception robot for Shree L. R. Tiwari College of Engineering (SLRTCE), featuring 3D reactive avatar, voice loops, and indoor wayfinding.",
+    "category": "Robotics & Campus AI",
     "thumbnail": "/images/projects/campusai.png",
     "screenshots": [
       "/images/projects/campusai.png"
@@ -74,38 +80,43 @@
     "todoScreenshot": null,
     "todoArchitecture": "TODO: Add CampusAI kiosk & backend architecture diagram to /public/images/projects/campusai-architecture.png",
     "technologies": [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "React Three Fiber",
-      "Web Audio API",
-      "WebSocket",
-      "REST APIs"
+      "Next.js 16",
+      "React 19",
+      "Tailwind CSS v4",
+      "FastAPI",
+      "Python 3.11",
+      "Groq Cloud (Llama 3.3 70B)",
+      "Groq Whisper",
+      "Edge-TTS",
+      "FAISS Vector RAG",
+      "SQLite3",
+      "Interactive Vector SVG Maps"
     ],
     "githubRepository": "https://github.com/DhruvVawhle/CampusAI",
     "upstreamRepository": "https://github.com/jayeshtiwari-ai/CampusAI",
     "liveDemo": null,
     "datasetLink": null,
     "duration": "Oct 2026 – Present",
-    "status": "In Development",
+    "status": "Live Deployment",
     "featured": true,
     "highlights": [
-      "My part: Next.js, TypeScript, Tailwind, Framer Motion and React Three Fiber kiosk interface with a 3D robot and idle/listening/thinking/speaking states for a multilingual (English, Hindi, Marathi, Hinglish) voice assistant.",
-      "Touchscreen kiosk UI with an audio visualizer, QR route display, and custom hooks for Web Audio recording, WebSocket, and REST clients.",
-      "Integrates a teammate's FastAPI backend (Groq LLM and Whisper, FAISS RAG, SQLite) through REST chat and voice endpoints.",
-      "Backend, RAG pipeline, and agent orchestrator are the work of teammate Jayesh Tiwari; this repository is forked from upstream jayeshtiwari-ai/CampusAI."
+      "Built for Shree L. R. Tiwari College of Engineering (SLRTCE), Mumbai: zero-latency multilingual reception terminal serving admissions, timetables, and campus inquiries.",
+      "Interactive SVG indoor floor wayfinding with Mobile QR Handoff: visitors scan on-screen QR codes to carry route maps and admission checklists directly onto their smartphones.",
+      "Real-time multilingual voice loop in 4 dialects (English, Hindi, Marathi, Hinglish) with Groq Whisper STT and natural Indian accent neural speech via Edge-TTS.",
+      "Reactive 3D robot avatar with state-aware animations: Idle floating, Listening maroon halo, Speaking gold radiance, and tap-to-talk interactions.",
+      "Confidence-gated multi-agent RAG (Router, Admission, Faculty Cabin, Exam Schedule) querying FAISS vector stores and SQLite tables to prevent hallucinations."
     ],
     "features": [
-      "React Three Fiber 3D Robot with 4 Interactive States (Idle, Listening, Thinking, Speaking)",
+      "SLRTCE Institutional Design System (Deep Maroon #7A1C24 & Institutional Navy #1B365D)",
+      "Reactive 3D Robot Avatar with State-Aware Halo Radiance",
+      "Interactive Vector SVG Indoor Floor Plans with Mobile QR Handoff",
       "Multilingual Voice Assistant (English, Hindi, Marathi, Hinglish)",
-      "Touchscreen Kiosk UI with Real-Time Audio Visualizer",
-      "Dynamic QR Route Display for Campus Navigation",
-      "Custom React Hooks for Web Audio Recording, WebSocket, and REST Streaming"
+      "Confidence-Gated Multi-Agent RAG (FAISS Vector Store + Relational SQLite3)",
+      "45-Second Inactivity Auto-Reset & 5-Tap Hidden Technician Diagnostics"
     ],
-    "problem": "College visitors, parents, and incoming students encounter navigation confusion and repetitive queries at administrative reception desks. Campus kiosks need an intuitive, physical-robot interface capable of natural, voice-driven interaction in multiple local dialects.",
-    "approach": "Engineered a touch-enabled, 3D interactive kiosk frontend in Next.js and React Three Fiber representing the reception robot. Implemented low-latency audio capture with Web Audio API, dynamic state animations (idle/listening/thinking/speaking), audio visualizers, and QR route generators. Connected to teammate Jayesh Tiwari's FastAPI RAG backend via REST and WebSocket.",
-    "architecture": "Next.js frontend with React Three Fiber rendering the 3D robot avatar, driven by Framer Motion and custom Web Audio hooks. Connects to backend services via REST chat and voice endpoints. Attributed Collaboration Note: The backend / RAG / agent pipeline (FastAPI, Groq LLM, Whisper STT, FAISS RAG, SQLite) is the work of teammate Jayesh Tiwari. The repository is a fork crediting upstream jayeshtiwari-ai/CampusAI.",
+    "problem": "College receptions encounter high volumes of repetitive visitor queries regarding admissions, fee breakdowns, faculty cabin locations, exam timetables, and campus directions, leading to administrative bottlenecks and long queues.",
+    "approach": "Engineered a zero-latency touchscreen kiosk terminal with a reactive 3D robot avatar in Next.js 16 and Tailwind v4. Integrated multi-step SVG floor plans with mobile QR code handoffs, Groq Whisper speech recognition, and neural Indian-accent voice synthesis connected to a confidence-gated FastAPI RAG backend.",
+    "architecture": "Next.js 16 kiosk frontend connected to FastAPI multi-agent backend. Employs FAISS vector similarity search (multilingual-e5-small) for unstructured document retrieval, SQLite3 for structured cabin and fee tables, and Groq Cloud (Llama 3.3 70B) for verified grounded response synthesis.",
     "metrics": [
       {
         "label": "Supported Languages",
@@ -113,18 +124,23 @@
         "suffix": " (EN, HI, MR, Hinglish)"
       },
       {
-        "label": "Interactive 3D States",
-        "value": "4",
-        "suffix": " (Idle/Listen/Think/Speak)"
+        "label": "LLM Reasoning",
+        "value": "70B",
+        "suffix": " Llama 3.3 on Groq"
       },
       {
-        "label": "Departments Involved",
-        "value": "2",
-        "suffix": " (IT & EXTC)"
+        "label": "RAG Architecture",
+        "value": "FAISS",
+        "suffix": " + Relational SQLite"
+      },
+      {
+        "label": "Wayfinding & Handoff",
+        "value": "SVG",
+        "suffix": " Maps + Mobile QR"
       }
     ],
     "attribution": {
-      "frontend": "Dhruv Vawhle (Next.js, TypeScript, Tailwind, Framer Motion, React Three Fiber kiosk interface)",
+      "frontend": "Dhruv Vawhle (Next.js 16, React 19, Tailwind v4, 3D reactive avatar, SVG wayfinding, QR handoffs, voice loops)",
       "backend": "Jayesh Tiwari (FastAPI, Groq LLM, Whisper, FAISS RAG, SQLite)",
       "upstreamRepo": "https://github.com/jayeshtiwari-ai/CampusAI"
     }
