@@ -5,9 +5,11 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { FOOTER_NAV_LINKS, FOOTER_SOCIAL_LINKS, EMAIL_ADDRESS } from "@/data/credentialsAndConnect";
 import { FileText, Mail } from "lucide-react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
+import { PlayableWordmark } from "@/components/ui/shutter-glyph-footer";
 
+/* ──────────────────── Social SVG Icons ──────────────────── */
 
-const LinkedinIcon = ({ size = 18 }: { size?: number }) => (
+const LinkedinIcon = ({ size = 17 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 448 512" fill="currentColor">
     <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
   </svg>
@@ -19,28 +21,19 @@ const GithubIcon = ({ size = 18 }: { size?: number }) => (
   </svg>
 );
 
-/* ──────────────────── Profile icon data ──────────────────── */
+/* ──────────────────── Profile Icon Data ──────────────────── */
 
 const linkedinUrl = FOOTER_SOCIAL_LINKS.find((l) => l.label === "LinkedIn")?.url ?? "#";
 const githubUrl = FOOTER_SOCIAL_LINKS.find((l) => l.label === "GitHub")?.url ?? "#";
-const resumeUrl = "/resume.pdf";
+const resumeUrl = "/Dhruv_Resume.pdf";
 const emailUrl = `mailto:${EMAIL_ADDRESS}`;
-
-function urlHostPath(url: string) {
-  try {
-    const u = new URL(url);
-    return `${u.host}${u.pathname}`.replace(/\/$/, "");
-  } catch {
-    return url;
-  }
-}
 
 interface ProfileIcon {
   label: string;
   url: string;
   icon: React.ReactNode;
-  tooltipTitle: string;
-  tooltipSub: string;
+  tooltipText: string;
+  tooltipTag?: string;
   external: boolean;
 }
 
@@ -48,78 +41,69 @@ const PROFILE_ICONS: ProfileIcon[] = [
   {
     label: "LinkedIn",
     url: linkedinUrl,
-    icon: <LinkedinIcon size={18} />,
-    tooltipTitle: "LinkedIn",
-    tooltipSub: `${urlHostPath(linkedinUrl)} ↗`,
+    icon: <LinkedinIcon size={17} />,
+    tooltipText: "LinkedIn",
+    tooltipTag: "↗",
     external: true,
   },
   {
     label: "GitHub",
     url: githubUrl,
     icon: <GithubIcon size={18} />,
-    tooltipTitle: "GitHub",
-    tooltipSub: `${urlHostPath(githubUrl)} ↗`,
+    tooltipText: "GitHub",
+    tooltipTag: "↗",
     external: true,
   },
   {
     label: "Resume",
     url: resumeUrl,
-    icon: <FileText size={18} />,
-    tooltipTitle: "Resume",
-    tooltipSub: "Opens PDF in new tab ↗",
+    icon: <FileText size={17} strokeWidth={2} />,
+    tooltipText: "Resume",
+    tooltipTag: "PDF ↗",
     external: true,
   },
   {
     label: "Email",
     url: emailUrl,
-    icon: <Mail size={18} />,
-    tooltipTitle: "Email",
-    tooltipSub: "Send me a message",
+    icon: <Mail size={17} strokeWidth={2} />,
+    tooltipText: EMAIL_ADDRESS,
     external: false,
   },
 ];
 
-/* ──────────────────── Tooltip Component ──────────────────── */
+/* ──────────────────── Refined Anti-Slop Tooltip ──────────────────── */
 
 function IconTooltip({
-  title,
-  subtitle,
+  text,
+  tag,
   visible,
-  idx,
-  total,
+  isLast,
 }: {
-  title: string;
-  subtitle: string;
+  text: string;
+  tag?: string;
   visible: boolean;
-  idx: number;
-  total: number;
+  isLast?: boolean;
 }) {
-  // On mobile, align tooltips to prevent overflow. First items align left, last items align right.
-  const isFirstHalf = idx < total / 2;
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 6 }}
-          transition={{ duration: 0.15 }}
-          className={`absolute bottom-full mb-3 z-50 pointer-events-none ${
-            isFirstHalf ? "left-0 sm:left-1/2 sm:-translate-x-1/2" : "right-0 sm:left-1/2 sm:-translate-x-1/2"
+          initial={{ opacity: 0, y: 3, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 2, scale: 0.98 }}
+          transition={{ duration: 0.12, ease: "easeOut" }}
+          className={`absolute bottom-full mb-2 z-50 pointer-events-none ${
+            isLast
+              ? "right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2"
+              : "left-1/2 -translate-x-1/2"
           }`}
         >
-          <div className="rounded-[10px] bg-text-primary text-bg px-3.5 py-2 shadow-lg whitespace-nowrap">
-            <p className="text-[12px] font-semibold leading-tight">{title}</p>
-            <p className="text-[11px] opacity-70 leading-tight mt-0.5">{subtitle}</p>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-900 text-neutral-100 dark:bg-neutral-100 dark:text-neutral-900 shadow-md border border-white/10 dark:border-black/10 whitespace-nowrap text-[11px] font-mono leading-none tracking-tight select-none">
+            <span className="font-medium">{text}</span>
+            {tag && (
+              <span className="opacity-50 font-normal">{tag}</span>
+            )}
           </div>
-          {/* Arrow */}
-          <div
-            className={`absolute top-full w-0 h-0 border-x-[6px] border-x-transparent border-t-[6px] border-t-text-primary ${
-              isFirstHalf
-                ? "left-5 sm:left-1/2 sm:-translate-x-1/2"
-                : "right-5 sm:left-1/2 sm:-translate-x-1/2"
-            }`}
-          />
         </motion.div>
       )}
     </AnimatePresence>
@@ -130,23 +114,20 @@ function IconTooltip({
 
 function ProfileIconButton({
   item,
-  idx,
-  total,
+  isLast,
 }: {
   item: ProfileIcon;
-  idx: number;
-  total: number;
+  isLast: boolean;
 }) {
   const [show, setShow] = useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center justify-center">
       <IconTooltip
-        title={item.tooltipTitle}
-        subtitle={item.tooltipSub}
+        text={item.tooltipText}
+        tag={item.tooltipTag}
         visible={show}
-        idx={idx}
-        total={total}
+        isLast={isLast}
       />
       <a
         href={item.url}
@@ -163,10 +144,10 @@ function ProfileIconButton({
         onMouseLeave={() => setShow(false)}
         onFocus={() => setShow(true)}
         onBlur={() => setShow(false)}
-        className="flex items-center justify-center w-11 h-11 min-w-[44px] min-h-[44px] rounded-full border border-border-custom text-text-secondary
-          hover:border-accent hover:text-accent hover:bg-accent-soft hover:-translate-y-0.5
-          focus-visible:border-accent focus-visible:text-accent focus-visible:bg-accent-soft focus-visible:-translate-y-0.5
-          transition-all duration-200"
+        className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] rounded-full border border-border-custom text-text-secondary
+          hover:border-accent hover:text-accent hover:bg-accent/5 hover:-translate-y-0.5
+          focus-visible:border-accent focus-visible:text-accent focus-visible:bg-accent/5 focus-visible:-translate-y-0.5
+          transition-all duration-150"
       >
         <span className="sr-only">{item.label}</span>
         {item.icon}
@@ -177,7 +158,117 @@ function ProfileIconButton({
 
 /* ──────────────────── Mouse Icon SVG ──────────────────── */
 
-function MouseIcon({ going, reduced }: { going: boolean; reduced: boolean }) {
+const MOUSE_WHEEL_STYLES = `
+@keyframes mouseWheelFlick {
+  0% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+  6% {
+    transform: translateY(3px);
+    opacity: 1;
+  }
+  22% {
+    transform: translateY(-2.2px);
+    opacity: 1;
+  }
+  28% {
+    transform: translateY(-4.2px);
+    opacity: 0;
+  }
+  29% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+}
+
+@keyframes mouseWheelFlickTrail {
+  0%, 4% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+  11% {
+    transform: translateY(3px);
+    opacity: 0.65;
+  }
+  26% {
+    transform: translateY(-2.2px);
+    opacity: 0.65;
+  }
+  32% {
+    transform: translateY(-4.2px);
+    opacity: 0;
+  }
+  33% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+}
+
+@keyframes mouseWheelGoing {
+  0% {
+    transform: translateY(4.5px);
+    opacity: 0;
+  }
+  15% {
+    transform: translateY(2.5px);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-2.5px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-4.8px);
+    opacity: 0;
+  }
+}
+
+.mouse-anim-flick {
+  animation: mouseWheelFlick 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  transform-box: view-box;
+  transform-origin: 8px 8px;
+}
+
+.mouse-anim-flick-trail {
+  animation: mouseWheelFlickTrail 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  transform-box: view-box;
+  transform-origin: 8px 8px;
+}
+
+.mouse-anim-going {
+  animation: mouseWheelGoing 0.32s linear infinite;
+  transform-box: view-box;
+  transform-origin: 8px 8px;
+}
+
+.mouse-anim-going-trail {
+  animation: mouseWheelGoing 0.32s linear infinite;
+  animation-delay: -0.16s;
+  transform-box: view-box;
+  transform-origin: 8px 8px;
+}
+`;
+
+function MouseIcon({
+  going,
+  hovered,
+  hoverCount,
+  reduced,
+}: {
+  going: boolean;
+  hovered: boolean;
+  hoverCount: number;
+  reduced: boolean;
+}) {
   return (
     <svg
       width="16"
@@ -185,10 +276,12 @@ function MouseIcon({ going, reduced }: { going: boolean; reduced: boolean }) {
       viewBox="0 0 16 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="shrink-0"
+      className="shrink-0 transition-transform duration-300 ease-out group-hover:-translate-y-0.5"
       aria-hidden="true"
     >
-      {/* Mouse body */}
+      <style>{MOUSE_WHEEL_STYLES}</style>
+
+      {/* Outer Mouse Shell */}
       <rect
         x="1"
         y="1"
@@ -198,31 +291,50 @@ function MouseIcon({ going, reduced }: { going: boolean; reduced: boolean }) {
         stroke="currentColor"
         strokeWidth="1.5"
         fill="none"
+        className="transition-colors duration-200"
       />
-      {/* Wheel dot */}
-      {going && !reduced ? (
-        /* Animated scrolling wheel */
-        <g>
-          <circle cx="8" r="1.5" fill="currentColor">
-            <animate
-              attributeName="cy"
-              values="12;6;4"
-              dur="0.55s"
-              repeatCount="indefinite"
-              calcMode="linear"
-            />
-            <animate
-              attributeName="opacity"
-              values="0;1;0"
-              dur="0.55s"
-              repeatCount="indefinite"
-              calcMode="linear"
-            />
-          </circle>
+
+      {/* Subtle Wheel Slot Track */}
+      <line
+        x1="8"
+        y1="5"
+        x2="8"
+        y2="13"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        className="opacity-20 group-hover:opacity-40 transition-opacity duration-200"
+      />
+
+      {reduced ? (
+        <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+      ) : going ? (
+        /* Click / Going State: continuous rapid ascent stream */
+        <g key="going">
+          <circle cx="8" cy="8" r="1.5" fill="currentColor" className="mouse-anim-going" />
+          <circle cx="8" cy="8" r="1.2" fill="currentColor" className="mouse-anim-going-trail" opacity="0.75" />
+        </g>
+      ) : hovered ? (
+        /* Hover State: immediate single up-scroll flick on mouse entry, then 1.7s calm pause, then repeat */
+        <g key={`hovered-${hoverCount}`}>
+          {/* Faint resting center notch during the pause so mouse never feels empty */}
+          <circle cx="8" cy="8" r="1.5" fill="currentColor" opacity="0.32" />
+
+          {/* Active single upward scroll bead starting immediately at frame 0 */}
+          <circle cx="8" cy="8" r="1.5" fill="currentColor" className="mouse-anim-flick" />
+
+          {/* Cascading second wheel notch */}
+          <circle cx="8" cy="8" r="1.2" fill="currentColor" className="mouse-anim-flick-trail" />
         </g>
       ) : (
-        /* Static wheel dot */
-        <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        /* Resting State */
+        <circle
+          cx="8"
+          cy="8"
+          r="1.5"
+          fill="currentColor"
+          className="transition-opacity duration-200 opacity-80"
+        />
       )}
     </svg>
   );
@@ -232,10 +344,11 @@ function MouseIcon({ going, reduced }: { going: boolean; reduced: boolean }) {
 
 function BackToTop() {
   const [going, setGoing] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hoverCount, setHoverCount] = useState(0);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prefersReduced = useReducedMotion();
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -252,21 +365,18 @@ function BackToTop() {
       setGoing(false);
     };
 
-    // Reduced motion: instant scroll
     if (prefersReduced) {
       window.scrollTo({ top: 0 });
       finish();
       return;
     }
 
-    // Try Lenis first
     const lenis = typeof window !== "undefined" ? window.__lenis : null;
     if (lenis) {
       lenis.scrollTo(0, {
         duration: 1.8,
         onComplete: () => finish(),
       });
-      // Fallback timeout
       timeoutRef.current = setTimeout(finish, 2600);
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -275,54 +385,69 @@ function BackToTop() {
   }, [going, prefersReduced]);
 
   return (
-    <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
+    <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-20">
       <motion.button
         type="button"
         aria-label="Back to top"
         onClick={handleClick}
+        onMouseEnter={() => {
+          setHoverCount((c) => c + 1);
+          setIsHovered(true);
+        }}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => {
+          setHoverCount((c) => c + 1);
+          setIsHovered(true);
+        }}
+        onBlur={() => setIsHovered(false)}
+        whileHover={{ y: -2 }}
         whileTap={{ scale: 0.94 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20, duration: 0.3 }}
+        transition={{ type: "spring", stiffness: 400, damping: 22 }}
         className={`
-          flex items-center gap-2 rounded-full border min-h-[44px] px-4.5 py-2.5 font-mono text-[13px]
-          bg-bg
+          group flex items-center gap-2 rounded-full border min-h-[44px] px-4 sm:px-5 py-2.5 font-mono text-[12px] sm:text-[13px]
+          bg-bg-surface shadow-sm select-none
           transition-colors duration-200
           focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none
           ${
             going
-              ? "border-accent text-accent"
-              : "border-border-custom text-text-secondary hover:border-accent hover:text-accent"
+              ? "border-accent text-accent shadow-md shadow-accent/10"
+              : "border-border-custom text-text-secondary hover:border-accent hover:text-accent hover:shadow-md hover:shadow-accent/5"
           }
         `}
       >
-        <MouseIcon going={going} reduced={!!prefersReduced} />
-        <span>Back to top</span>
+        <MouseIcon
+          going={going}
+          hovered={isHovered}
+          hoverCount={hoverCount}
+          reduced={!!prefersReduced}
+        />
+        <span className="tracking-tight transition-colors duration-200">Back to top</span>
       </motion.button>
     </div>
   );
 }
 
-/* ──────────────────── Footer ──────────────────── */
+/* ──────────────────── Responsive Unified Footer ──────────────────── */
 
 export default function Footer() {
   return (
     <footer
-      className="bg-bg-surface"
+      className="bg-bg-surface relative border-t border-border-custom w-full"
       aria-label="Site Footer"
     >
-      {/* Container with top border and the back-to-top pill sitting on it */}
-      <div className="max-w-[1240px] mx-auto px-6 relative border-t border-border-custom">
-        {/* Back to top pill on the border */}
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative">
+        {/* Back to top pill sitting on the top border */}
         <BackToTop />
 
-        {/* Main 3-column row */}
+        {/* Main 3-column row from the original footer */}
         <ScrollReveal direction="up" delay={0.05}>
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 pt-20 pb-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start md:items-center gap-7 sm:gap-8 pt-16 sm:pt-20 pb-8 sm:pb-12">
             {/* Left: Identity */}
             <div className="text-left">
-              <p className="font-display font-bold text-[30px] leading-tight text-text-primary tracking-tight">
+              <p className="font-display font-bold text-[26px] sm:text-[30px] leading-tight text-text-primary tracking-tight">
                 Dhruv Vawhle.
               </p>
-              <p className="mt-1.5 text-sm text-text-secondary font-mono">
+              <p className="mt-1.5 text-xs sm:text-sm text-text-secondary font-mono">
                 Software Engineer
               </p>
               <p className="mt-1 text-xs text-text-secondary max-w-[30ch]">
@@ -333,13 +458,13 @@ export default function Footer() {
             {/* Center: Navigation */}
             <nav
               aria-label="Footer Section Navigation"
-              className="flex flex-wrap lg:justify-center gap-x-7 gap-y-3 text-[14px] font-mono font-medium text-text-secondary"
+              className="flex flex-wrap items-center lg:justify-center gap-x-5 sm:gap-x-7 gap-y-2 sm:gap-y-3 text-[13px] sm:text-[14px] font-mono font-medium text-text-secondary"
             >
               {FOOTER_NAV_LINKS.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+                  className="hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded py-1"
                 >
                   {link.label}
                 </a>
@@ -347,26 +472,33 @@ export default function Footer() {
             </nav>
 
             {/* Right: Profile Icons */}
-            <div className="flex gap-2.5 lg:justify-self-end">
+            <div className="flex flex-wrap gap-2.5 lg:justify-self-end">
               {PROFILE_ICONS.map((item, i) => (
                 <ProfileIconButton
                   key={item.label}
                   item={item}
-                  idx={i}
-                  total={PROFILE_ICONS.length}
+                  isLast={i === PROFILE_ICONS.length - 1}
                 />
               ))}
             </div>
           </div>
 
+          {/* ── Playable Wordmark Name (Fully Mobile Responsive) ── */}
+          <div className="pt-2 sm:pt-4 pb-6 sm:pb-8 border-t border-border-custom/50 w-full overflow-hidden">
+            <PlayableWordmark
+              word="DHRUV"
+              shutterAt={2}
+              className="w-full text-text-primary/90 hover:text-text-primary transition-colors"
+            />
+          </div>
+
           {/* Bottom Bar */}
-          <div className="border-t border-border-custom/60 pt-8 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1rem))] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-secondary text-center sm:text-left">
+          <div className="border-t border-border-custom/60 pt-6 sm:pt-8 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-text-secondary text-center sm:text-left">
             <p>© 2026 Dhruv Vawhle. All rights reserved.</p>
             <p>Crafted with Next.js, Tailwind CSS &amp; Framer Motion.</p>
           </div>
         </ScrollReveal>
       </div>
     </footer>
-
   );
 }

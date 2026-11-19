@@ -339,7 +339,7 @@ export default function N8nLiveWorkflow() {
 
       {/* ── n8n-Style Workflow Editor Container ─────────────────────── */}
       <div className="relative w-full rounded-2xl sm:rounded-3xl border border-border-custom bg-bg-surface overflow-hidden shadow-sm">
-        
+
         {/* ── Editor Toolbar ───────────────────────────────────────────── */}
         <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 px-3.5 py-2.5 sm:px-6 sm:py-3 border-b border-border-custom bg-bg/90 backdrop-blur-md">
           {/* Left: n8n brand + workflow title */}
@@ -371,11 +371,10 @@ export default function N8nLiveWorkflow() {
                 type="button"
                 onClick={() => setViewMode("flow")}
                 aria-label="View as step flow"
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${
-                  viewMode === "flow"
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${viewMode === "flow"
                     ? "bg-bg-surface text-accent shadow-xs font-semibold"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
                 <Layers className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Step flow</span>
@@ -384,11 +383,10 @@ export default function N8nLiveWorkflow() {
                 type="button"
                 onClick={() => setViewMode("canvas")}
                 aria-label="View as visual graph canvas"
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${
-                  viewMode === "canvas"
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${viewMode === "canvas"
                     ? "bg-bg-surface text-accent shadow-xs font-semibold"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Full canvas</span>
@@ -400,11 +398,10 @@ export default function N8nLiveWorkflow() {
               type="button"
               onClick={handleToggleAnimation}
               aria-label={isRunning ? "Stop Animation" : "Resume Animation"}
-              className={`inline-flex items-center gap-1.5 min-h-[38px] px-3 py-1.5 rounded-xl font-sans text-xs font-semibold transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95 whitespace-nowrap ${
-                isRunning
+              className={`inline-flex items-center gap-1.5 min-h-[38px] px-3 py-1.5 rounded-xl font-sans text-xs font-semibold transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95 whitespace-nowrap ${isRunning
                   ? "bg-bg-surface hover:bg-foreground/5 text-text-primary border border-border-custom shadow-xs"
                   : "bg-accent hover:bg-accent/90 text-white border border-accent shadow-xs"
-              }`}
+                }`}
             >
               {isRunning ? (
                 <>
@@ -461,11 +458,10 @@ export default function N8nLiveWorkflow() {
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1 rounded-lg capitalize transition-colors font-semibold text-xs cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${
-                  activeTab === tab
+                className={`px-3 py-1 rounded-lg capitalize transition-colors font-semibold text-xs cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-95 ${activeTab === tab
                     ? "bg-bg-surface text-accent shadow-xs"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -481,8 +477,8 @@ export default function N8nLiveWorkflow() {
               {currentStep === 6
                 ? "Execution succeeded"
                 : activeNodeId
-                ? `Running: ${WORKFLOW_NODES[activeNodeId]?.label}`
-                : "Idle"}
+                  ? `Running: ${WORKFLOW_NODES[activeNodeId]?.label}`
+                  : "Idle"}
             </span>
           </div>
         </div>
@@ -494,7 +490,7 @@ export default function N8nLiveWorkflow() {
             {viewMode === "flow" && (
               <div className="p-4 sm:p-6 lg:p-8 bg-bg/50">
                 <div className="max-w-xl mx-auto space-y-3">
-                  
+
                   {/* Step 1: Webhook */}
                   <MobileStepCard
                     node={WORKFLOW_NODES.webhook}
@@ -562,11 +558,10 @@ export default function N8nLiveWorkflow() {
                         type="button"
                         onClick={() => setSelectedNodeId("mongodb")}
                         aria-label="Path A: MongoDB Storage"
-                        className={`text-left p-3 rounded-xl border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
-                          cycleType === "normal" && (activeNodeId === "mongodb" || completedNodeIds.has("mongodb"))
+                        className={`text-left p-3 rounded-xl border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${cycleType === "normal" && (activeNodeId === "mongodb" || completedNodeIds.has("mongodb"))
                             ? "bg-emerald-500/10 border-emerald-500/50 shadow-xs"
                             : "bg-bg border-border-custom/80 hover:border-border-custom"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
@@ -588,11 +583,10 @@ export default function N8nLiveWorkflow() {
                         type="button"
                         onClick={() => setSelectedNodeId("urgent_reply")}
                         aria-label="Path B: Emergency Safety Reply"
-                        className={`text-left p-3 rounded-xl border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
-                          cycleType === "emergency" && (activeNodeId === "urgent_reply" || completedNodeIds.has("urgent_reply"))
+                        className={`text-left p-3 rounded-xl border transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${cycleType === "emergency" && (activeNodeId === "urgent_reply" || completedNodeIds.has("urgent_reply"))
                             ? "bg-amber-500/10 border-amber-500/50 shadow-xs"
                             : "bg-bg border-border-custom/80 hover:border-border-custom"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
@@ -1129,15 +1123,14 @@ function MobileStepCard({
         }
       }}
       aria-label={`Step ${stepNumber}: ${node.label}. ${node.description}`}
-      className={`p-3.5 sm:p-4 rounded-2xl bg-bg-surface border transition-colors cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-[0.99] ${
-        isExecuting
+      className={`p-3.5 sm:p-4 rounded-2xl bg-bg-surface border transition-colors cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-[0.99] ${isExecuting
           ? "border-blue-500 ring-2 ring-blue-500/30 shadow-sm"
           : isSuccess
-          ? "border-emerald-500/50 ring-1 ring-emerald-500/20"
-          : isSelected
-          ? "border-accent ring-1 ring-accent/30"
-          : "border-border-custom hover:border-accent/40"
-      }`}
+            ? "border-emerald-500/50 ring-1 ring-emerald-500/20"
+            : isSelected
+              ? "border-accent ring-1 ring-accent/30"
+              : "border-border-custom hover:border-accent/40"
+        }`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 min-w-0">
@@ -1193,13 +1186,12 @@ function MobileStepWire({
     <div className="flex justify-center my-0.5" aria-hidden="true">
       <div className="w-0.5 h-5 relative bg-border-custom/80">
         <div
-          className={`absolute inset-0 transition-colors ${
-            isActive
+          className={`absolute inset-0 transition-colors ${isActive
               ? "bg-blue-500 shadow-sm"
               : isCompleted
-              ? "bg-emerald-500/70"
-              : "bg-border-custom/80"
-          }`}
+                ? "bg-emerald-500/70"
+                : "bg-border-custom/80"
+            }`}
         />
         {isActive && (
           <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-500 motion-safe:animate-ping" />
@@ -1244,15 +1236,14 @@ function WorkflowNodeBox({
         }
       }}
       aria-label={`${node.label} node. ${node.description}`}
-      className={`group relative p-3.5 sm:p-4 rounded-2xl bg-bg-surface border transition-colors cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent min-h-[125px] flex flex-col justify-between z-10 active:scale-[0.99] ${
-        isExecuting
+      className={`group relative p-3.5 sm:p-4 rounded-2xl bg-bg-surface border transition-colors cursor-pointer shadow-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-accent min-h-[125px] flex flex-col justify-between z-10 active:scale-[0.99] ${isExecuting
           ? "border-blue-500 ring-2 ring-blue-500/30 shadow-md scale-[1.02]"
           : isSuccess
-          ? "border-emerald-500/60 ring-1 ring-emerald-500/20"
-          : isSelected
-          ? "border-accent/80 ring-1 ring-accent/20"
-          : "border-border-custom hover:border-accent/50 hover:shadow-xs"
-      }`}
+            ? "border-emerald-500/60 ring-1 ring-emerald-500/20"
+            : isSelected
+              ? "border-accent/80 ring-1 ring-accent/20"
+              : "border-border-custom hover:border-accent/50 hover:shadow-xs"
+        }`}
     >
       {/* n8n Physical Port Handles */}
       {inputPorts === 1 && (
@@ -1410,11 +1401,10 @@ function WorkflowConnectorCurve({
             x="0"
             y="3.5"
             textAnchor="middle"
-            className={`text-[9px] font-semibold select-none ${
-              color === "#10b981"
+            className={`text-[9px] font-semibold select-none ${color === "#10b981"
                 ? "fill-emerald-600 dark:fill-emerald-400"
                 : "fill-amber-600 dark:fill-amber-400"
-            }`}
+              }`}
           >
             {label}
           </text>
