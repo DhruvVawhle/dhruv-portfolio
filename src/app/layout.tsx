@@ -304,6 +304,7 @@ const jetbrainsMono = JetBrains_Mono({
 import SmoothScrollProvider from "@/components/effects/SmoothScrollProvider";
 import { SimpleToastProvider } from "@/components/ui/SimpleToast";
 import ClientEffects from "@/components/effects/ClientEffects";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({
   children,
@@ -331,6 +332,7 @@ export default function RootLayout({
               Skip to content
             </a>
             {children}
+            <Analytics />
           </SimpleToastProvider>
         </SmoothScrollProvider>
       </body>
