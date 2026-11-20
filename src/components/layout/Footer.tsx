@@ -25,7 +25,7 @@ const GithubIcon = ({ size = 18 }: { size?: number }) => (
 
 const linkedinUrl = FOOTER_SOCIAL_LINKS.find((l) => l.label === "LinkedIn")?.url ?? "#";
 const githubUrl = FOOTER_SOCIAL_LINKS.find((l) => l.label === "GitHub")?.url ?? "#";
-const resumeUrl = "/Dhruv_Resume.pdf";
+const resumeUrl = "/resume.pdf";
 const emailUrl = `mailto:${EMAIL_ADDRESS}`;
 
 interface ProfileIcon {

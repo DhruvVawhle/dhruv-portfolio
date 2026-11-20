@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description: metaDescription,
   metadataBase: new URL("https://dhruvvawhle.vercel.app"),
   alternates: {
-    canonical: "https://dhruvvawhle.vercel.app",
+    canonical: "https://dhruvvawhle.vercel.app/",
   },
   keywords: [
     "Dhruv Vawhle",
