@@ -18,6 +18,51 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2592000,
   },
+  async redirects() {
+    return [
+      {
+        source: "/Dhruv_Resume.pdf",
+        destination: "/resume.pdf",
+        permanent: true,
+      },
+      {
+        source: "/documents/Dhruv_Resume_Updated_24-10-2026.pdf",
+        destination: "/resume.pdf",
+        permanent: true,
+      },
+      {
+        source: "/documents/Dhruv_Vawhle_Resume_19-11-2026.pdf",
+        destination: "/resume.pdf",
+        permanent: true,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+        ],
+      },
+      {
+        source: "/(resume.pdf|medimitra-case-study.pdf|documents/:path*)",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, follow",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
