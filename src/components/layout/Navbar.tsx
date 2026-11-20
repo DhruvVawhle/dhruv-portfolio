@@ -220,13 +220,12 @@ export default function Navbar() {
                       setHoveredSection(link.href);
                     }
                   }}
-                  className={`relative text-xs font-mono px-3.5 py-1.5 rounded-full transition-colors duration-200 z-10 select-none focus-visible:outline-2 focus-visible:outline-accent ${
-                    isSelected
-                      ? "text-background font-semibold"
-                      : isCurrent
-                        ? "text-text-primary font-medium"
-                        : "text-text-secondary hover:text-text-primary"
-                  }`}
+                  className={`relative text-xs font-mono px-3.5 py-1.5 rounded-full transition-colors duration-200 z-10 select-none focus-visible:outline-2 focus-visible:outline-accent ${isSelected
+                    ? "text-background font-semibold"
+                    : isCurrent
+                      ? "text-text-primary font-medium"
+                      : "text-text-secondary hover:text-text-primary"
+                    }`}
                 >
                   {isSelected && (
                     <motion.span
@@ -236,10 +235,10 @@ export default function Navbar() {
                         shouldReduceMotion || isTouchDevice
                           ? { duration: 0 }
                           : {
-                              type: "spring",
-                              stiffness: 420,
-                              damping: 30,
-                            }
+                            type: "spring",
+                            stiffness: 420,
+                            damping: 30,
+                          }
                       }
                     />
                   )}
@@ -288,19 +287,16 @@ export default function Navbar() {
               className="relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex flex-col items-center justify-center gap-1.5 text-text-primary hover:text-accent focus-visible:outline-2 focus-visible:outline-accent transition-colors"
             >
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${
-                  isMobileMenuOpen ? "rotate-45 translate-y-2 bg-accent" : ""
-                }`}
+                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-accent" : ""
+                  }`}
               />
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 ${
-                  isMobileMenuOpen ? "opacity-0 scale-0" : ""
-                }`}
+                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 ${isMobileMenuOpen ? "opacity-0 scale-0" : ""
+                  }`}
               />
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${
-                  isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-accent" : ""
-                }`}
+                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-accent" : ""
+                  }`}
               />
             </button>
           </div>
@@ -339,11 +335,10 @@ export default function Navbar() {
                       duration: 0.28,
                       ease: "easeOut",
                     }}
-                    className={`group relative flex items-center justify-center gap-3 px-6 py-2.5 rounded-2xl w-full text-center transition-all duration-200 select-none ${
-                      isCurrent
-                        ? "bg-accent/15 text-accent font-bold shadow-xs"
-                        : "text-text-primary hover:text-accent hover:bg-bg-surface/70"
-                    }`}
+                    className={`group relative flex items-center justify-center gap-3 px-6 py-2.5 rounded-2xl w-full text-center transition-all duration-200 select-none ${isCurrent
+                      ? "bg-accent/15 text-accent font-bold shadow-xs"
+                      : "text-text-primary hover:text-accent hover:bg-bg-surface/70"
+                      }`}
                   >
                     <span className="font-mono text-xs text-accent/70 font-semibold tracking-wider">
                       {item.index}

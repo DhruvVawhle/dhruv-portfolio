@@ -104,7 +104,7 @@ export default function Projects() {
           </div>
 
           <div className="max-w-3xl mb-8">
-            <h2 className="font-display font-extrabold text-2xl xs:text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
+            <h2 className="font-display font-bold text-2xl xs:text-3xl sm:text-5xl text-text-primary tracking-tight leading-tight">
               Engineering systems built for production scale.
             </h2>
             <p className="mt-3 text-base sm:text-lg text-text-secondary leading-relaxed">
@@ -120,11 +120,10 @@ export default function Projects() {
                 <button
                   key={chip}
                   onClick={() => setActiveFilter(chip)}
-                  className={`min-h-[48px] h-12 px-4 sm:px-5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-colors duration-150 border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
-                    isActive
-                      ? "bg-accent/15 border-accent text-accent shadow-xs font-semibold"
-                      : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
-                  }`}
+                  className={`min-h-[48px] h-12 px-4 sm:px-5 rounded-xl text-xs sm:text-sm font-medium whitespace-nowrap transition-colors duration-150 border cursor-pointer inline-flex items-center justify-center flex-shrink-0 touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${isActive
+                    ? "bg-accent/15 border-accent text-accent shadow-xs font-semibold"
+                    : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                    }`}
                 >
                   {chip}
                 </button>

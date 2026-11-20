@@ -447,11 +447,10 @@ export default function CoverRing({
                   className="min-w-[28px] min-h-[36px] flex items-center justify-center p-1 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent rounded-full transition-transform active:scale-90"
                 >
                   <span
-                    className={`h-2 rounded-full transition-colors duration-200 pointer-events-none ${
-                      isActive
-                        ? "w-7 bg-accent shadow-xs shadow-accent/50"
-                        : "w-2 bg-border-custom hover:bg-text-secondary/50"
-                    }`}
+                    className={`h-2 rounded-full transition-colors duration-200 pointer-events-none ${isActive
+                      ? "w-7 bg-accent shadow-xs shadow-accent/50"
+                      : "w-2 bg-border-custom hover:bg-text-secondary/50"
+                      }`}
                   />
                 </button>
               );
@@ -493,11 +492,10 @@ export default function CoverRing({
             onClick={() => setIsAutoOrbit((prev) => !prev)}
             aria-label={isAutoOrbit ? "Pause auto-orbit" : "Enable continuous 3D auto-orbit"}
             aria-pressed={isAutoOrbit}
-            className={`min-h-[44px] h-11 px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 touch-manipulation ${
-              isAutoOrbit
-                ? "bg-accent/15 border-accent text-accent"
-                : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/40"
-            }`}
+            className={`min-h-[44px] h-11 px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border transition-colors duration-150 cursor-pointer shadow-xs focus-visible:outline-2 focus-visible:outline-accent active:scale-95 disabled:opacity-50 touch-manipulation ${isAutoOrbit
+              ? "bg-accent/15 border-accent text-accent"
+              : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/40"
+              }`}
           >
             {isAutoOrbit ? (
               <>

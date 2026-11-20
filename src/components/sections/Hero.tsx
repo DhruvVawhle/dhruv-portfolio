@@ -87,7 +87,7 @@ function NodeGraphChip() {
         <circle cx="48" cy="13" r="3.5" fill="var(--accent)" />
 
         {/* Dynamic Pulse Ring */}
-        <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.5" className="animate-ping" />
+        <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.3" />
 
         {/* Traveling signal */}
         <circle
@@ -559,7 +559,7 @@ export default function Hero() {
             <motion.div variants={itemVariants}>
 
               {/* Headline with Scramble Effect */}
-              <h1 className="font-display font-black tracking-tighter uppercase leading-[0.92] sm:leading-[0.88] select-none text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem]">
+              <h1 className="font-display font-bold tracking-tight uppercase leading-[0.92] sm:leading-[0.88] select-none text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem]">
                 <span className="sr-only">Dhruv Vawhle, Software Engineer</span>
                 <div className="text-text-primary">
                   <ScrambleWord
@@ -599,29 +599,26 @@ export default function Hero() {
                 <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
                   Final-year Information Technology undergraduate specializing in{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
-                      activeSpecialty === 0
-                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                        : "text-text-primary"
-                    }`}
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 0
+                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                      : "text-text-primary"
+                      }`}
                   >
                     full-stack web development
                   </span>,{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
-                      activeSpecialty === 1
-                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                        : "text-text-primary"
-                    }`}
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 1
+                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                      : "text-text-primary"
+                      }`}
                   >
                     applied machine learning
                   </span>, and{" "}
                   <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${
-                      activeSpecialty === 2
-                        ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                        : "text-text-primary"
-                    }`}
+                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 2
+                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
+                      : "text-text-primary"
+                      }`}
                   >
                     AI security
                   </span>.
@@ -689,9 +686,9 @@ export default function Hero() {
                   isTouchDevice || shouldReduceMotion
                     ? { rotateX: 0, rotateY: 0 }
                     : {
-                        rotateX: tilt.rotateX,
-                        rotateY: tilt.rotateY,
-                      }
+                      rotateX: tilt.rotateX,
+                      rotateY: tilt.rotateY,
+                    }
                 }
                 transition={{
                   type: "spring",
@@ -707,9 +704,8 @@ export default function Hero() {
                     handlePortraitTap();
                   }
                 }}
-                className={`relative w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-[22px] overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group cursor-pointer focus-visible:outline-2 focus-visible:outline-accent select-none ${
-                  isTouchColorActive ? "touch-color-active" : ""
-                }`}
+                className={`relative w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-[22px] overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group cursor-pointer focus-visible:outline-2 focus-visible:outline-accent select-none ${isTouchColorActive ? "touch-color-active" : ""
+                  }`}
               >
                 {/* Image Component */}
                 <Image
@@ -719,9 +715,8 @@ export default function Hero() {
                   priority
                   fetchPriority="high"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
-                  className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${
-                    isTouchColorActive ? "!grayscale-0" : ""
-                  }`}
+                  className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${isTouchColorActive ? "!grayscale-0" : ""
+                    }`}
                   style={{ objectPosition: "50% 15%" }}
                 />
 
@@ -737,31 +732,6 @@ export default function Hero() {
                   />
                 )}
 
-                {/* Animated Border Beam */}
-                <svg
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full pointer-events-none z-20 rounded-[22px] overflow-hidden"
-                  fill="none"
-                >
-                  <defs>
-                    <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="transparent" />
-                      <stop offset="50%" stopColor="var(--accent)" />
-                      <stop offset="100%" stopColor="transparent" />
-                    </linearGradient>
-                  </defs>
-                  <rect
-                    x="1"
-                    y="1"
-                    width="calc(100% - 2px)"
-                    height="calc(100% - 2px)"
-                    rx="21"
-                    stroke="url(#beamGradient)"
-                    strokeWidth="2"
-                    strokeDasharray="100 380"
-                    className={shouldReduceMotion ? undefined : "animate-border-beam"}
-                  />
-                </svg>
 
 
                 {/* Animated Node-Graph Chip Top Right (Hidden on mobile < sm to prevent overlapping portrait) */}

@@ -12,13 +12,13 @@ import { useTheme } from "@/hooks/useTheme";
 const PreviewDialog = dynamic(() => import("@/components/ui/PreviewDialog"), {
   ssr: false,
 });
-import { 
-  Award, 
-  Cpu, 
-  Cloud, 
-  Database, 
-  Copy, 
-  Check, 
+import {
+  Award,
+  Cpu,
+  Cloud,
+  Database,
+  Copy,
+  Check,
   Eye,
   Folder,
   LayoutGrid
@@ -292,11 +292,10 @@ export default function Certifications() {
                 onClick={() => setViewMode("folders")}
                 aria-pressed={viewMode === "folders"}
                 aria-label="Switch to Glass Folders view"
-                className={`relative flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-xl font-mono text-[11px] sm:text-xs font-medium transition-colors cursor-pointer touch-manipulation ${
-                  viewMode === "folders"
-                    ? "text-background font-semibold"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
+                className={`relative flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-xl font-mono text-[11px] sm:text-xs font-medium transition-colors cursor-pointer touch-manipulation ${viewMode === "folders"
+                  ? "text-background font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+                  }`}
               >
                 {viewMode === "folders" && (
                   <motion.div
@@ -313,11 +312,10 @@ export default function Certifications() {
                 onClick={() => setViewMode("grid")}
                 aria-pressed={viewMode === "grid"}
                 aria-label="Switch to Detailed Grid view"
-                className={`relative flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-xl font-mono text-[11px] sm:text-xs font-medium transition-colors cursor-pointer touch-manipulation ${
-                  viewMode === "grid"
-                    ? "text-background font-semibold"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
+                className={`relative flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-xl font-mono text-[11px] sm:text-xs font-medium transition-colors cursor-pointer touch-manipulation ${viewMode === "grid"
+                  ? "text-background font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+                  }`}
               >
                 {viewMode === "grid" && (
                   <motion.div
@@ -352,11 +350,10 @@ export default function Certifications() {
                     key={cat}
                     onClick={() => setSelectedFilter(cat)}
                     aria-pressed={isSelected}
-                    className={`relative min-h-[48px] h-12 px-4 sm:px-5 rounded-full font-mono text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer flex items-center gap-2 z-10 focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation ${
-                      isSelected
-                        ? "text-background border-transparent"
-                        : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
-                    }`}
+                    className={`relative min-h-[48px] h-12 px-4 sm:px-5 rounded-full font-mono text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer flex items-center gap-2 z-10 focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation ${isSelected
+                      ? "text-background border-transparent"
+                      : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-neutral-300 dark:hover:border-neutral-600"
+                      }`}
                   >
                     {isSelected && (
                       <motion.div
@@ -368,11 +365,10 @@ export default function Certifications() {
                     {getFilterIcon(cat)}
                     <span>{cat}</span>
                     <span
-                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-                        isSelected
-                          ? "bg-background/25 text-background"
-                          : "bg-foreground/10 text-text-secondary"
-                      }`}
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${isSelected
+                        ? "bg-background/25 text-background"
+                        : "bg-foreground/10 text-text-secondary"
+                        }`}
                     >
                       {filterCounts[cat]}
                     </span>
@@ -527,11 +523,10 @@ export default function Certifications() {
                               type="button"
                               onClick={() => handleCopyId(cert.credentialId!)}
                               aria-label={`Copy credential ID ${cert.credentialId}`}
-                              className={`inline-flex items-center gap-1.5 font-sans text-xs px-3 py-2 rounded-xl border transition-colors cursor-pointer ${
-                                hasCopiedThis
-                                  ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-semibold"
-                                  : "bg-bg hover:bg-foreground/5 border-border-custom text-text-secondary hover:text-text-primary"
-                              }`}
+                              className={`inline-flex items-center gap-1.5 font-sans text-xs px-3 py-2 rounded-xl border transition-colors cursor-pointer ${hasCopiedThis
+                                ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-semibold"
+                                : "bg-bg hover:bg-foreground/5 border-border-custom text-text-secondary hover:text-text-primary"
+                                }`}
                             >
                               {hasCopiedThis ? (
                                 <>

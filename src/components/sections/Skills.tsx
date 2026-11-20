@@ -288,9 +288,8 @@ export default function Skills() {
       >
         {/* Ambient Multi-Layered Neon Radial Glow Core */}
         <div
-          className={`absolute rounded-full pointer-events-none blur-3xl transition-opacity duration-500 ${
-            activeTech ? "opacity-95 scale-105" : "opacity-70"
-          }`}
+          className={`absolute rounded-full pointer-events-none blur-3xl transition-opacity duration-500 ${activeTech ? "opacity-95 scale-105" : "opacity-70"
+            }`}
           style={{
             width: isMobile ? "200px" : "420px",
             height: isMobile ? "200px" : "420px",
@@ -321,13 +320,12 @@ export default function Skills() {
           return (
             <div
               key={ring.id}
-              className={`absolute rounded-full flex items-center justify-center transition-all duration-500 border pointer-events-none ${
-                isRingActive
-                  ? "border-[#3B82F6]/60 shadow-[0_0_35px_rgba(59,130,246,0.35)] z-30"
-                  : activeTech
+              className={`absolute rounded-full flex items-center justify-center transition-all duration-500 border pointer-events-none ${isRingActive
+                ? "border-[#3B82F6]/60 shadow-[0_0_35px_rgba(59,130,246,0.35)] z-30"
+                : activeTech
                   ? "border-white/10 border-dashed opacity-40 z-10"
                   : "border-white/15 border-dashed shadow-[0_0_20px_rgba(59,130,246,0.1)] z-20"
-              }`}
+                }`}
               style={{
                 width: `${diameterPx}px`,
                 height: `${diameterPx}px`,
@@ -372,26 +370,16 @@ export default function Skills() {
                         onClick={(e) => handleNodeClick(skill, e)}
                         aria-label={`Inspect ${skill} engineering capabilities`}
                         aria-pressed={isNodeActive}
-                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${
-                          isMobile ? "w-11 h-11 min-w-[44px] min-h-[44px]" : "w-12 h-12 sm:w-14 sm:h-14 min-w-[48px] min-h-[48px]"
-                        } ${
-                          isNodeActive
-                            ? "bg-[#161B22] border-2 border-[#3B82F6] shadow-[0_0_38px_rgba(59,130,246,0.95)] scale-125 z-50 ring-4 ring-[#3B82F6]/30"
+                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-300 ease-out transform-gpu cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${isMobile ? "w-11 h-11 min-w-[44px] min-h-[44px]" : "w-12 h-12 sm:w-14 sm:h-14 min-w-[48px] min-h-[48px]"
+                          } ${isNodeActive
+                            ? "bg-[#161B22] border-2 border-[#3B82F6] scale-110 z-50 ring-2 ring-[#3B82F6]/30 shadow-md"
                             : isConnected
-                            ? "bg-[#10B981]/20 border-2 border-[#10B981] shadow-[0_0_26px_rgba(16,185,129,0.85)] scale-110 z-40 brightness-125"
-                            : isOtherDimmed
-                            ? "bg-[#161B22]/50 border border-white/10 opacity-30 blur-[0.8px] scale-90 grayscale-[30%] hover:opacity-90 hover:blur-none hover:scale-100 hover:grayscale-0 z-10"
-                            : "bg-[#161B22] border border-white/15 shadow-[0_0_18px_rgba(59,130,246,0.22)] hover:scale-110 hover:border-[#3B82F6] hover:shadow-[0_0_28px_rgba(59,130,246,0.85)] z-20"
-                        }`}
+                              ? "bg-[#10B981]/20 border border-[#10B981] scale-105 z-40"
+                              : isOtherDimmed
+                                ? "bg-[#161B22]/50 border border-white/10 opacity-35 scale-95 z-10 hover:opacity-90 hover:scale-100"
+                                : "bg-[#161B22] border border-white/15 hover:scale-105 hover:border-[#3B82F6] z-20 shadow-xs"
+                          }`}
                       >
-                        {/* Pulse Ring on Active or Connected Node */}
-                        {isNodeActive && (
-                          <span className="absolute -inset-2.5 rounded-full border-2 border-[#3B82F6] animate-ping pointer-events-none z-40 opacity-40" />
-                        )}
-                        {isConnected && (
-                          <span className="absolute -inset-1.5 rounded-full border border-[#10B981] animate-pulse pointer-events-none z-30 opacity-60" />
-                        )}
-
                         <TechIcon name={skill} size={isMobile ? "sm" : "md"} />
                       </button>
                     </div>
@@ -408,13 +396,11 @@ export default function Skills() {
           role="button"
           tabIndex={0}
           aria-label="Click to reset center node view"
-          className={`relative z-40 rounded-full bg-[#161B22] border-2 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-2xl overflow-hidden p-4 text-center ${
-            isMobile ? "w-36 h-36" : "w-48 h-48"
-          } ${
-            activeTech
+          className={`relative z-40 rounded-full bg-[#161B22] border-2 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-2xl overflow-hidden p-4 text-center ${isMobile ? "w-36 h-36" : "w-48 h-48"
+            } ${activeTech
               ? "border-[#3B82F6] shadow-[0_0_65px_rgba(59,130,246,0.65)] scale-105 bg-[#1A202C]"
               : "border-[#3B82F6]/70 shadow-[0_0_45px_rgba(59,130,246,0.4)] hover:scale-105"
-          }`}
+            }`}
         >
           {/* Subtle core radial highlight */}
           <div
@@ -493,35 +479,20 @@ export default function Skills() {
       className="py-[var(--section-padding-y)] bg-[#111318] text-white border-y border-white/10 relative overflow-hidden transition-colors duration-300 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Engineering Ecosystem and Technical Capabilities"
     >
-      {/* Soft Ambient Blue & Purple Gradients + CSS Particles */}
-      <div
-        className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none blur-[140px] opacity-25"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(59,130,246,0.35) 0%, rgba(139,92,246,0.18) 50%, transparent 80%)",
-        }}
-      />
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-        <span className="absolute top-16 left-[15%] w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse" />
-        <span className="absolute top-1/3 right-[18%] w-1 h-1 rounded-full bg-purple-400 animate-ping" />
-        <span className="absolute bottom-1/4 left-[22%] w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span className="absolute top-2/3 right-[28%] w-1 h-1 rounded-full bg-blue-300 animate-pulse" />
-      </div>
-
       <div className="content-width relative z-10">
         {/* Spatial Section Header */}
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-10 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-semibold text-[#3B82F6] tracking-widest uppercase flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+              <span className="font-mono text-xs font-semibold text-[#3B82F6] tracking-wider uppercase flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
                 Technical Architecture
               </span>
             </div>
           </div>
 
           <div className="max-w-3xl mb-12">
-            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+            <h2 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
               Engineering Ecosystem
             </h2>
             <p className="mt-4 text-base sm:text-lg text-white/70 leading-relaxed font-sans">
@@ -533,461 +504,455 @@ export default function Skills() {
         {/* ── ORBITAL CENTERPIECE + FLOATING INFORMATION PANEL ── */}
         <ScrollReveal direction="up" delay={0.06} distance={16}>
           <div
-            className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${
-              activeTech && activeDetail
-                ? "lg:justify-between gap-10 sm:gap-12"
-                : "justify-center gap-0"
-            }`}
+            className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${activeTech && activeDetail
+              ? "lg:justify-between gap-10 sm:gap-12"
+              : "justify-center gap-0"
+              }`}
           >
 
-          {/* Orbit System Container (Pure CSS GPU transition, smoothly glides between center and left) */}
-          <div
-            className={`flex justify-center items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${
-              activeTech && activeDetail ? "w-full lg:w-auto flex-1" : "w-full"
-            }`}
-          >
-            {/* Mobile Touch-Optimized Interactive Stack Grid (< md) */}
-            <div className="flex flex-col md:hidden py-4 w-full">
-              <div className="text-center mb-4 px-2">
-                <span className="font-mono text-xs font-semibold text-accent uppercase tracking-wider block">
-                  Interactive Technology Ecosystem
-                </span>
-                <p className="text-xs text-text-secondary mt-1">
-                  Tap any technology to inspect architectural connections, proficiency, and use cases.
-                </p>
-              </div>
+            {/* Orbit System Container (Pure CSS GPU transition, smoothly glides between center and left) */}
+            <div
+              className={`flex justify-center items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${activeTech && activeDetail ? "w-full lg:w-auto flex-1" : "w-full"
+                }`}
+            >
+              {/* Mobile Touch-Optimized Interactive Stack Grid (< md) */}
+              <div className="flex flex-col md:hidden py-4 w-full">
+                <div className="text-center mb-4 px-2">
+                  <span className="font-mono text-xs font-semibold text-accent uppercase tracking-wider block">
+                    Interactive Technology Ecosystem
+                  </span>
+                  <p className="text-xs text-text-secondary mt-1">
+                    Tap any technology to inspect architectural connections, proficiency, and use cases.
+                  </p>
+                </div>
 
-              {/* Grouped by Core Rings for Clear Architecture */}
-              <div className="space-y-4 px-1 max-w-lg mx-auto w-full">
-                {ORBIT_RINGS.map((ring, ringIdx) => {
-                  const ringLabels = [
-                    "Core Application & Language",
-                    "Frameworks & Databases",
-                    "Cloud, DevOps & Tools",
-                  ];
-                  return (
-                    <div
-                      key={ring.id}
-                      className="p-3.5 rounded-2xl bg-bg-surface/90 border border-border-custom/80 shadow-xs"
-                    >
-                      <div className="flex items-center justify-between mb-2.5">
-                        <span className="font-mono text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
-                          {ringLabels[ringIdx] || `Layer ${ringIdx + 1}`}
-                        </span>
-                        <span className="font-mono text-[10px] text-accent/80 font-bold">
-                          {ring.skills.length} techs
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
-                        {ring.skills.map((skill) => {
-                          const isNodeActive = activeTech === skill;
-                          const isConnected = connectedTechs.includes(skill);
+                {/* Grouped by Core Rings for Clear Architecture */}
+                <div className="space-y-4 px-1 max-w-lg mx-auto w-full">
+                  {ORBIT_RINGS.map((ring, ringIdx) => {
+                    const ringLabels = [
+                      "Core Application & Language",
+                      "Frameworks & Databases",
+                      "Cloud, DevOps & Tools",
+                    ];
+                    return (
+                      <div
+                        key={ring.id}
+                        className="p-3.5 rounded-2xl bg-bg-surface/90 border border-border-custom/80 shadow-xs"
+                      >
+                        <div className="flex items-center justify-between mb-2.5">
+                          <span className="font-mono text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
+                            {ringLabels[ringIdx] || `Layer ${ringIdx + 1}`}
+                          </span>
+                          <span className="font-mono text-[10px] text-accent/80 font-bold">
+                            {ring.skills.length} techs
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
+                          {ring.skills.map((skill) => {
+                            const isNodeActive = activeTech === skill;
+                            const isConnected = connectedTechs.includes(skill);
 
-                          return (
-                            <button
-                              key={skill}
-                              type="button"
-                              onClick={(e) => handleNodeClick(skill, e)}
-                              aria-label={`Inspect ${skill} capabilities`}
-                              aria-pressed={isNodeActive}
-                              className={`min-h-[48px] h-12 px-3.5 py-2.5 rounded-xl text-xs font-mono font-medium border flex items-center gap-2.5 transition-colors cursor-pointer touch-manipulation text-left focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
-
-                                isNodeActive
+                            return (
+                              <button
+                                key={skill}
+                                type="button"
+                                onClick={(e) => handleNodeClick(skill, e)}
+                                aria-label={`Inspect ${skill} capabilities`}
+                                aria-pressed={isNodeActive}
+                                className={`min-h-[48px] h-12 px-3.5 py-2.5 rounded-xl text-xs font-mono font-medium border flex items-center gap-2.5 transition-colors cursor-pointer touch-manipulation text-left focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${isNodeActive
                                   ? "bg-accent/15 border-accent text-accent shadow-xs font-bold ring-2 ring-accent/30"
                                   : isConnected
-                                  ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold"
-                                  : "bg-bg border-border-custom/80 text-text-primary hover:border-accent/40"
-                              }`}
-                            >
-                              <TechIcon name={skill} size="sm" />
-                              <span className="truncate">{skill}</span>
-                            </button>
-                          );
-                        })}
+                                    ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold"
+                                    : "bg-bg border-border-custom/80 text-text-primary hover:border-accent/40"
+                                  }`}
+                              >
+                                <TechIcon name={skill} size="sm" />
+                                <span className="truncate">{skill}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Desktop Cinematic Orbit (>= md) */}
+              <div className="hidden md:flex py-6 min-h-[620px] items-center justify-center w-full">
+                {renderOrbitalEcosystem(false)}
               </div>
             </div>
 
-            {/* Desktop Cinematic Orbit (>= md) */}
-            <div className="hidden md:flex py-6 min-h-[620px] items-center justify-center w-full">
-              {renderOrbitalEcosystem(false)}
-            </div>
-          </div>
-
-          {/* Floating Information Card (popLayout pops exiting card to absolute positioning so it never drops below orbit when closing) */}
-          <AnimatePresence mode="popLayout">
-            {activeTech && activeDetail && (
-              <motion.div
-                key={`panel-${activeTech}`}
-                onClick={(e) => e.stopPropagation()}
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30, scale: 0.96 }}
-                animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0, scale: 1 }}
-                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20, scale: 0.96 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-                className="w-full lg:w-[440px] flex-shrink-0 p-6 sm:p-7 rounded-3xl bg-[#161B22]/95 border-2 border-[#3B82F6]/70 shadow-[0_12px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(59,130,246,0.25)] backdrop-blur-xl space-y-6 z-40 transform-gpu will-change-transform mb-4 lg:mb-0"
-              >
-                {/* Top Header & Reset CTA */}
-                <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center shadow-md flex-shrink-0">
-                      <TechIcon name={activeTech} size="lg" />
-                    </div>
-                    <div>
-                      <h3 className="font-display font-extrabold text-xl sm:text-2xl text-white">
-                        {activeTech}
-                      </h3>
-                      <div className="flex flex-wrap items-center gap-2 mt-1">
-                        <span
-                          className="inline-block px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider border"
-                          style={{
-                            backgroundColor: `${activeDetail.categoryColor}18`,
-                            color: activeDetail.categoryColor,
-                            borderColor: `${activeDetail.categoryColor}40`,
-                          }}
-                        >
-                          {activeDetail.category} Layer
-                        </span>
-                        <a
-                          href={getTechWebsite(activeTech)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          title={`Visit official ${activeTech} documentation & website`}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[11px] text-[#3B82F6] hover:text-white bg-[#3B82F6]/10 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30 transition-colors"
-                        >
-                          <span>Official site</span>
-                          <span className="text-[10px]">↗</span>
-                        </a>
+            {/* Floating Information Card (popLayout pops exiting card to absolute positioning so it never drops below orbit when closing) */}
+            <AnimatePresence mode="popLayout">
+              {activeTech && activeDetail && (
+                <motion.div
+                  key={`panel-${activeTech}`}
+                  onClick={(e) => e.stopPropagation()}
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30, scale: 0.96 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0, scale: 1 }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20, scale: 0.96 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
+                  className="w-full lg:w-[440px] flex-shrink-0 p-6 sm:p-7 rounded-3xl bg-[#161B22]/95 border-2 border-[#3B82F6]/70 shadow-[0_12px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(59,130,246,0.25)] backdrop-blur-xl space-y-6 z-40 transform-gpu will-change-transform mb-4 lg:mb-0"
+                >
+                  {/* Top Header & Reset CTA */}
+                  <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center shadow-md flex-shrink-0">
+                        <TechIcon name={activeTech} size="lg" />
+                      </div>
+                      <div>
+                        <h3 className="font-display font-extrabold text-xl sm:text-2xl text-white">
+                          {activeTech}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-2 mt-1">
+                          <span
+                            className="inline-block px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider border"
+                            style={{
+                              backgroundColor: `${activeDetail.categoryColor}18`,
+                              color: activeDetail.categoryColor,
+                              borderColor: `${activeDetail.categoryColor}40`,
+                            }}
+                          >
+                            {activeDetail.category} Layer
+                          </span>
+                          <a
+                            href={getTechWebsite(activeTech)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={`Visit official ${activeTech} documentation & website`}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[11px] text-[#3B82F6] hover:text-white bg-[#3B82F6]/10 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30 transition-colors"
+                          >
+                            <span>Official site</span>
+                            <span className="text-[10px]">↗</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedNode(null)}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 font-mono text-xs text-white/70 hover:text-white transition-colors cursor-pointer"
+                      title="Close panel"
+                    >
+                      ✕
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedNode(null)}
-                    className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 font-mono text-xs text-white/70 hover:text-white transition-colors cursor-pointer"
-                    title="Close panel"
-                  >
-                    ✕
-                  </button>
-                </div>
 
-                {/* Skill Details Breakdown */}
-                <div className="pb-4 border-b border-white/10 font-mono text-xs">
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
-                    <span className="text-white/50 text-[10px] uppercase tracking-wider block">
-                      Primary Engineering Role
-                    </span>
-                    <span className="text-[#3B82F6] font-bold text-sm sm:text-base block" title={activeDetail.role}>
-                      {activeDetail.role}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Primary Production Use Cases */}
-                <div className="space-y-3">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-white/60 block font-semibold">
-                    Core Engineering Capabilities
-                  </span>
-                  <ul className="space-y-2">
-                    {activeDetail.useCases.map((useCase, idx) => (
-                      <li
-                        key={idx}
-                        className="px-3 py-1.5 rounded-lg bg-[#111827] border border-white/10 font-mono text-xs text-white/90 flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-                        <span className="truncate">{useCase}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Used In Project References */}
-                <div className="pt-3 border-t border-white/10">
-                  <span className="text-[11px] text-white/60 block mb-2 font-semibold">
-                    Used in production projects
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {activeDetail.projectsList.map((proj, idx) => (
-                      <a
-                        key={idx}
-                        href="#projects"
-                        className="px-3 py-1.5 min-h-[36px] inline-flex items-center gap-1.5 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 font-mono text-xs font-semibold text-white/95 hover:bg-[#3B82F6]/30 hover:border-[#3B82F6]/50 transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
-                      >
-                        <span className="text-accent">◆</span>
-                        <span>{proj}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Connected Relationships Highlight */}
-                {connectedTechs.length > 0 && (
-                  <div className="p-3 rounded-xl bg-[#10B981]/10 border border-[#10B981]/30 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-                      <span className="font-mono text-xs text-[#10B981] font-semibold">
-                        Connected Ecosystem:
+                  {/* Skill Details Breakdown */}
+                  <div className="pb-4 border-b border-white/10 font-mono text-xs">
+                    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
+                      <span className="text-white/50 text-[10px] uppercase tracking-wider block">
+                        Primary Engineering Role
+                      </span>
+                      <span className="text-[#3B82F6] font-bold text-sm sm:text-base block" title={activeDetail.role}>
+                        {activeDetail.role}
                       </span>
                     </div>
-                    <span className="font-mono text-xs text-white/90 font-bold">
-                      {connectedTechs.join(" · ")}
-                    </span>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-
-        {/* ── EXPAND BUTTON (`Explore Technical Architecture`) ── */}
-        <div className="flex flex-col items-center justify-center my-8">
-          <Button
-            variant={isExpanded ? "secondary" : "primary"}
-            size="lg"
-            onClick={handleToggleArchitecture}
-            className="shadow-xl hover:shadow-2xl transition-all duration-300 ease-out font-bold px-8"
-            aria-expanded={isExpanded}
-            aria-controls="technical-architecture-cards"
-          >
-            <span>
-              {isExpanded ? "Collapse Technical Architecture" : "Explore Technical Architecture"}
-            </span>
-            <span className={`ml-2.5 inline-block transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}>
-              ▼
-            </span>
-          </Button>
-        </div>
-
-        {/* ── TECHNICAL CARDS (`ENGINEERING_STACK` Categories & Cards) ── */}
-        <div>
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                id="technical-architecture-cards"
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
-                animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
-                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                transition={{ duration: 0.42, ease: "easeInOut" }}
-                className="overflow-hidden pt-6"
-              >
-                <div className="pt-8 border-t border-white/10 space-y-10">
-                  <div className="max-w-2xl">
-                    <span className="font-mono text-xs uppercase tracking-widest text-[#3B82F6] font-semibold block mb-2">
-                      SYSTEM ARCHITECTURE BREAKDOWN
-                    </span>
-                    <h3 className="font-display font-bold text-2xl sm:text-3xl text-white">
-                      Technical Domain Stack
-                    </h3>
                   </div>
 
-                  {/* Mobile Accordion View (< lg) */}
-                  <div className="block lg:hidden space-y-4">
-                    {ENGINEERING_STACK.map((category, index) => {
-                      const isOpen = mobileOpenCategory === category.id;
-                      return (
+                  {/* Primary Production Use Cases */}
+                  <div className="space-y-3">
+                    <span className="font-mono text-[11px] uppercase tracking-widest text-white/60 block font-semibold">
+                      Core Engineering Capabilities
+                    </span>
+                    <ul className="space-y-2">
+                      {activeDetail.useCases.map((useCase, idx) => (
+                        <li
+                          key={idx}
+                          className="px-3 py-1.5 rounded-lg bg-[#111827] border border-white/10 font-mono text-xs text-white/90 flex items-center gap-2"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
+                          <span className="truncate">{useCase}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Used In Project References */}
+                  <div className="pt-3 border-t border-white/10">
+                    <span className="text-[11px] text-white/60 block mb-2 font-semibold">
+                      Used in production projects
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {activeDetail.projectsList.map((proj, idx) => (
+                        <a
+                          key={idx}
+                          href="#projects"
+                          className="px-3 py-1.5 min-h-[36px] inline-flex items-center gap-1.5 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 font-mono text-xs font-semibold text-white/95 hover:bg-[#3B82F6]/30 hover:border-[#3B82F6]/50 transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
+                        >
+                          <span className="text-accent">◆</span>
+                          <span>{proj}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Connected Relationships Highlight */}
+                  {connectedTechs.length > 0 && (
+                    <div className="p-3 rounded-xl bg-[#10B981]/10 border border-[#10B981]/30 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                        <span className="font-mono text-xs text-[#10B981] font-semibold">
+                          Connected Ecosystem:
+                        </span>
+                      </div>
+                      <span className="font-mono text-xs text-white/90 font-bold">
+                        {connectedTechs.join(" · ")}
+                      </span>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+
+          {/* ── EXPAND BUTTON (`Explore Technical Architecture`) ── */}
+          <div className="flex flex-col items-center justify-center my-8">
+            <Button
+              variant={isExpanded ? "secondary" : "primary"}
+              size="lg"
+              onClick={handleToggleArchitecture}
+              className="shadow-xl hover:shadow-2xl transition-all duration-300 ease-out font-bold px-8"
+              aria-expanded={isExpanded}
+              aria-controls="technical-architecture-cards"
+            >
+              <span>
+                {isExpanded ? "Collapse Technical Architecture" : "Explore Technical Architecture"}
+              </span>
+              <span className={`ml-2.5 inline-block transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}>
+                ▼
+              </span>
+            </Button>
+          </div>
+
+          {/* ── TECHNICAL CARDS (`ENGINEERING_STACK` Categories & Cards) ── */}
+          <div>
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  id="technical-architecture-cards"
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
+                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                  transition={{ duration: 0.42, ease: "easeInOut" }}
+                  className="overflow-hidden pt-6"
+                >
+                  <div className="pt-8 border-t border-white/10 space-y-10">
+                    <div className="max-w-2xl">
+                      <span className="font-mono text-xs uppercase tracking-widest text-[#3B82F6] font-semibold block mb-2">
+                        SYSTEM ARCHITECTURE BREAKDOWN
+                      </span>
+                      <h3 className="font-display font-bold text-2xl sm:text-3xl text-white">
+                        Technical Domain Stack
+                      </h3>
+                    </div>
+
+                    {/* Mobile Accordion View (< lg) */}
+                    <div className="block lg:hidden space-y-4">
+                      {ENGINEERING_STACK.map((category, index) => {
+                        const isOpen = mobileOpenCategory === category.id;
+                        return (
+                          <motion.div
+                            key={`mobile-cat-${category.id}`}
+                            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+                            animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                            transition={{
+                              duration: 0.35,
+                              ease: "easeInOut",
+                              delay: shouldReduceMotion ? 0 : index * 0.05 + 0.08,
+                            }}
+                            className="rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:border-[#3B82F6]/50 overflow-hidden transform-gpu transition-colors duration-300"
+                          >
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileOpenCategory(isOpen ? null : category.id);
+                              }}
+                              aria-expanded={isOpen}
+                              className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left focus-visible:outline-2 focus-visible:outline-[#3B82F6] cursor-pointer"
+                            >
+                              <div className="flex items-center gap-3">
+                                <span
+                                  className="w-2.5 h-2.5 rounded-full"
+                                  style={{ backgroundColor: category.accentColor }}
+                                />
+                                <div>
+                                  <h4 className="font-display font-extrabold text-base text-white">
+                                    {category.title}
+                                  </h4>
+                                  <p className="font-mono text-xs text-white/60 mt-0.5">
+                                    {category.subtitle}
+                                  </p>
+                                </div>
+                              </div>
+                              <span
+                                className="font-mono text-sm text-[#3B82F6] transition-transform duration-200 transform-gpu"
+                                style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                              >
+                                ▼
+                              </span>
+                            </button>
+
+                            <AnimatePresence>
+                              {isOpen && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="px-5 pb-6 pt-2 border-t border-white/10 grid grid-cols-1 gap-3">
+                                    {category.technologies.map((tech) => (
+                                      <button
+                                        type="button"
+                                        key={`mobile-tech-${tech.name}`}
+                                        onClick={(e) => handleNodeClick(tech.name, e)}
+                                        aria-label={`Inspect ${tech.name} architecture details`}
+                                        className="w-full text-left p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu focus-visible:outline-2 focus-visible:outline-[#3B82F6]"
+                                      >
+                                        <div className="w-10 h-10 min-h-[40px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                                          <TechIcon name={tech.name} size="md" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <h5 className="font-display font-bold text-base text-white flex items-center gap-2 justify-between">
+                                            <span>{tech.name}</span>
+                                            {tech.proficiency && (
+                                              <span className="font-mono text-xs" style={{ color: category.accentColor }}>{tech.proficiency}%</span>
+                                            )}
+                                          </h5>
+                                          <p className="font-mono text-xs text-white/70 leading-relaxed mt-1">
+                                            {tech.descriptor}
+                                          </p>
+                                          {tech.proficiency && (
+                                            <div className="w-40 sm:w-56 mt-2 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                              <motion.div
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: `${tech.proficiency}%` }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 1, ease: "easeOut" }}
+                                                className="h-full rounded-full"
+                                                style={{ backgroundColor: category.accentColor }}
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Desktop 2-Column Grid (>= lg) */}
+                    <div className="hidden lg:grid grid-cols-2 gap-8 items-stretch">
+                      {ENGINEERING_STACK.map((category, index) => (
                         <motion.div
-                          key={`mobile-cat-${category.id}`}
+                          key={category.id}
                           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
                           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
                           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
                           transition={{
-                            duration: 0.35,
+                            duration: 0.38,
                             ease: "easeInOut",
                             delay: shouldReduceMotion ? 0 : index * 0.05 + 0.08,
                           }}
-                          className="rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:border-[#3B82F6]/50 overflow-hidden transform-gpu transition-colors duration-300"
+                          className="group/cat p-7 sm:p-8 rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:bg-[#1C2333] hover:border-[#3B82F6]/50 hover:-translate-y-1 hover:shadow-[0_0_36px_rgba(59,130,246,0.22)] transition-all duration-300 ease-out flex flex-col justify-between"
                         >
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setMobileOpenCategory(isOpen ? null : category.id);
-                            }}
-                            aria-expanded={isOpen}
-                            className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left focus-visible:outline-2 focus-visible:outline-[#3B82F6] cursor-pointer"
-                          >
+                          <div className="flex items-baseline justify-between gap-2 pb-5 mb-6 border-b border-white/10">
                             <div className="flex items-center gap-3">
-                              <span
-                                className="w-2.5 h-2.5 rounded-full"
-                                style={{ backgroundColor: category.accentColor }}
-                              />
-                              <div>
-                                <h4 className="font-display font-extrabold text-base text-white">
-                                  {category.title}
-                                </h4>
-                                <p className="font-mono text-xs text-white/60 mt-0.5">
-                                  {category.subtitle}
-                                </p>
-                              </div>
-                            </div>
-                            <span
-                              className="font-mono text-sm text-[#3B82F6] transition-transform duration-200 transform-gpu"
-                              style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                            >
-                              ▼
-                            </span>
-                          </button>
-
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25, ease: "easeInOut" }}
-                                className="overflow-hidden"
+                              <h4
+                                className="font-display font-bold text-2xl text-white transition-colors"
+                                style={{ color: category.accentColor }}
                               >
-                                <div className="px-5 pb-6 pt-2 border-t border-white/10 grid grid-cols-1 gap-3">
-                                  {category.technologies.map((tech) => (
-                                    <button
-                                      type="button"
-                                      key={`mobile-tech-${tech.name}`}
-                                      onClick={(e) => handleNodeClick(tech.name, e)}
-                                      aria-label={`Inspect ${tech.name} architecture details`}
-                                      className="w-full text-left p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu focus-visible:outline-2 focus-visible:outline-[#3B82F6]"
-                                    >
-                                      <div className="w-10 h-10 min-h-[40px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                                        <TechIcon name={tech.name} size="md" />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <h5 className="font-display font-bold text-base text-white flex items-center gap-2 justify-between">
-                                          <span>{tech.name}</span>
-                                          {tech.proficiency && (
-                                            <span className="font-mono text-xs" style={{ color: category.accentColor }}>{tech.proficiency}%</span>
-                                          )}
-                                        </h5>
-                                        <p className="font-mono text-xs text-white/70 leading-relaxed mt-1">
-                                          {tech.descriptor}
-                                        </p>
-                                        {tech.proficiency && (
-                                          <div className="w-40 sm:w-56 mt-2 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                            <motion.div
-                                              initial={{ width: 0 }}
-                                              whileInView={{ width: `${tech.proficiency}%` }}
-                                              viewport={{ once: true }}
-                                              transition={{ duration: 1, ease: "easeOut" }}
-                                              className="h-full rounded-full"
-                                              style={{ backgroundColor: category.accentColor }}
-                                            />
-                                          </div>
-                                        )}
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Desktop 2-Column Grid (>= lg) */}
-                  <div className="hidden lg:grid grid-cols-2 gap-8 items-stretch">
-                    {ENGINEERING_STACK.map((category, index) => (
-                      <motion.div
-                        key={category.id}
-                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-                        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-                        transition={{
-                          duration: 0.38,
-                          ease: "easeInOut",
-                          delay: shouldReduceMotion ? 0 : index * 0.05 + 0.08,
-                        }}
-                        className="group/cat p-7 sm:p-8 rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:bg-[#1C2333] hover:border-[#3B82F6]/50 hover:-translate-y-1 hover:shadow-[0_0_36px_rgba(59,130,246,0.22)] transition-all duration-300 ease-out flex flex-col justify-between"
-                      >
-                        <div className="flex items-baseline justify-between gap-2 pb-5 mb-6 border-b border-white/10">
-                          <div className="flex items-center gap-3">
-                            <h4
-                              className="font-display font-bold text-2xl text-white transition-colors"
-                              style={{ color: category.accentColor }}
-                            >
-                              {category.title}
-                            </h4>
-                            <span className={`px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider border ${category.accentClass}`}>
-                              Domain
-                            </span>
+                                {category.title}
+                              </h4>
+                              <span className={`px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider border ${category.accentClass}`}>
+                                Domain
+                              </span>
+                            </div>
+                            <p className="text-xs font-mono text-white/60">
+                              {category.subtitle}
+                            </p>
                           </div>
-                          <p className="text-xs font-mono text-white/60">
-                            {category.subtitle}
-                          </p>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4 flex-grow">
-                          {category.technologies.map((tech) => {
-                            const isCardActive = activeTech === tech.name;
-                            return (
-                              <div
-                                key={tech.name}
-                                onClick={(e) => handleNodeClick(tech.name, e)}
-                                tabIndex={0}
-                                role="button"
-                                aria-label={`${tech.name}: ${tech.descriptor}`}
-                                className={`group/card p-5 rounded-2xl border transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform flex flex-col justify-between h-full min-h-[130px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${
-                                  isCardActive
+                          <div className="grid grid-cols-2 gap-4 flex-grow">
+                            {category.technologies.map((tech) => {
+                              const isCardActive = activeTech === tech.name;
+                              return (
+                                <div
+                                  key={tech.name}
+                                  onClick={(e) => handleNodeClick(tech.name, e)}
+                                  tabIndex={0}
+                                  role="button"
+                                  aria-label={`${tech.name}: ${tech.descriptor}`}
+                                  className={`group/card p-5 rounded-2xl border transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform flex flex-col justify-between h-full min-h-[130px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${isCardActive
                                     ? "bg-[#1C2333] border-2 border-[#3B82F6] shadow-[0_0_28px_rgba(59,130,246,0.55)] -translate-y-1.5 ring-2 ring-[#3B82F6]/30"
                                     : "bg-[#111827] border-white/10 hover:bg-[#1C2333] hover:border-[#3B82F6]/60 hover:shadow-[0_4px_30px_rgba(59,130,246,0.2)] hover:-translate-y-1"
-                                }`}
-                              >
-                                <div className="flex items-center gap-3.5 mb-3">
-                                  <div
-                                    className="w-11 h-11 rounded-[14px] flex items-center justify-center transition-transform duration-300 ease-out transform-gpu flex-shrink-0 border shadow-md group-hover/card:rotate-12 group-hover/card:scale-110"
-                                    style={{
-                                      backgroundColor: isCardActive ? "rgba(59,130,246,0.18)" : "rgba(255, 255, 255, 0.05)",
-                                      borderColor: isCardActive ? "#3B82F6" : "rgba(255, 255, 255, 0.08)",
-                                    }}
-                                  >
-                                    <TechIcon name={tech.name} size="md" />
-                                  </div>
-                                  <span
-                                    className={`font-display font-bold text-base transition-colors duration-200 ${
-                                      isCardActive ? "text-[#3B82F6]" : "text-white group-hover/card:text-white"
                                     }`}
-                                  >
-                                    {tech.name}
-                                  </span>
-                                </div>
-                                <p className="text-xs text-white/70 leading-relaxed font-mono">
-                                  {tech.descriptor}
-                                </p>
-                                {tech.proficiency && (
-                                  <div className="w-full mt-3.5">
-                                    <div className="flex justify-between items-center mb-1 font-mono text-[9px] uppercase tracking-wider text-white/40">
-                                      <span>Proficiency</span>
-                                      <span>{tech.proficiency}%</span>
+                                >
+                                  <div className="flex items-center gap-3.5 mb-3">
+                                    <div
+                                      className="w-11 h-11 rounded-[14px] flex items-center justify-center transition-transform duration-300 ease-out transform-gpu flex-shrink-0 border shadow-md group-hover/card:rotate-12 group-hover/card:scale-110"
+                                      style={{
+                                        backgroundColor: isCardActive ? "rgba(59,130,246,0.18)" : "rgba(255, 255, 255, 0.05)",
+                                        borderColor: isCardActive ? "#3B82F6" : "rgba(255, 255, 255, 0.08)",
+                                      }}
+                                    >
+                                      <TechIcon name={tech.name} size="md" />
                                     </div>
-                                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                                      <motion.div
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${tech.proficiency}%` }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 1.2, ease: "easeOut" }}
-                                        className="h-full rounded-full"
-                                        style={{ backgroundColor: category.accentColor }}
-                                      />
-                                    </div>
+                                    <span
+                                      className={`font-display font-bold text-base transition-colors duration-200 ${isCardActive ? "text-[#3B82F6]" : "text-white group-hover/card:text-white"
+                                        }`}
+                                    >
+                                      {tech.name}
+                                    </span>
                                   </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    ))}
+                                  <p className="text-xs text-white/70 leading-relaxed font-mono">
+                                    {tech.descriptor}
+                                  </p>
+                                  {tech.proficiency && (
+                                    <div className="w-full mt-3.5">
+                                      <div className="flex justify-between items-center mb-1 font-mono text-[9px] uppercase tracking-wider text-white/40">
+                                        <span>Proficiency</span>
+                                        <span>{tech.proficiency}%</span>
+                                      </div>
+                                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                                        <motion.div
+                                          initial={{ width: 0 }}
+                                          whileInView={{ width: `${tech.proficiency}%` }}
+                                          viewport={{ once: true }}
+                                          transition={{ duration: 1.2, ease: "easeOut" }}
+                                          className="h-full rounded-full"
+                                          style={{ backgroundColor: category.accentColor }}
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </ScrollReveal>
-    </div>
-  </section>
-);
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
 
 }

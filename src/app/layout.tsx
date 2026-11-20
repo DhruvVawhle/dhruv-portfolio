@@ -303,6 +303,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 import SmoothScrollProvider from "@/components/effects/SmoothScrollProvider";
 import { SimpleToastProvider } from "@/components/ui/SimpleToast";
+import ClientEffects from "@/components/effects/ClientEffects";
 
 export default function RootLayout({
   children,
@@ -325,6 +326,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-bg text-text-primary font-body antialiased">
         <SmoothScrollProvider>
           <SimpleToastProvider>
+            <ClientEffects />
             <a href="#main-content" className="skip-to-content">
               Skip to content
             </a>
