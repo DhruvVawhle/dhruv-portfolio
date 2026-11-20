@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
-import { OTHER_COMPETITIONS, HackathonCard } from "@/data/experienceAndCompetitions";
+import React, { useState, useRef } from "react";
+import { motion, useMotionValue, useReducedMotion } from "motion/react";
+import { OTHER_COMPETITIONS } from "@/data/experienceAndCompetitions";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import dynamic from "next/dynamic";
 
@@ -16,6 +16,64 @@ const WhatsAppLiveChat = dynamic(() => import("@/components/ui/WhatsAppLiveChat"
   ssr: false,
 });
 
+/* ── Spotlight Component for Bento Tiles ───────────────── */
+function BentoTile({
+  children,
+  className = "",
+  innerClassName = "",
+  isWarm = false,
+  padding = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  innerClassName?: string;
+  isWarm?: boolean;
+  padding?: string;
+}) {
+  const tileRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(-500);
+  const mouseY = useMotionValue(-500);
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = tileRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  const onMouseLeave = () => {
+    mouseX.set(-500);
+    mouseY.set(-500);
+  };
+
+  const defaultPadding = padding || (className.includes("p-") ? "" : "p-6 sm:p-8");
+
+  return (
+    <div
+      ref={tileRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className={`relative rounded-3xl bg-bg-surface border border-border-custom ${defaultPadding} overflow-hidden group shadow-sm transition-all duration-300 ${className}`}
+    >
+      {/* Spotlight Radial Glow following cursor */}
+      <motion.div
+        style={{
+          left: mouseX,
+          top: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        className={`pointer-events-none absolute w-80 h-80 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+          isWarm ? "bg-amber-500/20" : "bg-accent/15"
+        }`}
+      />
+      <div className={`relative z-10 ${innerClassName || "h-full flex flex-col justify-between"}`}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function Hackathons() {
   const [dialogState, setDialogState] = useState<{
     isOpen: boolean;
@@ -28,75 +86,8 @@ export default function Hackathons() {
     title: "",
   });
 
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
-
+  const prefersReducedMotion = useReducedMotion();
   const heroSectionRef = useRef<HTMLDivElement>(null);
-
-  // Check reduced motion
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setPrefersReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    }
-  }, []);
-
-  /* ── Spotlight Component for Bento Tiles ───────────────── */
-  const BentoTile = ({
-    children,
-    className = "",
-    innerClassName = "",
-    isWarm = false,
-    padding = "",
-  }: {
-    children: React.ReactNode;
-    className?: string;
-    innerClassName?: string;
-    isWarm?: boolean;
-    padding?: string;
-  }) => {
-    const tileRef = useRef<HTMLDivElement>(null);
-    const mouseX = useMotionValue(-500);
-    const mouseY = useMotionValue(-500);
-
-    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = tileRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      mouseX.set(e.clientX - rect.left);
-      mouseY.set(e.clientY - rect.top);
-    };
-
-    const onMouseLeave = () => {
-      mouseX.set(-500);
-      mouseY.set(-500);
-    };
-
-    const defaultPadding = padding || (className.includes("p-") ? "" : "p-6 sm:p-8");
-
-    return (
-      <div
-        ref={tileRef}
-        onMouseMove={onMouseMove}
-        onMouseLeave={onMouseLeave}
-        className={`relative rounded-3xl bg-bg-surface border border-border-custom ${defaultPadding} overflow-hidden group shadow-sm transition-all duration-300 ${className}`}
-      >
-        {/* Spotlight Radial Glow following cursor */}
-        <motion.div
-          style={{
-            left: mouseX,
-            top: mouseY,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          className={`pointer-events-none absolute w-80 h-80 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-            isWarm ? "bg-amber-500/20" : "bg-accent/15"
-          }`}
-        />
-        <div className={`relative z-10 ${innerClassName || "h-full flex flex-col justify-between"}`}>
-          {children}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <section
@@ -357,25 +348,19 @@ export default function Hackathons() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {OTHER_COMPETITIONS.map((comp, idx) => {
-              const isDimmed = hoveredCardId !== null && hoveredCardId !== comp.id;
-
-              return (
-                <ScrollReveal key={comp.id} delay={idx * 0.12} direction="up" className="h-full">
-                  <div
-                    onMouseEnter={() => setHoveredCardId(comp.id)}
-                    onMouseLeave={() => setHoveredCardId(null)}
-                    className={`h-full relative p-6 sm:p-8 rounded-3xl bg-bg-surface border border-border-custom shadow-sm transition-all duration-300 ${
-                      isDimmed ? "opacity-35 blur-[1px]" : "opacity-100"
-                    }`}
-                  >
+            {OTHER_COMPETITIONS.map((comp, idx) => (
+              <ScrollReveal key={comp.id} delay={idx * 0.12} direction="up" className="h-full">
+                <div
+                  className="h-full relative p-6 sm:p-8 rounded-3xl bg-bg-surface border border-border-custom shadow-xs hover:border-accent/40 hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
                     <div className="mb-3">
                       <span className="font-mono text-xs font-bold text-accent">
                         {comp.period} · {comp.team}
                       </span>
                     </div>
 
-                    <h4 className="font-display font-bold text-xl text-text-primary mb-4">
+                    <h4 className="font-display font-bold text-xl text-text-primary mb-4 group-hover:text-accent transition-colors">
                       {comp.title}
                     </h4>
 
@@ -387,50 +372,50 @@ export default function Hackathons() {
                         {comp.outcome}
                       </p>
                     </div>
+                  </div>
 
-                    {/* Visible Certificate Preview Thumbnail with Click-to-Enlarge */}
-                    {comp.certificateImage && (
-                      <div
-                        onClick={() =>
+                  {/* Visible Certificate Preview Thumbnail with Click-to-Enlarge */}
+                  {comp.certificateImage && (
+                    <div
+                      onClick={() =>
+                        setDialogState({
+                          isOpen: true,
+                          title: comp.title,
+                          imageSrc: comp.certificateImage,
+                          subtitle: `${comp.period} · ${comp.team}`,
+                        })
+                      }
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
                           setDialogState({
                             isOpen: true,
                             title: comp.title,
                             imageSrc: comp.certificateImage,
                             subtitle: `${comp.period} · ${comp.team}`,
-                          })
+                          });
                         }
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            setDialogState({
-                              isOpen: true,
-                              title: comp.title,
-                              imageSrc: comp.certificateImage,
-                              subtitle: `${comp.period} · ${comp.team}`,
-                            });
-                          }
-                        }}
-                        aria-label={`Enlarge ${comp.title} certificate`}
-                        className="relative w-full aspect-[16/9] max-h-48 rounded-2xl border border-border-custom bg-black/5 dark:bg-black/40 overflow-hidden mb-4 cursor-pointer group/cardthumb hover:border-accent/60 transition-all shadow-xs"
-                      >
-                        <img
-                          src={comp.certificateImage}
-                          alt={`${comp.title} Certificate – Hackathon & Competition Recognition`}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover object-top group-hover/cardthumb:scale-[1.02] transition-transform duration-300"
-                        />
-                        <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-bg/85 backdrop-blur-md border border-border-custom text-text-primary font-mono text-[11px] flex items-center gap-1.5 opacity-80 group-hover/cardthumb:opacity-100 transition-opacity">
-                          <span>Preview</span>
-                        </div>
+                      }}
+                      aria-label={`Enlarge ${comp.title} certificate`}
+                      className="relative w-full aspect-[16/9] max-h-48 rounded-2xl border border-border-custom bg-black/5 dark:bg-black/40 overflow-hidden cursor-pointer group/cardthumb hover:border-accent/60 transition-all shadow-xs"
+                    >
+                      <img
+                        src={comp.certificateImage}
+                        alt={`${comp.title} Certificate – Hackathon & Competition Recognition`}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top transform-gpu group-hover/cardthumb:scale-[1.02] transition-transform duration-300 ease-out"
+                      />
+                      <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-bg/85 backdrop-blur-md border border-border-custom text-text-primary font-mono text-[11px] flex items-center gap-1.5 opacity-80 group-hover/cardthumb:opacity-100 transition-opacity">
+                        <span>Preview</span>
                       </div>
-                    )}
-                  </div>
-                </ScrollReveal>
-              );
-            })}
+                    </div>
+                  )}
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
 
         </div>
