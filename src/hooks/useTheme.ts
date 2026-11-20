@@ -37,6 +37,11 @@ export function useTheme() {
     if (!activeAttr || activeAttr !== theme) {
       document.documentElement.setAttribute("data-theme", theme);
     }
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, [theme]);
 
   // Listen for system theme changes if user hasn't chosen an explicit override
@@ -49,6 +54,11 @@ export function useTheme() {
           const newTheme: Theme = e.matches ? "dark" : "light";
           setThemeState(newTheme);
           document.documentElement.setAttribute("data-theme", newTheme);
+          if (newTheme === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
         }
       } catch (err) {}
     };
@@ -63,6 +73,11 @@ export function useTheme() {
       localStorage.setItem("theme", newTheme);
     } catch (e) {}
     document.documentElement.setAttribute("data-theme", newTheme);
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   const setTheme = useCallback((newTheme: Theme) => {

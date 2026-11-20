@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
           "Applebot-Extended",
           "cohere-ai",
         ],
-        allow: ["/", "/llms.txt", "/resume.pdf", "/medimitra-case-study.pdf"],
+        allow: ["/", "/llms.txt", "/resume.pdf", "/Dhruv_Resume.pdf", "/medimitra-case-study.pdf"],
       },
     ],
     sitemap: "https://dhruvvawhle.vercel.app/sitemap.xml",

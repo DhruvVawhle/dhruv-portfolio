@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Layers, Brain, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { Layers, Brain, ShieldCheck, ArrowUpRight, Bot } from "lucide-react";
 import dynamic from "next/dynamic";
 import { WORKFLOW_STEPS } from "@/data/engineeringWorkflow";
 import ScrollReveal from "@/components/effects/ScrollReveal";
@@ -152,13 +152,13 @@ export default function About() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="lg:border-l lg:border-border-custom lg:pl-12 flex flex-col"
               >
-                <div className="rounded-xl border border-blue-100 dark:border-border-custom bg-blue-50/70 dark:bg-white/[0.03] p-5 sm:p-6 h-full flex flex-col justify-between gap-6">
+                <div className="rounded-2xl border border-border-custom bg-bg-surface p-5 sm:p-6 h-full flex flex-col justify-between gap-6 shadow-xs">
                   {/* Section 1: Focus areas */}
                   <div>
-                    <div className="text-xs font-medium text-text-secondary mb-1">Focus areas</div>
+                    <div className="text-xs font-mono font-semibold uppercase tracking-wider text-accent mb-2">Focus areas</div>
                     <div className="divide-y divide-border-custom">
                       <div className="flex items-center gap-3 py-3 first:pt-2">
-                        <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                        <div className="w-8 h-8 rounded-lg bg-bg border border-border-custom flex items-center justify-center flex-shrink-0 text-accent shadow-xs">
                           <Layers className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -172,7 +172,7 @@ export default function About() {
                       </div>
 
                       <div className="flex items-center gap-3 py-3 last:pb-0">
-                        <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                        <div className="w-8 h-8 rounded-lg bg-bg border border-border-custom flex items-center justify-center flex-shrink-0 text-accent shadow-xs">
                           <Brain className="w-4 h-4" />
                         </div>
                         <div className="min-w-0">
@@ -189,15 +189,15 @@ export default function About() {
 
                   {/* Section 2: Currently building */}
                   <div>
-                    <div className="text-xs font-medium text-text-secondary mb-1">Currently building</div>
+                    <div className="text-xs font-mono font-semibold uppercase tracking-wider text-accent mb-2">Currently building</div>
                     <div className="divide-y divide-border-custom">
                       {/* PromptShield */}
                       <a
                         href="#projects"
-                        className="group flex items-center justify-between gap-3 py-3 first:pt-2 last:pb-0 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
+                        className="group flex items-center justify-between gap-3 py-3 first:pt-1 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-8 h-8 rounded-lg bg-bg-surface border border-border-custom flex items-center justify-center flex-shrink-0 text-accent">
+                          <div className="w-8 h-8 rounded-lg bg-bg border border-border-custom flex items-center justify-center flex-shrink-0 text-accent shadow-xs group-hover:border-accent/40 transition-colors">
                             <ShieldCheck className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">
@@ -209,7 +209,28 @@ export default function About() {
                             </div>
                           </div>
                         </div>
-                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
+                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" />
+                      </a>
+
+                      {/* CampusAI */}
+                      <a
+                        href="#projects"
+                        className="group flex items-center justify-between gap-3 py-3 last:pb-1 focus-visible:outline-2 focus-visible:outline-accent rounded-lg"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 rounded-lg bg-bg border border-border-custom flex items-center justify-center flex-shrink-0 text-accent shadow-xs group-hover:border-accent/40 transition-colors">
+                            <Bot className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-text-primary group-hover:text-accent transition-colors">
+                              CampusAI
+                            </div>
+                            <div className="text-[12.5px] text-text-secondary leading-normal">
+                              Autonomous multilingual AI reception robot kiosk.
+                            </div>
+                          </div>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" />
                       </a>
                     </div>
                   </div>
