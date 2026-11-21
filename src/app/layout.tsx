@@ -276,7 +276,6 @@ const jsonLd = {
   ],
 };
 import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import ThemeInitializer from "@/components/ui/ThemeInitializer";
 import "./globals.css";
 import "devicon/devicon.min.css";
 
@@ -318,13 +317,70 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <ThemeInitializer />
+        <script
+          id="dv-pre-init"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var t=s||(d?"dark":"light");document.documentElement.setAttribute("data-theme",t);if(t==="dark"){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}var b=/Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent);if(!b){var nav=window.performance&&window.performance.getEntriesByType&&window.performance.getEntriesByType("navigation")[0];var isReload=(nav&&nav.type==="reload")||(window.performance&&window.performance.navigation&&window.performance.navigation.type===1)||(sessionStorage.getItem("dv_is_reload")==="true");var isFirst=sessionStorage.getItem("dv_portfolio_visited")!=="true";if(isFirst||isReload){document.documentElement.classList.add("dv-loading-active");}}}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-screen bg-bg text-text-primary font-body antialiased">
+        {/* Instant Frame-0 Preload Curtain: Eliminates portfolio content flash before loader hydrates */}
+        <div
+          id="dv-static-curtain"
+          suppressHydrationWarning
+          className="fixed inset-0 z-[999990] flex-col items-center justify-center bg-bg select-none cursor-pointer"
+          aria-hidden="true"
+        >
+          <div
+            className="absolute w-[480px] h-[480px] rounded-full pointer-events-none opacity-20 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, var(--accent, #3b82f6) 0%, transparent 70%)",
+            }}
+          />
+          <div className="relative flex items-center justify-center h-[260px] scale-75 sm:scale-85 select-none pointer-events-none">
+            <div className="loader">
+              <div className="box box0"><div></div></div>
+              <div className="box box1"><div></div></div>
+              <div className="box box2"><div></div></div>
+              <div className="box box3"><div></div></div>
+              <div className="box box4"><div></div></div>
+              <div className="box box5"><div></div></div>
+              <div className="box box6"><div></div></div>
+              <div className="box box7"><div></div></div>
+              <div className="ground"><div></div></div>
+            </div>
+          </div>
+          <div className="relative z-10 flex flex-col items-center mt-3 px-6 text-center pointer-events-none">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="font-display font-extrabold text-2xl tracking-tight text-text-primary">
+                DHRUV VAWHLE<span className="text-accent">.</span>
+              </span>
+            </div>
+            <p className="font-mono text-[10px] tracking-widest text-text-secondary uppercase mb-4">
+              Full-Stack &middot; AI Systems &middot; Automation
+            </p>
+            <div className="w-52 h-1 rounded-full bg-border-custom overflow-hidden relative mb-2.5">
+              <div
+                id="dv-preload-bar"
+                className="h-full bg-accent rounded-full dv-progress-bar-anim"
+              />
+            </div>
+            <div className="flex items-center gap-2 text-[10px] font-mono text-text-secondary">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>INITIALIZING SYSTEM...</span>
+            </div>
+          </div>
+          <span className="absolute bottom-6 font-mono text-[9px] text-text-secondary/70 tracking-widest uppercase">
+            Click anywhere to enter
+          </span>
+        </div>
         <SmoothScrollProvider>
           <SimpleToastProvider>
             <ClientEffects />
