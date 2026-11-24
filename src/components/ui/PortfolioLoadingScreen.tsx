@@ -13,12 +13,20 @@ export function triggerPortfolioLoader() {
 
   const curtain = document.getElementById("dv-static-curtain");
   const bar = document.getElementById("dv-preload-bar");
+  const txt = document.getElementById("dv-preload-txt");
 
   if (!curtain) return;
+
+  if (txt) {
+    txt.textContent = "INITIALIZING SYSTEM...";
+  }
 
   document.documentElement.classList.add("dv-loading-active");
   curtain.style.display = "flex";
   curtain.style.animation = "none";
+  curtain.style.transition = "";
+  curtain.style.opacity = "";
+  curtain.style.transform = "";
   if (bar) {
     bar.style.animation = "none";
   }
@@ -30,6 +38,16 @@ export function triggerPortfolioLoader() {
   if (bar) {
     bar.style.animation = "";
   }
+
+  const t1 = setTimeout(() => {
+    if (txt) txt.textContent = "COMPONENTS ASSEMBLED";
+  }, 1500);
+  const t2 = setTimeout(() => {
+    if (txt) txt.textContent = "SYNCHRONIZING SCENE...";
+  }, 2100);
+  const t3 = setTimeout(() => {
+    if (txt) txt.textContent = "SYSTEM READY";
+  }, 2650);
 
   setTimeout(() => {
     document.documentElement.classList.remove("dv-loading-active");

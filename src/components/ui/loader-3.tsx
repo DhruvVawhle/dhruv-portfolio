@@ -1,13 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState, HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 
-export interface Loader3Props extends HTMLAttributes<HTMLDivElement> {}
+export type Loader3Props = HTMLAttributes<HTMLDivElement>;
 
 export const Component = ({ className, ...props }: Loader3Props) => {
-  const [count, setCount] = useState(0);
-
   return (
     <div className={cn("loader", className)} {...props}>
       <div className="box box0">

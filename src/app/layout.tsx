@@ -374,7 +374,7 @@ export default function RootLayout({
             </div>
             <div className="flex items-center gap-2 text-[10px] font-mono text-text-secondary">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>INITIALIZING SYSTEM...</span>
+              <span id="dv-preload-txt">INITIALIZING SYSTEM...</span>
             </div>
           </div>
           <span className="absolute bottom-6 font-mono text-[9px] text-text-secondary/70 tracking-widest uppercase">
