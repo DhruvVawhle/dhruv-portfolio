@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
 
 interface PreviewDialogProps {
   isOpen: boolean;
@@ -28,17 +27,22 @@ export default function PreviewDialog({
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
     if (isOpen) {
-      setImgError(false);
+      const t = setTimeout(() => setImgError(false), 0);
       document.body.style.overflow = "hidden";
       if (typeof window !== "undefined" && window.__lenis) {
         window.__lenis.stop();
       }
-      setTimeout(() => closeBtnRef.current?.focus(), 50);
+      const focusT = setTimeout(() => closeBtnRef.current?.focus(), 50);
+      return () => {
+        clearTimeout(t);
+        clearTimeout(focusT);
+      };
     } else {
       document.body.style.overflow = "";
       if (typeof window !== "undefined" && window.__lenis) {

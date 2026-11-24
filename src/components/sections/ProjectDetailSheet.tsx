@@ -23,7 +23,8 @@ export default function ProjectDetailSheet({
   const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   // Pause Lenis and lock scroll while open

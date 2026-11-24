@@ -153,14 +153,14 @@ export const projects: Project[] = projectsData.map((p) => {
     images: p.screenshots,
     category: p.category,
     featured: p.featured,
-    isArchived: (p as any).isArchived || false,
+    isArchived: Boolean((p as Record<string, unknown>).isArchived),
     features: p.features,
     status: p.status,
     liveDemo: p.liveDemo || undefined,
     upstreamRepository: p.upstreamRepository || undefined,
-    attribution: (p as any).attribution || undefined,
-    todoScreenshot: (p as any).todoScreenshot || undefined,
-    todoArchitecture: (p as any).todoArchitecture || undefined,
+    attribution: ((p as Record<string, unknown>).attribution as Project["attribution"]) || undefined,
+    todoScreenshot: ((p as Record<string, unknown>).todoScreenshot as string) || undefined,
+    todoArchitecture: ((p as Record<string, unknown>).todoArchitecture as string) || undefined,
   };
 });
 
@@ -174,7 +174,7 @@ export const experiences: Experience[] = experienceData.map((e) => ({
   bullets: e.responsibilities,
   technologies: e.technologies,
   certificate: e.certificate || undefined,
-  todoCertificate: (e as any).todoCertificate || undefined,
+  todoCertificate: ((e as Record<string, unknown>).todoCertificate as string) || undefined,
 }));
 
 // ─── Education ───
@@ -220,14 +220,14 @@ export const hackathons: Hackathon[] = achievementsData.hackathons.map((h) => ({
 // ─── Certifications ───
 export const certifications: Certification[] = certificatesData.map((c) => ({
   title: c.title,
-  name: (c as any).name || c.title,
+  name: ((c as Record<string, unknown>).name as string) || c.title,
   issuer: c.issuer,
   date: c.date,
   image: c.image || undefined,
   credentialId: c.credentialId || undefined,
   verifyUrl: c.verifyUrl || undefined,
   category: c.category,
-  todoImage: (c as any).todoImage || undefined,
+  todoImage: ((c as Record<string, unknown>).todoImage as string) || undefined,
 }));
 
 // ─── Navigation ───

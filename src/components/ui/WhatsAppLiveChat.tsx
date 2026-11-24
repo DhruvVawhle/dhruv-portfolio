@@ -89,6 +89,7 @@ export default function WhatsAppLiveChat() {
   const autoResumeTimerRef = useRef<NodeJS.Timeout | null>(null);
   const chipTouchStartRef = useRef<{ x: number; y: number } | null>(null);
   const isChipScrollRef = useRef(false);
+  const msgIdRef = useRef(0);
 
   // Clean up all timers on unmount
   useEffect(() => {
@@ -119,7 +120,7 @@ export default function WhatsAppLiveChat() {
   }, []);
 
   // Auto-scroll when new messages arrive (only within the chat container, never yanking the window)
-  const scrollToBottom = () => {
+  const scrollToBottom = React.useCallback(() => {
     if (!scrollContainerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
     const isNearBottom = scrollHeight - scrollTop - clientHeight < 160;
@@ -129,11 +130,11 @@ export default function WhatsAppLiveChat() {
         behavior: "smooth",
       });
     }
-  };
+  }, [messages.length]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isBotTyping]);
+  }, [messages, isBotTyping, scrollToBottom]);
 
   // Clean single-timer automated demonstration loop (only runs when in view)
   useEffect(() => {
@@ -158,15 +159,19 @@ export default function WhatsAppLiveChat() {
 
     const currentItem = SCRIPTED_FLOW[scriptIndex];
 
+    let typingStartTimer: NodeJS.Timeout | null = null;
     if (currentItem.sender === "bot") {
       // First show bot typing
-      setIsBotTyping(true);
+      typingStartTimer = setTimeout(() => {
+        setIsBotTyping(true);
+      }, 0);
       timerRef.current = setTimeout(() => {
         setIsBotTyping(false);
+        const nextId = `msg-${msgIdRef.current++}-${scriptIndex}`;
         setMessages((prev) => [
           ...prev,
           {
-            id: `msg-${Date.now()}-${scriptIndex}`,
+            id: nextId,
             sender: "bot",
             text: currentItem.text,
             time: currentItem.time,
@@ -180,10 +185,11 @@ export default function WhatsAppLiveChat() {
     } else {
       // User message entrance
       timerRef.current = setTimeout(() => {
+        const nextId = `msg-${msgIdRef.current++}-${scriptIndex}`;
         setMessages((prev) => [
           ...prev,
           {
-            id: `msg-${Date.now()}-${scriptIndex}`,
+            id: nextId,
             sender: "user",
             text: currentItem.text,
             time: currentItem.time,
@@ -197,20 +203,10 @@ export default function WhatsAppLiveChat() {
     }
 
     return () => {
+      if (typingStartTimer) clearTimeout(typingStartTimer);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [isDemoRunning, shouldReduceMotion, scriptIndex, isUserInteracting, isInView]);
-
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  useEffect(() => {
-    const isTouch =
-      typeof window !== "undefined" &&
-      (window.matchMedia("(hover: none)").matches ||
-        window.matchMedia("(pointer: coarse)").matches ||
-        "ontouchstart" in window);
-    setIsTouchDevice(isTouch);
-  }, []);
 
   const sendPromptMessage = (textToSend: string) => {
     const trimmed = textToSend.trim();
@@ -223,7 +219,7 @@ export default function WhatsAppLiveChat() {
     setIsUserInteracting(true);
 
     const userMsg: ChatMessage = {
-      id: `user-${Date.now()}`,
+      id: `user-${msgIdRef.current++}`,
       sender: "user",
       text: trimmed,
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -256,7 +252,7 @@ export default function WhatsAppLiveChat() {
       setMessages((prev) => [
         ...prev,
         {
-          id: `bot-${Date.now()}`,
+          id: `bot-${msgIdRef.current++}`,
           sender: "bot",
           text: `${replyText}\n\n(Local simulated clinical triage response)`,
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -383,7 +379,7 @@ export default function WhatsAppLiveChat() {
       </div>
 
       {/* ── Standalone Authentic WhatsApp Chat Frame ── */}
-      <div className="w-full max-w-lg rounded-3xl overflow-hidden border border-[#D1D7DB] dark:border-[#222E35] shadow-2xl bg-[#EFEAE2] dark:bg-[#0B141A] flex flex-col h-[560px] sm:h-[600px] relative">
+      <div className="w-full max-w-lg rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D1D7DB] dark:border-[#222E35] shadow-2xl bg-[#EFEAE2] dark:bg-[#0B141A] flex flex-col h-[500px] xs:h-[540px] sm:h-[600px] relative">
         
         {/* ── WhatsApp Authentic Header ── */}
         <div className="bg-[#008069] dark:bg-[#202C33] text-white px-3 sm:px-4 py-2.5 flex items-center justify-between shadow-sm z-20 flex-shrink-0">

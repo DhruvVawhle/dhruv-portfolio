@@ -21,7 +21,9 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
   const animFrameId = useRef<number | null>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const pausedRef = useRef(paused);
-  pausedRef.current = paused;
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
 
   const animateRef = useRef<(() => void) | null>(null);
 

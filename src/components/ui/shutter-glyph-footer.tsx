@@ -572,7 +572,7 @@ export function PlayableWordmark({
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault()
-                        flip(e as any)
+                        flip(e as unknown as React.MouseEvent<SVGGElement>)
                       }
                     }}
                     onAnimationEnd={(e) => e.currentTarget.classList.remove("is-flip")}
@@ -638,7 +638,7 @@ export default function ShutterGlyphFooter({
 
   React.useEffect(() => {
     if (shake && state === "error") inputRef.current?.focus()
-  }, [shake])
+  }, [shake, state])
 
   React.useEffect(() => {
     if (state !== "sending" || !animate) return
@@ -694,8 +694,7 @@ export default function ShutterGlyphFooter({
     "--sgf-mono": fontMono,
   } as React.CSSProperties
 
-  let d = 0
-  const delay = () => ({ "--sgf-d": (d += 60) + "ms" }) as React.CSSProperties
+  const delay = (step: number) => ({ "--sgf-d": `${step * 60}ms` }) as React.CSSProperties
   const label = company ?? "The " + brand + " Creative Co."
   const years = since && since < year ? since + "—" + year : String(year)
 
@@ -712,7 +711,7 @@ export default function ShutterGlyphFooter({
       <style>{CSS}</style>
 
       <div className="sgf-top">
-        <form className="sgf-form sgf-fade" style={delay()} onSubmit={submit} noValidate>
+        <form className="sgf-form sgf-fade" style={delay(1)} onSubmit={submit} noValidate>
           <label htmlFor={"sgf-email-" + uid} className="sgf-lede" style={{ display: "block" }}>
             {signupLabel}
           </label>
@@ -766,13 +765,13 @@ export default function ShutterGlyphFooter({
           <nav aria-label="Social">
             <ul className="sgf-list">
               {socials.map((l, i) => (
-                <ScrambleLink key={l.label + i} link={l} still={!animate} onFollow={follow} style={delay()} />
+                <ScrambleLink key={l.label + i} link={l} still={!animate} onFollow={follow} style={delay(2 + i)} />
               ))}
             </ul>
           </nav>
         )}
 
-        <p className="sgf-copy sgf-fade" style={delay()}>
+        <p className="sgf-copy sgf-fade" style={delay(2 + socials.length)}>
           {"© " + years + "\n" + label}
         </p>
 
@@ -780,7 +779,7 @@ export default function ShutterGlyphFooter({
           <nav aria-label="Legal">
             <ul className="sgf-list">
               {legal.map((l, i) => (
-                <ScrambleLink key={l.label + i} link={l} still={!animate} onFollow={follow} style={delay()} />
+                <ScrambleLink key={l.label + i} link={l} still={!animate} onFollow={follow} style={delay(3 + socials.length + i)} />
               ))}
             </ul>
           </nav>

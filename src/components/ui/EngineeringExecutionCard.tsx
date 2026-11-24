@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { showToast } from "@/components/ui/ClipboardToast";
 
 const CODE_LINES = [
   "function solve(problem) {",
@@ -23,18 +24,10 @@ export default function EngineeringExecutionCard() {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [activeExecutionIndex, setActiveExecutionIndex] = useState(-1);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const prefersReducedMotion = shouldReduceMotion ?? false;
   const [activeTab, setActiveTab] = useState<"problems" | "output" | "debug" | "workflow">("workflow");
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Check prefers-reduced-motion media query
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
 
   // 1. Typing Logic Simulator (45ms speed)
   useEffect(() => {
@@ -94,7 +87,6 @@ export default function EngineeringExecutionCard() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(FULL_CODE);
-    const { showToast } = require("@/components/ui/ClipboardToast");
     showToast("Code copied to clipboard");
   };
 
@@ -185,8 +177,6 @@ export default function EngineeringExecutionCard() {
         <div className="p-5 font-mono text-xs sm:text-[13px] leading-relaxed relative min-h-[190px] flex flex-col justify-center bg-[#F8FAFC]">
           <div className="space-y-1.5 select-none">
             {typedLines.map((line, idx) => {
-              const isCurrentLine = phase === "typing" ? idx === currentLineIndex : idx === activeExecutionIndex;
-              
               let rowBg = "bg-transparent";
               if (phase === "executing" && idx === activeExecutionIndex) {
                 rowBg = "bg-blue-50/90 border-l-2 border-blue-500 -ml-[2px]";

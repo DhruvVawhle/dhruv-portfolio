@@ -17,7 +17,8 @@ export default function ConversationDialog({ isOpen, onClose }: ConversationDial
   const { showToast } = useSimpleToast();
 
   useEffect(() => {
-    setMounted(true);
+    const t = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {

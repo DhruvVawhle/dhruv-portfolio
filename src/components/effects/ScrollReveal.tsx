@@ -30,7 +30,7 @@ export default function ScrollReveal({
   margin = "-50px",
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: margin as any });
+  const isInView = useInView(ref, { once, margin: margin as NonNullable<Parameters<typeof useInView>[1]>["margin"] });
   const prefersReduced = useReducedMotion();
 
   const directionOffset = {

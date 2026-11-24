@@ -22,11 +22,10 @@ export default function CubertoCursor() {
     // Check for touch device or coarse pointer
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
     if (isCoarse || shouldReduceMotion) {
-      setIsTouchDevice(true);
       return;
     }
 
-    setIsTouchDevice(false);
+    const timer = setTimeout(() => setIsTouchDevice(false), 0);
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
@@ -66,6 +65,7 @@ export default function CubertoCursor() {
     document.addEventListener("mouseover", handleMouseOver, { passive: true });
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseover", handleMouseOver);

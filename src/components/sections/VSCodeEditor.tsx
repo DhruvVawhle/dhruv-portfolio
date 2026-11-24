@@ -71,8 +71,8 @@ export default function VSCodeEditor({
 
       const logs: string[] = [];
       const customConsole = {
-        log: (...args: any[]) => logs.push(args.join(" ")),
-        error: (...args: any[]) => {
+        log: (...args: unknown[]) => logs.push(args.join(" ")),
+        error: (...args: unknown[]) => {
           logs.push("ERR: " + args.join(" "));
           setHasError(true);
         },
@@ -84,8 +84,9 @@ export default function VSCodeEditor({
 
       setTerminalLogs(logs);
       setHasError(false);
-    } catch (err: any) {
-      setTerminalLogs((prev) => [...prev, `TypeError: ${err.message}`]);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setTerminalLogs((prev) => [...prev, `TypeError: ${msg}`]);
       setHasError(true);
     }
   };

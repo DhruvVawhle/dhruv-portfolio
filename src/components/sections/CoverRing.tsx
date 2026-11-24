@@ -35,8 +35,11 @@ export default function CoverRing({
 
   // Drag interaction state
   const isDraggingRef = useRef(false);
+  const [isDragging, setIsDragging] = useState(false);
   const activeIndexRef = useRef(activeIndex);
-  activeIndexRef.current = activeIndex;
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
   const isInternalUpdateRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragStartRotRef = useRef(0);
@@ -155,6 +158,7 @@ export default function CoverRing({
     dragVelocityRef.current = 0;
     hasDraggedRef.current = false;
     isDraggingRef.current = false;
+    setIsDragging(false);
     isPointerDownRef.current = true;
     activePointerIdRef.current = e.pointerId;
   };
@@ -181,6 +185,7 @@ export default function CoverRing({
       if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY)) {
         hasDraggedRef.current = true;
         isDraggingRef.current = true;
+        setIsDragging(true);
         setIsHovered(true);
         // Capture pointer to stage now that user is genuinely dragging horizontally
         stageRef.current?.setPointerCapture?.(e.pointerId);
@@ -215,6 +220,7 @@ export default function CoverRing({
 
     if (hasDraggedRef.current && isDraggingRef.current) {
       isDraggingRef.current = false;
+      setIsDragging(false);
       hasDraggedRef.current = false;
       stageRef.current?.releasePointerCapture?.(e.pointerId);
 
@@ -226,6 +232,7 @@ export default function CoverRing({
       setActiveIndex(normalizedIndex);
     } else {
       isDraggingRef.current = false;
+      setIsDragging(false);
       hasDraggedRef.current = false;
     }
 
@@ -242,6 +249,7 @@ export default function CoverRing({
       }
       isPointerDownRef.current = false;
       isDraggingRef.current = false;
+      setIsDragging(false);
       hasDraggedRef.current = false;
       activePointerIdRef.current = null;
       // Page vertical scroll took over; immediately release hover so auto-orbit continues!
@@ -345,7 +353,7 @@ export default function CoverRing({
           style={{
             transformStyle: "preserve-3d",
             transform: `rotateX(${11 + mouseTilt.x}deg) rotateY(${mouseTilt.y * 0.7}deg)`,
-            transition: isDraggingRef.current ? "none" : "transform 0.4s ease-out",
+            transition: isDragging ? "none" : "transform 0.4s ease-out",
           }}
           className="relative w-full h-full flex items-center justify-center"
         >
@@ -373,7 +381,7 @@ export default function CoverRing({
                   opacity,
                   zIndex,
                   transformStyle: "preserve-3d",
-                  transition: isDraggingRef.current ? "opacity 0.1s" : "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  transition: isDragging ? "opacity 0.1s" : "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease",
                   pointerEvents: depthRatio > 0.88 ? "none" : "auto",
                 }}
                 className="will-change-transform"

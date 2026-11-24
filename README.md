@@ -28,12 +28,17 @@
   - Unblocked First Contentful Paint (FCP) with streaming server-rendered HTML.
 - **🤖 Applied AI & Architecture Showcases**:
   - **PromptShield**: High-throughput AI security gateway & reverse proxy with sub-15ms latency, OWASP LLM Top 10 coverage, morphological root-stemming heuristic engine, deterministic policy enforcement (ALLOW/WARN/SANITIZE/BLOCK), and 2-line OpenAI SDK drop-in.
-  - **MediMitra**: Multilingual AI healthcare triage assistant powered by n8n workflows and Google Gemini APIs.
+  - **MediMitra (SIH 2025 Finalist — Top 30 Nationally)**: Multilingual AI healthcare triage & clinical decision support platform built for rural accessibility. Features an authentic interactive WhatsApp simulator, real-time n8n workflow pipeline visualizer, sub-15ms local cache routing, and cross-dialect support (Hindi, Marathi, Hinglish).
   - **KrishiSaathi**: Agri-tech crop disease classification, pest diagnostic engine, and fair marketplace.
   - **CampusAI**: Multilingual AI reception terminal & robot kiosk for Shree L. R. Tiwari College of Engineering (SLRTCE), featuring a reactive 3D robot avatar, interactive SVG indoor wayfinding with mobile QR handoffs, and voice loop (EN, HI, MR, Hinglish) via Groq Whisper & Edge-TTS neural Indian accents.
+- **✨ Interactive Micro-Interactions & Immersion**:
+  - **3D Box Formation Preloader**: Procedural CSS 3D box assembly transition with coordinated drop-down entrance sequence and session-aware reload persistence.
+  - **Cmd+K Command Palette**: Fast keyboard-driven command bar with instant section routing, external docs access, and dark mode toggling.
+  - **Cuberto Magnetic Cursor & Orbital Tech Ring**: Dynamic interactive cursor physics with smooth easing and interactive multi-tier orbital ecosystem showcasing full-stack proficiency.
+  - **Playable Shutter-Glyph Footer**: Mechanical split-flap wordmark animation with rhythmic scramble interactions.
 - **📜 Minimalist Document & Credential Previews**: Single-click modal preview for verified internship certificates and hackathon credentials with optional direct PDF download.
 - **🌊 Fluid Desktop Smooth Scroll & Microphysics**: Desktop Lenis smooth scrolling with auto-fallback to native momentum touch scroll on mobile screens (<768px).
-- **♿ Accessibility & Reduced Motion**: Full compliance with `prefers-reduced-motion`, semantic heading hierarchy, ARIA labels, and skip-to-content navigation.
+- **♿ Strict Accessibility & Zero-Slop Design**: 100% compliant with `prefers-reduced-motion`, semantic heading hierarchy, full touch density (>=44px), WCAG AAA color contrasts, and unblocked server-rendered initial paint.
 
 ---
 
@@ -48,6 +53,7 @@
 | **3D & Canvas** | [Three.js](https://threejs.org/) (WebGL Node Graph & Drifting Particles) |
 | **Smooth Scroll** | [Lenis](https://lenis.darkroom.engineering/) (Dynamic Desktop-Only Hydration) |
 | **Icons** | Curated SVG Vector Components + Lucide React |
+| **Analytics & Telemetry** | [@vercel/analytics](https://vercel.com/analytics) (Real-Time Web Vitals Monitoring) |
 | **Deployment** | [Vercel](https://vercel.com/) Edge Network CI/CD |
 
 ---

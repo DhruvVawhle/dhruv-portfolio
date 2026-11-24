@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { motion } from "motion/react";
+import React, { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Eye, ExternalLink } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
@@ -22,13 +22,8 @@ export default function CoverflowCard({
   onOpenDetail,
 }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    }
-  }, []);
+  const shouldReduceMotion = useReducedMotion();
+  const reducedMotion = shouldReduceMotion ?? false;
 
   // 3D Coverflow positioning math
   const absOffset = Math.abs(offset);
@@ -56,7 +51,11 @@ export default function CoverflowCard({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (isFront && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
-      handleClick(e as any);
+      if (project.isGitHubCard) {
+        window.open(project.githubUrl, "_blank", "noopener,noreferrer");
+      } else {
+        onOpenDetail();
+      }
     }
   };
 
@@ -90,7 +89,7 @@ export default function CoverflowCard({
       }}
       style={{
         zIndex,
-        pointerEvents: pointerEvents as any,
+        pointerEvents: pointerEvents as React.CSSProperties["pointerEvents"],
         transformStyle: "preserve-3d",
       }}
       className={`absolute top-0 w-[300px] sm:w-[350px] md:w-[380px] h-[485px] sm:h-[505px] select-none rounded-3xl cursor-pointer focus:outline-none ${

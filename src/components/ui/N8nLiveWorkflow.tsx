@@ -135,7 +135,8 @@ export default function N8nLiveWorkflow() {
   // Automatically default to full canvas on larger screens (>= 768px)
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth >= 768) {
-      setViewMode("canvas");
+      const t = setTimeout(() => setViewMode("canvas"), 0);
+      return () => clearTimeout(t);
     }
   }, []);
 

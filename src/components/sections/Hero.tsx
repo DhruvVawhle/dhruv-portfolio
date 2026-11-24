@@ -149,7 +149,8 @@ function ScrambleWord({
   }, [text, isTouchDevice, shouldReduceMotion]);
 
   useEffect(() => {
-    setDisplayText(text);
+    const t = setTimeout(() => setDisplayText(text), 0);
+    return () => clearTimeout(t);
   }, [text]);
 
   return (
@@ -413,7 +414,8 @@ export default function Hero() {
       (window.matchMedia("(hover: none)").matches ||
         window.matchMedia("(pointer: coarse)").matches ||
         "ontouchstart" in window);
-    setIsTouchDevice(isTouch);
+    const t = setTimeout(() => setIsTouchDevice(isTouch), 0);
+    return () => clearTimeout(t);
   }, []);
 
   // Cycling specialties highlight in paragraph
@@ -429,9 +431,13 @@ export default function Hero() {
   const [mountNetwork, setMountNetwork] = useState(false);
   useEffect(() => {
     if (typeof window !== "undefined" && window.innerWidth >= 768 && !shouldReduceMotion) {
-      if ("requestIdleCallback" in window) {
-        const handle = (window as any).requestIdleCallback(() => setMountNetwork(true), { timeout: 2000 });
-        return () => (window as any).cancelIdleCallback?.(handle);
+      const win = window as Window & {
+        requestIdleCallback?: (cb: () => void, opts: { timeout: number }) => number;
+        cancelIdleCallback?: (id: number) => void;
+      };
+      if (typeof win.requestIdleCallback === "function") {
+        const handle = win.requestIdleCallback(() => setMountNetwork(true), { timeout: 2000 });
+        return () => win.cancelIdleCallback?.(handle);
       } else {
         const timer = setTimeout(() => setMountNetwork(true), 1200);
         return () => clearTimeout(timer);

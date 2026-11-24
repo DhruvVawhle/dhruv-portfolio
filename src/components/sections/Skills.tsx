@@ -19,7 +19,7 @@ interface RingConfig {
   skills: string[];
 }
 
-const ORBIT_RINGS: RingConfig[] = orbitRings as any;
+const ORBIT_RINGS: RingConfig[] = orbitRings as unknown as RingConfig[];
 
 // Intelligent Engineering Ecosystem Relationships
 const RELATIONSHIPS_MAP: Record<string, string[]> = relationshipsMap;
@@ -40,7 +40,7 @@ interface StackCategory {
   technologies: TechCardItem[];
 }
 
-const ENGINEERING_STACK: StackCategory[] = engineeringStack as any;
+const ENGINEERING_STACK: StackCategory[] = engineeringStack as unknown as StackCategory[];
 
 interface TechDetailInfo {
   category: string;
@@ -52,7 +52,7 @@ interface TechDetailInfo {
   keyPatterns: string[];
 }
 
-const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = techDetailsMap as any;
+const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = techDetailsMap as unknown as Record<string, TechDetailInfo>;
 
 const getTechDetail = (name: string): TechDetailInfo => {
   if (TECH_DETAILS_MAP[name]) return TECH_DETAILS_MAP[name];
@@ -78,7 +78,6 @@ export default function Skills() {
   const [isSectionVisible, setIsSectionVisible] = useState<boolean>(true);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>("frontend");
-  const [isMobileAccordionSectionOpen, setIsMobileAccordionSectionOpen] = useState(false);
 
   const orbitContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();

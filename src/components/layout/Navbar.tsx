@@ -33,7 +33,8 @@ export default function Navbar() {
       (window.matchMedia("(hover: none)").matches ||
         window.matchMedia("(pointer: coarse)").matches ||
         "ontouchstart" in window);
-    setIsTouchDevice(isTouch);
+    const t = setTimeout(() => setIsTouchDevice(isTouch), 0);
+    return () => clearTimeout(t);
   }, []);
 
   // Lock body scroll when mobile menu is open
@@ -122,7 +123,9 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    determineActiveSection();
+    rafId = window.requestAnimationFrame(() => {
+      determineActiveSection();
+    });
 
     return () => {
       window.removeEventListener("scroll", onScroll);

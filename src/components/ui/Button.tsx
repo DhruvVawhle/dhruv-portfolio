@@ -88,7 +88,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       }
       setHovered(false);
       setIsPressed(false);
-      onPointerLeave?.(e as any);
+      onPointerLeave?.(e as unknown as React.PointerEvent<HTMLButtonElement>);
     };
 
     const updateOrigin = useCallback((x: number, y: number) => {
@@ -101,7 +101,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }, []);
 
     const updateOriginFromPointer = useCallback(
-      (event: React.PointerEvent<any>) => {
+      (event: React.PointerEvent<HTMLElement>) => {
         const rect = event.currentTarget.getBoundingClientRect();
         updateOrigin(event.clientX - rect.left, event.clientY - rect.top);
       },
@@ -144,12 +144,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const fillTransition = { duration: FILL_DURATION, ease: FILL_EASE };
 
-    const setRefs = (element: any) => {
+    const setRefs = (element: HTMLButtonElement | HTMLAnchorElement | null) => {
       internalRef.current = element;
       if (typeof ref === "function") {
-        ref(element);
-      } else if (ref) {
-        (ref as any).current = element;
+        ref(element as HTMLButtonElement | null);
+      } else if (ref && "current" in ref) {
+        (ref as React.MutableRefObject<HTMLButtonElement | null>).current = element as HTMLButtonElement | null;
       }
     };
 
@@ -176,20 +176,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const classes = cn(baseStyles, variants[variant], sizes[size], className);
 
     const pointerEvents = {
-      onBlur: (event: any) => {
+      onBlur: (event: React.FocusEvent<HTMLButtonElement>) => {
         onBlur?.(event);
         setIsPressed(false);
         setHovered(false);
       },
       onClick: onClick,
-      onFocus: (event: any) => {
+      onFocus: (event: React.FocusEvent<HTMLButtonElement>) => {
         onFocus?.(event);
         if (event.currentTarget.matches(":focus-visible")) {
           updateOriginFromCenter();
           setHovered(true);
         }
       },
-      onKeyDown: (event: any) => {
+      onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyDown?.(event);
         if (event.key === " " || event.key === "Enter") {
           updateOriginFromCenter();
@@ -197,27 +197,27 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           setHovered(true);
         }
       },
-      onKeyUp: (event: any) => {
+      onKeyUp: (event: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyUp?.(event);
         setIsPressed(false);
         setHovered(false);
       },
-      onPointerCancel: (event: any) => {
+      onPointerCancel: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerCancel?.(event);
         setIsPressed(false);
       },
-      onPointerDown: (event: any) => {
+      onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerDown?.(event);
         updateOriginFromPointer(event);
         setIsPressed(true);
         setHovered(true);
       },
-      onPointerEnter: (event: any) => {
+      onPointerEnter: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerEnter?.(event);
         updateOriginFromPointer(event);
         setHovered(true);
       },
-      onPointerUp: (event: any) => {
+      onPointerUp: (event: React.PointerEvent<HTMLButtonElement>) => {
         onPointerUp?.(event);
         setIsPressed(false);
       },
