@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { Eye, ExternalLink, ArrowRight, Activity, Terminal } from "lucide-react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
@@ -29,6 +30,7 @@ export default function CoverRingCard({
   onOpenDetail,
 }: CoverRingCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   // Gesture tracking to distinguish vertical page scroll from intentional card clicks
   const pointerStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
@@ -98,13 +100,10 @@ export default function CoverRingCard({
   const primaryMetric = project.metrics && project.metrics.length > 0 ? project.metrics[0] : null;
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label={`${project.title}. Click to view architectural case study.`}
+    <article
+      aria-label={`${project.title} — ${project.tag}`}
       aria-current={isFront ? "true" : undefined}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -112,9 +111,7 @@ export default function CoverRingCard({
       style={{ touchAction: "pan-y" }}
       onMouseEnter={() => isFront && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 focus:outline-none touch-manipulation active:scale-[0.99] ${
-        isFront ? "focus-visible:ring-2 focus-visible:ring-accent" : ""
-      }`}
+      className="relative w-[270px] xs:w-[305px] sm:w-[350px] md:w-[370px] h-[450px] xs:h-[475px] sm:h-[500px] select-none rounded-3xl cursor-pointer transition-shadow duration-300 touch-manipulation active:scale-[0.99]"
     >
       <div
         className={`relative w-full h-full rounded-3xl bg-bg-surface border flex flex-col justify-between overflow-hidden transition-colors duration-200 ${
@@ -129,7 +126,7 @@ export default function CoverRingCard({
         <div
           className="pointer-events-none absolute inset-0 z-30 rounded-3xl bg-bg transition-opacity duration-200"
           style={{
-            opacity: depthRatio * 0.65,
+            opacity: `calc(var(--card-depth, ${depthRatio}) * 0.65)`,
           }}
           aria-hidden="true"
         />
@@ -223,17 +220,16 @@ export default function CoverRingCard({
             {/* Project Preview Image / Terminal Slot */}
             {!project.isGitHubCard ? (
               <div className="mt-2.5 sm:mt-3 relative w-full h-24 xs:h-28 sm:h-32 rounded-2xl border border-border-custom bg-bg/60 overflow-hidden flex items-center justify-center group">
-                {project.image ? (
-                  <img
+                {project.image && !imgError ? (
+                  <Image
                     src={project.image}
                     alt={project.imageAlt || `${project.title} preview`}
-                    loading={isFront ? "eager" : "lazy"}
-                    decoding="async"
-                    fetchPriority={isFront ? "high" : "auto"}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = "none";
-                    }}
+                    fill
+                    sizes="(max-width: 640px) 270px, 370px"
+                    quality={75}
+                    priority={isFront}
+                    className="object-cover"
+                    onError={() => setImgError(true)}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center p-3 text-center">
@@ -294,7 +290,7 @@ export default function CoverRingCard({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={`Visit official ${tech} website (opens in new tab)`}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-[11px] text-text-secondary hover:text-accent transition-all duration-150 transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-[11px] text-text-secondary hover:text-accent transition-[color,background-color,border-color,transform] duration-150 transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
                   <TechIcon name={tech} size="sm" />
                   <span>{tech}</span>
@@ -307,25 +303,53 @@ export default function CoverRingCard({
               )}
             </div>
 
-            <div className="pt-2.5 border-t border-border-custom/70 flex items-center justify-between text-xs">
-              <span className="font-semibold text-accent flex items-center gap-1.5 transition-colors duration-150">
-                <Eye className="w-3.5 h-3.5" />
-                <span>
-                  {project.isGitHubCard ? "Open GitHub repository" : "Inspect case study"}
+            <div className="pt-2.5 border-t border-border-custom/70">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (project.isGitHubCard) {
+                    window.open(project.githubUrl, "_blank", "noopener,noreferrer");
+                  } else if (!isFront) {
+                    onSelect();
+                  } else {
+                    onSelect();
+                    onOpenDetail();
+                  }
+                }}
+                onKeyDown={handleKeyDown}
+                aria-label={
+                  project.isGitHubCard
+                    ? `Open ${project.title} on GitHub`
+                    : isFront
+                      ? `Inspect ${project.title} case study`
+                      : `Focus ${project.title}`
+                }
+                className="w-full flex items-center justify-between text-xs cursor-pointer rounded-lg py-0.5 focus-visible:outline-2 focus-visible:outline-accent group/cta"
+              >
+                <span className="font-semibold text-accent flex items-center gap-1.5 transition-colors duration-150">
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>
+                    {project.isGitHubCard
+                      ? "Open GitHub repository"
+                      : isFront
+                        ? "Inspect case study"
+                        : "Bring to front"}
+                  </span>
                 </span>
-              </span>
-              <span className="text-accent transition-transform duration-150 motion-safe:group-hover:translate-x-0.5">
-                {project.isGitHubCard ? (
-                  <ExternalLink className="w-3.5 h-3.5" />
-                ) : (
-                  <ArrowRight className="w-3.5 h-3.5" />
-                )}
-              </span>
+                <span className="text-accent transition-transform duration-150 motion-safe:group-hover/cta:translate-x-0.5">
+                  {project.isGitHubCard ? (
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  ) : (
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  )}
+                </span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 

@@ -1,10 +1,17 @@
 "use client";
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { FOOTER_NAV_LINKS, FOOTER_SOCIAL_LINKS, EMAIL_ADDRESS } from "@/data/credentialsAndConnect";
 import { FileText, Mail } from "lucide-react";
-import ScrollReveal from "@/components/effects/ScrollReveal";
 import { PlayableWordmark } from "@/components/ui/shutter-glyph-footer";
 
 /* ──────────────────── Social SVG Icons ──────────────────── */
@@ -43,7 +50,6 @@ const PROFILE_ICONS: ProfileIcon[] = [
     url: linkedinUrl,
     icon: <LinkedinIcon size={17} />,
     tooltipText: "LinkedIn",
-    tooltipTag: "↗",
     external: true,
   },
   {
@@ -51,7 +57,6 @@ const PROFILE_ICONS: ProfileIcon[] = [
     url: githubUrl,
     icon: <GithubIcon size={18} />,
     tooltipText: "GitHub",
-    tooltipTag: "↗",
     external: true,
   },
   {
@@ -59,7 +64,7 @@ const PROFILE_ICONS: ProfileIcon[] = [
     url: resumeUrl,
     icon: <FileText size={17} strokeWidth={2} />,
     tooltipText: "Resume",
-    tooltipTag: "PDF ↗",
+    tooltipTag: "PDF",
     external: true,
   },
   {
@@ -147,7 +152,7 @@ function ProfileIconButton({
         className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 min-w-[40px] min-h-[40px] sm:min-w-[44px] sm:min-h-[44px] rounded-full border border-border-custom text-text-secondary
           hover:border-accent hover:text-accent hover:bg-accent/5 hover:-translate-y-0.5
           focus-visible:border-accent focus-visible:text-accent focus-visible:bg-accent/5 focus-visible:-translate-y-0.5
-          transition-all duration-150"
+          transition-[border-color,color,background-color,transform] duration-150"
       >
         <span className="sr-only">{item.label}</span>
         {item.icon}
@@ -342,18 +347,52 @@ function MouseIcon({
 
 /* ──────────────────── BackToTop ──────────────────── */
 
-function BackToTop() {
+function BackToTop({
+  scrollProgress,
+}: {
+  scrollProgress?: import("motion/react").MotionValue<number>;
+}) {
   const [going, setGoing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hoverCount, setHoverCount] = useState(0);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const prefersReduced = useReducedMotion();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const prefersReduced = useReducedMotion() ?? false;
+
+  // Magnetic cursor pull (zero React re-renders on mousemove)
+  const magX = useMotionValue(0);
+  const magY = useMotionValue(0);
+  const springX = useSpring(magX, { stiffness: 320, damping: 24 });
+  const springY = useSpring(magY, { stiffness: 320, damping: 24 });
+
+  // Scroll-linked emergence as user reaches the footer
+  const fallbackScroll = useMotionValue(1);
+  const activeProgress = scrollProgress ?? fallbackScroll;
+  const pillScale = useTransform(activeProgress, [0, 0.45], [0.92, 1]);
+  const pillY = useTransform(activeProgress, [0, 0.45], [8, 0]);
 
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (prefersReduced || e.pointerType !== "mouse" || !buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    magX.set((px - 0.5) * 10);
+    magY.set((py - 0.5) * 6);
+    buttonRef.current.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
+    buttonRef.current.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
+  };
+
+  const handlePointerLeave = () => {
+    magX.set(0);
+    magY.set(0);
+    setIsHovered(false);
+  };
 
   const handleClick = useCallback(() => {
     if (going) return;
@@ -374,130 +413,195 @@ function BackToTop() {
     const lenis = typeof window !== "undefined" ? window.__lenis : null;
     if (lenis) {
       lenis.scrollTo(0, {
-        duration: 1.8,
+        duration: 1.6,
         onComplete: () => finish(),
       });
-      timeoutRef.current = setTimeout(finish, 2600);
+      timeoutRef.current = setTimeout(finish, 2400);
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      timeoutRef.current = setTimeout(finish, 2000);
+      timeoutRef.current = setTimeout(finish, 1800);
     }
   }, [going, prefersReduced]);
 
   return (
-    <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-20">
+    <motion.div
+      style={
+        prefersReduced
+          ? undefined
+          : {
+              scale: pillScale,
+              y: pillY,
+              x: springX,
+              translateY: springY,
+            }
+      }
+      className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-20 will-change-transform"
+    >
       <motion.button
+        ref={buttonRef}
         type="button"
         aria-label="Back to top"
         onClick={handleClick}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
         onMouseEnter={() => {
           setHoverCount((c) => c + 1);
           setIsHovered(true);
         }}
-        onMouseLeave={() => setIsHovered(false)}
         onFocus={() => {
           setHoverCount((c) => c + 1);
           setIsHovered(true);
         }}
         onBlur={() => setIsHovered(false)}
-        whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.94 }}
-        transition={{ type: "spring", stiffness: 400, damping: 22 }}
+        whileHover={prefersReduced ? undefined : { y: -2 }}
+        whileTap={prefersReduced ? undefined : { scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 400, damping: 24 }}
         className={`
-          group flex items-center gap-2 rounded-full border min-h-[44px] px-4 sm:px-5 py-2.5 font-mono text-[12px] sm:text-[13px]
-          bg-bg-surface shadow-sm select-none
-          transition-colors duration-200
+          group relative overflow-hidden flex items-center gap-2.5 rounded-full border min-h-[44px] px-5 py-2.5 font-mono text-[12px] sm:text-[13px]
+          bg-bg-surface shadow-sm select-none cursor-pointer
+          transition-[border-color,color,box-shadow] duration-200
           focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none
           ${
             going
-              ? "border-accent text-accent shadow-md shadow-accent/10"
-              : "border-border-custom text-text-secondary hover:border-accent hover:text-accent hover:shadow-md hover:shadow-accent/5"
+              ? "border-accent text-accent shadow-md shadow-accent/15"
+              : "border-border-custom text-text-secondary hover:border-accent hover:text-accent hover:shadow-md hover:shadow-accent/10"
           }
         `}
       >
+        {/* Pointer-tracked radial sheen on hover */}
+        {!prefersReduced && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            style={{
+              background:
+                "radial-gradient(90px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.16), transparent 70%)",
+            }}
+          />
+        )}
+
         <MouseIcon
           going={going}
           hovered={isHovered}
           hoverCount={hoverCount}
-          reduced={!!prefersReduced}
+          reduced={prefersReduced}
         />
-        <span className="tracking-tight transition-colors duration-200">Back to top</span>
+        <span className="relative z-10 tracking-tight transition-colors duration-200">
+          {going ? "Scrolling up..." : "Back to top"}
+        </span>
       </motion.button>
-    </div>
+    </motion.div>
   );
 }
 
 /* ──────────────────── Responsive Unified Footer ──────────────────── */
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion() ?? false;
+
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start 96%", "end end"],
+  });
+
+  const smoothScroll = useSpring(scrollYProgress, {
+    stiffness: 170,
+    damping: 26,
+    mass: 0.45,
+  });
+
+  const rowY = useTransform(smoothScroll, [0, 0.7], [18, 0]);
+  const rowOpacity = useTransform(smoothScroll, [0, 0.55], [0.4, 1]);
+  const wordmarkY = useTransform(smoothScroll, [0.15, 1], [32, 0]);
+  const wordmarkScale = useTransform(smoothScroll, [0.15, 1], [0.94, 1]);
+  const wordmarkOpacity = useTransform(smoothScroll, [0.1, 0.85], [0.25, 1]);
+
   return (
     <footer
-      className="bg-bg-surface relative border-t border-border-custom w-full"
+      ref={footerRef}
+      className="bg-bg-surface relative border-t border-border-custom w-full overflow-x-clip"
       aria-label="Site Footer"
     >
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative">
         {/* Back to top pill sitting on the top border */}
-        <BackToTop />
+        <BackToTop scrollProgress={smoothScroll} />
 
-        {/* Main 3-column row from the original footer */}
-        <ScrollReveal direction="up" delay={0.05}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start md:items-center gap-7 sm:gap-8 pt-16 sm:pt-20 pb-8 sm:pb-12">
-            {/* Left: Identity */}
-            <div className="text-left">
-              <p className="font-display font-bold text-[26px] sm:text-[30px] leading-tight text-text-primary tracking-tight">
-                Dhruv Vawhle.
-              </p>
-              <p className="mt-1.5 text-xs sm:text-sm text-text-secondary font-mono">
-                Software Engineer
-              </p>
-              <p className="mt-1 text-xs text-text-secondary max-w-[30ch]">
-                Mumbai, Maharashtra, India.
-              </p>
-            </div>
-
-            {/* Center: Navigation */}
-            <nav
-              aria-label="Footer Section Navigation"
-              className="flex flex-wrap items-center lg:justify-center gap-x-5 sm:gap-x-7 gap-y-2 sm:gap-y-3 text-[13px] sm:text-[14px] font-mono font-medium text-text-secondary"
-            >
-              {FOOTER_NAV_LINKS.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded py-1"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-
-            {/* Right: Profile Icons */}
-            <div className="flex flex-wrap gap-2.5 lg:justify-self-end">
-              {PROFILE_ICONS.map((item, i) => (
-                <ProfileIconButton
-                  key={item.label}
-                  item={item}
-                  isLast={i === PROFILE_ICONS.length - 1}
-                />
-              ))}
-            </div>
+        {/* Main 3-column row */}
+        <motion.div
+          style={
+            shouldReduceMotion
+              ? undefined
+              : { y: rowY, opacity: rowOpacity }
+          }
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start md:items-center gap-7 sm:gap-8 pt-16 sm:pt-20 pb-8 sm:pb-12 will-change-transform"
+        >
+          {/* Left: Identity */}
+          <div className="text-left">
+            <p className="font-display font-bold text-[26px] sm:text-[30px] leading-tight text-text-primary tracking-tight">
+              Dhruv Vawhle.
+            </p>
+            <p className="mt-1.5 text-xs sm:text-sm text-text-secondary font-mono">
+              Software Engineer
+            </p>
+            <p className="mt-1 text-xs text-text-secondary max-w-[30ch]">
+              Mumbai, Maharashtra, India.
+            </p>
           </div>
 
-          {/* ── Playable Wordmark Name (Fully Mobile Responsive) ── */}
-          <div className="pt-2 sm:pt-4 pb-6 sm:pb-8 border-t border-border-custom/50 w-full overflow-hidden">
-            <PlayableWordmark
-              word="DHRUV"
-              shutterAt={2}
-              className="w-full text-text-primary/90 hover:text-text-primary transition-colors"
-            />
-          </div>
+          {/* Center: Navigation with Drawing Underline on Hover */}
+          <nav
+            aria-label="Footer Section Navigation"
+            className="flex flex-wrap items-center lg:justify-center gap-x-5 sm:gap-x-7 gap-y-2 sm:gap-y-3 text-[13px] sm:text-[14px] font-mono font-medium text-text-secondary"
+          >
+            {FOOTER_NAV_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="relative py-1 hover:text-accent transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-px after:bg-accent after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-200"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-border-custom/60 pt-6 sm:pt-8 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-text-secondary text-center sm:text-left">
-            <p>© 2026 Dhruv Vawhle. All rights reserved.</p>
-            <p>Crafted with Next.js, Tailwind CSS &amp; Framer Motion.</p>
+          {/* Right: Profile Icons */}
+          <div className="flex flex-wrap gap-2.5 lg:justify-self-end">
+            {PROFILE_ICONS.map((item, i) => (
+              <ProfileIconButton
+                key={item.label}
+                item={item}
+                isLast={i === PROFILE_ICONS.length - 1}
+              />
+            ))}
           </div>
-        </ScrollReveal>
+        </motion.div>
+
+        {/* Playable Wordmark with Scroll-Driven Curtain Reveal */}
+        <motion.div
+          style={
+            shouldReduceMotion
+              ? undefined
+              : {
+                  y: wordmarkY,
+                  scale: wordmarkScale,
+                  opacity: wordmarkOpacity,
+                }
+          }
+          className="pt-2 sm:pt-4 pb-6 sm:pb-8 border-t border-border-custom/50 w-full overflow-hidden will-change-transform"
+        >
+          <PlayableWordmark
+            word="DHRUV"
+            shutterAt={2}
+            className="w-full text-text-primary/90 hover:text-text-primary transition-colors"
+          />
+        </motion.div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-border-custom/60 pt-6 sm:pt-8 pb-[max(2rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-text-secondary text-center sm:text-left">
+          <p>© 2026 Dhruv Vawhle. All rights reserved.</p>
+          <p>Crafted with Next.js, Tailwind CSS &amp; Framer Motion.</p>
+        </div>
       </div>
     </footer>
   );

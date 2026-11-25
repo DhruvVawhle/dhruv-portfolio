@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue } from "motion/react";
+import React, { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { CREDENTIALS_DATA, CredentialItem } from "@/data/credentialsAndConnect";
 import dynamic from "next/dynamic";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import { useSimpleToast, copyToClipboard } from "@/components/ui/SimpleToast";
 import GlassFolder, { FolderFile, ArtRecipe } from "@/components/ui/glass-folder-cards";
 import { useTheme } from "@/hooks/useTheme";
+import { usePointerTilt } from "@/components/sections/project-showcase/hooks";
 
 const PreviewDialog = dynamic(() => import("@/components/ui/PreviewDialog"), {
   ssr: false,
@@ -33,42 +34,40 @@ interface SpotlightCardProps {
 }
 
 function SpotlightCard({ children, className = "", onClick }: SpotlightCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(-500);
-  const mouseY = useMotionValue(-500);
-
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
-  };
-
-  const onMouseLeave = () => {
-    mouseX.set(-500);
-    mouseY.set(-500);
-  };
+  const shouldReduceMotion = useReducedMotion() ?? false;
+  const { cardRef, handlePointerMove, handlePointerLeave } =
+    usePointerTilt(shouldReduceMotion);
 
   return (
-    <div
-      ref={cardRef}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      onClick={onClick}
-      className={`relative rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-7 flex flex-col justify-between overflow-hidden group shadow-xs hover:border-accent/50 hover:shadow-lg transition-[border-color,box-shadow] duration-300 ${className}`}
-    >
-      {/* Subtle radial cursor glow */}
-      <motion.div
+    <div className="transition-transform duration-200 ease-out hover:-translate-y-0.5 h-full">
+      <div
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onClick={onClick}
         style={{
-          left: mouseX,
-          top: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
+          transform: shouldReduceMotion
+            ? undefined
+            : "perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
+          transition: shouldReduceMotion
+            ? undefined
+            : "transform var(--tilt-ease, 200ms) cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease, box-shadow 200ms ease",
         }}
-        className="pointer-events-none absolute w-80 h-80 rounded-full bg-accent/12 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"
-      />
-      <div className="relative z-10 flex flex-col h-full justify-between">
-        {children}
+        className={`relative rounded-3xl bg-bg-surface border border-border-custom p-6 sm:p-7 flex flex-col justify-between overflow-hidden group shadow-xs hover:border-accent/50 hover:shadow-xl hover:shadow-accent/10 h-full will-change-transform ${className}`}
+      >
+        {!shouldReduceMotion && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              background:
+                "radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.12), transparent 65%)",
+            }}
+          />
+        )}
+        <div className="relative z-10 flex flex-col h-full justify-between">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -79,6 +78,16 @@ export default function Certifications() {
   const [viewMode, setViewMode] = useState<"folders" | "grid">("folders");
   const [selectedFilter, setSelectedFilter] = useState<CategoryFilter>("All");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [folderWidth, setFolderWidth] = useState(340);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setFolderWidth(window.innerWidth < 390 ? 276 : 340);
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
   const [dialogState, setDialogState] = useState<{
     isOpen: boolean;
     title: string;
@@ -265,13 +274,9 @@ export default function Certifications() {
   return (
     <section
       id="certifications"
-      className="py-[var(--section-padding-y)] bg-bg section-alt relative overflow-hidden scroll-mt-20 sm:scroll-mt-24"
+      className="py-[var(--section-padding-y)] bg-bg section-alt relative overflow-x-clip scroll-mt-20 sm:scroll-mt-24"
       aria-label="Credentials & Certifications Section"
     >
-      {/* Background Ambience Glow */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-
       <div className="content-width relative z-10">
         {/* Section Header */}
         <ScrollReveal>
@@ -389,6 +394,7 @@ export default function Certifications() {
                     label={folder.label}
                     art={folder.art}
                     seed={folder.seed}
+                    width={folderWidth}
                     tone={theme === "dark" ? "dark" : "light"}
                     files={folder.files}
                     action="none"
@@ -404,9 +410,9 @@ export default function Certifications() {
               ))}
             </div>
 
-            <p className="mt-10 sm:mt-12 text-center font-mono text-[11px] sm:text-xs text-text-secondary/75 tracking-wider px-4">
-              <span className="hidden sm:inline">✦ Hover folder to tilt · Click folder to fan out · Click any certificate to inspect full resolution</span>
-              <span className="sm:hidden">✦ Tap folder to open · Tap any certificate to inspect full resolution</span>
+            <p className="mt-10 sm:mt-12 text-center font-mono text-[11px] sm:text-xs text-text-secondary/75 px-4">
+              <span className="hidden sm:inline">Hover folder to tilt · Click folder to fan out · Click any certificate to inspect</span>
+              <span className="sm:hidden">Tap folder to open · Tap any certificate to inspect</span>
             </p>
           </div>
         ) : (

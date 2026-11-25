@@ -20,9 +20,9 @@ export interface ScrollRevealProps {
 export default function ScrollReveal({
   children,
   delay = 0,
-  duration = 0.65,
+  duration = 0.5,
   direction = "up",
-  distance = 32,
+  distance = 24,
   scale = 1,
   blur = false,
   className,
@@ -56,7 +56,7 @@ export default function ScrollReveal({
         x: offset.x,
         y: offset.y,
         scale,
-        filter: blur ? "blur(8px)" : "blur(0px)",
+        ...(blur ? { filter: "blur(6px)" } : {}),
       }}
       animate={
         isInView
@@ -65,14 +65,14 @@ export default function ScrollReveal({
               x: 0,
               y: 0,
               scale: 1,
-              filter: "blur(0px)",
+              ...(blur ? { filter: "blur(0px)" } : {}),
             }
           : {
               opacity: 0,
               x: offset.x,
               y: offset.y,
               scale,
-              filter: blur ? "blur(8px)" : "blur(0px)",
+              ...(blur ? { filter: "blur(6px)" } : {}),
             }
       }
       transition={{

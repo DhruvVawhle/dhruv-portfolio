@@ -20,7 +20,7 @@ export default function ScrollProgress() {
   return (
     <div className="fixed top-0 left-0 right-0 h-[2.5px] z-[80] pointer-events-none bg-transparent">
       <motion.div
-        className="h-full bg-gradient-to-r from-blue-600 via-accent to-sky-400 origin-left shadow-[0_0_12px_rgba(59,130,246,0.6)]"
+        className="h-full bg-accent origin-left"
         style={{ scaleX }}
       />
     </div>

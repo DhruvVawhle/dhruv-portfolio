@@ -321,7 +321,7 @@ export default function RootLayout({
           id="dv-pre-init"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var t=s||(d?"dark":"light");document.documentElement.setAttribute("data-theme",t);if(t==="dark"){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}var b=/Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent);if(!b){var nav=window.performance&&window.performance.getEntriesByType&&window.performance.getEntriesByType("navigation")[0];var isReload=(nav&&nav.type==="reload")||(window.performance&&window.performance.navigation&&window.performance.navigation.type===1)||(sessionStorage.getItem("dv_is_reload")==="true");var isFirst=sessionStorage.getItem("dv_portfolio_visited")!=="true";if(isFirst||isReload){document.documentElement.classList.add("dv-loading-active");}}}catch(e){}})();`,
+            __html: `(function(){try{if("scrollRestoration" in history){history.scrollRestoration="manual";}var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var t=s||(d?"dark":"light");document.documentElement.setAttribute("data-theme",t);if(t==="dark"){document.documentElement.classList.add("dark");}else{document.documentElement.classList.remove("dark");}var b=/Lighthouse|PageSpeed|HeadlessChrome/i.test(navigator.userAgent);if(!b){var nav=window.performance&&window.performance.getEntriesByType&&window.performance.getEntriesByType("navigation")[0];var isReload=(nav&&nav.type==="reload")||(window.performance&&window.performance.navigation&&window.performance.navigation.type===1)||(sessionStorage.getItem("dv_is_reload")==="true");var isFirst=sessionStorage.getItem("dv_portfolio_visited")!=="true";if(isFirst||isReload){if(window.location.hash){history.replaceState(null,"",window.location.pathname+window.location.search);}window.scrollTo(0,0);document.documentElement.classList.add("dv-loading-active");}}}catch(e){}})();`,
           }}
         />
         <script
@@ -337,13 +337,6 @@ export default function RootLayout({
           className="fixed inset-0 z-[999990] flex-col items-center justify-center bg-bg select-none cursor-pointer"
           aria-hidden="true"
         >
-          <div
-            className="absolute w-[480px] h-[480px] rounded-full pointer-events-none opacity-20 blur-3xl"
-            style={{
-              background:
-                "radial-gradient(circle, var(--accent, #3b82f6) 0%, transparent 70%)",
-            }}
-          />
           <div className="relative flex items-center justify-center h-[260px] scale-75 sm:scale-85 select-none pointer-events-none">
             <div className="loader">
               <div className="box box0"><div></div></div>
@@ -360,11 +353,11 @@ export default function RootLayout({
           <div className="relative z-10 flex flex-col items-center mt-3 px-6 text-center pointer-events-none">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="font-display font-extrabold text-2xl tracking-tight text-text-primary">
-                DHRUV VAWHLE<span className="text-accent">.</span>
+                Dhruv Vawhle<span className="text-accent">.</span>
               </span>
             </div>
-            <p className="font-mono text-[10px] tracking-widest text-text-secondary uppercase mb-4">
-              Full-Stack &middot; AI Systems &middot; Automation
+            <p className="font-mono text-xs text-text-secondary mb-4">
+              Full-stack, AI systems &amp; automation
             </p>
             <div className="w-52 h-1 rounded-full bg-border-custom overflow-hidden relative mb-2.5">
               <div
@@ -372,12 +365,11 @@ export default function RootLayout({
                 className="h-full bg-accent rounded-full dv-progress-bar-anim"
               />
             </div>
-            <div className="flex items-center gap-2 text-[10px] font-mono text-text-secondary">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span id="dv-preload-txt">INITIALIZING SYSTEM...</span>
+            <div className="flex items-center gap-2 text-[11px] font-mono text-text-secondary">
+              <span id="dv-preload-txt">Loading portfolio...</span>
             </div>
           </div>
-          <span className="absolute bottom-6 font-mono text-[9px] text-text-secondary/70 tracking-widest uppercase">
+          <span className="absolute bottom-6 font-mono text-xs text-text-secondary/70">
             Click anywhere to enter
           </span>
         </div>

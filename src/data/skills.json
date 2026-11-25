@@ -2,7 +2,7 @@
   "orbitRings": [
     {
       "id": "inner",
-      "radiusPx": 120,
+      "radiusPx": 144,
       "mobileRadiusPx": 60,
       "duration": 75,
       "direction": 1,
@@ -10,7 +10,7 @@
     },
     {
       "id": "middle",
-      "radiusPx": 200,
+      "radiusPx": 222,
       "mobileRadiusPx": 105,
       "duration": 95,
       "direction": -1,
@@ -18,7 +18,7 @@
     },
     {
       "id": "outer",
-      "radiusPx": 285,
+      "radiusPx": 300,
       "mobileRadiusPx": 150,
       "duration": 125,
       "direction": 1,

@@ -198,7 +198,7 @@ export default function Navbar() {
             aria-label="Dhruv Vawhle — Back to Top"
           >
             <span>DV</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent)]" />
           </a>
 
           {/* Divider */}
@@ -275,7 +275,7 @@ export default function Navbar() {
             aria-label="Dhruv Vawhle — Back to Top"
           >
             <span>DV</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent)]" />
           </a>
 
           {/* Right side controls: Theme Toggle + 3-Line Hamburger Menu */}
@@ -290,15 +290,15 @@ export default function Navbar() {
               className="relative w-11 h-11 min-w-[44px] min-h-[44px] rounded-full flex flex-col items-center justify-center gap-1.5 text-text-primary hover:text-accent focus-visible:outline-2 focus-visible:outline-accent transition-colors"
             >
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-accent" : ""
+                className={`block w-5 h-0.5 bg-current rounded-full transition-[transform,background-color] duration-300 origin-center ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-accent" : ""
                   }`}
               />
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 ${isMobileMenuOpen ? "opacity-0 scale-0" : ""
+                className={`block w-5 h-0.5 bg-current rounded-full transition-[opacity,transform] duration-300 ${isMobileMenuOpen ? "opacity-0 scale-0" : ""
                   }`}
               />
               <span
-                className={`block w-5 h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-accent" : ""
+                className={`block w-5 h-0.5 bg-current rounded-full transition-[transform,background-color] duration-300 origin-center ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-accent" : ""
                   }`}
               />
             </button>
@@ -338,20 +338,17 @@ export default function Navbar() {
                       duration: 0.28,
                       ease: "easeOut",
                     }}
-                    className={`group relative flex items-center justify-center gap-3 px-6 py-2.5 rounded-2xl w-full text-center transition-all duration-200 select-none ${isCurrent
+                    className={`group relative flex items-center justify-center gap-3 px-6 py-2.5 rounded-2xl w-full text-center transition-[color,background-color] duration-200 select-none ${isCurrent
                       ? "bg-accent/15 text-accent font-bold shadow-xs"
                       : "text-text-primary hover:text-accent hover:bg-bg-surface/70"
                       }`}
                   >
-                    <span className="font-mono text-xs text-accent/70 font-semibold tracking-wider">
+                    <span className="font-mono text-xs text-accent/70 font-semibold">
                       {item.index}
                     </span>
                     <span className="font-display font-extrabold text-2xl sm:text-3xl tracking-tight">
                       {item.label}
                     </span>
-                    {isCurrent && (
-                      <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    )}
                   </motion.a>
                 );
               })}

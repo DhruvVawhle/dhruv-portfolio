@@ -2,9 +2,9 @@
 
 <div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Motion](https://img.shields.io/badge/Motion-Framer-FF4154?style=for-the-badge&logo=framer&logoColor=white)](https://motion.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
@@ -20,24 +20,25 @@
 
 ## 🌟 Key Features
 
-- **🎨 Editorial Engineering Design**: Spatial typography (Plus Jakarta Sans, Space Grotesk, JetBrains Mono), custom dark-mode token palette, and glassmorphic HUD overlays.
+- **🎨 Editorial Engineering Design**: Fluid typography (Bricolage Grotesque, Plus Jakarta Sans, JetBrains Mono), custom dark/light token palette, and glassmorphic HUD overlays.
 - **⚡ High-Performance Core Web Vitals**:
   - Tree-shaken Three.js node network and particle fields with `IntersectionObserver` pause mechanisms.
-  - Zero-runtime inline SVG icon system eliminating heavy icon package parsing overhead.
-  - Native lazy loading (`loading="lazy"`, `decoding="async"`) across all below-the-fold media.
+  - Zero-re-render 3D pointer tilt & specular sheen (`--tilt-x`, `--tilt-y`, `--mx`, `--my`) across interactive cards.
+  - Preloaded `next/image` (AVIF/WebP) project previews with `loading="eager"` and `decoding="async"` for zero-flicker scroll transitions.
   - Unblocked First Contentful Paint (FCP) with streaming server-rendered HTML.
 - **🤖 Applied AI & Architecture Showcases**:
   - **PromptShield**: High-throughput AI security gateway & reverse proxy with sub-15ms latency, OWASP LLM Top 10 coverage, morphological root-stemming heuristic engine, deterministic policy enforcement (ALLOW/WARN/SANITIZE/BLOCK), and 2-line OpenAI SDK drop-in.
   - **MediMitra (SIH 2025 Finalist — Top 30 Nationally)**: Multilingual AI healthcare triage & clinical decision support platform built for rural accessibility. Features an authentic interactive WhatsApp simulator, real-time n8n workflow pipeline visualizer, sub-15ms local cache routing, and cross-dialect support (Hindi, Marathi, Hinglish).
   - **KrishiSaathi**: Agri-tech crop disease classification, pest diagnostic engine, and fair marketplace.
   - **CampusAI**: Multilingual AI reception terminal & robot kiosk for Shree L. R. Tiwari College of Engineering (SLRTCE), featuring a reactive 3D robot avatar, interactive SVG indoor wayfinding with mobile QR handoffs, and voice loop (EN, HI, MR, Hinglish) via Groq Whisper & Edge-TTS neural Indian accents.
-- **✨ Interactive Micro-Interactions & Immersion**:
-  - **3D Box Formation Preloader**: Procedural CSS 3D box assembly transition with coordinated drop-down entrance sequence and session-aware reload persistence.
+- **✨ Interactive Micro-Interactions & Cinematic Scroll**:
+  - **3D Box Formation Preloader**: GPU-composited 3D box assembly transition (`1.85s` with `scaleX` progress) and reload-to-top reset (`history.scrollRestoration = "manual"`).
+  - **3-Layer Project Folder Showcase**: Sticky scroll-driven queued folder stack (`ProjectShowcase`) with hover fan-out, slightly-open active preview sheets, and sliding spring filter pills.
+  - **Scroll-Driven Radial-Burst Skills Orbit**: Concentric 3-ring technology ecosystem that radially expands on scroll with live DOM-tracked SVG connection rays and a right-side architecture inspector.
   - **Cmd+K Command Palette**: Fast keyboard-driven command bar with instant section routing, external docs access, and dark mode toggling.
-  - **Cuberto Magnetic Cursor & Orbital Tech Ring**: Dynamic interactive cursor physics with smooth easing and interactive multi-tier orbital ecosystem showcasing full-stack proficiency.
-  - **Playable Shutter-Glyph Footer**: Mechanical split-flap wordmark animation with rhythmic scramble interactions.
+  - **Playable Shutter-Glyph Footer**: Mechanical split-flap wordmark animation with scroll-driven curtain reveal and magnetic `Back to top` pill.
 - **📜 Minimalist Document & Credential Previews**: Single-click modal preview for verified internship certificates and hackathon credentials with optional direct PDF download.
-- **🌊 Fluid Desktop Smooth Scroll & Microphysics**: Desktop Lenis smooth scrolling with auto-fallback to native momentum touch scroll on mobile screens (<768px).
+- **🌊 Motion-Synced Smooth Scroll**: Lenis wheel inertia synchronized directly inside Motion's `frame.update` loop on desktop, with native 120Hz momentum touch scrolling on mobile.
 - **♿ Strict Accessibility & Zero-Slop Design**: 100% compliant with `prefers-reduced-motion`, semantic heading hierarchy, full touch density (>=44px), WCAG AAA color contrasts, and unblocked server-rendered initial paint.
 
 ---
@@ -46,8 +47,8 @@
 
 | Layer | Technology |
 | :--- | :--- |
-| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, Turbopack, React Server Components) |
-| **UI Library** | [React 19](https://react.dev/) + [TypeScript 5](https://www.typescriptlang.org/) (Strict Mode) |
+| **Framework** | [Next.js 16.4](https://nextjs.org/) (App Router, Webpack/Turbopack, React Server Components) |
+| **UI Library** | [React 19.3](https://react.dev/) + [TypeScript 7](https://www.typescriptlang.org/) (Strict Mode) |
 | **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) + CSS Custom Properties Design Tokens |
 | **Animations** | [Motion](https://motion.dev/) (`motion/react`) |
 | **3D & Canvas** | [Three.js](https://threejs.org/) (WebGL Node Graph & Drifting Particles) |
@@ -81,7 +82,7 @@ portfolio-site/
 │   ├── components/
 │   │   ├── effects/           # HeroNodeNetwork, DriftingParticleField, ClientEffects
 │   │   ├── layout/            # Navbar, Footer, ScrollProgress
-│   │   ├── sections/          # Hero, About, Projects, Experience, Hackathons, Skills, Certifications, Contact
+│   │   ├── sections/          # Hero, About, Projects, project-showcase/, Experience, Hackathons, Skills, skills/, Certifications, Contact
 │   │   └── ui/                # SpotlightCard, PreviewDialog, TechIcon, InteractiveHoverButton
 │   ├── data/                  # Decoupled TypeScript & JSON data models
 │   │   ├── showcaseProjects.ts

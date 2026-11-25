@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { ShowcaseProject } from "@/data/showcaseProjects";
 import TechIcon from "@/components/ui/TechIcon";
 import { getTechWebsite } from "@/lib/techUrls";
+
+const emptySubscribe = () => () => {};
+const useIsClient = () => useSyncExternalStore(emptySubscribe, () => true, () => false);
 
 interface ProjectDetailSheetProps {
   project: ShowcaseProject | null;
@@ -18,36 +22,35 @@ export default function ProjectDetailSheet({
   isOpen,
   onClose,
 }: ProjectDetailSheetProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
+  const [failedImageSrc, setFailedImageSrc] = useState<string | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 0);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Pause Lenis and lock scroll while open
+  // Pause Lenis, lock scroll, and manage focus while open
   useEffect(() => {
     if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement | null;
       if (typeof window !== "undefined" && window.__lenis) {
         window.__lenis.stop();
       }
       document.body.style.overflow = "hidden";
-      setTimeout(() => closeBtnRef.current?.focus(), 50);
-    } else {
-      if (typeof window !== "undefined" && window.__lenis) {
-        window.__lenis.start();
-      }
-      document.body.style.overflow = "";
+      const focusTimer = setTimeout(() => closeBtnRef.current?.focus(), 50);
+      return () => {
+        clearTimeout(focusTimer);
+        if (typeof window !== "undefined" && window.__lenis) {
+          window.__lenis.start();
+        }
+        document.body.style.overflow = "";
+        previousFocusRef.current?.focus?.();
+      };
     }
 
-    return () => {
-      if (typeof window !== "undefined" && window.__lenis) {
-        window.__lenis.start();
-      }
-      document.body.style.overflow = "";
-    };
+    if (typeof window !== "undefined" && window.__lenis) {
+      window.__lenis.start();
+    }
+    document.body.style.overflow = "";
   }, [isOpen]);
 
   // Handle ESC and Tab focus trapping
@@ -149,18 +152,17 @@ export default function ProjectDetailSheet({
                 </p>
 
                 {/* Project Screenshot / Architecture Diagram Preview */}
-                {!project.isGitHubCard && project.image && (
+                {!project.isGitHubCard && project.image && failedImageSrc !== project.image && (
                   <div className="mt-3 sm:mt-4 relative w-full h-44 xs:h-52 sm:h-64 rounded-2xl border border-border-custom bg-bg/40 overflow-hidden flex items-center justify-center">
-                    <img
+                    <Image
                       src={project.image}
                       alt={project.imageAlt || `${project.title} – ${project.subtitle}`}
-                      loading="eager"
-                      decoding="async"
-                      fetchPriority="high"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLElement).style.display = "none";
-                      }}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 672px"
+                      quality={75}
+                      priority
+                      className="object-cover object-top"
+                      onError={() => setFailedImageSrc(project.image)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-bg-surface/50 via-transparent to-transparent pointer-events-none" />
                   </div>
@@ -220,7 +222,7 @@ export default function ProjectDetailSheet({
                         target="_blank"
                         rel="noopener noreferrer"
                         title={`Visit official ${tech} website (opens in new tab)`}
-                        className="group/tech inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-xs text-text-primary hover:text-accent transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
+                        className="group/tech inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-bg hover:bg-accent/10 border border-border-custom hover:border-accent/40 font-mono text-xs text-text-primary hover:text-accent transition-[color,background-color,border-color,transform] duration-200 transform hover:-translate-y-0.5 hover:shadow-xs focus-visible:outline-2 focus-visible:outline-accent"
                       >
                         <TechIcon name={tech} size="sm" />
                         <span className="font-medium">{tech}</span>
@@ -233,7 +235,7 @@ export default function ProjectDetailSheet({
                           strokeWidth="2.5"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="text-text-secondary group-hover/tech:text-accent opacity-50 group-hover/tech:opacity-100 transition-all duration-200 group-hover/tech:translate-x-0.5 group-hover/tech:-translate-y-0.5"
+                          className="text-text-secondary group-hover/tech:text-accent opacity-50 group-hover/tech:opacity-100 transition-[color,opacity,transform] duration-200 group-hover/tech:translate-x-0.5 group-hover/tech:-translate-y-0.5"
                           aria-hidden="true"
                         >
                           <line x1="7" y1="17" x2="17" y2="7" />

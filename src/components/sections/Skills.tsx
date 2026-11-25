@@ -1,58 +1,35 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+  type MotionValue,
+} from "motion/react";
 import ScrollReveal from "@/components/effects/ScrollReveal";
 import TechIcon from "@/components/ui/TechIcon";
-import Button from "@/components/ui/Button";
-import { getTechWebsite } from "@/lib/techUrls";
+import { orbitRings, relationshipsMap, techDetailsMap } from "@/lib/data";
+import SkillInspectorPanel, {
+  type TechDetailInfo,
+} from "@/components/sections/skills/SkillInspectorPanel";
 
-import { orbitRings, relationshipsMap, engineeringStack, techDetailsMap } from "@/lib/data";
-
-// Orbit ring configuration for the Engineering Ecosystem
 interface RingConfig {
   id: "inner" | "middle" | "outer";
-  radiusPx: number; // base desktop radius half (radius in pixels from center)
-  mobileRadiusPx: number; // mobile radius in pixels
+  radiusPx: number;
+  mobileRadiusPx: number;
   duration: number;
   direction: 1 | -1;
   skills: string[];
 }
 
 const ORBIT_RINGS: RingConfig[] = orbitRings as unknown as RingConfig[];
-
-// Intelligent Engineering Ecosystem Relationships
 const RELATIONSHIPS_MAP: Record<string, string[]> = relationshipsMap;
-
-interface TechCardItem {
-  name: string;
-  descriptor: string;
-  proficiency?: number;
-  yearsOfExperience?: number;
-}
-
-interface StackCategory {
-  id: string;
-  title: string;
-  subtitle: string;
-  accentColor: string;
-  accentClass: string;
-  technologies: TechCardItem[];
-}
-
-const ENGINEERING_STACK: StackCategory[] = engineeringStack as unknown as StackCategory[];
-
-interface TechDetailInfo {
-  category: string;
-  categoryColor: string;
-  role: string;
-  projectsList: string[];
-  useCases: string[];
-  architecture: string;
-  keyPatterns: string[];
-}
-
-const TECH_DETAILS_MAP: Record<string, TechDetailInfo> = techDetailsMap as unknown as Record<string, TechDetailInfo>;
+const TECH_DETAILS_MAP: Record<string, TechDetailInfo> =
+  techDetailsMap as unknown as Record<string, TechDetailInfo>;
 
 const getTechDetail = (name: string): TechDetailInfo => {
   if (TECH_DETAILS_MAP[name]) return TECH_DETAILS_MAP[name];
@@ -61,7 +38,11 @@ const getTechDetail = (name: string): TechDetailInfo => {
     categoryColor: "#3B82F6",
     role: "Full-Stack System Architect",
     projectsList: ["Core Portfolio Architecture & Applications"],
-    useCases: ["System Architecture", "High-Availability Execution", "Performance Optimization"],
+    useCases: [
+      "System Architecture",
+      "High-Availability Execution",
+      "Performance Optimization",
+    ],
     architecture: `Full-stack architecture component powering reliable ${name} execution across the production engineering ecosystem.`,
     keyPatterns: [
       "Modular Component Architecture",
@@ -72,84 +53,266 @@ const getTechDetail = (name: string): TechDetailInfo => {
   };
 };
 
+interface OrbitNodeItemProps {
+  skill: string;
+  ringId: "inner" | "middle" | "outer";
+  ringDuration: number;
+  targetX: number;
+  targetY: number;
+  ringSpread: MotionValue<number>;
+  isNodeActive: boolean;
+  isConnected: boolean;
+  isOtherDimmed: boolean;
+  isNodeHovered: boolean;
+  isOrbitPaused: boolean;
+  isSectionVisible: boolean;
+  shouldReduceMotion: boolean;
+  onSelect: (skill: string, e: React.MouseEvent) => void;
+  onHoverChange: (skill: string | null) => void;
+  registerNodeRef: (skill: string, el: HTMLButtonElement | null) => void;
+}
+
+function OrbitNodeItem({
+  skill,
+  ringId,
+  ringDuration,
+  targetX,
+  targetY,
+  ringSpread,
+  isNodeActive,
+  isConnected,
+  isOtherDimmed,
+  isNodeHovered,
+  isOrbitPaused,
+  isSectionVisible,
+  shouldReduceMotion,
+  onSelect,
+  onHoverChange,
+  registerNodeRef,
+}: OrbitNodeItemProps) {
+  const x = useTransform(ringSpread, [0, 1], [0, targetX]);
+  const y = useTransform(ringSpread, [0, 1], [0, targetY]);
+  const scale = useTransform(ringSpread, [0, 0.35, 1], [0.3, 0.85, 1]);
+  const opacity = useTransform(ringSpread, [0, 0.2, 1], [0, 0.85, 1]);
+
+  return (
+    <motion.div
+      style={
+        shouldReduceMotion
+          ? {
+              left: "50%",
+              top: "50%",
+              x: targetX,
+              y: targetY,
+            }
+          : {
+              left: "50%",
+              top: "50%",
+              x,
+              y,
+              scale,
+              opacity,
+            }
+      }
+      className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+    >
+      <div
+        className="relative flex items-center justify-center pointer-events-none"
+        style={{
+          animationName: !shouldReduceMotion ? `orbit-counter-${ringId}` : "none",
+          animationDuration: `${ringDuration}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
+        }}
+      >
+        <button
+          ref={(el) => registerNodeRef(skill, el)}
+          type="button"
+          onClick={(e) => onSelect(skill, e)}
+          onMouseEnter={() => onHoverChange(skill)}
+          onMouseLeave={() => onHoverChange(null)}
+          aria-label={`Inspect ${skill} engineering capabilities`}
+          aria-pressed={isNodeActive}
+          className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-[transform,border-color,background-color,opacity] duration-200 ease-out transform-gpu cursor-pointer focus-visible:outline-2 focus-visible:outline-[#3B82F6] w-14 h-14 min-w-[48px] min-h-[48px] ${
+            isNodeActive
+              ? "bg-[#161B22] border-2 border-[#3B82F6] scale-110 z-50 ring-2 ring-[#3B82F6]/30"
+              : isConnected
+                ? "bg-emerald-500/15 border border-emerald-400 scale-105 z-40"
+                : isOtherDimmed
+                  ? "bg-[#161B22]/60 border border-white/10 opacity-40 scale-95 z-10 hover:opacity-95 hover:scale-105"
+                  : "bg-[#161B22] border border-white/15 hover:scale-110 hover:border-[#3B82F6] z-20"
+          }`}
+        >
+          <TechIcon name={skill} size="md" />
+        </button>
+
+        {isNodeHovered && (
+          <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 rounded-full bg-[#161B22] border border-white/15 text-[11px] font-mono text-white shadow-lg z-50">
+            {skill}
+          </span>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Skills() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [isOrbitPaused, setIsOrbitPaused] = useState<boolean>(false);
   const [isSectionVisible, setIsSectionVisible] = useState<boolean>(true);
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [mobileOpenCategory, setMobileOpenCategory] = useState<string | null>("frontend");
 
+  const sectionRef = useRef<HTMLElement>(null);
   const orbitContainerRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
+  const inspectorWrapRef = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const lineRefs = useRef<Record<string, SVGLineElement | null>>({});
+  const shouldReduceMotion = useReducedMotion() ?? false;
+
+  const registerNodeRef = React.useCallback((skill: string, el: HTMLButtonElement | null) => {
+    nodeRefs.current[skill] = el;
+  }, []);
+
+  // Scroll-driven radial burst: nodes start clustered at the center and spread outward to their orbits
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 88%", "center 52%"],
+  });
+  const smoothBurst = useSpring(scrollYProgress, {
+    stiffness: 150,
+    damping: 22,
+    mass: 0.45,
+  });
+
+  // Staggered shockwave per ring (inner -> middle -> outer)
+  const innerSpread = useTransform(smoothBurst, [0.05, 0.72], [0, 1]);
+  const middleSpread = useTransform(smoothBurst, [0.15, 0.85], [0, 1]);
+  const outerSpread = useTransform(smoothBurst, [0.25, 0.98], [0, 1]);
+
+  const innerRingScale = useTransform(innerSpread, [0, 1], [0.22, 1]);
+  const middleRingScale = useTransform(middleSpread, [0, 1], [0.22, 1]);
+  const outerRingScale = useTransform(outerSpread, [0, 1], [0.22, 1]);
+
+  const ringBorderOpacity = useTransform(smoothBurst, [0.05, 0.55], [0, 1]);
+
+  const spreadMap = {
+    inner: innerSpread,
+    middle: middleSpread,
+    outer: outerSpread,
+  };
+  const ringScaleMap = {
+    inner: innerRingScale,
+    middle: middleRingScale,
+    outer: outerRingScale,
+  };
 
   // Pause orbital animation when offscreen
   useEffect(() => {
     const el = orbitContainerRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsSectionVisible(entry.isIntersecting);
-      },
+      ([entry]) => setIsSectionVisible(entry.isIntersecting),
       { rootMargin: "100px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Active technology being inspected (clicked node)
   const activeTech = selectedNode;
   const activeDetail = activeTech ? getTechDetail(activeTech) : null;
-  const connectedTechs = activeTech ? RELATIONSHIPS_MAP[activeTech] || [] : [];
+  const connectedTechs = React.useMemo(
+    () => (activeTech ? RELATIONSHIPS_MAP[activeTech] || [] : []),
+    [activeTech]
+  );
 
-  // Outside Click Dismissal: Close active inspection panel when clicking anywhere outside interactive tools/cards
+  // Sync SVG dotted connection lines to the live rotating DOM positions of orbit nodes
   useEffect(() => {
-    if (!selectedNode) return;
+    if (!activeTech) return;
 
-    const handleDocumentClick = () => {
-      setSelectedNode(null);
+    let rafId: number | null = null;
+
+    const updateLines = () => {
+      const container = orbitContainerRef.current;
+      const activeEl = nodeRefs.current[activeTech];
+      if (container && activeEl) {
+        const cRect = container.getBoundingClientRect();
+        const aRect = activeEl.getBoundingClientRect();
+        const cx = cRect.width / 2;
+        const cy = cRect.height / 2;
+        const ax = aRect.left + aRect.width / 2 - cRect.left;
+        const ay = aRect.top + aRect.height / 2 - cRect.top;
+
+        const centerUnder = lineRefs.current["center-under"];
+        const centerFlow = lineRefs.current["center-flow"];
+        [centerUnder, centerFlow].forEach((line) => {
+          if (!line) return;
+          line.setAttribute("x1", String(cx));
+          line.setAttribute("y1", String(cy));
+          line.setAttribute("x2", String(ax));
+          line.setAttribute("y2", String(ay));
+        });
+
+        connectedTechs.forEach((connSkill) => {
+          const connEl = nodeRefs.current[connSkill];
+          const under = lineRefs.current[`conn-under-${connSkill}`];
+          const flow = lineRefs.current[`conn-flow-${connSkill}`];
+          if (!connEl || !under || !flow) return;
+
+          const kRect = connEl.getBoundingClientRect();
+          const kx = kRect.left + kRect.width / 2 - cRect.left;
+          const ky = kRect.top + kRect.height / 2 - cRect.top;
+
+          [under, flow].forEach((line) => {
+            line.setAttribute("x1", String(ax));
+            line.setAttribute("y1", String(ay));
+            line.setAttribute("x2", String(kx));
+            line.setAttribute("y2", String(ky));
+          });
+        });
+      }
+
+      if (isSectionVisible && !shouldReduceMotion) {
+        rafId = requestAnimationFrame(updateLines);
+      }
     };
 
+    updateLines();
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [activeTech, connectedTechs, isSectionVisible, shouldReduceMotion]);
+
+  // Outside Click Dismissal
+  useEffect(() => {
+    if (!selectedNode) return;
+    const handleDocumentClick = () => setSelectedNode(null);
     const timer = setTimeout(() => {
       document.addEventListener("click", handleDocumentClick);
     }, 10);
-
     return () => {
       clearTimeout(timer);
       document.removeEventListener("click", handleDocumentClick);
     };
   }, [selectedNode]);
 
-  const getCategoryForTech = (techName: string) => {
-    for (const cat of ENGINEERING_STACK) {
-      if (cat.technologies.some((t) => t.name === techName)) {
-        return cat.id;
-      }
-    }
-    return null;
-  };
-
   const handleNodeClick = (skillName: string, e?: React.MouseEvent) => {
     e?.stopPropagation();
-    if (selectedNode === skillName) {
-      setSelectedNode(null);
-      return;
-    }
-    setSelectedNode(skillName);
-    setIsExpanded(true);
-
-    const catId = getCategoryForTech(skillName);
-    if (catId) {
-      setMobileOpenCategory(catId);
-    }
+    setSelectedNode((prev) => {
+      const next = prev === skillName ? null : skillName;
+      if (next && typeof window !== "undefined" && window.innerWidth < 1024) {
+        setTimeout(() => {
+          inspectorWrapRef.current?.scrollIntoView({
+            behavior: shouldReduceMotion ? "auto" : "smooth",
+            block: "nearest",
+          });
+        }, 60);
+      }
+      return next;
+    });
   };
 
-  const handleToggleArchitecture = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    setIsExpanded((prev) => !prev);
-  };
-
-
-  // Inject hardware-accelerated CSS keyframes for rotation that supports instant animation-play-state toggling
+  // Inject CSS keyframes for GPU-composited orbital rotation
   useEffect(() => {
     const styleId = "engineering-ecosystem-keyframes";
     if (document.getElementById(styleId)) return;
@@ -162,796 +325,375 @@ export default function Skills() {
       @keyframes orbit-counter-middle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       @keyframes orbit-rotate-outer { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       @keyframes orbit-counter-outer { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-      @keyframes orbit-signal-flow {
-        from { stroke-dashoffset: 20; }
-        to { stroke-dashoffset: 0; }
-      }
+      @keyframes orbit-signal-flow { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
     `;
     document.head.appendChild(styleEl);
   }, []);
 
-  // Compute SVG connection lines from center (50%, 50%) to active node and its connected relationships
-  const renderConnectionLines = (isMobile: boolean) => {
+  const renderConnectionLines = () => {
     if (!activeTech) return null;
 
-    // Helper to calculate exact coordinates for a given skill on its ring
-    const getCoordinates = (skill: string) => {
-      for (const ring of ORBIT_RINGS) {
-        const idx = ring.skills.indexOf(skill);
-        if (idx !== -1) {
-          const count = ring.skills.length;
-          const angleDeg = (360 / count) * idx;
-          const angleRad = (angleDeg * Math.PI) / 180;
-          const radius = isMobile
-            ? Math.min(ring.mobileRadiusPx, ring.id === "outer" ? 116 : ring.id === "middle" ? 82 : 48)
-            : ring.radiusPx;
-          const centerPx = isMobile ? 145 : 300;
-          const x = centerPx + Math.cos(angleRad) * radius;
-          const y = centerPx + Math.sin(angleRad) * radius;
-          return { x, y };
-        }
-      }
-      return null;
-    };
-
-    const activeCoords = getCoordinates(activeTech);
-    if (!activeCoords) return null;
-
-    const centerPx = isMobile ? 145 : 300;
-
     return (
-      <svg className="absolute inset-0 pointer-events-none z-25 overflow-visible w-full h-full">
-        <defs>
-          <filter id="glow-accent" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#3B82F6" floodOpacity="0.7" />
-          </filter>
-          <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="2" floodColor="#10B981" floodOpacity="0.7" />
-          </filter>
-        </defs>
-
-        {/* Ambient Underlay Ray from Center to Active Technology */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none z-15 overflow-visible w-full h-full"
+      >
         <line
-          x1={centerPx}
-          y1={centerPx}
-          x2={activeCoords.x}
-          y2={activeCoords.y}
-          stroke="var(--color-accent, #3B82F6)"
-          strokeWidth={isMobile ? "1" : "1.5"}
+          ref={(el) => {
+            lineRefs.current["center-under"] = el;
+          }}
+          x1={330}
+          y1={330}
+          x2={330}
+          y2={330}
+          stroke="#3B82F6"
+          strokeWidth="1.5"
           strokeOpacity="0.25"
         />
-
-        {/* Animated Flowing Ray from Center to Active Technology */}
         <line
-          x1={centerPx}
-          y1={centerPx}
-          x2={activeCoords.x}
-          y2={activeCoords.y}
-          stroke="var(--color-accent, #3B82F6)"
-          strokeWidth={isMobile ? "1.5" : "2"}
+          ref={(el) => {
+            lineRefs.current["center-flow"] = el;
+          }}
+          x1={330}
+          y1={330}
+          x2={330}
+          y2={330}
+          stroke="#3B82F6"
+          strokeWidth="2"
           strokeDasharray="5 5"
-          filter="url(#glow-accent)"
           style={{
             animation: !shouldReduceMotion ? "orbit-signal-flow 1.2s linear infinite" : "none",
           }}
         />
-
-        {/* Rays from Active Technology to Connected Technologies */}
-        {connectedTechs.map((connSkill) => {
-          const connCoords = getCoordinates(connSkill);
-          if (!connCoords) return null;
-          return (
-            <g key={connSkill}>
-              {/* Underlay Line */}
-              <line
-                x1={activeCoords.x}
-                y1={activeCoords.y}
-                x2={connCoords.x}
-                y2={connCoords.y}
-                stroke="#10B981"
-                strokeWidth={isMobile ? "0.8" : "1.2"}
-                strokeOpacity="0.25"
-              />
-              {/* Traveling Signal Line */}
-              <line
-                x1={activeCoords.x}
-                y1={activeCoords.y}
-                x2={connCoords.x}
-                y2={connCoords.y}
-                stroke="#10B981"
-                strokeWidth={isMobile ? "1.2" : "1.8"}
-                strokeDasharray="6 4"
-                filter="url(#glow-emerald)"
-                style={{
-                  animation: !shouldReduceMotion ? "orbit-signal-flow 1.5s linear infinite" : "none",
-                }}
-              />
-            </g>
-          );
-        })}
-      </svg>
-    );
-  };
-
-  // Reusable Orbit Ring Renderer
-  const renderOrbitalEcosystem = (isMobile: boolean) => {
-    const boxSizePx = isMobile ? 290 : 600;
-
-    return (
-      <div
-        ref={orbitContainerRef}
-        onMouseEnter={() => setIsOrbitPaused(true)}
-        onMouseLeave={() => setIsOrbitPaused(false)}
-        className="relative flex items-center justify-center select-none mx-auto"
-        style={{ width: `${boxSizePx}px`, height: `${boxSizePx}px` }}
-      >
-        {/* Ambient Multi-Layered Neon Radial Glow Core */}
-        <div
-          className={`absolute rounded-full pointer-events-none blur-3xl transition-opacity duration-500 ${activeTech ? "opacity-95 scale-105" : "opacity-70"
-            }`}
-          style={{
-            width: isMobile ? "200px" : "420px",
-            height: isMobile ? "200px" : "420px",
-            background:
-              "radial-gradient(circle, rgba(59,130,246,0.5) 0%, rgba(168,85,247,0.25) 45%, transparent 75%)",
-          }}
-        />
-        <div
-          className="absolute rounded-full pointer-events-none blur-2xl transition-all duration-500"
-          style={{
-            width: isMobile ? "130px" : "280px",
-            height: isMobile ? "130px" : "280px",
-            background: "radial-gradient(circle, #3B82F6 0%, transparent 70%)",
-            opacity: activeTech ? 0.9 : 0.6,
-          }}
-        />
-
-        {/* Connection Lines Overlay */}
-        {renderConnectionLines(isMobile)}
-
-        {/* Orbit Rings & Revolving Nodes */}
-        {ORBIT_RINGS.map((ring) => {
-          const count = ring.skills.length;
-          const ringRadiusPx = isMobile ? Math.min(ring.mobileRadiusPx, ring.id === "outer" ? 116 : ring.id === "middle" ? 82 : 48) : ring.radiusPx;
-          const diameterPx = ringRadiusPx * 2;
-          const isRingActive = activeTech && ring.skills.includes(activeTech);
-
-          return (
-            <div
-              key={ring.id}
-              className={`absolute rounded-full flex items-center justify-center transition-all duration-500 border pointer-events-none ${isRingActive
-                ? "border-[#3B82F6]/60 shadow-[0_0_35px_rgba(59,130,246,0.35)] z-30"
-                : activeTech
-                  ? "border-white/10 border-dashed opacity-40 z-10"
-                  : "border-white/15 border-dashed shadow-[0_0_20px_rgba(59,130,246,0.1)] z-20"
-                }`}
-              style={{
-                width: `${diameterPx}px`,
-                height: `${diameterPx}px`,
-                animationName: !shouldReduceMotion ? `orbit-rotate-${ring.id}` : "none",
-                animationDuration: `${ring.duration}s`,
-                animationTimingFunction: "linear",
-                animationIterationCount: "infinite",
-                animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
+        {connectedTechs.map((connSkill) => (
+          <g key={connSkill}>
+            <line
+              ref={(el) => {
+                lineRefs.current[`conn-under-${connSkill}`] = el;
               }}
-            >
-              {ring.skills.map((skill, i) => {
-                const angleDeg = (360 / count) * i;
-                const angleRad = (angleDeg * Math.PI) / 180;
-                const leftPercent = (50 + Math.cos(angleRad) * 50).toFixed(4);
-                const topPercent = (50 + Math.sin(angleRad) * 50).toFixed(4);
-
-                const isNodeActive = activeTech === skill;
-                const isConnected = connectedTechs.includes(skill);
-                const isOtherDimmed = activeTech !== null && !isNodeActive && !isConnected;
-
-                return (
-                  <div
-                    key={skill}
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                    style={{
-                      left: `${leftPercent}%`,
-                      top: `${topPercent}%`,
-                    }}
-                  >
-                    <div
-                      className="group/node relative flex items-center justify-center pointer-events-none"
-                      style={{
-                        animationName: !shouldReduceMotion ? `orbit-counter-${ring.id}` : "none",
-                        animationDuration: `${ring.duration}s`,
-                        animationTimingFunction: "linear",
-                        animationIterationCount: "infinite",
-                        animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={(e) => handleNodeClick(skill, e)}
-                        aria-label={`Inspect ${skill} engineering capabilities`}
-                        aria-pressed={isNodeActive}
-                        className={`pointer-events-auto relative rounded-full flex items-center justify-center transition-all duration-300 ease-out transform-gpu cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${isMobile ? "w-11 h-11 min-w-[44px] min-h-[44px]" : "w-12 h-12 sm:w-14 sm:h-14 min-w-[48px] min-h-[48px]"
-                          } ${isNodeActive
-                            ? "bg-[#161B22] border-2 border-[#3B82F6] scale-110 z-50 ring-2 ring-[#3B82F6]/30 shadow-md"
-                            : isConnected
-                              ? "bg-[#10B981]/20 border border-[#10B981] scale-105 z-40"
-                              : isOtherDimmed
-                                ? "bg-[#161B22]/50 border border-white/10 opacity-35 scale-95 z-10 hover:opacity-90 hover:scale-100"
-                                : "bg-[#161B22] border border-white/15 hover:scale-105 hover:border-[#3B82F6] z-20 shadow-xs"
-                          }`}
-                      >
-                        <TechIcon name={skill} size={isMobile ? "sm" : "md"} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-
-        {/* Dynamic Center Node / Monogram Core */}
-        <div
-          onClick={() => setSelectedNode(null)}
-          role="button"
-          tabIndex={0}
-          aria-label="Click to reset center node view"
-          className={`relative z-40 rounded-full bg-[#161B22] border-2 flex flex-col items-center justify-center transition-all duration-500 cursor-pointer shadow-2xl overflow-hidden p-4 text-center ${isMobile ? "w-36 h-36" : "w-48 h-48"
-            } ${activeTech
-              ? "border-[#3B82F6] shadow-[0_0_65px_rgba(59,130,246,0.65)] scale-105 bg-[#1A202C]"
-              : "border-[#3B82F6]/70 shadow-[0_0_45px_rgba(59,130,246,0.4)] hover:scale-105"
-            }`}
-        >
-          {/* Subtle core radial highlight */}
-          <div
-            className="absolute inset-1 rounded-full pointer-events-none"
-            style={{
-              background: "radial-gradient(circle, rgba(59,130,246,0.22) 0%, transparent 75%)",
-            }}
-          />
-
-          <AnimatePresence mode="wait">
-            {activeTech && activeDetail ? (
-              <motion.div
-                key={`active-${activeTech}`}
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.92, y: 6 }}
-                animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.92, y: -6 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                className="flex flex-col items-center justify-center relative z-10 w-full px-2"
-              >
-                <div className="mb-1.5 transform scale-110">
-                  <TechIcon name={activeTech} size={isMobile ? "md" : "lg"} />
-                </div>
-                <span className="font-display font-bold text-base sm:text-lg text-white leading-tight truncate max-w-[140px] sm:max-w-[170px]">
-                  {activeTech}
-                </span>
-                <span
-                  className="font-mono text-[9px] sm:text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full mt-1 border"
-                  style={{
-                    color: activeDetail.categoryColor,
-                    borderColor: `${activeDetail.categoryColor}50`,
-                    backgroundColor: `${activeDetail.categoryColor}18`,
-                  }}
-                >
-                  {activeDetail.category}
-                </span>
-                <div className="mt-2 pt-1.5 border-t border-white/10 w-full font-mono text-[10px] text-white/80 space-y-1">
-                  <div className="flex justify-between items-center px-1">
-                    <span className="text-white/60">Domain:</span>
-                    <span className="font-bold text-[#3B82F6] truncate max-w-[90px]">{activeDetail.category}</span>
-                  </div>
-                  <div className="flex justify-between items-center px-1">
-                    <span className="text-white/60">Used in:</span>
-                    <span className="font-semibold text-emerald-400">{activeDetail.projectsList.length} {activeDetail.projectsList.length === 1 ? "Project" : "Projects"}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="default-center"
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.92 }}
-                animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-                exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.92 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
-                className="flex flex-col items-center justify-center relative z-10"
-              >
-                <span className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
-                  DV<span className="text-[#3B82F6] drop-shadow-[0_0_12px_rgba(59,130,246,0.9)]">.</span>
-                </span>
-                <span className="font-mono text-[10px] sm:text-xs text-[#3B82F6] font-bold uppercase tracking-widest mt-1.5">
-                  Software Engineer
-                </span>
-                <span className="font-sans text-[10px] sm:text-[11px] text-white/65 mt-1 max-w-[150px] leading-snug">
-                  Building production-ready systems
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+              x1={330}
+              y1={330}
+              x2={330}
+              y2={330}
+              stroke="#10B981"
+              strokeWidth="1.2"
+              strokeOpacity="0.22"
+            />
+            <line
+              ref={(el) => {
+                lineRefs.current[`conn-flow-${connSkill}`] = el;
+              }}
+              x1={330}
+              y1={330}
+              x2={330}
+              y2={330}
+              stroke="#10B981"
+              strokeWidth="1.8"
+              strokeDasharray="6 4"
+              style={{
+                animation: !shouldReduceMotion ? "orbit-signal-flow 1.5s linear infinite" : "none",
+              }}
+            />
+          </g>
+        ))}
+      </svg>
     );
   };
 
   return (
     <section
       id="skills"
-      className="py-[var(--section-padding-y)] bg-[#111318] text-white border-y border-white/10 relative overflow-hidden transition-colors duration-300 scroll-mt-20 sm:scroll-mt-24"
+      ref={sectionRef}
+      className="py-[var(--section-padding-y)] bg-[#111318] text-white border-y border-white/10 relative overflow-x-clip scroll-mt-20 sm:scroll-mt-24"
       aria-label="Engineering Ecosystem and Technical Capabilities"
     >
       <div className="content-width relative z-10">
-        {/* Spatial Section Header */}
+        {/* Section Header */}
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-10 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-semibold text-[#3B82F6] tracking-wider uppercase flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-                Technical Architecture
+              <span className="text-xs font-medium text-[#3B82F6]">
+                Technical architecture
               </span>
             </div>
           </div>
 
-          <div className="max-w-3xl mb-12">
+          <div className="max-w-3xl mb-10">
             <h2 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
               Engineering Ecosystem
             </h2>
             <p className="mt-4 text-base sm:text-lg text-white/70 leading-relaxed font-sans">
-              Interactive technology orbit mapping core engineering domains, frameworks, and database systems.
+              Interactive technology orbit mapping core engineering domains, frameworks, and database systems. Click any node to inspect its architecture on the right.
             </p>
           </div>
         </ScrollReveal>
 
-        {/* ── ORBITAL CENTERPIECE + FLOATING INFORMATION PANEL ── */}
-        <ScrollReveal direction="up" delay={0.06} distance={16}>
+        {/* Orbital Centerpiece + Right-Side Inspector Panel */}
+        <div
+          className={`relative flex flex-col lg:flex-row items-center justify-center transition-[gap] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-4 sm:my-8 ${
+            activeTech && activeDetail ? "lg:justify-between gap-10 sm:gap-12" : "justify-center gap-0"
+          }`}
+        >
           <div
-            className={`relative flex flex-col lg:flex-row items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-6xl mx-auto my-6 sm:my-10 ${activeTech && activeDetail
-              ? "lg:justify-between gap-10 sm:gap-12"
-              : "justify-center gap-0"
-              }`}
+            className={`flex justify-center items-center transform-gpu ${
+              activeTech && activeDetail ? "w-full lg:w-auto flex-1" : "w-full"
+            }`}
           >
-
-            {/* Orbit System Container (Pure CSS GPU transition, smoothly glides between center and left) */}
-            <div
-              className={`flex justify-center items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu ${activeTech && activeDetail ? "w-full lg:w-auto flex-1" : "w-full"
-                }`}
-            >
-              {/* Mobile Touch-Optimized Interactive Stack Grid (< md) */}
-              <div className="flex flex-col md:hidden py-4 w-full">
-                <div className="text-center mb-4 px-2">
-                  <span className="font-mono text-xs font-semibold text-accent uppercase tracking-wider block">
-                    Interactive Technology Ecosystem
-                  </span>
-                  <p className="text-xs text-text-secondary mt-1">
-                    Tap any technology to inspect architectural connections, proficiency, and use cases.
-                  </p>
-                </div>
-
-                {/* Grouped by Core Rings for Clear Architecture */}
-                <div className="space-y-4 px-1 max-w-lg mx-auto w-full">
-                  {ORBIT_RINGS.map((ring, ringIdx) => {
-                    const ringLabels = [
-                      "Core Application & Language",
-                      "Frameworks & Databases",
-                      "Cloud, DevOps & Tools",
-                    ];
-                    return (
-                      <div
-                        key={ring.id}
-                        className="p-3.5 rounded-2xl bg-bg-surface/90 border border-border-custom/80 shadow-xs"
-                      >
-                        <div className="flex items-center justify-between mb-2.5">
-                          <span className="font-mono text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
-                            {ringLabels[ringIdx] || `Layer ${ringIdx + 1}`}
-                          </span>
-                          <span className="font-mono text-[10px] text-accent/80 font-bold">
-                            {ring.skills.length} techs
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 xs:grid-cols-3 gap-2">
-                          {ring.skills.map((skill) => {
-                            const isNodeActive = activeTech === skill;
-                            const isConnected = connectedTechs.includes(skill);
-
-                            return (
-                              <button
-                                key={skill}
-                                type="button"
-                                onClick={(e) => handleNodeClick(skill, e)}
-                                aria-label={`Inspect ${skill} capabilities`}
-                                aria-pressed={isNodeActive}
-                                className={`min-h-[48px] h-12 px-3.5 py-2.5 rounded-xl text-xs font-mono font-medium border flex items-center gap-2.5 transition-colors cursor-pointer touch-manipulation text-left focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${isNodeActive
-                                  ? "bg-accent/15 border-accent text-accent shadow-xs font-bold ring-2 ring-accent/30"
-                                  : isConnected
-                                    ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold"
-                                    : "bg-bg border-border-custom/80 text-text-primary hover:border-accent/40"
-                                  }`}
-                              >
-                                <TechIcon name={skill} size="sm" />
-                                <span className="truncate">{skill}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+            {/* Mobile Touch-Optimized Stack Grid (< md) */}
+            <div className="flex flex-col md:hidden py-4 w-full">
+              <div className="text-center mb-4 px-2">
+                <span className="font-mono text-xs font-semibold text-accent block">
+                  Interactive technology ecosystem
+                </span>
+                <p className="text-xs text-white/65 mt-1">
+                  Tap any technology to inspect architectural connections and use cases.
+                </p>
               </div>
 
-              {/* Desktop Cinematic Orbit (>= md) */}
-              <div className="hidden md:flex py-6 min-h-[620px] items-center justify-center w-full">
-                {renderOrbitalEcosystem(false)}
+              <div className="space-y-4 px-1 max-w-lg mx-auto w-full">
+                {ORBIT_RINGS.map((ring, ringIdx) => {
+                  const ringLabels = [
+                    "Core application & languages",
+                    "Frameworks & databases",
+                    "Cloud, DevOps & tools",
+                  ];
+                  return (
+                    <div
+                      key={ring.id}
+                      className="p-3.5 rounded-2xl bg-[#161B22] border border-white/10"
+                    >
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="font-mono text-xs font-medium text-white/70">
+                          {ringLabels[ringIdx] || `Layer ${ringIdx + 1}`}
+                        </span>
+                        <span className="font-mono text-[11px] text-[#3B82F6] font-semibold">
+                          {ring.skills.length}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
+                        {ring.skills.map((skill) => {
+                          const isNodeActive = activeTech === skill;
+                          const isConnected = connectedTechs.includes(skill);
+
+                          return (
+                            <button
+                              key={skill}
+                              type="button"
+                              onClick={(e) => handleNodeClick(skill, e)}
+                              aria-label={`Inspect ${skill} capabilities`}
+                              aria-pressed={isNodeActive}
+                              className={`min-h-[48px] h-12 px-3 py-2 rounded-xl text-xs font-mono font-medium border flex items-center gap-2 transition-colors cursor-pointer touch-manipulation text-left focus-visible:outline-2 focus-visible:outline-[#3B82F6] active:scale-[0.98] ${
+                                isNodeActive
+                                  ? "bg-[#3B82F6]/15 border-[#3B82F6] text-[#3B82F6] font-semibold"
+                                  : isConnected
+                                    ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400 font-semibold"
+                                    : "bg-[#111318] border-white/10 text-white/90 hover:border-[#3B82F6]/40"
+                              }`}
+                            >
+                              <TechIcon name={skill} size="sm" />
+                              <span className="truncate">{skill}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Floating Information Card (popLayout pops exiting card to absolute positioning so it never drops below orbit when closing) */}
-            <AnimatePresence mode="popLayout">
-              {activeTech && activeDetail && (
-                <motion.div
-                  key={`panel-${activeTech}`}
-                  onClick={(e) => e.stopPropagation()}
-                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 30, scale: 0.96 }}
-                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0, scale: 1 }}
-                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, x: 20, scale: 0.96 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-                  className="w-full lg:w-[440px] flex-shrink-0 p-6 sm:p-7 rounded-3xl bg-[#161B22]/95 border-2 border-[#3B82F6]/70 shadow-[0_12px_45px_rgba(0,0,0,0.6),0_0_35px_rgba(59,130,246,0.25)] backdrop-blur-xl space-y-6 z-40 transform-gpu will-change-transform mb-4 lg:mb-0"
-                >
-                  {/* Top Header & Reset CTA */}
-                  <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-[14px] bg-white/5 border border-white/10 flex items-center justify-center shadow-md flex-shrink-0">
-                        <TechIcon name={activeTech} size="lg" />
-                      </div>
-                      <div>
-                        <h3 className="font-display font-extrabold text-xl sm:text-2xl text-white">
-                          {activeTech}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-2 mt-1">
-                          <span
-                            className="inline-block px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold uppercase tracking-wider border"
-                            style={{
-                              backgroundColor: `${activeDetail.categoryColor}18`,
-                              color: activeDetail.categoryColor,
-                              borderColor: `${activeDetail.categoryColor}40`,
-                            }}
-                          >
-                            {activeDetail.category} Layer
-                          </span>
-                          <a
-                            href={getTechWebsite(activeTech)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={`Visit official ${activeTech} documentation & website`}
-                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[11px] text-[#3B82F6] hover:text-white bg-[#3B82F6]/10 hover:bg-[#3B82F6]/25 border border-[#3B82F6]/30 transition-colors"
-                          >
-                            <span>Official site</span>
-                            <span className="text-[10px]">↗</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedNode(null)}
-                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 font-mono text-xs text-white/70 hover:text-white transition-colors cursor-pointer"
-                      title="Close panel"
+            {/* Desktop Cinematic Radial-Burst Orbit (>= md) */}
+            <div className="hidden md:flex py-6 min-h-[680px] items-center justify-center w-full">
+              <div
+                ref={orbitContainerRef}
+                onMouseEnter={() => setIsOrbitPaused(true)}
+                onMouseLeave={() => {
+                  setIsOrbitPaused(false);
+                  setHoveredNode(null);
+                }}
+                className="relative flex items-center justify-center select-none mx-auto"
+                style={{ width: "660px", height: "660px" }}
+              >
+                {/* Quiet Single-Accent Radial Core */}
+                <div
+                  aria-hidden="true"
+                  className={`absolute rounded-full pointer-events-none transition-opacity duration-500 ${
+                    activeTech ? "opacity-90" : "opacity-55"
+                  }`}
+                  style={{
+                    width: "340px",
+                    height: "340px",
+                    background:
+                      "radial-gradient(circle, rgba(59,130,246,0.16) 0%, transparent 70%)",
+                  }}
+                />
+
+                {renderConnectionLines()}
+
+                {/* Concentric Expanding Orbit Rings + Revolving Nodes */}
+                {ORBIT_RINGS.map((ring) => {
+                  const count = ring.skills.length;
+                  const diameterPx = ring.radiusPx * 2;
+                  const isRingActive = activeTech && ring.skills.includes(activeTech);
+                  const ringSpread = spreadMap[ring.id];
+                  const ringScale = ringScaleMap[ring.id];
+
+                  return (
+                    <div
+                      key={ring.id}
+                      className="absolute flex items-center justify-center pointer-events-none"
+                      style={{
+                        width: `${diameterPx}px`,
+                        height: `${diameterPx}px`,
+                        animationName: !shouldReduceMotion ? `orbit-rotate-${ring.id}` : "none",
+                        animationDuration: `${ring.duration}s`,
+                        animationTimingFunction: "linear",
+                        animationIterationCount: "infinite",
+                        animationPlayState: isOrbitPaused || !isSectionVisible ? "paused" : "running",
+                      }}
                     >
-                      ✕
-                    </button>
-                  </div>
+                      {/* Expanding Ring Border */}
+                      <motion.div
+                        aria-hidden="true"
+                        style={
+                          shouldReduceMotion
+                            ? undefined
+                            : { scale: ringScale, opacity: ringBorderOpacity }
+                        }
+                        className={`absolute inset-0 rounded-full border pointer-events-none transition-[border-color] duration-300 ${
+                          isRingActive
+                            ? "border-[#3B82F6]/60"
+                            : activeTech
+                              ? "border-white/10 border-dashed"
+                              : "border-white/15 border-dashed"
+                        }`}
+                      />
 
-                  {/* Skill Details Breakdown */}
-                  <div className="pb-4 border-b border-white/10 font-mono text-xs">
-                    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
-                      <span className="text-white/50 text-[10px] uppercase tracking-wider block">
-                        Primary Engineering Role
-                      </span>
-                      <span className="text-[#3B82F6] font-bold text-sm sm:text-base block" title={activeDetail.role}>
-                        {activeDetail.role}
-                      </span>
-                    </div>
-                  </div>
+                      {/* Nodes bursting outward from center to ring radius */}
+                      {ring.skills.map((skill, i) => {
+                        const angleDeg = (360 / count) * i;
+                        const angleRad = (angleDeg * Math.PI) / 180;
+                        const targetX = Math.cos(angleRad) * ring.radiusPx;
+                        const targetY = Math.sin(angleRad) * ring.radiusPx;
 
-                  {/* Primary Production Use Cases */}
-                  <div className="space-y-3">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-white/60 block font-semibold">
-                      Core Engineering Capabilities
-                    </span>
-                    <ul className="space-y-2">
-                      {activeDetail.useCases.map((useCase, idx) => (
-                        <li
-                          key={idx}
-                          className="px-3 py-1.5 rounded-lg bg-[#111827] border border-white/10 font-mono text-xs text-white/90 flex items-center gap-2"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
-                          <span className="truncate">{useCase}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                        const isNodeActive = activeTech === skill;
+                        const isConnected = connectedTechs.includes(skill);
+                        const isOtherDimmed = activeTech !== null && !isNodeActive && !isConnected;
+                        const isNodeHovered = hoveredNode === skill;
 
-                  {/* Used In Project References */}
-                  <div className="pt-3 border-t border-white/10">
-                    <span className="text-[11px] text-white/60 block mb-2 font-semibold">
-                      Used in production projects
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {activeDetail.projectsList.map((proj, idx) => (
-                        <a
-                          key={idx}
-                          href="#projects"
-                          className="px-3 py-1.5 min-h-[36px] inline-flex items-center gap-1.5 rounded-full bg-[#3B82F6]/15 border border-[#3B82F6]/30 font-mono text-xs font-semibold text-white/95 hover:bg-[#3B82F6]/30 hover:border-[#3B82F6]/50 transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-accent active:scale-95"
-                        >
-                          <span className="text-accent">◆</span>
-                          <span>{proj}</span>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Connected Relationships Highlight */}
-                  {connectedTechs.length > 0 && (
-                    <div className="p-3 rounded-xl bg-[#10B981]/10 border border-[#10B981]/30 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                        <span className="font-mono text-xs text-[#10B981] font-semibold">
-                          Connected Ecosystem:
-                        </span>
-                      </div>
-                      <span className="font-mono text-xs text-white/90 font-bold">
-                        {connectedTechs.join(" · ")}
-                      </span>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-
-          {/* ── EXPAND BUTTON (`Explore Technical Architecture`) ── */}
-          <div className="flex flex-col items-center justify-center my-8">
-            <Button
-              variant={isExpanded ? "secondary" : "primary"}
-              size="lg"
-              onClick={handleToggleArchitecture}
-              className="shadow-xl hover:shadow-2xl transition-all duration-300 ease-out font-bold px-8"
-              aria-expanded={isExpanded}
-              aria-controls="technical-architecture-cards"
-            >
-              <span>
-                {isExpanded ? "Collapse Technical Architecture" : "Explore Technical Architecture"}
-              </span>
-              <span className={`ml-2.5 inline-block transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`}>
-                ▼
-              </span>
-            </Button>
-          </div>
-
-          {/* ── TECHNICAL CARDS (`ENGINEERING_STACK` Categories & Cards) ── */}
-          <div>
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  id="technical-architecture-cards"
-                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
-                  animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
-                  exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                  transition={{ duration: 0.42, ease: "easeInOut" }}
-                  className="overflow-hidden pt-6"
-                >
-                  <div className="pt-8 border-t border-white/10 space-y-10">
-                    <div className="max-w-2xl">
-                      <span className="font-mono text-xs uppercase tracking-widest text-[#3B82F6] font-semibold block mb-2">
-                        SYSTEM ARCHITECTURE BREAKDOWN
-                      </span>
-                      <h3 className="font-display font-bold text-2xl sm:text-3xl text-white">
-                        Technical Domain Stack
-                      </h3>
-                    </div>
-
-                    {/* Mobile Accordion View (< lg) */}
-                    <div className="block lg:hidden space-y-4">
-                      {ENGINEERING_STACK.map((category, index) => {
-                        const isOpen = mobileOpenCategory === category.id;
                         return (
-                          <motion.div
-                            key={`mobile-cat-${category.id}`}
-                            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-                            animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-                            transition={{
-                              duration: 0.35,
-                              ease: "easeInOut",
-                              delay: shouldReduceMotion ? 0 : index * 0.05 + 0.08,
-                            }}
-                            className="rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:border-[#3B82F6]/50 overflow-hidden transform-gpu transition-colors duration-300"
-                          >
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setMobileOpenCategory(isOpen ? null : category.id);
-                              }}
-                              aria-expanded={isOpen}
-                              className="w-full min-h-[56px] px-6 py-4 flex items-center justify-between text-left focus-visible:outline-2 focus-visible:outline-[#3B82F6] cursor-pointer"
-                            >
-                              <div className="flex items-center gap-3">
-                                <span
-                                  className="w-2.5 h-2.5 rounded-full"
-                                  style={{ backgroundColor: category.accentColor }}
-                                />
-                                <div>
-                                  <h4 className="font-display font-extrabold text-base text-white">
-                                    {category.title}
-                                  </h4>
-                                  <p className="font-mono text-xs text-white/60 mt-0.5">
-                                    {category.subtitle}
-                                  </p>
-                                </div>
-                              </div>
-                              <span
-                                className="font-mono text-sm text-[#3B82F6] transition-transform duration-200 transform-gpu"
-                                style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                              >
-                                ▼
-                              </span>
-                            </button>
-
-                            <AnimatePresence>
-                              {isOpen && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.25, ease: "easeInOut" }}
-                                  className="overflow-hidden"
-                                >
-                                  <div className="px-5 pb-6 pt-2 border-t border-white/10 grid grid-cols-1 gap-3">
-                                    {category.technologies.map((tech) => (
-                                      <button
-                                        type="button"
-                                        key={`mobile-tech-${tech.name}`}
-                                        onClick={(e) => handleNodeClick(tech.name, e)}
-                                        aria-label={`Inspect ${tech.name} architecture details`}
-                                        className="w-full text-left p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-[#3B82F6] flex items-start gap-3.5 cursor-pointer transition-transform duration-200 transform-gpu focus-visible:outline-2 focus-visible:outline-[#3B82F6]"
-                                      >
-                                        <div className="w-10 h-10 min-h-[40px] rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                                          <TechIcon name={tech.name} size="md" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                          <h5 className="font-display font-bold text-base text-white flex items-center gap-2 justify-between">
-                                            <span>{tech.name}</span>
-                                            {tech.proficiency && (
-                                              <span className="font-mono text-xs" style={{ color: category.accentColor }}>{tech.proficiency}%</span>
-                                            )}
-                                          </h5>
-                                          <p className="font-mono text-xs text-white/70 leading-relaxed mt-1">
-                                            {tech.descriptor}
-                                          </p>
-                                          {tech.proficiency && (
-                                            <div className="w-40 sm:w-56 mt-2 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                                              <motion.div
-                                                initial={{ width: 0 }}
-                                                whileInView={{ width: `${tech.proficiency}%` }}
-                                                viewport={{ once: true }}
-                                                transition={{ duration: 1, ease: "easeOut" }}
-                                                className="h-full rounded-full"
-                                                style={{ backgroundColor: category.accentColor }}
-                                              />
-                                            </div>
-                                          )}
-                                        </div>
-                                      </button>
-                                    ))}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </motion.div>
+                          <OrbitNodeItem
+                            key={skill}
+                            skill={skill}
+                            ringId={ring.id}
+                            ringDuration={ring.duration}
+                            targetX={targetX}
+                            targetY={targetY}
+                            ringSpread={ringSpread}
+                            isNodeActive={isNodeActive}
+                            isConnected={isConnected}
+                            isOtherDimmed={isOtherDimmed}
+                            isNodeHovered={isNodeHovered}
+                            isOrbitPaused={isOrbitPaused}
+                            isSectionVisible={isSectionVisible}
+                            shouldReduceMotion={shouldReduceMotion}
+                            onSelect={handleNodeClick}
+                            onHoverChange={setHoveredNode}
+                            registerNodeRef={registerNodeRef}
+                          />
                         );
                       })}
                     </div>
+                  );
+                })}
 
-                    {/* Desktop 2-Column Grid (>= lg) */}
-                    <div className="hidden lg:grid grid-cols-2 gap-8 items-stretch">
-                      {ENGINEERING_STACK.map((category, index) => (
-                        <motion.div
-                          key={category.id}
-                          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-                          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
-                          transition={{
-                            duration: 0.38,
-                            ease: "easeInOut",
-                            delay: shouldReduceMotion ? 0 : index * 0.05 + 0.08,
+                {/* Center Node / Monogram Core */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedNode(null)}
+                  aria-label="Reset selected technology"
+                  className={`relative z-40 w-44 h-44 rounded-full bg-[#161B22] border-2 flex flex-col items-center justify-center transition-[transform,border-color,background-color] duration-300 cursor-pointer shadow-2xl overflow-hidden p-4 text-center focus-visible:outline-2 focus-visible:outline-[#3B82F6] ${
+                    activeTech
+                      ? "border-[#3B82F6] scale-105 bg-[#1A202C]"
+                      : "border-[#3B82F6]/60 hover:scale-[1.03] hover:border-[#3B82F6]"
+                  }`}
+                >
+                  <AnimatePresence mode="wait">
+                    {activeTech && activeDetail ? (
+                      <motion.div
+                        key={`active-${activeTech}`}
+                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.94, y: 6 }}
+                        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: -6 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="flex flex-col items-center justify-center relative z-10 w-full px-2"
+                      >
+                        <div className="mb-1.5">
+                          <TechIcon name={activeTech} size="lg" />
+                        </div>
+                        <span className="font-display font-bold text-base sm:text-lg text-white leading-tight truncate max-w-[160px]">
+                          {activeTech}
+                        </span>
+                        <span
+                          className="font-mono text-[10px] font-medium px-2 py-0.5 rounded-full mt-1 border"
+                          style={{
+                            color: activeDetail.categoryColor,
+                            borderColor: `${activeDetail.categoryColor}50`,
+                            backgroundColor: `${activeDetail.categoryColor}18`,
                           }}
-                          className="group/cat p-7 sm:p-8 rounded-3xl bg-[#161B22] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:bg-[#1C2333] hover:border-[#3B82F6]/50 hover:-translate-y-1 hover:shadow-[0_0_36px_rgba(59,130,246,0.22)] transition-all duration-300 ease-out flex flex-col justify-between"
                         >
-                          <div className="flex items-baseline justify-between gap-2 pb-5 mb-6 border-b border-white/10">
-                            <div className="flex items-center gap-3">
-                              <h4
-                                className="font-display font-bold text-2xl text-white transition-colors"
-                                style={{ color: category.accentColor }}
-                              >
-                                {category.title}
-                              </h4>
-                              <span className={`px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider border ${category.accentClass}`}>
-                                Domain
-                              </span>
-                            </div>
-                            <p className="text-xs font-mono text-white/60">
-                              {category.subtitle}
-                            </p>
-                          </div>
+                          {activeDetail.category}
+                        </span>
+                        <div className="mt-2 pt-1.5 border-t border-white/10 w-full font-mono text-[10px] text-white/80 flex justify-between px-1">
+                          <span className="text-white/60">Projects</span>
+                          <span className="font-semibold text-emerald-400">
+                            {activeDetail.projectsList.length}
+                          </span>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="default-center"
+                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.94 }}
+                        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="flex flex-col items-center justify-center relative z-10"
+                      >
+                        <span className="font-display font-extrabold text-4xl text-white tracking-tight">
+                          DV<span className="text-[#3B82F6]">.</span>
+                        </span>
+                        <span className="font-mono text-xs text-[#3B82F6] font-medium mt-1.5">
+                          Software engineer
+                        </span>
+                        <span className="font-sans text-[11px] text-white/65 mt-1 max-w-[150px] leading-snug">
+                          Click any node to inspect
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </div>
+            </div>
+          </div>
 
-                          <div className="grid grid-cols-2 gap-4 flex-grow">
-                            {category.technologies.map((tech) => {
-                              const isCardActive = activeTech === tech.name;
-                              return (
-                                <div
-                                  key={tech.name}
-                                  onClick={(e) => handleNodeClick(tech.name, e)}
-                                  tabIndex={0}
-                                  role="button"
-                                  aria-label={`${tech.name}: ${tech.descriptor}`}
-                                  className={`group/card p-5 rounded-2xl border transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu will-change-transform flex flex-col justify-between h-full min-h-[130px] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6] ${isCardActive
-                                    ? "bg-[#1C2333] border-2 border-[#3B82F6] shadow-[0_0_28px_rgba(59,130,246,0.55)] -translate-y-1.5 ring-2 ring-[#3B82F6]/30"
-                                    : "bg-[#111827] border-white/10 hover:bg-[#1C2333] hover:border-[#3B82F6]/60 hover:shadow-[0_4px_30px_rgba(59,130,246,0.2)] hover:-translate-y-1"
-                                    }`}
-                                >
-                                  <div className="flex items-center gap-3.5 mb-3">
-                                    <div
-                                      className="w-11 h-11 rounded-[14px] flex items-center justify-center transition-transform duration-300 ease-out transform-gpu flex-shrink-0 border shadow-md group-hover/card:rotate-12 group-hover/card:scale-110"
-                                      style={{
-                                        backgroundColor: isCardActive ? "rgba(59,130,246,0.18)" : "rgba(255, 255, 255, 0.05)",
-                                        borderColor: isCardActive ? "#3B82F6" : "rgba(255, 255, 255, 0.08)",
-                                      }}
-                                    >
-                                      <TechIcon name={tech.name} size="md" />
-                                    </div>
-                                    <span
-                                      className={`font-display font-bold text-base transition-colors duration-200 ${isCardActive ? "text-[#3B82F6]" : "text-white group-hover/card:text-white"
-                                        }`}
-                                    >
-                                      {tech.name}
-                                    </span>
-                                  </div>
-                                  <p className="text-xs text-white/70 leading-relaxed font-mono">
-                                    {tech.descriptor}
-                                  </p>
-                                  {tech.proficiency && (
-                                    <div className="w-full mt-3.5">
-                                      <div className="flex justify-between items-center mb-1 font-mono text-[9px] uppercase tracking-wider text-white/40">
-                                        <span>Proficiency</span>
-                                        <span>{tech.proficiency}%</span>
-                                      </div>
-                                      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                                        <motion.div
-                                          initial={{ width: 0 }}
-                                          whileInView={{ width: `${tech.proficiency}%` }}
-                                          viewport={{ once: true }}
-                                          transition={{ duration: 1.2, ease: "easeOut" }}
-                                          className="h-full rounded-full"
-                                          style={{ backgroundColor: category.accentColor }}
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
+          {/* Right-Side Inspector Panel */}
+          <div ref={inspectorWrapRef} className="w-full lg:w-auto scroll-mt-24">
+            <AnimatePresence mode="popLayout">
+              {activeTech && activeDetail && (
+                <SkillInspectorPanel
+                  activeTech={activeTech}
+                  activeDetail={activeDetail}
+                  connectedTechs={connectedTechs}
+                  shouldReduceMotion={shouldReduceMotion}
+                  onClose={() => setSelectedNode(null)}
+                  onSelectTech={(tech) => handleNodeClick(tech)}
+                />
               )}
             </AnimatePresence>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );
-
 }

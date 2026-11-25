@@ -12,29 +12,13 @@ import {
   type Variants,
 } from "motion/react";
 import dynamic from "next/dynamic";
-
+import { ArrowRight, FileText, Mail, ShieldCheck, Database } from "lucide-react";
+import { useIsDesktopStage, usePointerTilt } from "@/components/sections/project-showcase/hooks";
 
 const HeroNodeNetwork = dynamic(
   () => import("@/components/effects/HeroNodeNetwork"),
   { ssr: false }
 );
-
-/* ─── Engineering Icons ─────────────────────────────────────────── */
-const ShieldIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-
-const DatabaseIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <ellipse cx="12" cy="5" rx="9" ry="3" />
-    <path d="M3 5V19A9 3 0 0 0 21 19V5" />
-    <path d="M3 12A9 3 0 0 0 21 12" />
-  </svg>
-);
-
 
 const GithubIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -48,53 +32,28 @@ const LinkedinIcon = () => (
   </svg>
 );
 
-const ResumeIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-    <polyline points="14 2 14 8 20 8" />
-  </svg>
-);
-
-const ArrowRightIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-1 transition-transform duration-200" aria-hidden="true">
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
-  </svg>
-);
-
-const MessageIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-);
-
 /* ─── Micro Animated Node-Graph Chip ────────────────────────────── */
 function NodeGraphChip() {
   return (
     <div className="p-2 sm:p-2.5 rounded-xl bg-bg-surface/85 backdrop-blur-md border border-border-custom/80 shadow-md">
-      <svg width="56" height="26" viewBox="0 0 56 26" fill="none" className="overflow-visible select-none pointer-events-none" aria-hidden="true">
-        {/* Connection lines */}
+      <svg
+        width="56"
+        height="26"
+        viewBox="0 0 56 26"
+        fill="none"
+        className="overflow-visible select-none pointer-events-none"
+        aria-hidden="true"
+      >
         <line x1="8" y1="13" x2="28" y2="6" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
         <line x1="8" y1="13" x2="28" y2="20" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
         <line x1="28" y1="6" x2="48" y2="13" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
         <line x1="28" y1="20" x2="48" y2="13" stroke="var(--accent)" strokeWidth="1.2" strokeOpacity="0.4" />
-
-        {/* Nodes */}
         <circle cx="8" cy="13" r="3" fill="currentColor" className="text-text-secondary" />
         <circle cx="28" cy="6" r="3.2" fill="var(--accent)" />
         <circle cx="28" cy="20" r="3.2" fill="var(--accent)" />
         <circle cx="48" cy="13" r="3.5" fill="var(--accent)" />
-
-        {/* Dynamic Pulse Ring */}
         <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.3" />
-
-        {/* Traveling signal */}
-        <circle
-          r="1.8"
-          fill="#ffffff"
-          className="animate-traveling-signal"
-        />
+        <circle r="1.8" fill="#ffffff" className="animate-traveling-signal" />
       </svg>
     </div>
   );
@@ -116,6 +75,13 @@ function ScrambleWord({
 }) {
   const [displayText, setDisplayText] = useState(text);
   const isScramblingRef = useRef(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const scramble = useCallback(() => {
     if (isTouchDevice || shouldReduceMotion || isScramblingRef.current) return;
@@ -125,7 +91,7 @@ function ScrambleWord({
     let iteration = 0;
     const maxIterations = length * 3;
 
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       iteration++;
       const resolvedIndex = Math.floor((iteration / maxIterations) * length);
 
@@ -141,30 +107,61 @@ function ScrambleWord({
       setDisplayText(scrambled);
 
       if (iteration >= maxIterations) {
-        clearInterval(interval);
+        if (intervalRef.current) clearInterval(intervalRef.current);
         setDisplayText(text);
         isScramblingRef.current = false;
       }
     }, 28);
   }, [text, isTouchDevice, shouldReduceMotion]);
 
-  useEffect(() => {
-    const t = setTimeout(() => setDisplayText(text), 0);
-    return () => clearTimeout(t);
-  }, [text]);
-
   return (
     <span
-      onMouseEnter={() => {
-        if (!isTouchDevice && !shouldReduceMotion) {
-          scramble();
-        }
-      }}
+      onMouseEnter={scramble}
       className={`relative inline-block cursor-default select-none ${className}`}
     >
       <span className="sr-only">{text}</span>
       <span aria-hidden="true">{displayText}</span>
     </span>
+  );
+}
+
+/* ─── Isolated Specialty Bio (Prevents Full-Hero Interval Re-renders) ── */
+function HeroSpecialtyBio({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
+  const [activeSpecialty, setActiveSpecialty] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const interval = setInterval(() => {
+      setActiveSpecialty((prev) => (prev + 1) % 3);
+    }, 2600);
+    return () => clearInterval(interval);
+  }, [shouldReduceMotion]);
+
+  const specialties = [
+    "full-stack web development",
+    "applied machine learning",
+    "AI security",
+  ];
+
+  return (
+    <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
+      Final-year Information Technology undergraduate specializing in{" "}
+      {specialties.map((label, idx) => (
+        <React.Fragment key={label}>
+          {idx === 1 && ", "}
+          {idx === 2 && ", and "}
+          <span
+            className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === idx
+              ? "bg-accent/15 text-accent font-semibold ring-1 ring-accent/30"
+              : "text-text-primary"
+              }`}
+          >
+            {label}
+          </span>
+        </React.Fragment>
+      ))}
+      .
+    </p>
   );
 }
 
@@ -190,12 +187,8 @@ function MagneticButton({
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isTouchDevice || shouldReduceMotion || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const distanceX = (e.clientX - centerX) * 0.22;
-    const distanceY = (e.clientY - centerY) * 0.22;
-    x.set(distanceX);
-    y.set(distanceY);
+    x.set((e.clientX - (rect.left + rect.width / 2)) * 0.2);
+    y.set((e.clientY - (rect.top + rect.height / 2)) * 0.2);
   };
 
   const handleMouseLeave = () => {
@@ -219,14 +212,13 @@ function MagneticButton({
   );
 }
 
-/* ─── Magnifying Dock Component ─────────────────────────────────── */
+/* ─── Zero-Rerender Magnifying Dock ─────────────────────────────── */
 interface DockItem {
   id: string;
   label: string;
   href: string;
   icon: React.ReactNode;
   ariaLabel: string;
-  external?: boolean;
 }
 
 function DirectContactDock({
@@ -236,9 +228,8 @@ function DirectContactDock({
   isTouchDevice: boolean;
   shouldReduceMotion: boolean;
 }) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mouseX, setMouseX] = useState<number | null>(null);
   const dockRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const items: DockItem[] = [
     {
@@ -247,7 +238,6 @@ function DirectContactDock({
       href: "https://linkedin.com/in/dhruv-vawhle-277b2b2b8",
       icon: <LinkedinIcon />,
       ariaLabel: "LinkedIn Profile",
-      external: true,
     },
     {
       id: "github",
@@ -255,35 +245,41 @@ function DirectContactDock({
       href: "https://github.com/DhruvVawhle",
       icon: <GithubIcon />,
       ariaLabel: "GitHub Profile",
-      external: true,
     },
     {
       id: "resume",
       label: "Resume",
       href: "/resume.pdf",
-      icon: <ResumeIcon />,
+      icon: <FileText className="w-[18px] h-[18px]" />,
       ariaLabel: "View resume",
-      external: true,
     },
     {
       id: "email",
       label: "Email",
       href: "mailto:dhruvvawhle@gmail.com",
-      icon: <MessageIcon />,
+      icon: <Mail className="w-[18px] h-[18px]" />,
       ariaLabel: "Email dhruvvawhle@gmail.com",
-      external: true,
     },
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isTouchDevice || shouldReduceMotion || !dockRef.current) return;
     const rect = dockRef.current.getBoundingClientRect();
-    setMouseX(e.clientX - rect.left);
+    const mouseX = e.clientX - rect.left;
+
+    itemRefs.current.forEach((el, idx) => {
+      if (!el) return;
+      const itemCenter = idx * 52 + 28;
+      const dist = Math.abs(mouseX - itemCenter);
+      const scale = 1 + Math.max(0, 0.25 * (1 - dist / 84));
+      el.style.transform = `scale(${scale.toFixed(3)})`;
+    });
   };
 
   const handleMouseLeave = () => {
-    setMouseX(null);
-    setHoveredIndex(null);
+    itemRefs.current.forEach((el) => {
+      if (el) el.style.transform = "scale(1)";
+    });
   };
 
   return (
@@ -293,81 +289,93 @@ function DirectContactDock({
       onMouseLeave={handleMouseLeave}
       className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-xl bg-bg/60 border border-border-custom/80 shadow-xs"
     >
-      {items.map((item, index) => {
-        let scale = 1;
-        if (!isTouchDevice && !shouldReduceMotion && mouseX !== null) {
-          const itemCenter = index * 48 + 24;
-          const dist = Math.abs(mouseX - itemCenter);
-          scale = 1 + Math.max(0, 0.32 * (1 - dist / 80));
-        }
+      {items.map((item, index) => (
+        <div key={item.id} className="group/dock relative flex flex-col items-center">
+          <span className="pointer-events-none absolute -top-8 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-foreground text-background shadow-md whitespace-nowrap z-30 opacity-0 translate-y-1 group-hover/dock:opacity-100 group-hover/dock:-translate-y-0.5 transition-[opacity,transform] duration-150">
+            {item.label}
+          </span>
 
-        const isItemHovered = hoveredIndex === index && !isTouchDevice;
-
-        return (
-          <div key={item.id} className="relative flex flex-col items-center">
-            {/* Tooltip on mouse hover */}
-            {isItemHovered && (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: -4 }}
-                exit={{ opacity: 0, y: 6 }}
-                className="absolute -top-8 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-foreground text-background pointer-events-none shadow-md whitespace-nowrap z-30"
-              >
-                {item.label}
-              </motion.div>
-            )}
-
-            <motion.a
-              href={item.href}
-              {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              aria-label={item.ariaLabel}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              animate={{ scale: isTouchDevice || shouldReduceMotion ? 1 : scale }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation"
-            >
-              {item.icon}
-            </motion.a>
-          </div>
-        );
-      })}
+          <a
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={item.ariaLabel}
+            className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-xl flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 transition-[color,background-color,transform] duration-150 ease-out focus-visible:outline-2 focus-visible:outline-accent active:scale-95 touch-manipulation"
+          >
+            {item.icon}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }
 
-/* ─── Credibility Card ─────────────────────────────────────────── */
+/* ─── Credibility Card with Hover Specular Sheen ────────────────── */
 function CredibilityCard({
   category,
   title,
   detail,
   icon,
   href,
+  shouldReduceMotion,
 }: {
   category: string;
   title: string;
   detail?: string;
   icon: React.ReactNode;
   href?: string;
+  shouldReduceMotion: boolean;
 }) {
-  const content = (
-    <div className="relative p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/40 shadow-xs hover:shadow-sm transition-colors duration-150 flex items-start gap-4 select-none h-full group">
-      <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 mt-0.5">
-        {icon}
-      </div>
+  const { cardRef, handlePointerMove, handlePointerLeave } =
+    usePointerTilt(shouldReduceMotion);
 
-      <div className="flex-1 min-w-0">
-        <div className="text-xs text-text-secondary font-normal leading-normal">
-          {category}
-        </div>
-        <div className="text-sm sm:text-base font-semibold text-text-primary tracking-tight leading-snug mt-1 group-hover:text-accent transition-colors duration-150">
-          {title}
-        </div>
-        {detail && (
-          <div className="text-xs text-text-secondary font-normal leading-normal mt-1">
-            {detail}
-          </div>
+  const inner = (
+    <div className="transition-transform duration-200 ease-out hover:-translate-y-0.5 h-full">
+      <div
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        style={{
+          transform: shouldReduceMotion
+            ? undefined
+            : "perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
+          transition: shouldReduceMotion
+            ? undefined
+            : "transform var(--tilt-ease, 200ms) cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms ease, box-shadow 150ms ease",
+        }}
+        className="group relative p-5 sm:p-6 rounded-2xl bg-bg-surface border border-border-custom hover:border-accent/45 shadow-xs hover:shadow-md flex items-start gap-4 select-none h-full overflow-hidden will-change-transform"
+      >
+        {!shouldReduceMotion && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              background:
+                "radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.1), transparent 65%)",
+            }}
+          />
         )}
+
+        <div className="relative z-10 w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+          {icon}
+        </div>
+
+        <div className="relative z-10 flex-1 min-w-0">
+          <div className="text-xs text-text-secondary font-normal leading-normal">
+            {category}
+          </div>
+          <div className="text-sm sm:text-base font-semibold text-text-primary tracking-tight leading-snug mt-1 group-hover:text-accent transition-colors duration-150">
+            {title}
+          </div>
+          {detail && (
+            <div className="text-xs text-text-secondary font-normal leading-normal mt-1">
+              {detail}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -376,36 +384,49 @@ function CredibilityCard({
     return (
       <a
         href={href}
-        className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.99] transition-transform duration-150"
+        className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.99]"
       >
-        {content}
+        {inner}
       </a>
     );
   }
 
-  return content;
+  return inner;
 }
 
 /* ─── Hero Section Component ────────────────────────────────────── */
 export default function Hero() {
   const shouldReduceMotion = Boolean(useReducedMotion());
+  const isDesktop = useIsDesktopStage();
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isTouchColorActive, setIsTouchColorActive] = useState(false);
-  const [activeSpecialty, setActiveSpecialty] = useState(0);
 
-  // 3D tilt & glare states for portrait
-  const portraitCardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, isHovering: false });
+  const portraitTilt = usePointerTilt(isTouchDevice || shouldReduceMotion);
+  const enableDesktopParallax = isDesktop && !shouldReduceMotion;
 
-  // Scroll parallax for Hero section
+  // Cinematic multi-plane scroll choreography for Hero
   const heroSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: heroScrollProgress } = useScroll({
     target: heroSectionRef,
     offset: ["start start", "end start"],
   });
-  const heroContentOpacity = useTransform(heroScrollProgress, [0, 0.85], [1, 0.2]);
-  const heroContentY = useTransform(heroScrollProgress, [0, 1], [0, 36]);
-
+  const smoothScroll = useSpring(heroScrollProgress, {
+    stiffness: 180,
+    damping: 28,
+    mass: 0.4,
+  });
+  const heroContentOpacity = useTransform(smoothScroll, [0, 0.85], [1, 0.2]);
+  const leftColumnY = useTransform(smoothScroll, [0, 1], [0, 36]);
+  const portraitColumnY = useTransform(smoothScroll, [0, 1], [0, -34]);
+  const portraitScale = useTransform(smoothScroll, [0, 1], [1, 0.94]);
+  const portraitInnerCardY = useTransform(smoothScroll, [0, 1], [0, -14]);
+  const gridY = useTransform(smoothScroll, [0, 1], [0, 64]);
+  const gridScale = useTransform(smoothScroll, [0, 1], [1, 1.06]);
+  const word1X = useTransform(smoothScroll, [0, 1], [0, -18]);
+  const word2X = useTransform(smoothScroll, [0, 1], [0, 22]);
+  const word3X = useTransform(smoothScroll, [0, 1], [0, -14]);
+  const word4X = useTransform(smoothScroll, [0, 1], [0, 18]);
+  const scrollCueOpacity = useTransform(smoothScroll, [0, 0.22], [1, 0]);
 
   // Detect touch capability
   useEffect(() => {
@@ -417,15 +438,6 @@ export default function Hero() {
     const t = setTimeout(() => setIsTouchDevice(isTouch), 0);
     return () => clearTimeout(t);
   }, []);
-
-  // Cycling specialties highlight in paragraph
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-    const interval = setInterval(() => {
-      setActiveSpecialty((prev) => (prev + 1) % 3);
-    }, 2600);
-    return () => clearInterval(interval);
-  }, [shouldReduceMotion]);
 
   // Defer Three.js WebGL node network to idle time on desktop only (>=768px)
   const [mountNetwork, setMountNetwork] = useState(false);
@@ -444,27 +456,6 @@ export default function Hero() {
       }
     }
   }, [shouldReduceMotion]);
-
-  // Handle 3D Tilt & Glare on Portrait (Mouse only)
-  const handlePortraitMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isTouchDevice || shouldReduceMotion || !portraitCardRef.current) return;
-    const rect = portraitCardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const maxTilt = 7;
-    const rotateX = ((e.clientY - centerY) / (rect.height / 2)) * -maxTilt;
-    const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * maxTilt;
-
-    const glareX = ((e.clientX - rect.left) / rect.width) * 100;
-    const glareY = ((e.clientY - rect.top) / rect.height) * 100;
-
-    setTilt({ rotateX, rotateY, glareX, glareY, isHovering: true });
-  };
-
-  const handlePortraitMouseLeave = () => {
-    setTilt({ rotateX: 0, rotateY: 0, glareX: 50, glareY: 50, isHovering: false });
-  };
 
   const handlePortraitTap = () => {
     if (isTouchDevice) {
@@ -498,17 +489,19 @@ export default function Hero() {
     <section
       ref={heroSectionRef}
       id="hero"
-      className="relative overflow-hidden pt-24 xs:pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
+      className="relative overflow-x-clip pt-24 xs:pt-28 sm:pt-28 lg:pt-32 pb-12 sm:pb-16 lg:pb-24 bg-bg border-b border-border-custom/40 scroll-mt-20 sm:scroll-mt-24"
       aria-label="Portfolio Introduction"
     >
-      {/* ── 1. Single WebGL Canvas: Three.js Node Network Background (Deferred Desktop Only) ── */}
+      {/* Deferred Desktop-Only WebGL Node Network */}
       {mountNetwork && <HeroNodeNetwork />}
 
-      {/* ── Subtle Architectural Grid Line Overlay ── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0 opacity-[0.05] dark:opacity-[0.08]"
+      {/* Subtle Architectural Grid Line Overlay with Scroll Depth */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <motion.div
+          className="absolute inset-0 opacity-[0.05] dark:opacity-[0.08] will-change-transform"
           style={{
+            y: shouldReduceMotion ? 0 : gridY,
+            scale: shouldReduceMotion ? 1 : gridScale,
             backgroundImage: `
               linear-gradient(to right, currentColor 1px, transparent 1px),
               linear-gradient(to bottom, currentColor 1px, transparent 1px)
@@ -532,12 +525,10 @@ export default function Hero() {
         animate="visible"
         style={{
           opacity: shouldReduceMotion ? 1 : heroContentOpacity,
-          y: shouldReduceMotion ? 0 : heroContentY,
         }}
         className="content-width relative z-10"
       >
-
-        {/* ── TOP STRIP ──────────────────────────────────────────────── */}
+        {/* Top Strip */}
         <motion.div
           variants={itemVariants}
           className="flex flex-col xs:flex-row xs:items-center justify-between gap-2 xs:gap-4 pb-3 sm:pb-5 mb-5 sm:mb-10 border-b border-border-custom/60"
@@ -546,7 +537,7 @@ export default function Hero() {
             <span className="text-sm font-semibold text-text-primary tracking-tight">
               Dhruv Vawhle
             </span>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/30 text-blue-700 dark:text-blue-300 shadow-2xs">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/30 text-blue-700 dark:text-blue-300">
               Software Engineer
             </span>
           </div>
@@ -558,105 +549,72 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* ── MAIN HERO GRID ─────────────────────────────────────────── */}
+        {/* Main Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* LEFT ZONE: Stacked Typography, Bio, CTA Buttons (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col space-y-3.5 sm:space-y-6">
+          {/* Left Zone: Stacked Typography, Bio, CTA Buttons */}
+          <motion.div
+            style={{ y: enableDesktopParallax ? leftColumnY : 0 }}
+            className="lg:col-span-7 flex flex-col space-y-3.5 sm:space-y-6 will-change-transform"
+          >
             <motion.div variants={itemVariants}>
-
-              {/* Headline with Scramble Effect */}
               <h1 className="font-display font-bold tracking-tight uppercase leading-[0.92] sm:leading-[0.88] select-none text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem]">
                 <span className="sr-only">Dhruv Vawhle, Software Engineer</span>
-                <div className="text-text-primary">
+                <motion.div style={{ x: shouldReduceMotion ? 0 : word1X }} className="text-text-primary will-change-transform">
                   <ScrambleWord
                     text="ENGINEER"
                     isTouchDevice={isTouchDevice}
                     shouldReduceMotion={shouldReduceMotion}
                   />
-                </div>
-                <div className="text-accent">
+                </motion.div>
+                <motion.div style={{ x: shouldReduceMotion ? 0 : word2X }} className="text-accent will-change-transform">
                   <ScrambleWord
                     text="BUILDER"
                     isTouchDevice={isTouchDevice}
                     shouldReduceMotion={shouldReduceMotion}
                   />
-                </div>
-                <div className="text-text-primary">
+                </motion.div>
+                <motion.div style={{ x: shouldReduceMotion ? 0 : word3X }} className="text-text-primary will-change-transform">
                   <ScrambleWord
                     text="PROBLEM"
                     isTouchDevice={isTouchDevice}
                     shouldReduceMotion={shouldReduceMotion}
                   />
-                </div>
-                <div className="text-text-primary">
+                </motion.div>
+                <motion.div style={{ x: shouldReduceMotion ? 0 : word4X }} className="text-text-primary will-change-transform">
                   <ScrambleWord
                     text="SOLVER"
                     isTouchDevice={isTouchDevice}
                     shouldReduceMotion={shouldReduceMotion}
                   />
-                </div>
+                </motion.div>
               </h1>
 
-              {/* Attribution Title & Paragraph with Moving Specialty Highlights */}
               <div className="mt-3 sm:mt-5 max-w-xl">
                 <p className="text-base sm:text-lg md:text-xl font-bold text-text-primary font-display">
                   Dhruv Vawhle, Software Engineer
                 </p>
-                <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-text-secondary leading-relaxed">
-                  Final-year Information Technology undergraduate specializing in{" "}
-                  <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 0
-                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                      : "text-text-primary"
-                      }`}
-                  >
-                    full-stack web development
-                  </span>,{" "}
-                  <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 1
-                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                      : "text-text-primary"
-                      }`}
-                  >
-                    applied machine learning
-                  </span>, and{" "}
-                  <span
-                    className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === 2
-                      ? "bg-accent/15 text-accent dark:bg-accent/25 dark:text-accent font-semibold shadow-xs ring-1 ring-accent/30"
-                      : "text-text-primary"
-                      }`}
-                  >
-                    AI security
-                  </span>.
-                </p>
+                <HeroSpecialtyBio shouldReduceMotion={shouldReduceMotion} />
               </div>
             </motion.div>
 
-            {/* CTA Buttons: Shimmer on Primary, Magnetic Lean toward Cursor */}
+            {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
               className="pt-3 sm:pt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4"
             >
-              {/* Primary: Explore Featured Projects */}
               <MagneticButton
                 isTouchDevice={isTouchDevice}
                 shouldReduceMotion={shouldReduceMotion}
               >
                 <a
                   href="#projects"
-                  className="group/btn relative overflow-hidden w-full sm:w-auto h-[50px] min-h-[48px] px-8 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-accent text-white shadow-md hover:shadow-lg hover:bg-accent-hover transition-colors duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2.5 focus-visible:outline-2 focus-visible:outline-accent"
+                  className="group/btn relative overflow-hidden w-full sm:w-auto h-[50px] min-h-[48px] px-8 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-accent text-white shadow-md hover:shadow-lg hover:bg-accent-hover transition-[background-color,box-shadow,transform] duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2.5 focus-visible:outline-2 focus-visible:outline-accent"
                 >
-                  {/* Continuous subtle shimmer streak */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 -translate-x-full animate-[shimmer_2.8s_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
-                  />
                   <span className="relative z-10">Explore Projects</span>
-                  <ArrowRightIcon />
+                  <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform duration-200" />
                 </a>
               </MagneticButton>
 
-              {/* Secondary: View Resume (Normal <a> link to /resume.pdf, opens new tab) */}
               <MagneticButton
                 isTouchDevice={isTouchDevice}
                 shouldReduceMotion={shouldReduceMotion}
@@ -665,88 +623,86 @@ export default function Hero() {
                   href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto h-[50px] min-h-[48px] px-7 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-accent hover:text-accent shadow-xs hover:shadow-sm transition-colors duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-accent"
+                  className="w-full sm:w-auto h-[50px] min-h-[48px] px-7 rounded-full text-[15px] sm:text-base font-semibold leading-none whitespace-nowrap bg-bg-surface hover:bg-bg-surface-hover text-text-primary border border-border-custom hover:border-accent hover:text-accent shadow-xs hover:shadow-sm transition-[background-color,border-color,color,box-shadow,transform] duration-150 active:scale-[0.98] inline-flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-accent"
                 >
-                  <ResumeIcon />
+                  <FileText className="w-[18px] h-[18px]" />
                   <span>View Resume</span>
                 </a>
               </MagneticButton>
             </motion.div>
-          </div>
+          </motion.div>
 
-          {/* RIGHT ZONE: Portrait with 3D Tilt, Glare, Beam, Chip, Info Card, Dock (5 cols) */}
-          <motion.div variants={itemVariants} className="lg:col-span-5 relative z-20">
-
-            {/* 3D Tilt Container */}
-            <div
-              ref={portraitCardRef}
-              onMouseMove={handlePortraitMouseMove}
-              onMouseLeave={handlePortraitMouseLeave}
-              style={{
-                perspective: 1000,
-              }}
-              className="w-full"
-            >
-              <motion.div
-                animate={
-                  isTouchDevice || shouldReduceMotion
-                    ? { rotateX: 0, rotateY: 0 }
-                    : {
-                      rotateX: tilt.rotateX,
-                      rotateY: tilt.rotateY,
-                    }
-                }
-                transition={{
-                  type: "spring",
-                  stiffness: 280,
-                  damping: 24,
+          {/* Right Zone: Portrait with Zero-Rerender 3D Tilt, Glare, Info Card & Dock */}
+          <motion.div
+            variants={itemVariants}
+            style={{
+              y: enableDesktopParallax ? portraitColumnY : 0,
+              scale: enableDesktopParallax ? portraitScale : 1,
+            }}
+            className="lg:col-span-5 relative z-20 will-change-transform"
+          >
+            <div className="transition-transform duration-200 ease-out hover:-translate-y-0.5">
+              <div
+                ref={portraitTilt.cardRef}
+                onPointerMove={portraitTilt.handlePointerMove}
+                onPointerLeave={portraitTilt.handlePointerLeave}
+                onClick={handlePortraitTap}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handlePortraitTap();
+                  }
                 }}
                 tabIndex={0}
                 role="region"
                 aria-label="Dhruv Vawhle portrait, turns to color on hover or focus"
-                onClick={handlePortraitTap}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handlePortraitTap();
-                  }
+                style={{
+                  transform:
+                    isTouchDevice || shouldReduceMotion
+                      ? undefined
+                      : "perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
+                  transition:
+                    isTouchDevice || shouldReduceMotion
+                      ? undefined
+                      : "transform var(--tilt-ease, 200ms) cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease",
                 }}
-                className={`relative w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-[22px] overflow-hidden border border-border-custom shadow-2xl bg-bg-surface/90 group cursor-pointer focus-visible:outline-2 focus-visible:outline-accent select-none ${isTouchColorActive ? "touch-color-active" : ""
+                className={`relative w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto aspect-[4/5] rounded-[22px] overflow-hidden border border-border-custom hover:border-accent/50 shadow-2xl bg-bg-surface/90 group cursor-pointer focus-visible:outline-2 focus-visible:outline-accent select-none will-change-transform ${isTouchColorActive ? "touch-color-active" : ""
                   }`}
               >
-                {/* Image Component */}
-                <Image
-                  src="/images/profile/dhruv-vawhle.jpg"
-                  alt="Dhruv Vawhle – Software Engineer & AI Security Specialist Portrait"
-                  fill
-                  priority
-                  fetchPriority="high"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
-                  className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${isTouchColorActive ? "!grayscale-0" : ""
-                    }`}
-                  style={{ objectPosition: "50% 15%" }}
-                />
+                <div className="absolute inset-0 transform-gpu transition-transform duration-500 ease-out group-hover:scale-[1.02] will-change-transform">
+                  <Image
+                    src="/images/profile/dhruv-vawhle.jpg"
+                    alt="Dhruv Vawhle – Software Engineer & AI Security Specialist Portrait"
+                    fill
+                    priority
+                    fetchPriority="high"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
+                    className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${isTouchColorActive ? "!grayscale-0" : ""
+                      }`}
+                    style={{ objectPosition: "50% 15%" }}
+                  />
+                </div>
 
-                {/* Glare effect on mouse move */}
+                {/* Pointer-tracked glare */}
                 {!isTouchDevice && !shouldReduceMotion && (
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300 rounded-[22px]"
+                    className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-35 transition-opacity duration-300 rounded-[22px]"
                     style={{
-                      opacity: tilt.isHovering ? 0.35 : 0,
-                      background: `radial-gradient(circle at ${tilt.glareX}% ${tilt.glareY}%, rgba(255, 255, 255, 0.6) 0%, transparent 60%)`,
+                      background:
+                        "radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 60%)",
                     }}
                   />
                 )}
 
-
-
-                {/* Animated Node-Graph Chip Top Right (Hidden on mobile < sm to prevent overlapping portrait) */}
                 <div className="hidden sm:block absolute top-3.5 right-3.5 z-20">
                   <NodeGraphChip />
                 </div>
 
-                {/* Info Card inside Portrait */}
-                <div className="absolute inset-x-2.5 xs:inset-x-3.5 bottom-2.5 xs:bottom-3.5 z-20 p-3.5 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-bg-surface border border-border-custom shadow-md space-y-2 transition-colors duration-200">
+                <motion.div
+                  style={{ y: shouldReduceMotion ? 0 : portraitInnerCardY }}
+                  className="absolute inset-x-2.5 xs:inset-x-3.5 bottom-2.5 xs:bottom-3.5 z-20 p-3.5 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-bg-surface/95 backdrop-blur-md border border-border-custom shadow-md space-y-2 transition-colors duration-200 will-change-transform"
+                >
                   <div>
                     <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
                       Dhruv Vawhle
@@ -761,11 +717,11 @@ export default function Hero() {
                       <span>Available for roles</span>
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </div>
 
-            {/* Direct Contact Channels Dock alongside Portrait */}
+            {/* Direct Contact Channels Dock */}
             <div className="mt-4 flex items-center justify-between p-2.5 sm:p-3 w-full max-w-[340px] sm:max-w-md lg:max-w-none mx-auto rounded-2xl bg-bg-surface border border-border-custom shadow-xs">
               <div className="flex items-center pl-2 sm:pl-3">
                 <div className="flex flex-col">
@@ -785,7 +741,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* ── 3. CREDIBILITY ROW ─────────────────────────────────────── */}
+        {/* Credibility Row */}
         <motion.div
           variants={itemVariants}
           className="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-border-custom/60"
@@ -795,22 +751,25 @@ export default function Hero() {
               category="Government of India"
               title="Copyright-Registered Software"
               detail="Certificate SW-2026024057, issued 29 Oct 2026"
-              icon={<ShieldIcon />}
+              icon={<ShieldCheck className="w-[18px] h-[18px]" />}
               href="#projects"
+              shouldReduceMotion={shouldReduceMotion}
             />
             <CredibilityCard
               category="Production engineering"
               title="Full-Stack & Applied AI Systems"
               detail="5 deployed systems across Web, Vision and Cloud"
-              icon={<DatabaseIcon />}
+              icon={<Database className="w-[18px] h-[18px]" />}
               href="#projects"
+              shouldReduceMotion={shouldReduceMotion}
             />
           </div>
         </motion.div>
 
-        {/* ── 4. SCROLL TO EXPLORE INDICATOR ── */}
+        {/* Scroll to Explore Indicator */}
         <motion.div
           variants={itemVariants}
+          style={{ opacity: shouldReduceMotion ? 1 : scrollCueOpacity }}
           className="mt-10 sm:mt-12 flex flex-col items-center justify-center"
         >
           <a
@@ -836,6 +795,5 @@ export default function Hero() {
         </motion.div>
       </motion.div>
     </section>
-
   );
 }
