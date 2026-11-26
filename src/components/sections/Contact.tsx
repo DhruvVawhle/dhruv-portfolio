@@ -127,7 +127,7 @@ export default function Contact() {
               <div className="relative z-10 flex flex-col items-center w-full max-w-2xl mx-auto">
                 {/* Status & Location Pills */}
                 <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-text-secondary mb-6 font-body">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 font-medium text-emerald-600 dark:text-emerald-400">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 font-medium text-emerald-700 dark:text-emerald-400">
                     Open to engineering roles (2027)
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-bg border border-border-custom">

@@ -46,7 +46,7 @@ export default function MediMitraSection({ onOpenCaseStudy }: MediMitraSectionPr
               Smart India Hackathon 2025 · PS ID: SIH25049
             </span>
 
-            <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 font-mono text-[11px] sm:text-xs font-medium">
+            <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 font-mono text-[11px] sm:text-xs font-medium">
               <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
               <span>Top 30 National Finalists</span>
             </span>
@@ -65,7 +65,7 @@ export default function MediMitraSection({ onOpenCaseStudy }: MediMitraSectionPr
             >
               MediMitra
             </h3>
-            <p className="text-sm xs:text-base sm:text-lg font-medium text-emerald-600 dark:text-emerald-400 text-pretty">
+            <p className="text-sm xs:text-base sm:text-lg font-medium text-emerald-700 dark:text-emerald-400 text-pretty">
               Multilingual WhatsApp healthcare triage with deterministic emergency escalation
             </p>
             <p className="text-xs xs:text-sm sm:text-base text-text-secondary leading-relaxed max-w-3xl">
@@ -108,7 +108,7 @@ export default function MediMitraSection({ onOpenCaseStudy }: MediMitraSectionPr
                 Safety bypass speed
               </span>
               <div className="mt-1.5 sm:mt-2">
-                <span className="font-display font-bold text-xl xs:text-2xl text-emerald-600 dark:text-emerald-400 tabular-nums">
+                <span className="font-display font-bold text-xl xs:text-2xl text-emerald-700 dark:text-emerald-400 tabular-nums">
                   &lt; 15ms
                 </span>
                 <p className="text-[10px] xs:text-[11px] text-text-secondary mt-0.5 leading-snug">
@@ -494,7 +494,7 @@ export default function MediMitraSection({ onOpenCaseStudy }: MediMitraSectionPr
           </div>
 
           <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-bg border border-border-custom space-y-2.5 sm:space-y-3">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
               <Database className="w-4 h-4" />
             </div>
             <h5 className="font-display font-bold text-sm text-text-primary">

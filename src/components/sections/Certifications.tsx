@@ -410,7 +410,7 @@ export default function Certifications() {
               ))}
             </div>
 
-            <p className="mt-10 sm:mt-12 text-center font-mono text-[11px] sm:text-xs text-text-secondary/75 px-4">
+            <p className="mt-10 sm:mt-12 text-center font-mono text-[11px] sm:text-xs text-text-secondary px-4">
               <span className="hidden sm:inline">Hover folder to tilt · Click folder to fan out · Click any certificate to inspect</span>
               <span className="sm:hidden">Tap folder to open · Tap any certificate to inspect</span>
             </p>
@@ -530,7 +530,7 @@ export default function Certifications() {
                               onClick={() => handleCopyId(cert.credentialId!)}
                               aria-label={`Copy credential ID ${cert.credentialId}`}
                               className={`inline-flex items-center gap-1.5 font-sans text-xs px-3 py-2 rounded-xl border transition-colors cursor-pointer ${hasCopiedThis
-                                ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-semibold"
+                                ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-400 font-semibold"
                                 : "bg-bg hover:bg-foreground/5 border-border-custom text-text-secondary hover:text-text-primary"
                                 }`}
                             >
@@ -541,7 +541,7 @@ export default function Certifications() {
                                 </>
                               ) : (
                                 <>
-                                  <span className="text-text-secondary/70">ID:</span>
+                                  <span className="text-text-secondary">ID:</span>
                                   <span className="font-semibold text-text-primary">{cert.credentialId}</span>
                                   <Copy className="w-3 h-3 text-text-secondary" />
                                 </>

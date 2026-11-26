@@ -196,26 +196,24 @@ body {
 
 @keyframes travelingSignal {
   0% {
-    cx: 8px;
-    cy: 13px;
+    transform: translate3d(8px, 13px, 0);
     opacity: 0;
   }
 
   50% {
-    cx: 28px;
-    cy: 6px;
+    transform: translate3d(28px, 6px, 0);
     opacity: 1;
   }
 
   100% {
-    cx: 48px;
-    cy: 13px;
+    transform: translate3d(48px, 13px, 0);
     opacity: 0;
   }
 }
 
 .animate-traveling-signal {
   animation: travelingSignal 2.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes chatTypingPulse {
@@ -241,6 +239,11 @@ body {
 section[id],
 main>section[id] {
   scroll-margin-top: 5.5rem;
+}
+
+main > section[id]:not(#hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
 }
 
 @media (min-width: 1024px) {

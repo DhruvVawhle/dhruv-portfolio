@@ -31,7 +31,6 @@ export const metadata: Metadata = {
     "Full-Stack Web Development",
     "AI Systems",
     "Mumbai Software Engineer",
-    "Full-Stack Web Development",
     "Applied Machine Learning",
     "AI Security",
     "n8n Workflows",
@@ -277,7 +276,6 @@ const jsonLd = {
 };
 import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import "devicon/devicon.min.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -369,7 +367,7 @@ export default function RootLayout({
               <span id="dv-preload-txt">Loading portfolio...</span>
             </div>
           </div>
-          <span className="absolute bottom-6 font-mono text-xs text-text-secondary/70">
+          <span className="absolute bottom-6 font-mono text-xs text-text-secondary">
             Click anywhere to enter
           </span>
         </div>

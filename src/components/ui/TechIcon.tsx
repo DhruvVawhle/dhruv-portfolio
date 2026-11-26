@@ -1,7 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
+
+let deviconCssPromise: Promise<unknown> | null = null;
+function ensureDeviconCss() {
+  if (typeof window === "undefined") return;
+  if (!deviconCssPromise) {
+    deviconCssPromise = import("devicon/devicon.min.css").catch(() => {});
+  }
+}
 
 const RazorpaySvg = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -506,6 +514,12 @@ export default function TechIcon({
     else if (lower.startsWith("pytorch") || lower.startsWith("torch")) config = ICON_MAP["PyTorch"];
     else if (lower.startsWith("lenis")) config = ICON_MAP["Lenis & GSAP"];
   }
+
+  useEffect(() => {
+    if (config?.type === "devicon") {
+      ensureDeviconCss();
+    }
+  }, [config?.type]);
 
   const containerSize =
     size === "lg"

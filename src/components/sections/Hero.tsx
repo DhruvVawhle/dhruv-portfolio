@@ -53,7 +53,7 @@ function NodeGraphChip() {
         <circle cx="28" cy="20" r="3.2" fill="var(--accent)" />
         <circle cx="48" cy="13" r="3.5" fill="var(--accent)" />
         <circle cx="48" cy="13" r="6" stroke="var(--accent)" strokeWidth="1" strokeOpacity="0.3" />
-        <circle r="1.8" fill="#ffffff" className="animate-traveling-signal" />
+        <circle cx="0" cy="0" r="1.8" fill="#ffffff" className="animate-traveling-signal" />
       </svg>
     </div>
   );
@@ -151,8 +151,8 @@ function HeroSpecialtyBio({ shouldReduceMotion }: { shouldReduceMotion: boolean 
           {idx === 1 && ", "}
           {idx === 2 && ", and "}
           <span
-            className={`inline-block rounded-md px-1.5 py-0.5 transition-colors duration-200 ${activeSpecialty === idx
-              ? "bg-accent/15 text-accent font-semibold ring-1 ring-accent/30"
+            className={`inline-block rounded-md px-1.5 py-0.5 font-medium ${activeSpecialty === idx
+              ? "bg-accent/15 text-accent ring-1 ring-accent/30"
               : "text-text-primary"
               }`}
           >
@@ -676,7 +676,7 @@ export default function Hero() {
                     fill
                     priority
                     fetchPriority="high"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 480px"
+                    sizes="(max-width: 640px) 340px, (max-width: 1024px) 448px, 420px"
                     className={`object-cover grayscale contrast-[1.06] transition-[filter] duration-700 motion-reduce:transition-none group-hover:grayscale-0 group-focus-visible:grayscale-0 ${isTouchColorActive ? "!grayscale-0" : ""
                       }`}
                     style={{ objectPosition: "50% 15%" }}
@@ -704,16 +704,16 @@ export default function Hero() {
                   className="absolute inset-x-2.5 xs:inset-x-3.5 bottom-2.5 xs:bottom-3.5 z-20 p-3.5 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-bg-surface/95 backdrop-blur-md border border-border-custom shadow-md space-y-2 transition-colors duration-200 will-change-transform"
                 >
                   <div>
-                    <h3 className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
+                    <p className="font-display font-bold text-lg sm:text-xl text-text-primary leading-none">
                       Dhruv Vawhle
-                    </h3>
+                    </p>
                     <p className="text-xs sm:text-sm text-accent mt-1.5 font-medium">
                       Software Engineer
                     </p>
                   </div>
                   <div className="pt-2.5 border-t border-border-custom/60 flex items-center justify-between text-xs text-text-secondary font-body">
                     <span>B.Tech IT (2027), Mumbai</span>
-                    <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+                    <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-medium">
                       <span>Available for roles</span>
                     </div>
                   </div>

@@ -5,16 +5,24 @@
 ## Developer Profile & Metadata
 - **Full Name**: Dhruv Vawhle
 - **Professional Title**: Software Engineer
-- **Academic Degree**: Bachelor of Technology (B.Tech) in Information Technology
-- **Graduation Year**: 2027
+- **Academic Degree**: Bachelor of Technology (B.Tech) in Information Technology (Class of 2027)
 - **Location**: Mumbai, Maharashtra, India
-- **Primary Website**: https://dhruvvawhle.vercel.app
-- **GitHub**: https://github.com/DhruvVawhle
-- **LinkedIn**: https://linkedin.com/in/dhruv-vawhle-277b2b2b8
-- **Resume**: https://dhruvvawhle.vercel.app/resume.pdf
-- **Email**: dhruvvawhle@gmail.com
+- **Primary Website**: [Dhruv Vawhle Portfolio](https://dhruvvawhle.vercel.app/)
+- **GitHub**: [github.com/DhruvVawhle](https://github.com/DhruvVawhle)
+- **LinkedIn**: [linkedin.com/in/dhruv-vawhle-277b2b2b8](https://linkedin.com/in/dhruv-vawhle-277b2b2b8)
+- **Resume**: [Dhruv Vawhle Resume (PDF)](https://dhruvvawhle.vercel.app/resume.pdf)
+- **Email**: [dhruvvawhle@gmail.com](mailto:dhruvvawhle@gmail.com)
 
----
+## Site Navigation & Resources
+- [Home & Introduction](https://dhruvvawhle.vercel.app/#hero): Overview, engineering philosophy, and quick connect links.
+- [About](https://dhruvvawhle.vercel.app/#about): Background, engineering approach, and technical focus.
+- [Projects](https://dhruvvawhle.vercel.app/#projects): Production systems, case studies, and live demos.
+- [Experience](https://dhruvvawhle.vercel.app/#experience): Software engineering internships and technical roles.
+- [Hackathons](https://dhruvvawhle.vercel.app/#hackathons): Competition builds and datathon achievements.
+- [Skills](https://dhruvvawhle.vercel.app/#skills): Full-stack, AI/ML, and infrastructure technology stack.
+- [Credentials](https://dhruvvawhle.vercel.app/#certifications): Verified industry certifications.
+- [Contact](https://dhruvvawhle.vercel.app/#contact): Direct inquiry and hiring channels.
+- [XML Sitemap](https://dhruvvawhle.vercel.app/sitemap.xml): Canonical site index.
 
 ## Core Engineering Competencies
 
@@ -29,44 +37,41 @@
 - **Workflow Automation**: n8n (self-hosted and cloud), Webhook routing, autonomous AI agent pipelines, multi-step LLM chains.
 - **AI Security & Guardrails**: LLM prompt injection detection (PromptShield), semantic boundary validation, threat signature analysis, latency-optimized inference gateways.
 
----
-
 ## Featured Production Projects
 
 ### 1. MediMitra — AI Healthcare Triage & Workflow Automation
 - **Overview**: Intelligent medical triage and hospital operational routing platform built to reduce emergency intake bottlenecks.
 - **Architecture**: Next.js frontend, FastAPI backend, automated n8n workflow engine integrating patient symptom analysis, severity scoring, and emergency doctor dispatch.
 - **Impact & Metrics**: 40% reduction in preliminary triage latency; zero patient drop-off in hospital simulation tests.
-- **Live Demo**: https://medimitra-ai.vercel.app
-- **Source Code**: https://github.com/DhruvVawhle/MediMitra-AI
+- **Live Demo**: [medimitra-ai.vercel.app](https://medimitra-ai.vercel.app)
+- **Case Study**: [MediMitra AI Healthcare Case Study (PDF)](https://dhruvvawhle.vercel.app/medimitra-case-study.pdf)
+- **Source Code**: [GitHub — MediMitra-AI](https://github.com/DhruvVawhle/MediMitra-AI)
 
 ### 2. PromptShield — AI Security Gateway & Threat Prevention Proxy
 - **Overview**: Real-time AI security gateway and reverse proxy defending foundation models against prompt injection, jailbreaks, and system prompt extraction under 15ms.
 - **Architecture**: Next.js 16 App Router, TypeScript, Tailwind CSS v4, Groq LPU inference, Firebase Admin SDK, Cloud Firestore, Upstash Redis. Features morphological suffix-stripping heuristic rule engine, 6-stage pipeline, deterministic 4-tier policy precedence (ALLOW, WARN, SANITIZE, BLOCK), and HMAC-SHA256 audit trails.
 - **Impact & Metrics**: Sub-15ms pipeline execution; OWASP LLM Top 10 coverage; 0–100 threat risk scoring; drop-in 2-line OpenAI SDK integration; 100% test pass across adversarial datasets.
-- **Live Demo**: https://promptshield-ai.vercel.app
-- **Source Code**: https://github.com/DhruvVawhle/PromptShield
+- **Live Demo**: [promptshield-ai.vercel.app](https://promptshield-ai.vercel.app)
+- **Source Code**: [GitHub — PromptShield](https://github.com/DhruvVawhle/PromptShield)
 
 ### 3. KrishiSaathi — Smart Agri-Tech E-Commerce & ML Yield Forecasting
 - **Overview**: Full-stack agricultural commerce ecosystem connecting regional farmers directly with commercial buyers, featuring ML crop advisory and market price forecasting.
 - **Architecture**: React, Node.js, Express, MongoDB, Python Flask ML service, Razorpay payment gateway.
 - **Impact & Metrics**: Enabled 150+ simulated farmer-to-buyer transactions with zero intermediary fees; 88% yield prediction accuracy across 12 crop varieties.
-- **Source Code**: https://github.com/DhruvVawhle/KrishiSaathi
+- **Source Code**: [GitHub — KrishiSaathi](https://github.com/DhruvVawhle/KrishiSaathi)
 
 ### 4. CampusAI — Multilingual AI Reception Robot & Campus Navigation Kiosk
 - **Overview**: Autonomous physical reception terminal and multilingual reception robot engineered for Shree L. R. Tiwari College of Engineering (SLRTCE), Mumbai.
 - **Architecture**: Next.js 16 App Router, TypeScript, Tailwind CSS v4, Framer Motion, React Three Fiber 3D robot avatar, vector SVG indoor floor maps with smartphone QR handoff (Frontend by Dhruv Vawhle). Paired with FastAPI, Groq Whisper (whisper-large-v3-turbo), Edge-TTS Indian accent neural voices, FAISS (multilingual-e5-small) RAG, and SQLite3 (Backend by Jayesh Tiwari).
 - **Impact & Metrics**: 4 languages supported (English, Hindi, Marathi, Hinglish); <20-second kiosk clearance via mobile QR wayfinding transfer; 45-second inactivity reset; 5-tap hidden technician diagnostics HUD.
-- **Upstream Repository**: https://github.com/jayeshtiwari-ai/CampusAI
-- **Source Code**: https://github.com/DhruvVawhle/CampusAI
+- **Upstream Repository**: [GitHub — jayeshtiwari-ai/CampusAI](https://github.com/jayeshtiwari-ai/CampusAI)
+- **Source Code**: [GitHub — DhruvVawhle/CampusAI](https://github.com/DhruvVawhle/CampusAI)
 
 ### 5. CineSense — NLP Sentiment Analysis & Review Intelligence Engine
 - **Overview**: Large-scale movie review sentiment classification and topic extraction pipeline built on the 50,000-review IMDb benchmark.
 - **Architecture**: Python, Scikit-Learn, TF-IDF vectorization, Logistic Regression / Bi-LSTM comparative models, Streamlit interactive dashboard.
 - **Impact & Metrics**: 89.4% classification accuracy on out-of-sample review test sets.
-- **Source Code**: https://github.com/DhruvVawhle/CineSense-IMDB-Sentiment-Analysis
-
----
+- **Source Code**: [GitHub — CineSense-IMDB-Sentiment-Analysis](https://github.com/DhruvVawhle/CineSense-IMDB-Sentiment-Analysis)
 
 ## Technical Credentials & Certifications
 - **Cisco**: Data Science & Analytics Certified (Credential verification on Cisco NetAcad)
@@ -75,18 +80,13 @@
 - **Infosys Springboard**: Python Programming & Algorithmic Problem Solving
 - **Edunet Foundation & IBM**: Applied AI & Machine Learning Specialization
 
----
-
 ## Honors & Hackathon Achievements
 - **Analytix Datathon Finalist**: Ranked in top percentile among 200+ teams for predictive machine learning model accuracy and real-world deployment architecture.
 - **Edith Hackathon**: Engineered an autonomous disaster management coordination tool under 24 hours using Next.js and real-time mapping APIs.
 
----
-
 ## Contact & Hire Inquiries
 - **Availability**: Open for Software Engineering internships, co-ops, and full-time software engineering roles.
-- **Direct Email**: dhruvvawhle@gmail.com
-- **LinkedIn**: https://linkedin.com/in/dhruv-vawhle-277b2b2b8
-- **GitHub**: https://github.com/DhruvVawhle
-- **Portfolio**: https://dhruvvawhle.vercel.app
-
+- **Direct Email**: [dhruvvawhle@gmail.com](mailto:dhruvvawhle@gmail.com)
+- **LinkedIn**: [linkedin.com/in/dhruv-vawhle-277b2b2b8](https://linkedin.com/in/dhruv-vawhle-277b2b2b8)
+- **GitHub**: [github.com/DhruvVawhle](https://github.com/DhruvVawhle)
+- **Portfolio**: [dhruvvawhle.vercel.app](https://dhruvvawhle.vercel.app/)

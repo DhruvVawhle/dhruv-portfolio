@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 
 /**
  * Glass Folder Cards — a folder you can actually use, drawn as an object.
@@ -772,7 +773,7 @@ export default function GlassFolder({
           {/* back panel and its artwork */}
           <div className="gf-back" style={{ clipPath: "path('" + BACK_PATH + "')" }} aria-hidden="true">
             {image ? (
-              <img className="gf-art" src={image} alt="" width={W + 24} height={H + 24} draggable={false} />
+              <Image className="gf-art" src={image} alt="" width={W + 24} height={H + 24} sizes="364px" quality={75} loading="lazy" draggable={false} />
             ) : art !== "none" ? (
               <ArtCanvas className="gf-art" art={art} seed={seed} w={W + 24} h={H + 24} density={density} priority={0} />
             ) : null}
@@ -830,7 +831,7 @@ export default function GlassFolder({
                 <>
                   {picture ? (
                     file.image ? (
-                      <img className="gf-sheet-art" src={file.image} alt="" width={SHEET_W} height={SHEET_H} draggable={false} />
+                      <Image className="gf-sheet-art" src={file.image} alt="" width={SHEET_W} height={SHEET_H} sizes="272px" quality={75} loading="lazy" draggable={false} />
                     ) : (
                       <ArtCanvas
                         className="gf-sheet-art"

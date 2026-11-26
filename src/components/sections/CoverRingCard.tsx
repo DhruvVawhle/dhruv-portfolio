@@ -227,7 +227,7 @@ export default function CoverRingCard({
                     fill
                     sizes="(max-width: 640px) 270px, 370px"
                     quality={75}
-                    priority={isFront}
+                    loading="lazy"
                     className="object-cover"
                     onError={() => setImgError(true)}
                   />

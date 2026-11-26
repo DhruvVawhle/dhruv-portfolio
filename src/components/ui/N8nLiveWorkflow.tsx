@@ -328,7 +328,7 @@ export default function N8nLiveWorkflow() {
 
         {/* Right Status Pill */}
         <div className="flex flex-col items-start md:items-end gap-1 flex-shrink-0">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 font-sans text-xs font-semibold shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-400 font-sans text-xs font-semibold shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 motion-safe:animate-pulse" />
             <span>Workflow preview</span>
           </div>
@@ -565,7 +565,7 @@ export default function N8nLiveWorkflow() {
                           }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                          <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">
                             Path A: No Emergency
                           </span>
                           <span className="text-[10px] text-text-secondary">32ms</span>
@@ -888,7 +888,7 @@ export default function N8nLiveWorkflow() {
           <div className="p-4 sm:p-6 text-xs text-text-secondary space-y-3 min-h-[300px]">
             <div className="flex items-center justify-between pb-3 border-b border-border-custom">
               <span className="font-semibold text-text-primary">Execution history</span>
-              <span className="text-[11px] text-emerald-500 font-medium">All healthy · Auto-logged</span>
+              <span className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">All healthy · Auto-logged</span>
             </div>
             {[
               { id: `#${cycleCount}-01`, time: "Just now", status: "Success", duration: "3.4s", trigger: "WhatsApp Webhook (Meta Cloud API)" },
@@ -923,7 +923,7 @@ export default function N8nLiveWorkflow() {
               </div>
               <div className="p-3.5 rounded-xl bg-bg border border-border-custom">
                 <span className="text-[11px] text-text-secondary block">Safety filter precision</span>
-                <span className="font-display font-black text-xl text-emerald-500 block mt-1">99.4%</span>
+                <span className="font-display font-black text-xl text-emerald-700 dark:text-emerald-400 block mt-1">99.4%</span>
                 <span className="text-[10px] text-text-secondary mt-1 block">Zero missed chest pain/asphyxia alerts</span>
               </div>
               <div className="p-3.5 rounded-xl bg-bg border border-border-custom">
@@ -1161,7 +1161,7 @@ function MobileStepCard({
               Running
             </span>
           ) : isSuccess ? (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold border border-emerald-500/30">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-semibold border border-emerald-500/30">
               ✓ Ready
             </span>
           ) : (

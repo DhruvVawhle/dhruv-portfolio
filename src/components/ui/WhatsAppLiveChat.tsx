@@ -330,7 +330,7 @@ export default function WhatsAppLiveChat() {
         <div className="flex items-center gap-2">
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-semibold border ${
             isDemoRunning && !isUserInteracting
-              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-400"
               : "bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400"
           }`}>
             <span className={`w-2 h-2 rounded-full ${

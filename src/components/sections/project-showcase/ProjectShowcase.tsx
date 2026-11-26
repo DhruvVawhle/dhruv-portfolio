@@ -156,11 +156,10 @@ function ProjectFolderCard({
                     src={project.image}
                     alt={project.imageAlt || `${project.title} interface preview`}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 640px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 560px"
                     quality={75}
-                    loading="eager"
+                    loading="lazy"
                     decoding="async"
-                    priority
                     onLoad={(e) => {
                       const img = e.currentTarget;
                       if (img.naturalWidth && img.naturalHeight) {

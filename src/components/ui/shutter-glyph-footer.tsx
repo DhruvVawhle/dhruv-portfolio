@@ -511,8 +511,8 @@ export function PlayableWordmark({
           viewBox={"0 0 " + f(width) + " " + CAP}
           preserveAspectRatio="xMidYMid meet"
           style={{ aspectRatio: width + " / " + CAP }}
-          aria-hidden="true"
-          focusable="false"
+          role="group"
+          aria-label={cleanWord}
         >
           <defs>
             <clipPath id={upId} clipPathUnits="userSpaceOnUse">
