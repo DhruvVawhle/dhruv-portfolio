@@ -89,7 +89,7 @@ function DomainCategoryCard({
               {category.subtitle}
             </p>
           </div>
-          <span className="font-mono text-xs text-white/50 flex-shrink-0">
+          <span className="font-mono text-xs text-white/70 flex-shrink-0">
             {category.technologies.length}
           </span>
         </div>

@@ -228,7 +228,7 @@ function ProjectFolderCard({
                     : "perspective(900px) rotateX(0deg)",
               transition: "transform 420ms cubic-bezier(0.16, 1, 0.3, 1)",
             }}
-            className="relative z-20 -mt-5 rounded-3xl border-t border-border-custom bg-bg-surface/92 backdrop-blur-xl p-4 sm:p-5 shadow-[0_-8px_24px_rgba(0,0,0,0.18)] flex items-center justify-between gap-3 will-change-transform"
+            className="relative z-20 -mt-5 rounded-3xl border-t border-border-custom bg-bg-surface p-4 sm:p-5 shadow-[0_-8px_24px_rgba(0,0,0,0.18)] flex items-center justify-between gap-3 will-change-transform"
           >
             <div className="min-w-0">
               <div className="flex items-center gap-2">

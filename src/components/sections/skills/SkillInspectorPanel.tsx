@@ -120,7 +120,7 @@ export default function SkillInspectorPanel({
 
           {/* Primary Role */}
           <div className="relative z-20 p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
-            <span className="text-white/55 text-xs block">Primary engineering role</span>
+            <span className="text-white/75 text-xs block">Primary engineering role</span>
             <span className="text-[#3B82F6] font-semibold text-sm sm:text-base block">
               {activeDetail.role}
             </span>
