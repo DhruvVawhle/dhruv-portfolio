@@ -42,7 +42,7 @@ export default function MediMitraSection({ onOpenCaseStudy }: MediMitraSectionPr
         <div className="max-w-4xl space-y-5 sm:space-y-6">
           {/* Eyebrow & Credential Badges */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent font-mono text-[11px] sm:text-xs font-medium">
+            <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-blue-700 dark:text-accent font-mono text-[11px] sm:text-xs font-medium">
               Smart India Hackathon 2025 · PS ID: SIH25049
             </span>
 

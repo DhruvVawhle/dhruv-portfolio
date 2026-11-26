@@ -135,7 +135,7 @@ export default function CoverflowCard({
           {/* Top Meta Bar */}
           <div>
             <div className="flex items-center justify-between gap-2 mb-3.5">
-              <span className="font-mono text-[11px] font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent">
+              <span className="font-mono text-[11px] font-semibold px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-blue-700 dark:text-accent">
                 {project.tag}
               </span>
               <span className="text-xs text-text-secondary flex items-center gap-1.5">

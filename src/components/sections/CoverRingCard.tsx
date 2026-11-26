@@ -204,7 +204,7 @@ export default function CoverRingCard({
         <div className="relative z-10 flex flex-col h-full justify-between p-4 xs:p-5 sm:p-6">
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
-              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent">
+              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-blue-700 dark:text-accent">
                 {project.tag}
               </span>
               <span className="text-xs text-text-secondary font-medium">{project.status}</span>

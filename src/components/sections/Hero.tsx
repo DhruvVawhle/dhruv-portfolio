@@ -152,7 +152,7 @@ function HeroSpecialtyBio({ shouldReduceMotion }: { shouldReduceMotion: boolean 
           {idx === 2 && ", and "}
           <span
             className={`inline-block rounded-md px-1.5 py-0.5 font-medium ${activeSpecialty === idx
-              ? "bg-accent/15 text-accent ring-1 ring-accent/30"
+              ? "bg-accent/15 text-blue-700 dark:text-accent ring-1 ring-accent/30"
               : "text-text-primary"
               }`}
           >

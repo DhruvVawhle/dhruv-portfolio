@@ -58,7 +58,7 @@ function ExperienceRoleCard({
             <span
               className={`font-mono text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-colors duration-200 ${
                 isLit
-                  ? "bg-accent/15 border-accent/40 text-accent"
+                  ? "bg-accent/15 border-accent/40 text-blue-700 dark:text-accent"
                   : "bg-bg-surface border-border-custom text-text-secondary"
               }`}
             >
@@ -101,7 +101,7 @@ function ExperienceRoleCard({
             <span
               className={`font-mono text-xs font-semibold px-3 py-1 rounded-full border transition-colors duration-200 ${
                 isLit
-                  ? "bg-accent/15 border-accent/40 text-accent"
+                  ? "bg-accent/15 border-accent/40 text-blue-700 dark:text-accent"
                   : "bg-bg-surface border-border-custom text-text-secondary"
               }`}
             >

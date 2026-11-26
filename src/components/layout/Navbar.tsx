@@ -339,7 +339,7 @@ export default function Navbar() {
                       ease: "easeOut",
                     }}
                     className={`group relative flex items-center justify-center gap-3 px-6 py-2.5 rounded-2xl w-full text-center transition-[color,background-color] duration-200 select-none ${isCurrent
-                      ? "bg-accent/15 text-accent font-bold shadow-xs"
+                      ? "bg-accent/15 text-blue-700 dark:text-accent font-bold shadow-xs"
                       : "text-text-primary hover:text-accent hover:bg-bg-surface/70"
                       }`}
                   >

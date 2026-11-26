@@ -573,7 +573,7 @@ function CinematicScrollStage({
                       aria-current={isCurrent ? "true" : undefined}
                       className={`min-h-[34px] px-3 py-1 rounded-full text-xs font-medium transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent ${
                         isCurrent
-                          ? "bg-accent/15 text-accent border border-accent/40 font-semibold"
+                          ? "bg-accent/15 text-blue-700 dark:text-accent border border-accent/40 font-semibold"
                           : "bg-bg-surface text-text-secondary border border-border-custom hover:text-text-primary hover:border-accent/30"
                       }`}
                     >

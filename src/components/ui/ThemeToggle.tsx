@@ -40,7 +40,7 @@ export default function ThemeToggle() {
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
-        className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors duration-300 flex-shrink-0"
+        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"
         animate={{
           color: isDark ? "var(--color-text-secondary)" : "var(--color-accent)",
           scale: isDark ? 0.85 : 1.05,
@@ -83,7 +83,7 @@ export default function ThemeToggle() {
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
-        className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors duration-300 flex-shrink-0"
+        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"
         animate={{
           color: isDark ? "var(--color-accent)" : "var(--color-text-secondary)",
           scale: isDark ? 1.05 : 0.85,

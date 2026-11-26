@@ -958,7 +958,7 @@ export default function N8nLiveWorkflow() {
                     <span className="text-xs font-medium text-accent">
                       Node inspector
                     </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-blue-700 dark:text-accent font-medium">
                       {selectedNode.isRealConfig ? "Production spec" : "Illustrative"}
                     </span>
                   </div>

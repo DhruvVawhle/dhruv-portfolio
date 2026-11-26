@@ -251,7 +251,7 @@ export default function About() {
                   How I build software
                 </h3>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-accent/10 text-xs font-medium text-accent tabular-nums">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-accent/10 text-xs font-medium text-blue-700 dark:text-accent tabular-nums">
                 <span>Step {activeStepCount} of {WORKFLOW_STEPS.length}</span>
               </div>
             </div>
