@@ -40,7 +40,6 @@ export default function Contact() {
   });
   const cardScale = useTransform(smoothScroll, [0, 1], [0.94, 1]);
   const cardY = useTransform(smoothScroll, [0, 1], [34, 0]);
-  const cardOpacity = useTransform(smoothScroll, [0, 0.55, 1], [0.35, 0.9, 1]);
   const cardRotateX = useTransform(smoothScroll, [0, 1], [4, 0]);
 
   // Live clock for Asia/Kolkata updating every 20 seconds
@@ -90,7 +89,6 @@ export default function Contact() {
               : {
                 scale: cardScale,
                 y: cardY,
-                opacity: cardOpacity,
                 rotateX: cardRotateX,
                 transformPerspective: 1200,
               }

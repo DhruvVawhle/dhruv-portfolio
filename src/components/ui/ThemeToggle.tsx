@@ -13,7 +13,6 @@ export default function ThemeToggle() {
     return (
       <div
         className="flex items-center gap-1.5 sm:gap-2 px-1 py-1"
-        aria-label="Toggle theme"
         id="theme-toggle"
       >
         <span className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
