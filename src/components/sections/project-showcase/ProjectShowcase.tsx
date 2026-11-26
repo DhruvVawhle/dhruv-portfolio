@@ -100,8 +100,8 @@ function ProjectFolderCard({
         <div
           className={`absolute top-0 left-4 h-9 px-4 rounded-t-2xl border border-b-0 flex items-center gap-2 z-0 transition-colors duration-200 ${
             isActive
-              ? "bg-bg-surface border-accent/55 text-accent"
-              : "bg-bg-surface/90 border-border-custom text-text-secondary group-hover:border-accent/40"
+              ? "bg-bg-surface border-accent/55 text-blue-700 dark:text-accent"
+              : "bg-bg-surface border-border-custom text-text-secondary group-hover:border-accent/40"
           }`}
         >
           <FolderOpen className="w-3.5 h-3.5 flex-shrink-0" />
@@ -306,11 +306,14 @@ function ScrollDeckItem({
   });
 
   const opacity = useTransform(queueOffset, (offset) => {
-    if (offset <= -0.65) return 0;
+    if (offset <= -0.65 || offset > 3.6) return 0;
     if (offset < 0) return Math.max(0, 1 + offset * 1.5);
-    if (offset > 3.6) return 0;
-    return Math.max(0.22, 1 - offset * 0.22);
+    return 1;
   });
+
+  const visibility = useTransform(queueOffset, (offset) =>
+    offset <= -0.65 || offset > 3.6 ? "hidden" : "visible"
+  );
 
   const rotateX = useTransform(queueOffset, (offset) => {
     if (offset < 0) return Math.max(-6, offset * 6);
@@ -340,6 +343,7 @@ function ScrollDeckItem({
         x,
         scale,
         opacity,
+        visibility,
         rotateX,
         transformPerspective: 1200,
         zIndex: isActive ? total * 10 + 10 : zIndex,

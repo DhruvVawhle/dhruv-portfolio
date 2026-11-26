@@ -1293,8 +1293,8 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   animation: gf-roll .5s var(--gf-ease) both;
 }
 @keyframes gf-roll {
-  from { opacity: 0; translate: 0 7px; filter: blur(3px); }
-  to { opacity: 1; translate: 0 0; filter: blur(0); }
+  from { opacity: 0; translate: 0 7px; }
+  to { opacity: 1; translate: 0 0; }
 }
 
 /* ---- the key: + or ··· ------------------------------------------------------ */
