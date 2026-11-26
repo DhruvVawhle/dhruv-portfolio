@@ -641,7 +641,6 @@ function MobileScrollFolderItem({
   });
   const y = useTransform(smoothScroll, [0, 1], [20, 0]);
   const scale = useTransform(smoothScroll, [0, 1], [0.95, 1]);
-  const opacity = useTransform(smoothScroll, [0, 0.45, 1], [0.4, 0.9, 1]);
 
   useMotionValueEvent(smoothScroll, "change", (latest) => {
     const active = latest >= 0.45;
@@ -651,7 +650,7 @@ function MobileScrollFolderItem({
   return (
     <motion.div
       ref={itemRef}
-      style={shouldReduceMotion ? undefined : { y, scale, opacity }}
+      style={shouldReduceMotion ? undefined : { y, scale }}
       className="will-change-transform"
     >
       <ProjectFolderCard
@@ -672,18 +671,6 @@ export default function ProjectShowcase({
   const shouldReduceMotion = useReducedMotion() ?? false;
   const isDesktop = useIsDesktopStage();
   const [activeFilter, setActiveFilter] = useState<FilterChip>("All");
-
-  // Preload all project images once so scrolling & filtering never flicker or reload
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    projects.forEach((p) => {
-      if (p.image) {
-        const preloader = new window.Image();
-        preloader.decoding = "async";
-        preloader.src = p.image;
-      }
-    });
-  }, [projects]);
 
   const filterCounts = useMemo(() => {
     const counts = {} as Record<FilterChip, number>;
@@ -791,7 +778,7 @@ export default function ProjectShowcase({
             className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl border border-border-custom bg-bg-surface/80 hover:border-accent/60 hover:-translate-y-0.5 transition-[transform,border-color] duration-200 focus-visible:outline-2 focus-visible:outline-accent"
           >
             <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/20 text-accent flex items-center justify-center flex-shrink-0">
+              <div className="w-11 h-11 rounded-2xl bg-accent/10 border border-accent/20 text-blue-700 dark:text-accent flex items-center justify-center flex-shrink-0">
                 <Terminal className="w-5 h-5" />
               </div>
               <div>
