@@ -15,7 +15,10 @@ export default function BelowFoldSections() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (window.scrollY > 0 || window.location.hash) {
+    const isSearchBot = /Googlebot|bingbot|Applebot|DuckDuckBot|YandexBot|Baiduspider/i.test(
+      navigator.userAgent
+    );
+    if (isSearchBot || window.scrollY > 0 || window.location.hash) {
       setMounted(true);
       return;
     }

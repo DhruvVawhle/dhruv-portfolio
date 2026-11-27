@@ -139,7 +139,7 @@ const jsonLd = {
       },
       sameAs: [
         "https://github.com/DhruvVawhle",
-        "https://linkedin.com/in/dhruv-vawhle-277b2b2b8",
+        "https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8",
       ],
       description: metaDescription,
       knowsAbout: [
