@@ -412,7 +412,7 @@ export default function Skills() {
         <ScrollReveal>
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-10 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-medium text-[#3B82F6]">
+              <span className="text-xs font-medium text-[#60a5fa]">
                 Technical architecture
               </span>
             </div>
@@ -442,7 +442,7 @@ export default function Skills() {
             {/* Mobile Touch-Optimized Stack Grid (< md) */}
             <div className="flex flex-col md:hidden py-4 w-full">
               <div className="text-center mb-4 px-2">
-                <span className="font-mono text-xs font-semibold text-accent block">
+                <span className="font-mono text-xs font-semibold text-[#60a5fa] block">
                   Interactive technology ecosystem
                 </span>
                 <p className="text-xs text-white/65 mt-1">

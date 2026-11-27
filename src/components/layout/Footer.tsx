@@ -512,7 +512,6 @@ export default function Footer() {
   });
 
   const rowY = useTransform(smoothScroll, [0, 0.7], [18, 0]);
-  const rowOpacity = useTransform(smoothScroll, [0, 0.55], [0.4, 1]);
   const wordmarkY = useTransform(smoothScroll, [0.15, 1], [32, 0]);
   const wordmarkScale = useTransform(smoothScroll, [0.15, 1], [0.94, 1]);
   const wordmarkOpacity = useTransform(smoothScroll, [0.1, 0.85], [0.25, 1]);
@@ -532,7 +531,7 @@ export default function Footer() {
           style={
             shouldReduceMotion
               ? undefined
-              : { y: rowY, opacity: rowOpacity }
+              : { y: rowY }
           }
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start md:items-center gap-7 sm:gap-8 pt-16 sm:pt-20 pb-8 sm:pb-12 will-change-transform"
         >

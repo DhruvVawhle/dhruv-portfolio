@@ -101,7 +101,7 @@ function CompetitionCard({
                   src={comp.certificateImage}
                   alt={`${comp.title} Certificate – Hackathon & Competition Recognition`}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 540px"
                   quality={75}
                   loading="eager"
                   className="object-cover object-top"

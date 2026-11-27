@@ -307,10 +307,10 @@ export default function About() {
                       <button
                         type="button"
                         onClick={() => scrollToStep(idx)}
-                        className={`w-full text-left p-5 sm:p-6 rounded-2xl border transition-[background-color,border-color,opacity,transform] duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.99] hover:-translate-y-0.5 ${
+                        className={`w-full text-left p-5 sm:p-6 rounded-2xl border transition-[background-color,border-color,transform] duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.99] hover:-translate-y-0.5 ${
                           isDone
-                            ? "bg-bg-surface border-border-custom hover:border-accent/50 opacity-100 shadow-sm"
-                            : "bg-bg-surface/50 border-border-custom/50 opacity-50 hover:opacity-85 hover:border-accent/40"
+                            ? "bg-bg-surface border-accent/40 hover:border-accent/60 shadow-sm"
+                            : "bg-bg-surface border-border-custom hover:border-accent/40"
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-2">

@@ -183,7 +183,7 @@ function ExperienceRoleCard({
                             src={exp.credential.image}
                             alt={`${exp.credential.title} – ${exp.company} (${exp.role})`}
                             fill
-                            sizes="(max-width: 640px) 100vw, 480px"
+                            sizes="(max-width: 640px) 100vw, 256px"
                             quality={75}
                             loading="eager"
                             decoding="async"
