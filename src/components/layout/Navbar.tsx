@@ -195,7 +195,7 @@ export default function Navbar() {
             href="#"
             onClick={(e) => handleNavClick(e, "#hero")}
             className="flex-shrink-0 pl-3 pr-1 text-xs font-mono font-bold text-text-primary hover:text-accent transition-colors flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-accent rounded-full"
-            aria-label="Dhruv Vawhle — Back to Top"
+            aria-label="DV — Dhruv Vawhle, Back to Top"
           >
             <span>DV</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent)]" />
@@ -272,7 +272,7 @@ export default function Navbar() {
               setIsMobileMenuOpen(false);
             }}
             className="flex items-center gap-1.5 text-xs font-mono font-bold text-text-primary hover:text-accent transition-colors pl-1 focus-visible:outline-2 focus-visible:outline-accent rounded-full"
-            aria-label="Dhruv Vawhle — Back to Top"
+            aria-label="DV — Dhruv Vawhle, Back to Top"
           >
             <span>DV</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_var(--accent)]" />

@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import {
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
-  BufferGeometry,
-  BufferAttribute,
-  PointsMaterial,
-  Points,
-  AdditiveBlending,
-} from "three";
+import type { BufferAttribute, WebGLRenderer } from "three";
 
 interface ParticleFieldProps {
   paused?: boolean;
@@ -50,103 +41,120 @@ export default function DriftingParticleField({ paused = false }: ParticleFieldP
     const container = containerRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || window.innerWidth;
-    const height = container.clientHeight || 500;
+    let cancelled = false;
+    let cleanupFn: (() => void) | undefined;
 
-    const scene = new Scene();
-    const camera = new PerspectiveCamera(60, width / height, 0.1, 1000);
-    camera.position.z = 150;
+    import("three").then((THREE) => {
+      if (cancelled) return;
 
-    const renderer = new WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
-    rendererRef.current = renderer;
+      const width = container.clientWidth || window.innerWidth;
+      const height = container.clientHeight || 500;
 
-    container.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+      camera.position.z = 150;
 
-    // Create subtle particles
-    const particleCount = 45;
-    const geometry = new BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const speeds = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 320;
-      positions[i + 1] = (Math.random() - 0.5) * 200;
-      positions[i + 2] = (Math.random() - 0.5) * 120;
-
-      speeds[i] = (Math.random() - 0.5) * 0.08;
-      speeds[i + 1] = 0.05 + Math.random() * 0.08; // subtle upward drift
-      speeds[i + 2] = (Math.random() - 0.5) * 0.05;
-    }
-
-    geometry.setAttribute("position", new BufferAttribute(positions, 3));
-
-    // Particle material adapting to accent blue
-    const material = new PointsMaterial({
-      color: 0x3b82f6,
-      size: 2.5,
-      transparent: true,
-      opacity: 0.35,
-      blending: AdditiveBlending,
-    });
-
-    const particles = new Points(geometry, material);
-    scene.add(particles);
-
-    const posAttr = geometry.attributes.position as BufferAttribute;
-
-    const animate = () => {
-      if (pausedRef.current) {
-        animFrameId.current = null;
+      let renderer: WebGLRenderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
+      } catch {
         return;
       }
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+      rendererRef.current = renderer;
 
-      const array = posAttr.array as Float32Array;
+      container.appendChild(renderer.domElement);
+
+      // Create subtle particles
+      const particleCount = 45;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const speeds = new Float32Array(particleCount * 3);
+
       for (let i = 0; i < particleCount * 3; i += 3) {
-        array[i + 1] += speeds[i + 1];
-        array[i] += speeds[i];
+        positions[i] = (Math.random() - 0.5) * 320;
+        positions[i + 1] = (Math.random() - 0.5) * 200;
+        positions[i + 2] = (Math.random() - 0.5) * 120;
 
-        // Wrap boundaries
-        if (array[i + 1] > 120) array[i + 1] = -120;
-        if (array[i] > 180) array[i] = -180;
-        if (array[i] < -180) array[i] = 180;
+        speeds[i] = (Math.random() - 0.5) * 0.08;
+        speeds[i + 1] = 0.05 + Math.random() * 0.08; // subtle upward drift
+        speeds[i + 2] = (Math.random() - 0.5) * 0.05;
       }
-      posAttr.needsUpdate = true;
-      particles.rotation.y += 0.0006;
 
-      renderer.render(scene, camera);
-      animFrameId.current = requestAnimationFrame(animate);
-    };
+      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
 
-    animateRef.current = animate;
+      // Particle material adapting to accent blue
+      const material = new THREE.PointsMaterial({
+        color: 0x3b82f6,
+        size: 2.5,
+        transparent: true,
+        opacity: 0.35,
+        blending: THREE.AdditiveBlending,
+      });
 
-    if (!pausedRef.current) {
-      animFrameId.current = requestAnimationFrame(animate);
-    }
+      const particles = new THREE.Points(geometry, material);
+      scene.add(particles);
 
-    const handleResize = () => {
-      if (!container || !renderer) return;
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
+      const posAttr = geometry.attributes.position as BufferAttribute;
 
-    window.addEventListener("resize", handleResize);
+      const animate = () => {
+        if (pausedRef.current || cancelled) {
+          animFrameId.current = null;
+          return;
+        }
+
+        const array = posAttr.array as Float32Array;
+        for (let i = 0; i < particleCount * 3; i += 3) {
+          array[i + 1] += speeds[i + 1];
+          array[i] += speeds[i];
+
+          // Wrap boundaries
+          if (array[i + 1] > 120) array[i + 1] = -120;
+          if (array[i] > 180) array[i] = -180;
+          if (array[i] < -180) array[i] = 180;
+        }
+        posAttr.needsUpdate = true;
+        particles.rotation.y += 0.0006;
+
+        renderer.render(scene, camera);
+        animFrameId.current = requestAnimationFrame(animate);
+      };
+
+      animateRef.current = animate;
+
+      if (!pausedRef.current) {
+        animFrameId.current = requestAnimationFrame(animate);
+      }
+
+      const handleResize = () => {
+        if (!container || !renderer) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      cleanupFn = () => {
+        if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
+        animFrameId.current = null;
+        animateRef.current = null;
+        window.removeEventListener("resize", handleResize);
+        geometry.dispose();
+        material.dispose();
+        renderer.dispose();
+        if (container && renderer.domElement && container.contains(renderer.domElement)) {
+          container.removeChild(renderer.domElement);
+        }
+      };
+    });
 
     return () => {
-      if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
-      animFrameId.current = null;
-      animateRef.current = null;
-      window.removeEventListener("resize", handleResize);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (container && renderer.domElement && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
+      cancelled = true;
+      cleanupFn?.();
     };
   }, []);
 

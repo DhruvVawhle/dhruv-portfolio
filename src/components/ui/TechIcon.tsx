@@ -517,16 +517,17 @@ export default function TechIcon({
 
   useEffect(() => {
     if (config?.type !== "devicon") return;
-    const win = window as Window & {
-      requestIdleCallback?: (cb: () => void, opts: { timeout: number }) => number;
-      cancelIdleCallback?: (id: number) => void;
+    const onFirstInteraction = () => {
+      ensureDeviconCss();
     };
-    if (typeof win.requestIdleCallback === "function") {
-      const id = win.requestIdleCallback(() => ensureDeviconCss(), { timeout: 3500 });
-      return () => win.cancelIdleCallback?.(id);
-    }
-    const timer = setTimeout(() => ensureDeviconCss(), 2500);
-    return () => clearTimeout(timer);
+    window.addEventListener("scroll", onFirstInteraction, { once: true, passive: true });
+    window.addEventListener("pointerdown", onFirstInteraction, { once: true, passive: true });
+    window.addEventListener("keydown", onFirstInteraction, { once: true, passive: true });
+    return () => {
+      window.removeEventListener("scroll", onFirstInteraction);
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+    };
   }, [config?.type]);
 
   const containerSize =
