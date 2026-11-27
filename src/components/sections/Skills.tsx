@@ -611,13 +611,14 @@ export default function Skills() {
                 <button
                   type="button"
                   onClick={() => setSelectedNode(null)}
-                  aria-label="Reset selected technology"
+                  title="Reset selected technology"
                   className={`relative z-40 w-44 h-44 rounded-full bg-[#161B22] border-2 flex flex-col items-center justify-center transition-[transform,border-color,background-color] duration-300 cursor-pointer shadow-2xl overflow-hidden p-4 text-center focus-visible:outline-2 focus-visible:outline-[#3B82F6] ${
                     activeTech
                       ? "border-[#3B82F6] scale-105 bg-[#1A202C]"
                       : "border-[#3B82F6]/60 hover:scale-[1.03] hover:border-[#3B82F6]"
                   }`}
                 >
+                  <span className="sr-only">Reset selected technology: </span>
                   <AnimatePresence mode="wait">
                     {activeTech && activeDetail ? (
                       <motion.div
