@@ -163,8 +163,9 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "@id": "https://dhruvvawhle.vercel.app/#website",
-      url: "https://dhruvvawhle.vercel.app",
-      name: metaTitle,
+      url: "https://dhruvvawhle.vercel.app/",
+      name: "Dhruv Vawhle",
+      alternateName: ["Dhruv Vawhle Portfolio", "Dhruv Vawhle | Software Engineer Portfolio"],
       description: metaDescription,
       publisher: {
         "@id": "https://dhruvvawhle.vercel.app/#person",

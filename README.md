@@ -12,7 +12,7 @@
 
 **A high-performance, editorial software engineering portfolio showcasing production full-stack systems, applied AI security architectures, n8n automations, and verified engineering credentials.**
 
-[🚀 Live Preview](https://dhruvvawhle.vercel.app) · [📄 View Resume](https://dhruvvawhle.vercel.app/Dhruv_Resume.pdf) · [📬 LinkedIn](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8) · [💻 GitHub](https://github.com/DhruvVawhle)
+[🚀 Live Preview](https://dhruvvawhle.vercel.app/) · [📄 View Resume](https://dhruvvawhle.vercel.app/resume.pdf) · [📬 LinkedIn](https://www.linkedin.com/in/dhruv-vawhle-277b2b2b8) · [💻 GitHub](https://github.com/DhruvVawhle)
 
 </div>
 
