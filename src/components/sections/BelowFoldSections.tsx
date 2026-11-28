@@ -3,13 +3,34 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-const About = dynamic(() => import("@/components/sections/About"), { ssr: false });
-const Projects = dynamic(() => import("@/components/sections/Projects"), { ssr: false });
-const Experience = dynamic(() => import("@/components/sections/Experience"), { ssr: false });
-const Hackathons = dynamic(() => import("@/components/sections/Hackathons"), { ssr: false });
-const Skills = dynamic(() => import("@/components/sections/Skills"), { ssr: false });
-const Certifications = dynamic(() => import("@/components/sections/Certifications"), { ssr: false });
-const Contact = dynamic(() => import("@/components/sections/Contact"), { ssr: false });
+const About = dynamic(() => import("@/components/sections/About"), {
+  ssr: false,
+  loading: () => <section id="about" aria-label="About" className="min-h-[760px]" />,
+});
+const Projects = dynamic(() => import("@/components/sections/Projects"), {
+  ssr: false,
+  loading: () => <section id="projects" aria-label="Projects" className="min-h-[760px]" />,
+});
+const Experience = dynamic(() => import("@/components/sections/Experience"), {
+  ssr: false,
+  loading: () => <section id="experience" aria-label="Experience" className="min-h-[760px]" />,
+});
+const Hackathons = dynamic(() => import("@/components/sections/Hackathons"), {
+  ssr: false,
+  loading: () => <section id="hackathons" aria-label="Hackathons" className="min-h-[760px]" />,
+});
+const Skills = dynamic(() => import("@/components/sections/Skills"), {
+  ssr: false,
+  loading: () => <section id="skills" aria-label="Skills" className="min-h-[760px]" />,
+});
+const Certifications = dynamic(() => import("@/components/sections/Certifications"), {
+  ssr: false,
+  loading: () => <section id="certifications" aria-label="Certifications" className="min-h-[760px]" />,
+});
+const Contact = dynamic(() => import("@/components/sections/Contact"), {
+  ssr: false,
+  loading: () => <section id="contact" aria-label="Contact" className="min-h-[760px]" />,
+});
 
 export default function BelowFoldSections() {
   const [mounted, setMounted] = useState(false);
@@ -27,6 +48,7 @@ export default function BelowFoldSections() {
     const events: Array<keyof WindowEventMap> = [
       "scroll",
       "pointerdown",
+      "pointermove",
       "keydown",
       "touchstart",
       "hashchange",

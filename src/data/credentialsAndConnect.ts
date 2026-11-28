@@ -1,15 +1,72 @@
 export interface CredentialItem {
   id: string;
   issuer: string;
-  issuerIcon: "cisco" | "nxtwave" | "googlecloud" | "edunet";
+  issuerIcon: "cisco" | "nxtwave" | "googlecloud" | "edunet" | "anthropic" | "ibm" | "govindia" | "infosys";
   title: string;
   categories: ("Cloud" | "Data Science" | "AI & ML")[];
+  issuedDate?: string;
   credentialId?: string;
+  verifyUrl?: string;
   image?: string;
+  images?: string[];
+  pdf?: string;
   hasImage: boolean;
 }
 
 export const CREDENTIALS_DATA: CredentialItem[] = [
+  {
+    id: "anthropic-claude-code-in-action",
+    issuer: "Anthropic",
+    issuerIcon: "anthropic",
+    title: "Claude Academy: Claude Code in action",
+    categories: ["AI & ML"],
+    issuedDate: "Nov 2026",
+    credentialId: "3a65b7934e8d1c6314ee0e439738fdb2",
+    verifyUrl: "https://academy.claude.com/verify/3a65b7934e8d1c6314ee0e439738fdb2",
+    image: "/images/certifications/claude-code-in-action.png",
+    pdf: "/images/certifications/claude-code-in-action.pdf",
+    hasImage: true,
+  },
+  {
+    id: "ibm-granite-summarizing-data",
+    issuer: "IBM",
+    issuerIcon: "ibm",
+    title: "Summarizing Data Using IBM Granite",
+    categories: ["AI & ML", "Data Science"],
+    issuedDate: "Nov 2026",
+    image: "/images/certifications/ibm-granite-summarizing-data.png",
+    hasImage: true,
+  },
+  {
+    id: "govindia-krishisaathi-copyright",
+    issuer: "Government of India",
+    issuerIcon: "govindia",
+    title: "KrishiSaathi – The Farmer's Guide (Copyright Registration)",
+    categories: ["AI & ML", "Cloud"],
+    issuedDate: "Oct 2026",
+    credentialId: "SW-2026024057",
+    verifyUrl:
+      "https://www.copyright.gov.in/CopyrightROC_Details.aspx?Diary_No=297co06zxeS95LxF0B6+7Q%3d%3d&Roc_No=3Y7Lsh3p&Id=LQw9gNfDp3hsL7Y3",
+    image: "/images/certifications/krishisaathi-copyright-p1.jpg",
+    images: [
+      "/images/certifications/krishisaathi-copyright-p1.jpg",
+      "/images/certifications/krishisaathi-copyright-p2.jpg",
+    ],
+    pdf: "/images/certifications/krishisaathi-copyright.pdf",
+    hasImage: true,
+  },
+  {
+    id: "google-cloud-ai-security",
+    issuer: "Google Cloud",
+    issuerIcon: "googlecloud",
+    title: "Google Cloud - Introduction to Security in the World of AI",
+    categories: ["Cloud", "AI & ML"],
+    issuedDate: "Jan 2026",
+    verifyUrl:
+      "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/21534379?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
+    image: "/images/certifications/google-cloud-ai-security.png",
+    hasImage: true,
+  },
   {
     id: "cisco-data-science",
     issuer: "Cisco Networking Academy",
@@ -36,7 +93,22 @@ export const CREDENTIALS_DATA: CredentialItem[] = [
     issuerIcon: "googlecloud",
     title: "Google Cloud - Introduction to Generative AI",
     categories: ["Cloud", "AI & ML"],
+    issuedDate: "Jan 2025",
+    verifyUrl:
+      "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/13721020?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
     image: "/images/certifications/google-cloud-generative-ai.png",
+    hasImage: true,
+  },
+  {
+    id: "google-cloud-data-transformation",
+    issuer: "Google Cloud",
+    issuerIcon: "googlecloud",
+    title: "Google Cloud - Exploring Data Transformation with Google Cloud",
+    categories: ["Cloud", "Data Science"],
+    issuedDate: "Aug 2025",
+    verifyUrl:
+      "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/17319358?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
+    image: "/images/certifications/google-cloud-data-transformation.png",
     hasImage: true,
   },
   {
@@ -50,12 +122,13 @@ export const CREDENTIALS_DATA: CredentialItem[] = [
     hasImage: true,
   },
   {
-    id: "google-cloud-ai-security",
-    issuer: "Google Cloud",
-    issuerIcon: "googlecloud",
-    title: "Google Cloud - Introduction to Security in the World of AI",
-    categories: ["Cloud", "AI & ML"],
-    image: "/images/certifications/google-cloud-ai-security.png",
+    id: "infosys-basics-of-python",
+    issuer: "Infosys Springboard",
+    issuerIcon: "infosys",
+    title: "Infosys Springboard - Basics of Python",
+    categories: ["Data Science"],
+    verifyUrl: "https://verify.onwingspan.com/",
+    image: "/images/certifications/Infosys Basic of Python.png",
     hasImage: true,
   },
 ];

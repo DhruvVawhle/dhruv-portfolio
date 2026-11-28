@@ -92,17 +92,15 @@ function ProjectFolderCard({
             ? undefined
             : "transform var(--tilt-ease, 200ms) cubic-bezier(0.16, 1, 0.3, 1)",
         }}
-        className={`group relative w-full pt-8 select-none will-change-transform ${
-          !isActive ? "cursor-pointer" : ""
-        }`}
+        className={`group relative w-full pt-8 select-none will-change-transform ${!isActive ? "cursor-pointer" : ""
+          }`}
       >
         {/* LAYER 1: Folder Top Tab + Back Panel */}
         <div
-          className={`absolute top-0 left-4 h-9 px-4 rounded-t-2xl border border-b-0 flex items-center gap-2 z-0 transition-colors duration-200 ${
-            isActive
-              ? "bg-bg-surface border-accent/55 text-blue-700 dark:text-accent"
-              : "bg-bg-surface border-border-custom text-text-secondary group-hover:border-accent/40"
-          }`}
+          className={`absolute top-0 left-4 h-9 px-4 rounded-t-2xl border border-b-0 flex items-center gap-2 z-0 transition-colors duration-200 ${isActive
+            ? "bg-bg-surface border-accent/55 text-blue-700 dark:text-accent"
+            : "bg-bg-surface border-border-custom text-text-secondary group-hover:border-accent/40"
+            }`}
         >
           <FolderOpen className="w-3.5 h-3.5 flex-shrink-0" />
           <span className="font-mono text-[11px] font-semibold">
@@ -111,11 +109,10 @@ function ProjectFolderCard({
         </div>
 
         <div
-          className={`relative rounded-3xl rounded-tl-none border bg-bg-surface/95 shadow-2xl transition-[border-color,box-shadow] duration-200 ${
-            isActive
-              ? "border-accent/50 shadow-accent/10"
-              : "border-border-custom/90 group-hover:border-accent/40"
-          }`}
+          className={`relative rounded-3xl rounded-tl-none border bg-bg-surface/95 shadow-2xl transition-[border-color,box-shadow] duration-200 ${isActive
+            ? "border-accent/50 shadow-accent/10"
+            : "border-border-custom/90 group-hover:border-accent/40"
+            }`}
         >
           {/* Pointer-tracked specular highlight */}
           {!shouldReduceMotion && (
@@ -431,9 +428,8 @@ function CinematicScrollStage({
       className="relative w-full"
     >
       <div
-        className={`${
-          total > 1 ? "sticky top-20 min-h-[calc(100vh-6rem)]" : "py-4"
-        } flex flex-col justify-center`}
+        className={`${total > 1 ? "sticky top-20 min-h-[calc(100vh-6rem)]" : "py-4"
+          } flex flex-col justify-center`}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-center">
           {/* Left Column: Active Project Dossier & Overview Controls */}
@@ -575,11 +571,10 @@ function CinematicScrollStage({
                       type="button"
                       onClick={() => scrollToChapter(idx)}
                       aria-current={isCurrent ? "true" : undefined}
-                      className={`min-h-[34px] px-3 py-1 rounded-full text-xs font-medium transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent ${
-                        isCurrent
-                          ? "bg-accent/15 text-blue-700 dark:text-accent border border-accent/40 font-semibold"
-                          : "bg-bg-surface text-text-secondary border border-border-custom hover:text-text-primary hover:border-accent/30"
-                      }`}
+                      className={`min-h-[34px] px-3 py-1 rounded-full text-xs font-medium transition-colors duration-150 cursor-pointer focus-visible:outline-2 focus-visible:outline-accent ${isCurrent
+                        ? "bg-accent/15 text-blue-700 dark:text-accent border border-accent/40 font-semibold"
+                        : "bg-bg-surface text-text-secondary border border-border-custom hover:text-text-primary hover:border-accent/30"
+                        }`}
                     >
                       {String(idx + 1).padStart(2, "0")} · {proj.title}
                     </button>
@@ -708,11 +703,10 @@ export default function ProjectShowcase({
               type="button"
               aria-pressed={isActive}
               onClick={() => setActiveFilter(chip)}
-              className={`relative min-h-[44px] h-11 px-4 sm:px-5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-[color,border-color,transform] duration-150 border cursor-pointer inline-flex items-center justify-center gap-2 flex-shrink-0 touch-manipulation z-10 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${
-                isActive
-                  ? "text-white border-transparent font-semibold"
-                  : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/45"
-              }`}
+              className={`relative min-h-[44px] h-11 px-4 sm:px-5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-[color,border-color,transform] duration-150 border cursor-pointer inline-flex items-center justify-center gap-2 flex-shrink-0 touch-manipulation z-10 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-accent active:scale-[0.98] ${isActive
+                ? "text-white border-transparent font-semibold"
+                : "bg-bg-surface border-border-custom text-text-secondary hover:text-text-primary hover:border-accent/45"
+                }`}
             >
               {isActive && (
                 <motion.span
@@ -727,11 +721,10 @@ export default function ProjectShowcase({
               )}
               <span>{chip}</span>
               <span
-                className={`font-mono text-[11px] px-1.5 py-0.5 rounded-full transition-colors ${
-                  isActive
-                    ? "bg-white/20 text-white"
-                    : "bg-bg text-text-secondary border border-border-custom/70"
-                }`}
+                className={`font-mono text-[11px] px-1.5 py-0.5 rounded-full transition-colors ${isActive
+                  ? "bg-white/20 text-white"
+                  : "bg-bg text-text-secondary border border-border-custom/70"
+                  }`}
               >
                 {filterCounts[chip]}
               </span>

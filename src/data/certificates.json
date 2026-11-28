@@ -1,5 +1,49 @@
 [
   {
+    "title": "Claude Academy: Claude Code in action",
+    "name": "Claude Code in action",
+    "issuer": "Anthropic",
+    "date": "Nov 2026",
+    "credentialId": "3a65b7934e8d1c6314ee0e439738fdb2",
+    "verifyUrl": "https://academy.claude.com/verify/3a65b7934e8d1c6314ee0e439738fdb2",
+    "image": "/images/certifications/claude-code-in-action.png",
+    "pdf": "/images/certifications/claude-code-in-action.pdf",
+    "category": "AI & ML"
+  },
+  {
+    "title": "Summarizing Data Using IBM Granite",
+    "name": "Summarizing Data Using IBM Granite",
+    "issuer": "IBM",
+    "date": "Nov 2026",
+    "credentialId": null,
+    "verifyUrl": null,
+    "image": "/images/certifications/ibm-granite-summarizing-data.png",
+    "pdf": null,
+    "category": "AI & ML"
+  },
+  {
+    "title": "KrishiSaathi – The Farmer's Guide (Copyright Registration)",
+    "name": "KrishiSaathi Copyright Registration",
+    "issuer": "Government of India",
+    "date": "Oct 2026",
+    "credentialId": "SW-2026024057",
+    "verifyUrl": "https://www.copyright.gov.in/CopyrightROC_Details.aspx?Diary_No=297co06zxeS95LxF0B6+7Q%3d%3d&Roc_No=3Y7Lsh3p&Id=LQw9gNfDp3hsL7Y3",
+    "image": "/images/certifications/krishisaathi-copyright-p1.jpg",
+    "pdf": "/images/certifications/krishisaathi-copyright.pdf",
+    "category": "AI & ML"
+  },
+  {
+    "title": "Infosys Springboard – Basics of Python",
+    "name": "Basics of Python",
+    "issuer": "Infosys Springboard",
+    "date": "2025",
+    "credentialId": null,
+    "verifyUrl": "https://verify.onwingspan.com/",
+    "image": "/images/certifications/Infosys Basic of Python.png",
+    "pdf": null,
+    "category": "Programming"
+  },
+  {
     "title": "Pyverse – Python Certification",
     "name": "Pyverse (Python)",
     "issuer": "Pyverse",
@@ -37,12 +81,23 @@
     "title": "Google Cloud – Introduction to Generative AI",
     "name": "Intro to Generative AI",
     "issuer": "Google Cloud",
-    "date": "2025",
+    "date": "Jan 2025",
     "credentialId": null,
-    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "verifyUrl": "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/13721020?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
     "image": "/images/certifications/google-cloud-generative-ai.png",
     "pdf": null,
     "category": "AI & ML"
+  },
+  {
+    "title": "Google Cloud – Exploring Data Transformation with Google Cloud",
+    "name": "Exploring Data Transformation",
+    "issuer": "Google Cloud",
+    "date": "Aug 2025",
+    "credentialId": null,
+    "verifyUrl": "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/17319358?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
+    "image": "/images/certifications/google-cloud-data-transformation.png",
+    "pdf": null,
+    "category": "Cloud"
   },
   {
     "title": "Edunet – Foundation Course on Green Skills & Artificial Intelligence",
@@ -59,9 +114,9 @@
     "title": "Google Cloud – Introduction to Security in the World of AI",
     "name": "Security in AI",
     "issuer": "Google Cloud",
-    "date": "2025",
+    "date": "Jan 2026",
     "credentialId": null,
-    "verifyUrl": "https://www.cloudskillsboost.google/",
+    "verifyUrl": "https://www.skills.google/public_profiles/f2ebe9f4-180d-4465-83f9-221e26fc3fff/badges/21534379?utm_medium=social&utm_source=linkedin&utm_campaign=ql-social-share",
     "image": "/images/certifications/google-cloud-ai-security.png",
     "pdf": null,
     "category": "Cloud"

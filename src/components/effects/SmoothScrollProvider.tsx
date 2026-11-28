@@ -35,11 +35,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
         syncTouch: false,
         lerp: 0.085,
         wheelMultiplier: 0.95,
-        anchors: {
-          offset: -72,
-          duration: 1.1,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        },
+        anchors: false,
         prevent: (node) => {
           return (
             node.hasAttribute("data-lenis-prevent") ||
@@ -57,7 +53,13 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       lenisRef.current = lenis;
       window.__lenis = lenis;
 
+      const resizeObserver = new ResizeObserver(() => {
+        lenis.resize();
+      });
+      resizeObserver.observe(document.body);
+
       cleanupFn = () => {
+        resizeObserver.disconnect();
         cancelFrame(update);
         lenis.destroy();
         lenisRef.current = null;

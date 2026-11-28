@@ -25,6 +25,7 @@ export default function Navbar() {
 
   const isManualNavRef = useRef(false);
   const manualNavTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const navScrollCleanupRef = useRef<(() => void) | null>(null);
 
   // Detect touch device
   useEffect(() => {
@@ -158,24 +159,81 @@ export default function Navbar() {
     }
     manualNavTimeoutRef.current = setTimeout(() => {
       isManualNavRef.current = false;
-    }, 850);
+    }, 1250);
+
+    navScrollCleanupRef.current?.();
+    navScrollCleanupRef.current = null;
 
     if (typeof window !== "undefined") {
-      if (window.__lenis) {
-        const target = href === "#" || href === "#hero" ? 0 : href;
-        window.__lenis.scrollTo(target, { offset: -70 });
-      } else {
-        const id = href.replace("#", "");
-        if (id && id !== "hero") {
-          const el = document.getElementById(id);
-          if (el) {
-            const y = el.getBoundingClientRect().top + window.scrollY - 70;
-            window.scrollTo({ top: y, behavior: "smooth" });
+      const id = href.replace("#", "");
+
+      const performScroll = () => {
+        if (!id || id === "hero") {
+          if (window.__lenis) {
+            window.__lenis.scrollTo(0, { offset: -70 });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          return true;
         }
-      }
+
+        const el = document.getElementById(id);
+        if (!el) return false;
+
+        if (window.__lenis) {
+          window.__lenis.resize();
+          window.__lenis.scrollTo(el, { offset: -70 });
+        } else {
+          const y = el.getBoundingClientRect().top + window.scrollY - 70;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+        return true;
+      };
+
+      const startTracking = () => {
+        if (!id || id === "hero") return;
+        let lastHeight = document.body.scrollHeight;
+        let rafId: number | null = null;
+
+        const reScrollIfShifted = () => {
+          const currentHeight = document.body.scrollHeight;
+          if (currentHeight !== lastHeight) {
+            lastHeight = currentHeight;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = window.requestAnimationFrame(() => {
+              performScroll();
+            });
+          }
+        };
+
+        const ro = new ResizeObserver(reScrollIfShifted);
+        ro.observe(document.body);
+
+        const stopTracking = () => {
+          ro.disconnect();
+          if (rafId) cancelAnimationFrame(rafId);
+          window.removeEventListener("wheel", stopTracking);
+          window.removeEventListener("touchstart", stopTracking);
+          clearTimeout(expireTimer);
+        };
+
+        window.addEventListener("wheel", stopTracking, { once: true, passive: true });
+        window.addEventListener("touchstart", stopTracking, { once: true, passive: true });
+        const expireTimer = window.setTimeout(stopTracking, 1200);
+        navScrollCleanupRef.current = stopTracking;
+      };
+
+      const scrollToTarget = (attemptsLeft = 12) => {
+        if (performScroll()) {
+          startTracking();
+          return;
+        }
+        if (attemptsLeft > 0) {
+          window.requestAnimationFrame(() => scrollToTarget(attemptsLeft - 1));
+        }
+      };
+
+      scrollToTarget();
       history.pushState(null, "", href);
     }
   };
